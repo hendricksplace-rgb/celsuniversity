@@ -67,11 +67,12 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
 
 `--from-dir <dir>` reads `<Entity>.json` exports instead of calling the Base44 API (useful for testing). `--concurrency <n>` sets parallel downloads (default 6).
 
-## Dry run, 17 Oct 2026 (partial export)
+## Run log
 
-Run from exports of 500/610 lessons and 500/534 blocks (everything else complete):
+**17 Oct 2026, production import into `celsu-lam`**
 
-- All entity mappings succeeded. No broken links apart from the 126 blocks whose lessons were outside the partial export.
-- **2,770 unique files** to copy, and no Base44/Kajabi URL left in the rewritten rows.
-- Videos needing a host: 69 Wistia, 2 Vimeo, 6+ Base44-hosted (more in the blocks not exported).
-- External embeds to replace: 41 designrr.page (e-books), 32 gamma.app (teacher guides).
+- Test (`--dry-run`) against the live Base44 API: every count matched, 0 skipped.
+- Real run: all 9 tables match Base44 (1 / 9 / 7 / 90 / 610 / 534 / 21 / 3 / 207).
+- Files: 2,977 / 2,977 in Storage (112 MB). One flashcard mp3 failed with a network error on the first pass and was picked up by a re-run. 0 old Base44/Kajabi file links remain.
+- `apply-teacher-guides.sql`: 38 blocks are now `teacher_guide` (teacher-only HTML). No Gamma embeds remain.
+- Still external: 108 videos (80 Wistia, 26 Base44-hosted, 2 Vimeo) and 56 designrr.page e-book embeds.
