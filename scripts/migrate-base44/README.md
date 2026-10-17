@@ -37,19 +37,21 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
 | Catalog art (course/program covers, module artwork, launcher icons) | Goes to the public `public-assets/{covers,modules,icons}/…`. The URL becomes the public Storage URL. |
 | Video (`.mp4 .mov .m4v .webm`, Wistia, Vimeo) | **Not copied**, by rule. Listed in the report. `--download-videos <dir>` saves the Base44-hosted ones locally so they can be uploaded to Mux/Bunny or YouTube. |
 | YouTube | Left as is (allowed). |
-| Other embeds (gamma.app, designrr.page) | Left as is and listed in the report. They break the self-contained rule and need replacing (export to PDF → flipbook, or rebuild). |
+| Gamma teacher guides (38) | Imported as embeds, then replaced with converted HTML by `apply-teacher-guides.sql` (step 5). |
+| designrr.page e-books | Left as is and listed in the report. They break the self-contained rule and still need replacing (e.g. export to PDF → flipbook). |
 
 ## Run it
 
-1. Apply `supabase/migrations/20261017230000_course_layouts.sql`. Base44 courses use the layouts `ipd_sections` and `citizenship_modules`, which the current check constraint rejects.
+1. Make sure `20261017225042_course_layouts` and `20261017230234_staging_teacher_guides` are applied (both are on `celsu-lam`).
 2. Put these in `.env.local` (never commit them):
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://pbpnhsgygwqxnkklhyuz.supabase.co
    SUPABASE_SECRET_KEY=sb_secret_…        # Supabase → Project Settings → API Keys
    BASE44_APP_ID=6a4cfadfe1f30bc41a96d740
-   BASE44_API_KEY=…                        # Base44 → Account → API keys (personal key)
+   BASE44_API_KEY=b44u_…                   # Base44 personal access token
    ```
-   If Base44 rejects the key header, set `BASE44_AUTH_HEADER` (default `api_key`).
+   The token is sent as `Authorization: Bearer …`. For a legacy API key, set `BASE44_AUTH_HEADER=api_key`.
+   Behind an HTTP proxy (e.g. Claude Code cloud sessions), also set `NODE_USE_ENV_PROXY=1` so Node's `fetch` uses it.
 3. Dry run (reads Base44, plans the file copies, writes nothing):
    ```bash
    npm run migrate:base44 -- --dry-run
@@ -60,7 +62,8 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
    # optional: also save Base44-hosted videos for re-hosting
    npm run migrate:base44 -- --download-videos ./videos
    ```
-5. Read `scripts/migrate-base44/out/report.md`. Every row of the count table should show ✅. "Legacy URLs left" should be 0, and "Failed" should be 0. If not, re-run: finished files are skipped.
+5. Swap the Gamma teacher-guide embeds for the converted HTML guides staged in `private.teacher_guides_staging`. Run `apply-teacher-guides.sql` in the Supabase SQL editor. **Repeat this after every re-run of step 4**, because the import restores the original embeds.
+6. Read `scripts/migrate-base44/out/report.md`. Every row of the count table should show ✅. "Legacy URLs left" should be 0, and "Failed" should be 0. If not, re-run: finished files are skipped.
 
 `--from-dir <dir>` reads `<Entity>.json` exports instead of calling the Base44 API (useful for testing). `--concurrency <n>` sets parallel downloads (default 6).
 

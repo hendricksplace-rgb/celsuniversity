@@ -77,7 +77,8 @@ Google sign-in also needs the Google provider turned on under Authentication →
 | 20261017194309 | core_schema | 26 tables, enums, indexes, `updated_at` triggers, `renew_offline_downloads` |
 | 20261017194328 | security | RLS + policies on every table, storage buckets and storage policies |
 | 20261017194346 | move_helpers_to_private_schema | moves `is_admin`, `is_staff`, `has_course_access`, … to the `private` schema |
-| 20261017230000 | course_layouts | **not applied yet.** Allows the `ipd_sections` and `citizenship_modules` layouts that Base44 courses use |
+| 20261017225042 | course_layouts | allows the `ipd_sections` and `citizenship_modules` layouts that Base44 courses use |
+| 20261017230234 | staging_teacher_guides | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 

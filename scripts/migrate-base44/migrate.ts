@@ -51,7 +51,8 @@ try {
 }
 
 function env(name: string, required = true) {
-  const value = process.env[name];
+  // Pasted secrets can carry zero-width characters, which break HTTP headers.
+  const value = process.env[name]?.replace(/[​-‍⁠﻿]/g, "").trim();
   if (required && !value) throw new Error(`Missing env var ${name}. See .env.example.`);
   return value ?? "";
 }
@@ -59,12 +60,15 @@ function env(name: string, required = true) {
 const SUPABASE_URL = env("NEXT_PUBLIC_SUPABASE_URL");
 const B44_APP = env("BASE44_APP_ID");
 const B44_URL = process.env.BASE44_API_URL ?? "https://app.base44.com";
-const B44_AUTH_HEADER = process.env.BASE44_AUTH_HEADER ?? "api_key";
+// Base44 personal access tokens go in "Authorization: Bearer"; legacy API keys used "api_key".
+const B44_AUTH_HEADER = process.env.BASE44_AUTH_HEADER ?? "Authorization";
 
 const COPY_HOSTS = [/^media\.base44\.com$/, /^base44\.app$/, /(^|\.)kajabi-cdn\.com$/];
 const VIDEO_EXT = /\.(mp4|mov|m4v|webm|mkv|avi)$/i;
 const VIDEO_HOSTS = /(^|\.)(wistia\.com|wistia\.net|vimeo\.com|youtube\.com|youtu\.be)$/i;
 const ALLOWED_EMBED_HOSTS = /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i;
+// Hosts whose links are embedded documents, whatever the path (/embed/…, /docs/…, ?id=…).
+const EMBED_HOSTS = /(^|\.)(gamma\.app|designrr\.page)$/i;
 const URL_RE = /https?:\/\/[^\s"'<>)\\\]]+/g;
 
 // ---------- types ----------
@@ -115,7 +119,10 @@ const report = {
 
 async function b44(path: string) {
   const res = await fetch(`${B44_URL}/api/apps/${B44_APP}${path}`, {
-    headers: { [B44_AUTH_HEADER]: env("BASE44_API_KEY") },
+    headers: {
+      [B44_AUTH_HEADER]:
+        B44_AUTH_HEADER.toLowerCase() === "authorization" ? `Bearer ${env("BASE44_API_KEY")}` : env("BASE44_API_KEY"),
+    },
   });
   if (!res.ok) throw new Error(`Base44 ${path} → ${res.status} ${await res.text()}`);
   return res.json();
@@ -281,7 +288,7 @@ async function rewriteString(text: string, ctx: Ctx, origin: Origin): Promise<st
       if (next) out = out.split(url).join(next);
       continue;
     }
-    if (origin.entity === "ContentBlock" && /\/embed|[?&]id=/.test(url) && !ALLOWED_EMBED_HOSTS.test(host(url)) && once(origin, url)) {
+    if (origin.entity === "ContentBlock" && (EMBED_HOSTS.test(host(url)) || /\/embed/.test(url)) && !ALLOWED_EMBED_HOSTS.test(host(url)) && once(origin, url)) {
       report.externalEmbeds.push({ ...origin, host: host(url), url });
     }
   }
