@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* CelsU brand, carried over from the Base44 app */
+@theme {
+  --color-brand: #f5178c;
+  --color-brand-dark: #c80f6f;
+  --color-surface: #23203a;
+  --color-ink: #12101f;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  color: #fff;
+  background: linear-gradient(180deg, #241335 0%, #1a1128 40%, #12101f 100%);
+  background-color: #12101f;
+  min-height: 100vh;
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2 font-semibold text-white transition hover:bg-brand-dark;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-xl border border-white/20 px-4 py-2 font-semibold text-white transition hover:bg-white/10;
+  }
+  .card {
+    @apply rounded-2xl border border-white/10 bg-surface/80 p-5 backdrop-blur;
+  }
+  .field {
+    @apply w-full rounded-xl border border-white/15 bg-ink/60 px-3 py-2 text-white placeholder:text-white/40 focus:border-brand focus:outline-none;
+  }
+}
