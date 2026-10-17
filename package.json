@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:base44": "tsx scripts/migrate-base44/migrate.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
