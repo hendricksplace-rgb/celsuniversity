@@ -43,6 +43,19 @@
       "variables": []
     },
     {
+      "id": "invite",
+      "file": "supabase/invite.html",
+      "program": "CelsU",
+      "trigger": "Supabase Auth → Invite user",
+      "subject": "Te invitaron a CelsU como administrador",
+      "preheader": "Crea tu contraseña y entra al panel de CelsU.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "reply_to": "hola@celstv.com",
+      "marketing": false,
+      "variables": []
+    },
+    {
       "id": "eval-results",
       "file": "app/eval-results.html",
       "program": "CelsU",

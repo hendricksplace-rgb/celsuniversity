@@ -2,6 +2,9 @@ import "server-only";
 import type { Client } from "@/lib/supabase/types";
 
 export const STAFF_ROLES = ["super_admin", "director", "administrator", "teacher"] as const;
+/** Who may open /admin. Only super_admin changes roles (enforced again by public.guard_profile_update). */
+export const ADMIN_ROLES = ["super_admin", "administrator"] as const;
+export const isAdminRole = (role: string) => (ADMIN_ROLES as readonly string[]).includes(role);
 
 /** Embedded relations come back as an object at runtime but are typed as arrays without generated DB types. */
 export const one = <T,>(v: T | T[] | null | undefined): T | null => (Array.isArray(v) ? (v[0] ?? null) : (v ?? null));

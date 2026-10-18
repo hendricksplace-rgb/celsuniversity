@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { setLanguage } from "@/lib/actions";
-import { getViewer } from "@/lib/access";
+import { getViewer, isAdminRole } from "@/lib/access";
 import { InstallButton } from "@/components/install/InstallApp";
 import { SignOutButton } from "@/components/SignOutButton";
 import { TabBar, TopNav, type NavItem } from "./AppNav";
@@ -52,10 +52,16 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                 <Link href="/cursos" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
                   {t.shell.catalog}
                 </Link>
-                {viewer.isStaff && (
-                  <Link href="/app/admin/libros" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
-                    {t.admin.booksTitle}
+                {isAdminRole(viewer.role) ? (
+                  <Link href="/app/admin" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                    Admin
                   </Link>
+                ) : (
+                  viewer.isStaff && (
+                    <Link href="/app/admin/libros" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                      {t.admin.booksTitle}
+                    </Link>
+                  )
                 )}
                 <Link href="/ayuda" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
                   {t.footer.help}
