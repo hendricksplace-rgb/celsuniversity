@@ -27,6 +27,7 @@ export const PART_BG: Record<PartKey, { bg: string; light?: boolean }> = {
 
 type Ctx = {
   t: T;
+  userId: string;
   partKey: PartKey;
   episodeN: number;
   /** 0–1, drawn in the top bar. */
@@ -36,7 +37,10 @@ type Ctx = {
   addXp: (n: number) => void;
   /** Big celebration (CelsTV). */
   celebrate: () => void;
-  finish: () => Promise<void>;
+  /** Records the part as finished. `stay`: the screen shows its own end (quiz, cards); otherwise the overlay, then back to the episode. */
+  finish: (opts?: { stay?: boolean }) => Promise<{ xp: number; queued: boolean } | null>;
+  /** The episode, with this part's check popping in. */
+  backHref: string;
   done: boolean;
   nextEpisodeHref: string | null;
   nextEpisodeN: number | null;
@@ -82,22 +86,29 @@ export function PartShell({
   const back = `${episodeHref}?hecho=${partKey}`;
 
   const celebrate = useCallback(() => setBurst((b) => b + 1), []);
-  const finish = useCallback(async () => {
-    if (finishing.current) return;
-    finishing.current = true;
-    setProgress(1);
-    const r = await finishLesson(createClient(), userId, lessonId);
-    sfx.finish();
-    celebrate();
-    setEnding({ xp: r.xp, queued: r.queued });
-    // refresh() drops the router cache, so the episode shows the new check and XP.
-    router.refresh();
-    setTimeout(() => router.push(back), r.queued ? 2600 : 1800);
-  }, [userId, lessonId, celebrate, router, back]);
+  const finish = useCallback(
+    async (opts?: { stay?: boolean }) => {
+      if (finishing.current) return null;
+      finishing.current = true;
+      setProgress(1);
+      const r = await finishLesson(createClient(), userId, lessonId);
+      sfx.finish();
+      celebrate();
+      // refresh() drops the router cache, so the episode shows the new check and XP.
+      router.refresh();
+      if (!opts?.stay) {
+        setEnding({ xp: r.xp, queued: r.queued });
+        setTimeout(() => router.push(back), r.queued ? 2600 : 1800);
+      }
+      return r;
+    },
+    [userId, lessonId, celebrate, router, back],
+  );
 
   const value = useMemo<Ctx>(
     () => ({
       t,
+      userId,
       partKey,
       episodeN,
       setProgress,
@@ -105,11 +116,12 @@ export function PartShell({
       addXp: (n) => setXp((x) => x + n),
       celebrate,
       finish,
+      backHref: back,
       done: alreadyDone,
       nextEpisodeHref: nextEpisode?.href ?? null,
       nextEpisodeN: nextEpisode?.n ?? null,
     }),
-    [t, partKey, episodeN, celebrate, finish, alreadyDone, nextEpisode],
+    [t, userId, partKey, episodeN, celebrate, finish, back, alreadyDone, nextEpisode],
   );
 
   const ink = light ? "text-[#2B1A05]" : "text-white";
