@@ -10,8 +10,8 @@ Items that need a decision from Matt or Cowork. Batch 3 (2026-10-18).
 - **Share image copy.** Each image uses the page's SEO title without the program prefix, plus one short line I wrote from the page description (for example "32 episodios con tarjetas, libro interactivo, audio y quiz. Desde $99 USD."). The prices on the images are fixed text, not read from `products`. They need updating by hand if a price changes. Cowork may want to review the lines.
 - **`/privacidad`, `/terminos` and `/ayuda`** keep the static `/og/celsu.png`. The spec didn't list them.
 - **Evaluation function not redeployed.** `logFunctionError` is wired into `checkout`, `stripe-webhook`, `send-email`, `ai-tools` and `delete-account`, and all five were redeployed. `evaluation` (56 KB of item bank) was left as deployed, so its failures still only go to the function logs. Wire it the next time that function is redeployed for another reason.
-- **Retention.** Nothing deletes old rows from `client_errors` and `function_errors` yet. The admin page shows 7 days. Suggestion: a daily `pg_cron` delete of rows older than 30 days. Decide whether to add it.
-- **Personal data in errors.** `client_errors` stores the route, the stack trace and the browser's user agent, and links the user id (set to null when the account is deleted). Consider mentioning error logs in the privacy notice.
+- **Retention: decided.** Error logs are kept 90 days (Matt, 2026-10-18). `private.purge_error_logs()` runs nightly from pg_cron (`supabase/manual/cron_jobs.sql`, run once in the SQL editor). `/privacidad` §2 now says so ("Registros de errores").
+- **Personal data in errors: done.** The privacy notice (§2, "Registros de errores") now lists what an error log keeps and the 90-day deletion.
 
 ## Database hardening (batch 3 §1)
 
