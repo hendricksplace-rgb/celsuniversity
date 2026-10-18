@@ -1,3 +1,4 @@
+import { studentLessons } from "@/lib/course-page";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -26,10 +27,11 @@ export default async function LessonPage({ params }: Props) {
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
 
-  const [{ visible, signed, kinds, partIds, readers, progress }, { data: siblings }] = await Promise.all([
+  const [{ visible, signed, kinds, partIds, readers, progress }, { data: allSiblings }] = await Promise.all([
     loadLessonContent(supabase, viewer, lesson.id, course.id, access),
-    supabase.from("lessons").select("id, title").eq("module_id", lessonModule.id).order("sort_order"),
+    supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).order("sort_order"),
   ]);
+  const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings ?? []);
   const backHref = await moduleHref(supabase, course, lessonModule.id);
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);

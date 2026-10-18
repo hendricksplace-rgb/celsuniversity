@@ -3,6 +3,7 @@
 // Shared by the home, the CelsGLOBAL route and Mis cursos.
 import type { Client } from "@/lib/supabase/types";
 import { themeForCourse, type ThemeKey } from "@/lib/themes";
+import { studentLessons } from "@/lib/course-page";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -75,7 +76,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     supabase.from("courses").select("id, slug, title, description, cover_art_url, sort_order").in("id", courseIds),
     supabase
       .from("modules")
-      .select("id, course_id, title, sort_order, lessons(id, title, sort_order, status, teacher_only)")
+      .select("id, course_id, title, sort_order, lessons(id, title, sort_order, status, teacher_only, has_content)")
       .in("course_id", courseIds)
       .eq("status", "published")
       .order("sort_order"),
@@ -93,7 +94,8 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     let xp = 0;
     let last: CourseStats["last"] = null;
     for (const m of mods) {
-      const ls = (m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order);
+      const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order));
+      if (!ls.length) continue;
       let done = 0;
       for (const l of ls) {
         const p = prog.get(l.id);

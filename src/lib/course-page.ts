@@ -30,6 +30,15 @@ export function partKeyOf(l: { title: string; lesson_type: string | null }): Par
   return ({ video: "celsvideo", flashcard: "celscards", audio: "celsaudio", grammar: "grammar", quiz: "quiz" } as Record<string, PartKey>)[l.lesson_type ?? ""] ?? null;
 }
 
+/**
+ * What a student sees of a module's lessons: only lessons with content. A CelsVideo whose video isn't up
+ * yet stays when the episode has other parts, so the 6-part path holds; a module with nothing shows nothing.
+ */
+export function studentLessons<L extends { title: string; has_content: boolean }>(lessons: L[]): L[] {
+  if (!lessons.some((l) => l.has_content)) return [];
+  return lessons.filter((l) => l.has_content || l.title.toLowerCase().includes("celsvideo"));
+}
+
 export type Layout = "episodes" | "weeks" | "citizenship";
 export const layoutOf = (theme: ThemeKey, courseLayout: string | null): Layout =>
   courseLayout === "citizenship_modules" ? "citizenship" : theme === "celstv" && courseLayout === "standard" ? "episodes" : "weeks";
@@ -118,13 +127,16 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
   const layout = layoutOf(theme, course.layout);
   const { data: modules } = await supabase
     .from("modules")
-    .select("id, title, description, artwork_url, kind, sort_order, lessons(id, title, lesson_type, teacher_only, status, sort_order, xp_reward)")
+    .select("id, title, description, artwork_url, kind, sort_order, lessons(id, title, lesson_type, teacher_only, status, sort_order, xp_reward, has_content)")
     .eq("course_id", course.id)
     .order("sort_order")
     .order("sort_order", { referencedTable: "lessons" });
 
-  // Never the Teachersbook (or any teacher-only lesson) on these screens; drafts only for staff.
-  const visible = (m: NonNullable<typeof modules>[number]) => (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff));
+  // Never the Teachersbook (or any teacher-only lesson) on these screens; drafts and empty lessons only for staff.
+  const visible = (m: NonNullable<typeof modules>[number]) => {
+    const ls = (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff));
+    return isStaff ? ls : studentLessons(ls);
+  };
   const lessonIds = (modules ?? []).flatMap((m) => visible(m).map((l) => l.id));
   const { data: rows } = lessonIds.length
     ? await supabase.from("progress").select("lesson_id, status, xp_earned, last_activity").eq("user_id", userId).in("lesson_id", lessonIds)
@@ -172,12 +184,15 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       href: layout === "weeks" && parts.length === 0 ? "#" : episodePath(course.slug ?? slug, n),
     };
   });
+  // Episodes keep their number; students don't see the ones with nothing in them yet.
+  if (!isStaff) episodes.splice(0, episodes.length, ...episodes.filter((e) => e.parts.length > 0 || e.extra.length > 0));
   const extras = (modules ?? [])
     .filter((m) => m.kind === "resources" || m.kind === "evaluation")
     .map((m): Extra => {
       const parts = toParts(m, 0);
       return { id: m.id, kind: m.kind as Extra["kind"], title: m.title, parts, href: parts[0]?.href ?? "#" };
-    });
+    })
+    .filter((x) => isStaff || x.parts.length > 0);
 
   // Resume: the most recently touched part; if it's done, the next part not done in that episode,
   // then the next episode with something left.
@@ -191,7 +206,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       const after = e.parts.slice(e.parts.indexOf(p) + 1).find((q) => !q.done) ?? e.parts.find((q) => !q.done);
       if (after) resume = { episode: e, part: after, fresh: false };
       else {
-        const nextEp = episodes.slice(e.n).find((x) => x.state !== "done") ?? episodes.find((x) => x.state !== "done");
+        const nextEp = episodes.find((x) => x.n > e.n && x.state !== "done") ?? episodes.find((x) => x.state !== "done");
         if (nextEp?.next) resume = { episode: nextEp, part: nextEp.next, fresh: false };
       }
     }

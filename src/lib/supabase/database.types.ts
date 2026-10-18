@@ -893,6 +893,7 @@ export type Database = {
         Row: {
           accent_color: string | null
           created_at: string
+          has_content: boolean
           icon: string | null
           id: string
           legacy_id: string | null
@@ -908,6 +909,7 @@ export type Database = {
         Insert: {
           accent_color?: string | null
           created_at?: string
+          has_content?: boolean
           icon?: string | null
           id?: string
           legacy_id?: string | null
@@ -923,6 +925,7 @@ export type Database = {
         Update: {
           accent_color?: string | null
           created_at?: string
+          has_content?: boolean
           icon?: string | null
           id?: string
           legacy_id?: string | null

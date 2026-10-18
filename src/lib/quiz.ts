@@ -2,11 +2,14 @@
 // as they are; two sentence answers become "build the sentence" and "remove the extra word", and four
 // of the episode's CelsCards become "match the pairs". Same order for everyone on the same episode.
 
+/** Amy's recording of the question, with the start time (s) of each word for the highlight. */
+export type Voice = { url: string; wt: number[] } | null;
+
 export type QuizQ =
-  | { kind: "picture"; prompt: string; options: { img: string | null; alt: string }[]; answer: number }
-  | { kind: "listen"; prompt: string; audio: string | null; options: string[]; answer: number }
-  | { kind: "choose"; prompt: string; options: string[]; answer: number }
-  | { kind: "build"; prompt: string; tiles: string[]; answer: string[] }
+  | { kind: "picture"; prompt: string; voice?: Voice; options: { img: string | null; alt: string }[]; answer: number }
+  | { kind: "listen"; prompt: string; voice?: Voice; audio: string | null; options: string[]; answer: number }
+  | { kind: "choose"; prompt: string; voice?: Voice; options: string[]; answer: number }
+  | { kind: "build"; prompt: string; voice?: Voice; tiles: string[]; answer: string[] }
   | { kind: "extra"; prompt: string; tiles: string[]; extra: number }
   | { kind: "match"; pairs: { es: string; en: string }[]; right: string[] };
 
@@ -39,13 +42,15 @@ export function buildQuiz(settings: unknown, cards: { front: string; back: strin
     const prompt = str(q.question);
     const answer = Number(q.correctAnswer ?? 0);
     const options = arr(q.options).map(str);
+    const url = q.question_audio ? resolve(q.question_audio) : null;
+    const voice: Voice = url ? { url, wt: arr(q.question_wt).map(Number) } : null;
     if (q.type === "select-image") {
       const imgs = arr(q.images) as Raw[];
-      if (imgs.length) out.push({ kind: "picture", prompt, options: imgs.map((m) => ({ img: resolve(m.url), alt: str(m.alt) })), answer });
+      if (imgs.length) out.push({ kind: "picture", prompt, voice, options: imgs.map((m) => ({ img: resolve(m.url), alt: str(m.alt) })), answer });
       return;
     }
     if (q.type === "listen-and-select") {
-      out.push({ kind: "listen", prompt: prompt || "What did you hear?", audio: resolve(q.audioUrl), options, answer });
+      out.push({ kind: "listen", prompt: prompt || "What did you hear?", voice: prompt ? voice : null, audio: resolve(q.audioUrl), options, answer });
       return;
     }
     if (q.type !== "select-text" || !options.length) return;
@@ -53,7 +58,7 @@ export function buildQuiz(settings: unknown, cards: { front: string; back: strin
     if (!built && isSentence(right)) {
       built = true;
       const words = sentenceWords(right);
-      out.push({ kind: "build", prompt, tiles: shuffle(words, `${seed}:b${i}`), answer: words });
+      out.push({ kind: "build", prompt, voice, tiles: shuffle(words, `${seed}:b${i}`), answer: words });
       return;
     }
     if (built && !extra && isSentence(right)) {
@@ -72,7 +77,7 @@ export function buildQuiz(settings: unknown, cards: { front: string; back: strin
         return;
       }
     }
-    out.push({ kind: "choose", prompt, options, answer });
+    out.push({ kind: "choose", prompt, voice, options, answer });
   });
 
   const pool = cards.filter((c) => c.front && c.back && c.front.toLowerCase() !== c.back.toLowerCase());

@@ -43,6 +43,16 @@ export function youtubeEmbed(url: string | null) {
   return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?enablejsapi=1` : null;
 }
 
+/**
+ * Media still on Wistia plays straight from its delivery link until it moves (videos may live outside;
+ * see README). Storage refs resolve through the signed map.
+ */
+export function directMedia(url: string | null, signed: SignedRefs) {
+  if (!url) return null;
+  if (/^https:\/\/embed-ssl\.wistia\.com\/deliveries\//.test(url)) return url;
+  return url.startsWith("storage://") ? (signed.get(url) ?? null) : null;
+}
+
 function withDownload(url: string, name: string) {
   return `${url}${url.includes("?") ? "&" : "?"}download=${encodeURIComponent(name)}`;
 }
@@ -131,6 +141,13 @@ export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, rea
     const yt = youtubeEmbed(media);
     if (yt) return <YouTube src={yt} title={block.title} />;
     const poster = str(block.data.thumbnail_url);
+    const file = directMedia(media, signed);
+    if (file)
+      return (
+        <BlockCard title={block.title}>
+          <video controls playsInline preload="metadata" src={file} poster={poster ? signed.get(poster) : undefined} className="aspect-video w-full rounded-[var(--t-radius)] bg-black" />
+        </BlockCard>
+      );
     return (
       <BlockCard title={block.title}>
         <Placeholder icon="🎬" text={t.videoSoon} poster={poster ? signed.get(poster) : undefined} />
@@ -150,7 +167,7 @@ export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, rea
   }
 
   if (type === "audio") {
-    const url = media ? signed.get(media) : undefined;
+    const url = directMedia(media, signed);
     return (
       <BlockCard title={block.title}>
         {url ? (

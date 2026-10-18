@@ -1,13 +1,14 @@
 "use client";
 
-// Quiz (board "App — Episodio v2", phone 3): intro, then the questions in 5 formats. Amy (the device's
-// English voice) reads each question with the word being read highlighted; options drop in one by one
+// Quiz (board "App — Episodio v2", phone 3): intro, then the questions in 5 formats. Amy reads each
+// question with the word being read highlighted (her recording and word timings when the question has
+// them, else the device's English voice); options drop in one by one
 // with a "bing"; a right answer gets confetti, "¡Correcto!" and +10 XP. The end shows the score, the
 // streak, "Siguiente: Episodio N+1" and "Intentar de nuevo".
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { QuizQ } from "@/lib/quiz";
+import type { QuizQ, Voice } from "@/lib/quiz";
 import { PartIcon, fill } from "@/components/course/kit";
 import { usePartShell } from "./PartShell";
 import { reducedMotion, sfx } from "./fx";
@@ -15,9 +16,19 @@ import { reducedMotion, sfx } from "./fx";
 const XP_EACH = 10;
 
 /** Amy reads `text`; returns the index of the word being read (or -1). */
-function useReader(text: string) {
+function useReader(text: string, voice?: Voice) {
   const [word, setWord] = useState(-1);
+  const player = useRef<HTMLAudioElement | null>(null);
   const read = useCallback(() => {
+    if (voice) {
+      player.current?.pause();
+      const a = new Audio(voice.url);
+      player.current = a;
+      a.ontimeupdate = () => setWord(voice.wt.findLastIndex((s) => s <= a.currentTime + 0.05));
+      a.onended = () => setWord(-1);
+      void a.play().catch(() => setWord(-1));
+      return;
+    }
     if (!text || typeof window === "undefined" || !("speechSynthesis" in window)) return;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
@@ -27,13 +38,19 @@ function useReader(text: string) {
     u.onboundary = (e) => setWord(starts.findLastIndex((s) => s <= e.charIndex));
     u.onend = () => setWord(-1);
     speechSynthesis.speak(u);
-  }, [text]);
-  useEffect(() => () => void (typeof window !== "undefined" && "speechSynthesis" in window && speechSynthesis.cancel()), []);
+  }, [text, voice]);
+  useEffect(
+    () => () => {
+      player.current?.pause();
+      if (typeof window !== "undefined" && "speechSynthesis" in window) speechSynthesis.cancel();
+    },
+    [],
+  );
   return { word, read };
 }
 
-function Prompt({ text, label }: { text: string; label: string }) {
-  const { word, read } = useReader(text);
+function Prompt({ text, voice, label }: { text: string; voice?: Voice; label: string }) {
+  const { word, read } = useReader(text, voice);
   useEffect(() => {
     const t = setTimeout(read, 250);
     return () => clearTimeout(t);
@@ -408,7 +425,7 @@ export function QuizPart({ questions }: { questions: QuizQ[] }) {
       <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#FF7AB8]">
         {step + 1}/{questions.length} · {label}
       </p>
-      {"prompt" in q && <Prompt key={`p${round}:${step}`} text={q.prompt} label={t.readQ} />}
+      {"prompt" in q && <Prompt key={`p${round}:${step}`} text={q.prompt} voice={"voice" in q ? q.voice : null} label={t.readQ} />}
       <div key={`${round}:${step}`}>
         {q.kind === "build" ? (
           <Build q={q} onAnswer={onAnswer} />

@@ -85,7 +85,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
         title={us.topic || fill(t.us.kicker, { n: episode.n })}
         sub={t.us.sub}
         courseHref={courseHref}
-        nextHref={page.episodes.find((e) => e.n === episode.n + 1)?.href ?? null}
+        nextHref={page.episodes.find((e) => e.n > episode.n)?.href ?? null}
         examHref="/app/examen-civico"
         extras={us.extras}
         subs={us.subs}
@@ -112,7 +112,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
       episode={episode}
       courseHref={courseHref}
       program={`CelsTV · ${t.course.season}`}
-      nextEpisode={page.episodes.find((e) => e.n === episode.n + 1) ?? null}
+      nextEpisode={page.episodes.find((e) => e.n > episode.n) ?? null}
       justDone={hecho ?? null}
       download={{ userId: viewer.user.id, key, pages: [key, ...episode.parts.filter((p) => p.key !== "celsvideo").map((p) => p.href)] }}
       teacherGuide={guide ? `/app/lecciones/${guide.id}` : null}

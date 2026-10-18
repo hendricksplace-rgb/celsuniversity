@@ -5,7 +5,7 @@ import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { PART_KEYS, episodePath, loadCoursePage, type PartKey } from "@/lib/course-page";
 import { loadLessonContent } from "@/lib/lesson-content";
-import { LessonBlock, settingsOf, urlsFor, youtubeEmbed } from "@/components/lesson/LessonBlock";
+import { LessonBlock, directMedia, settingsOf, urlsFor, youtubeEmbed } from "@/components/lesson/LessonBlock";
 import { PartShell, Empty, FinishButton } from "@/components/part/PartShell";
 import { VideoPart } from "@/components/part/VideoPart";
 import { fill } from "@/components/course/kit";
@@ -160,18 +160,19 @@ export default async function PartPage({ params, searchParams }: Props) {
 
   const content = await loadLessonContent(supabase, viewer, part.id, page.course.id, true);
   const blocks = content.visible.filter((b) => !b.teacher_only);
-  const next = page.episodes.find((e) => e.n === episode.n + 1);
+  const next = page.episodes.find((e) => e.n > episode.n);
   const finishLabel = fill(t.part.finish, { part: part.name });
 
   let body: React.ReactNode;
   if (key === "celsvideo") {
     const b = blocks.find((x) => x.block_type === "video" || x.block_type === "embed");
     const raw = b ? (b.block_type === "video" ? (b.data.media_url as string | null) : ((settingsOf(b).src as string | undefined) ?? b.body)) : null;
-    body = <VideoPart src={youtubeEmbed(raw ?? null)} title={`${part.name} · ${episode.title}`} finishLabel={finishLabel} />;
+    body = <VideoPart src={youtubeEmbed(raw ?? null)} file={directMedia(raw ?? null, content.signed)} title={`${part.name} · ${episode.title}`} finishLabel={finishLabel} />;
   } else if (key === "celscards" && blocks.some((b) => b.block_type === "flashcard")) {
     body = <CardsPart cards={toCards(blocks, (r) => content.signed.get(r) ?? null)} />;
-  } else if (key === "quiz" && blocks.some((b) => b.block_type === "celstv_quiz")) {
-    const quiz = blocks.find((b) => b.block_type === "celstv_quiz")!;
+  } else if (key === "quiz" && blocks.some(isEpisodeQuiz)) {
+    // celstv_quiz, or a plain quiz block carrying the same questions (the episode 8 review).
+    const quiz = blocks.find(isEpisodeQuiz)!;
     const cardsPart = episode.parts.find((p) => p.key === "celscards");
     const { data: cardBlocks } = cardsPart
       ? await supabase.from("content_blocks").select("data").eq("lesson_id", cardsPart.id).eq("block_type", "flashcard")
@@ -278,4 +279,10 @@ export default async function PartPage({ params, searchParams }: Props) {
       {body}
     </PartShell>
   );
+}
+
+function isEpisodeQuiz(b: { block_type: string; data: Record<string, unknown> }) {
+  if (b.block_type === "celstv_quiz") return true;
+  const qs = (settingsOf(b as Parameters<typeof settingsOf>[0]).questions ?? null) as unknown;
+  return b.block_type === "quiz" && Array.isArray(qs) && qs.length > 0;
 }
