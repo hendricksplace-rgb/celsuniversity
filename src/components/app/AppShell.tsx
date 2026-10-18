@@ -58,9 +58,14 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   </Link>
                 ) : (
                   viewer.isStaff && (
-                    <Link href="/app/admin/libros" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
-                      {t.admin.booksTitle}
-                    </Link>
+                    <>
+                      <Link href="/app/admin/libros" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                        {t.admin.booksTitle}
+                      </Link>
+                      <Link href="/app/admin/entregas" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                        {t.bsns.queueTitle}
+                      </Link>
+                    </>
                   )
                 )}
                 <Link href="/ayuda" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">

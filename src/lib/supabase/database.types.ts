@@ -20,7 +20,7 @@ export type Database = {
         Row: { id: string; user_id: string; lesson_id: string; body: string; media_path: string | null; status: string; coach_feedback: string | null; reviewed_by: string | null; reviewed_at: string | null; submitted_at: string | null; created_at: string; updated_at: string };
         Insert: { id?: string; user_id?: string; lesson_id: string; body?: string; media_path?: string | null; status?: string; coach_feedback?: string | null; reviewed_by?: string | null; reviewed_at?: string | null; submitted_at?: string | null; created_at?: string; updated_at?: string };
         Update: { id?: string; user_id?: string; lesson_id?: string; body?: string; media_path?: string | null; status?: string; coach_feedback?: string | null; reviewed_by?: string | null; reviewed_at?: string | null; submitted_at?: string | null; created_at?: string; updated_at?: string };
-        Relationships: [];
+        Relationships: [{ foreignKeyName: "submissions_lesson_id_fkey"; columns: ["lesson_id"]; isOneToOne: false; referencedRelation: "lessons"; referencedColumns: ["id"] }];
       };
       interview_answers: {
         Row: { id: string; session_id: string; user_id: string; question_key: string; audio_path: string | null; transcript: string | null; duration_s: number | null; feedback: Json | null; score: number | null; created_at: string };

@@ -117,7 +117,11 @@ export function splitCelsus(parts: Part[]) {
 
 export const episodePath = (slug: string, n: number) => `/app/cursos/${slug}/episodio/${n}`;
 
-function partHref(slug: string, n: number, layout: Layout, l: { id: string }, key: PartKey | null) {
+// CelsBSNS: a week's tasks open the task screen; its videos stay on the lesson page.
+const bsnsWeek = (slug: string, n: number) => `/app/cursos/${slug}/semana/${n}`;
+
+function partHref(slug: string, n: number, layout: Layout, l: { id: string; lesson_type: string | null }, key: PartKey | null, bsns: boolean) {
+  if (bsns && n > 0 && l.lesson_type !== "video") return `${bsnsWeek(slug, n)}/tarea/${l.id}`;
   return layout === "episodes" && key ? `${episodePath(slug, n)}/${key}` : `/app/lecciones/${l.id}`;
 }
 
@@ -158,7 +162,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
         xpReward: l.xp_reward ?? 0,
         xpEarned: p?.xp_earned ?? 0,
         lastActivity: p?.last_activity ?? null,
-        href: partHref(course.slug ?? slug, n, layout, l, key),
+        href: partHref(course.slug ?? slug, n, layout, l, key, theme === "celsbsns"),
       };
     });
 
@@ -181,7 +185,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       done,
       state,
       next: parts.find((p) => !p.done) ?? parts[0] ?? null,
-      href: layout === "weeks" && parts.length === 0 ? "#" : episodePath(course.slug ?? slug, n),
+      href: theme === "celsbsns" ? bsnsWeek(course.slug ?? slug, n) : layout === "weeks" && parts.length === 0 ? "#" : episodePath(course.slug ?? slug, n),
     };
   });
   // Episodes keep their number; students don't see the ones with nothing in them yet.
