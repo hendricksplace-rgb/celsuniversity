@@ -18,6 +18,7 @@ type Props = {
   signed: SignedRefs;
   t: Dictionary["lesson"];
   activityT: Dictionary["activity"];
+  civicsT: Dictionary["civics"];
   isStaff: boolean;
   /** original PDF ref → slug of its interactive e-book, when the viewer can read one */
   readers?: Record<string, string>;
@@ -55,7 +56,7 @@ function urlsFor(value: unknown, signed: SignedRefs) {
   return out;
 }
 
-export function LessonBlock({ block, signed, t, activityT, isStaff, readers, readLabel }: Props) {
+export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, readers, readLabel }: Props) {
   const type = block.block_type;
   const media = str(block.data.media_url);
   const settings = settingsOf(block);
@@ -156,6 +157,25 @@ export function LessonBlock({ block, signed, t, activityT, isStaff, readers, rea
     return (
       <BlockCard title={block.title}>
         {media ? <FileLink refUrl={media} signed={signed} t={t} /> : <Placeholder icon="📄" text={t.unavailable} />}
+      </BlockCard>
+    );
+  }
+
+  // CelsUS 2025 civics exams: the exam itself runs on its own page.
+  if (type === "evaluation") {
+    const evaluationId = str(block.data.evaluation_id);
+    if (!evaluationId || !/^[0-9a-f-]{36}$/i.test(evaluationId)) return null;
+    return (
+      <BlockCard title={block.title ?? civicsT.title}>
+        <p className="t-muted text-sm">{civicsT.sub}</p>
+        <div className="flex flex-wrap gap-2">
+          <Link href={`/app/examen-civico/${evaluationId}`} className="t-btn">
+            {civicsT.blockCta} →
+          </Link>
+          <Link href="/app/examen-civico" className="t-btn-ghost">
+            {civicsT.allExams}
+          </Link>
+        </div>
       </BlockCard>
     );
   }

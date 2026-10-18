@@ -68,7 +68,6 @@ public/sw.js               service worker: serves downloaded e-books offline unt
   middleware.ts            refreshes the session; guards /app
 supabase/migrations/       schema history, recreated from the live database
 scripts/migrate-base44/    one-off Base44 → Supabase data + file migration
-scripts/narration/         ElevenLabs narration + English pronunciation for the e-books
 ```
 
 ## Auth
@@ -97,6 +96,10 @@ Google sign-in also needs the Google provider turned on under Authentication →
 | 20261017235906 | staging_ebook_text | `public.ebook_source_text`: temporary extracted text of the designrr PDFs for the CelsBook redesign |
 | 20261018001216 | ebooks_reader_content | `public.ebooks`: interactive e-book content (from Cowork) |
 | 20261018003317 | ebook_answers | `public.ebook_answers`: each student's own answers in an e-book. **Owner-only**: no staff or admin read |
+| 20261018020242 | evaluations_archive_and_version | `evaluations.archived` + `test_version`; archives the three 2008-bank exams (Cowork) |
+| 20261018021938 | audio_jobs_queue | `audio_jobs` queue and `job_tokens`, service role only (Cowork) |
+| 20261018022042 | apply_audio_jobs_fn | `private.apply_audio_jobs()`: writes generated audio into exam questions and e-book narration (Cowork) |
+| 20261018022948 | kick_audio_fn | `private.kick_audio()`: calls the `generate-audio` edge function (Cowork). **Differs from live in one value:** the anon key is replaced by a placeholder |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 
@@ -162,17 +165,20 @@ Activities are practice only: answers aren't saved yet (`progress` has `quiz_sco
 - `OfflineSync` (root layout) runs on load, on `online` and when the tab becomes visible. It calls `renew_offline_downloads(device)`, which resets the 7 days and deletes any book the student has lost access to. It also sends answers saved on the device while offline.
 - Signing out, or a different account on the same device, wipes the downloads on the next sync.
 
-#### Narration audio (ElevenLabs)
+#### Narration audio
 
-```bash
-npm run narration -- --dry-run     # what would be generated (characters ≈ credits)
-npm run narration                  # generate; re-runnable, skips anything with audio
-npm run narration -- --only <slug> # one book
-```
+Audio is generated in Supabase, not in this repo: the `audio_jobs` queue, the `generate-audio` edge function (ElevenLabs key in the function secret `ELEVENLABS_API_KEY`), `private.kick_audio()` to run it and `private.apply_audio_jobs()` to write `audio` + `wt` into `ebooks.screens[].narration` and `evaluation_questions.data.audio`. Paths are `storage://course-media/...` and go through the signed-URL helper like any other file.
 
-Spanish narration uses voice `OZxMHsGaBmV5pjMIDIn0` with `eleven_multilingual_v2` and the `/with-timestamps` endpoint. The script converts each MP3 to AAC `.m4a` with ffmpeg and uploads it to `course-media/<course_id>/ebooks/audio/<slug>-<screen>.m4a`. It then writes `narration.audio` and `narration.wt` back into the row. Before each write it re-reads the row, so concurrent edits survive; if the text changed in the meantime, it skips that item. The English side of glossary and phrases items gets the same treatment and needs `ELEVENLABS_EN_VOICE_ID`.
+### CelsUS 2025 civics exams
 
-Secrets: `ELEVENLABS_API_KEY` (and `SUPABASE_SECRET_KEY`) go in `.env.local` or the environment, never in git. The script needs `ffmpeg` with the `aac` encoder on PATH, and network access to `api.elevenlabs.io`.
+- **Where:** a lesson's `evaluation` block (`data.evaluation_id`) links to `/app/examen-civico/<id>`. `/app/examen-civico` is the start screen: the three exams with their rules and last result, progress by section, and a card linking the official pages for the 8 questions whose answers change.
+- **Which exams:** `evaluations` with `test_version = '2025'` and `archived = false`. English (mock interview) and Spanish: ask 20, pass 12. 65/20 (the 20 starred questions, large print): ask 10, pass 6. `evaluations` is readable by any signed-in user, so `src/lib/civics-server.ts` checks course access before sending questions or signing audio.
+- **Mock interview (English):** the officer plays `data.audio.q`; the question text is shown small and can be hidden. Answers by voice (Web Speech, `en-US`) count when they contain `answers_en` (parentheses optional) or `keywords_en`; `multi` questions need `data.need` different answers. "Ver opciones" shows `options_en` shuffled (pick exactly `need`). After each question: accepted answers with ▶ `audio.a_en`, and "Para entenderlo" (`explain_es` + `hint_es`).
+- **Spanish exam:** same rules, multiple choice with `options_es` shuffled, ▶ the Spanish question and "Escuchar en inglés".
+- **Stop rule:** as USCIS, the exam ends as soon as the result is decided (12 right, or 9 wrong; 6 / 5 for 65/20). The end screen is a gold seal when passed. Each attempt goes to `evaluation_attempts` (the student's own history).
+- **Study cards:** question in Spanish, ▶ "Escuchar en inglés" (`audio.q_en`), then the answer in ES + EN, the explanation and the hint, with "Lo sé / Repasar". Progress is per student, by question number, in `progress.flashcard_state` on every 2025 exam lesson (kept identical, so it is shared by the three exams).
+- **`check_online` questions** (8; answers depend on the state or the date) are never graded: they show as a link card (`data.link`, note).
+- Speech recognition works in Chrome, Edge and Safari; elsewhere the options are the way to answer.
 
 ### Program themes
 
