@@ -27,7 +27,7 @@ export default async function LessonPage({ params }: Props) {
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
 
-  const [{ visible, signed, kinds, partIds, readers, progress }, { data: allSiblings }] = await Promise.all([
+  const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: allSiblings }] = await Promise.all([
     loadLessonContent(supabase, viewer, lesson.id, course.id, access),
     supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).order("sort_order"),
   ]);
@@ -73,6 +73,8 @@ export default async function LessonPage({ params }: Props) {
                     isStaff={viewer.isStaff}
                     readers={readers}
                     readLabel={t.reader.interactive}
+                    books={books}
+                    answers={answers}
                   />
                 );
                 return kind === "none" ? (

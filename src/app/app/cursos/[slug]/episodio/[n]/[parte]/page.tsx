@@ -256,6 +256,8 @@ export default async function PartPage({ params, searchParams }: Props) {
             civicsT={t.civics}
             isStaff={viewer.isStaff}
             readers={content.readers}
+            books={content.books}
+            answers={content.answers}
             readLabel={t.reader.interactive}
           />
         ))}

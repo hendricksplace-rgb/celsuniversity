@@ -28,20 +28,23 @@ type Props = {
   /** storage:// ref → short-lived signed URL (narration audio, original PDF) */
   signed: Record<string, string>;
   resourceTitles: Record<string, string>;
+  /** Screen to open at (?screen=, from a lesson's e-book card); else where the student left off. */
+  startScreen?: string | null;
   t: Dictionary["reader"];
 };
 
 type SaveState = "idle" | "saving" | "saved" | "error" | "queued";
 
 // Steps: one per screen, then the quiz (if any), then the finish page.
-export function EbookReader({ ebook, userId, initial, moduleId, signed, resourceTitles, t }: Props) {
+export function EbookReader({ ebook, userId, initial, moduleId, signed, resourceTitles, startScreen, t }: Props) {
   const screens = ebook.screens;
   const hasQuiz = ebook.quiz.length > 0;
   const quizStep = screens.length;
   const doneStep = screens.length + (hasQuiz ? 1 : 0);
 
+  const asked = startScreen ? screens.findIndex((s) => s.id === startScreen) : -1;
   const startIndex = Math.max(0, screens.findIndex((s) => s.id === initial?.last_screen));
-  const [step, setStep] = useState(initial?.completed_at ? 0 : startIndex);
+  const [step, setStep] = useState(asked >= 0 ? asked : initial?.completed_at ? 0 : startIndex);
   const [answers, setAnswers] = useState<Answers>(initial?.answers ?? {});
   const [completedAt, setCompletedAt] = useState<string | null>(initial?.completed_at ?? null);
   const [save, setSave] = useState<SaveState>("idle");
@@ -71,13 +74,22 @@ export function EbookReader({ ebook, userId, initial, moduleId, signed, resource
     setAnswers((local.answers as Answers) ?? {});
     setCompletedAt(local.completed_at);
     const i = screens.findIndex((s) => s.id === local.last_screen);
-    if (i >= 0) setStep(i);
+    if (i >= 0 && asked < 0) setStep(i);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on mount
   }, []);
 
   // Offline state and this book's download.
   const [online, setOnline] = useState(true);
   const [offline, setOffline] = useState<{ state: "none" | "busy" | "ready" | "error"; until?: string }>({ state: "none" });
+  // Only known in the browser: decided after hydration so server and client render the same.
+  const [canOffline, setCanOffline] = useState(false);
+  const article = useRef<HTMLElement>(null);
+  useEffect(() => {
+    setCanOffline(offlineSupported());
+    // Opened at a screen from a lesson card: bring that screen into view (on phones the contents list is above it).
+    if (asked >= 0) article.current?.scrollIntoView({ block: "start" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, on mount
+  }, []);
   useEffect(() => {
     const update = () => setOnline(navigator.onLine);
     update();
@@ -185,7 +197,7 @@ export function EbookReader({ ebook, userId, initial, moduleId, signed, resource
                     : `${progress}%`}
           </p>
         </div>
-        {moduleId && offlineSupported() && (
+        {moduleId && canOffline && (
           <div className="space-y-2 border-t border-[var(--t-border)] pt-3 text-xs">
             {offline.state === "ready" ? (
               <>
@@ -208,7 +220,7 @@ export function EbookReader({ ebook, userId, initial, moduleId, signed, resource
         )}
       </nav>
 
-      <article className="min-w-0 space-y-6">
+      <article ref={article} className="min-w-0 scroll-mt-20 space-y-6">
         {screen && (
           <>
             <header className="space-y-1">

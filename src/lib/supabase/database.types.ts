@@ -28,6 +28,12 @@ export type Database = {
         Update: { id?: string; session_id?: string; user_id?: string; question_key?: string; audio_path?: string | null; transcript?: string | null; duration_s?: number | null; feedback?: Json | null; score?: number | null; created_at?: string };
         Relationships: [];
       };
+      lesson_answers: {
+        Row: { user_id: string; block_id: string; body: string; updated_at: string };
+        Insert: { user_id?: string; block_id: string; body?: string; updated_at?: string };
+        Update: { user_id?: string; block_id?: string; body?: string; updated_at?: string };
+        Relationships: [];
+      };
       audio_transcripts: {
         Row: { path: string; status: string; language: string | null; text: string | null; words: Json | null; error: string | null; created_at: string; done_at: string | null };
         Insert: { path: string; status?: string; language?: string | null; text?: string | null; words?: Json | null; error?: string | null; created_at?: string; done_at?: string | null };

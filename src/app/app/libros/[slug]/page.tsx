@@ -7,10 +7,11 @@ import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
 import type { Answers, Ebook } from "@/lib/ebook-format";
 import { EbookReader } from "@/components/reader/EbookReader";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ screen?: string }> };
 
-export default async function EbookPage({ params }: Props) {
+export default async function EbookPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const { screen } = await searchParams;
   const { t } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
@@ -89,6 +90,7 @@ export default async function EbookPage({ params }: Props) {
         moduleId={moduleId}
         signed={Object.fromEntries(signed)}
         resourceTitles={Object.fromEntries((related ?? []).map((r) => [r.slug, r.title]))}
+        startScreen={screen ?? null}
         t={t.reader}
       />
     </div>

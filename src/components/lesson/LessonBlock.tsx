@@ -3,6 +3,7 @@ import sanitizeHtml from "sanitize-html";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { collectStorageRefs, storageRefName, type SignedRefs } from "@/lib/storage";
 import { Activity } from "./activities/Activity";
+import { ResponseBox } from "./ResponseBox";
 
 export type Block = {
   id: string;
@@ -22,6 +23,10 @@ type Props = {
   isStaff: boolean;
   /** original PDF ref → slug of its interactive e-book, when the viewer can read one */
   readers?: Record<string, string>;
+  /** e-book slug → title, for the cards that open the interactive e-book (data.ebook_slug) */
+  books?: Record<string, string>;
+  /** block id → the viewer's saved "Tu respuesta" (data.response_field) */
+  answers?: Record<string, string>;
   readLabel?: string;
 };
 
@@ -75,6 +80,7 @@ export function partKind(block: Block, isStaff: boolean): "none" | "seen" | "vid
   const type = block.block_type;
   const settings = settingsOf(block);
   if (type === "teacher_guide" || block.teacher_only) return isStaff && type !== "teacher_guide" ? "seen" : "none";
+  if (block.data.response_field === true) return "activity";
   const ebook = str(block.data.ebook_pdf) ?? (type === "flipbook" ? str(settings.pdfUrl) : null);
   if (ebook) return type === "flipbook" && Array.isArray(settings.pages) && settings.pages.length > 0 ? "activity" : "seen";
   if (type === "video" || type === "embed") {
@@ -91,10 +97,37 @@ export function partKind(block: Block, isStaff: boolean): "none" | "seen" | "vid
   return !str(block.body) && !block.title ? "none" : "seen";
 }
 
-export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, readers, readLabel }: Props) {
+export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, readers, readLabel, books, answers }: Props) {
   const type = block.block_type;
   const media = str(block.data.media_url);
   const settings = settingsOf(block);
+
+  // A card that opens the interactive e-book at this lesson's screen (when the viewer can read it).
+  const bookSlug = str(block.data.ebook_slug);
+  if (bookSlug && books?.[bookSlug]) {
+    const screen = str(block.data.ebook_screen);
+    return (
+      <BlockCard title={block.title}>
+        <Link
+          href={`/app/libros/${bookSlug}${screen ? `?screen=${encodeURIComponent(screen)}` : ""}`}
+          className="group flex items-center gap-4 rounded-[var(--t-radius)] border border-[var(--t-border)] p-3 transition hover:border-[var(--t-accent)]"
+        >
+          <span
+            aria-hidden
+            className="grid h-[104px] w-[78px] shrink-0 place-items-center rounded-md p-2 text-center text-[11px] font-extrabold leading-tight text-white shadow-md"
+            style={{ background: "linear-gradient(160deg, var(--t-accent), #1B1830)" }}
+          >
+            {books[bookSlug]}
+          </span>
+          <span className="min-w-0 flex-1">
+            <strong className="t-heading block text-lg leading-snug">{books[bookSlug]}</strong>
+            {screen && <span className="t-muted block text-sm">{t.ebookAt}</span>}
+            <span className="t-btn mt-2 inline-flex">📖 {t.openEbook}</span>
+          </span>
+        </Link>
+      </BlockCard>
+    );
+  }
 
   if (type === "teacher_guide") {
     if (!isStaff) return null;
@@ -239,9 +272,19 @@ export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, rea
   }
 
   // text (and anything unknown): plain text with links; storage links become signed file links.
+  // Activities (data.response_field) add the student's answer box.
   if (!str(block.body) && !block.title) return null;
   return (
-    <BlockCard title={block.title}>{block.body && <Linkified text={block.body} signed={signed} t={t} />}</BlockCard>
+    <BlockCard title={block.title}>
+      {block.body && <Linkified text={block.body} signed={signed} t={t} />}
+      {block.data.response_field === true && (
+        <ResponseBox
+          blockId={block.id}
+          initial={answers?.[block.id] ?? ""}
+          t={{ answer: t.answer, placeholder: t.answerPlaceholder, saving: t.answerSaving, saved: t.answerSaved, error: t.answerError }}
+        />
+      )}
+    </BlockCard>
   );
 }
 
