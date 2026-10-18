@@ -355,3 +355,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .kit-confetti, .kit-drop, .kit-page, .kit-sweep { animation: none; }
 }
+
+/* Cuenta → Preferencias → Tamaño del texto: lessons and the e-book reader (both .t-panel). */
+[data-text="small"] .t-panel {
+  zoom: 0.92;
+}
+[data-text="large"] .t-panel {
+  zoom: 1.15;
+}

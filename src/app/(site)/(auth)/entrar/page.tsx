@@ -23,6 +23,11 @@ export default async function SignInPage({ searchParams }: Props) {
           <span>{t.auth.password}</span>
           <input className="field" type="password" name="password" autoComplete="current-password" required />
         </label>
+        <p className="text-right text-sm">
+          <Link href="/recuperar" className="font-semibold text-brand">
+            {t.cuenta.forgot}
+          </Link>
+        </p>
         <button className="btn-primary w-full">{t.auth.submitSignIn}</button>
       </form>
       <div className="text-center text-xs text-white/50">{t.auth.or}</div>

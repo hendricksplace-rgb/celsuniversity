@@ -328,6 +328,24 @@
         "privacidad_url",
         "puntos"
       ]
+    },
+    {
+      "id": "account-deleted",
+      "file": "app/account-deleted.html",
+      "program": "CelsU",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "trigger": "Cuenta → Eliminar mi cuenta (delete-account)",
+      "subject": "Tu cuenta fue eliminada",
+      "preheader": "Borramos tus datos como lo pediste.",
+      "variables": [
+        "ayuda_url",
+        "fecha",
+        "nombre",
+        "privacidad_url"
+      ]
     }
   ]
 }

@@ -1,8 +1,10 @@
 "use client";
 
 // Celebration effects for the part screens. CelsTV is the loud one: big confetti and sounds.
-// Nothing moves when the student prefers reduced motion.
+// Nothing moves when the student prefers reduced motion; no sounds or confetti when "Sonidos y
+// celebraciones" is off in Cuenta → Preferencias.
 import { useEffect, useState } from "react";
+import { clientPref } from "@/lib/prefs";
 
 let ctx: AudioContext | null = null;
 function audio() {
@@ -15,6 +17,7 @@ function audio() {
 }
 
 function tone(freq: number, at: number, dur: number, type: OscillatorType = "sine", gain = 0.07) {
+  if (!clientPref("sound")) return;
   const a = audio();
   if (!a) return;
   const o = a.createOscillator();
@@ -49,7 +52,7 @@ const COLORS = ["#F20174", "#FFEF05", "#43D6FE", "#7BE07A", "#A88BFF", "#FF8A5C"
 export function Confetti({ burst, big = true }: { burst: number; big?: boolean }) {
   const [pieces, setPieces] = useState<{ id: number; left: number; delay: number; dur: number; color: string; rot: number; w: number }[]>([]);
   useEffect(() => {
-    if (!burst || reducedMotion()) return;
+    if (!burst || reducedMotion() || !clientPref("sound")) return;
     const n = big ? 70 : 24;
     setPieces(
       Array.from({ length: n }, (_, i) => ({

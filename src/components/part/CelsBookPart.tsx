@@ -5,6 +5,7 @@
 // while it lights up; verb examples highlight word by word from `example_wt`. "ES" shows or hides all the
 // Spanish; "Léeme todo" reads every item on the page in order. Finishing the last page completes the part.
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { clientPref } from "@/lib/prefs";
 import { fill } from "@/components/course/kit";
 import { BookFrame } from "./BookPart";
 import { usePartShell } from "./PartShell";
@@ -82,6 +83,8 @@ const Speaker = ({ color }: { color: string }) => (
 export function CelsBookPart({ book, lessonId, finishLabel, originalHref }: { book: CelsBook; lessonId: string; finishLabel: string; originalHref: string | null }) {
   const { t } = usePartShell();
   const [es, setEs] = useState(false);
+  // "Mostrar traducción al español" (Cuenta → Preferencias) sets where the ES toggle starts.
+  useEffect(() => setEs(clientPref("es")), []);
   const player = usePlayer();
   const { on, play, stop, reading } = player;
 

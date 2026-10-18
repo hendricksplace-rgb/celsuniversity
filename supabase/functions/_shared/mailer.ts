@@ -81,11 +81,24 @@ export type SendInput = {
 };
 
 /**
+ * Marketing emails respect Cuenta → Preferencias when the address belongs to an account: the
+ * evaluation follow-ups (eval-d*) follow email_followups, anything else marketing email_promotions.
+ */
+async function optedOut(admin: SupabaseClient, template: string, to: string) {
+  const { data: profile } = await admin.from("profiles").select("id").ilike("email", to.trim()).limit(1).maybeSingle();
+  if (!profile) return false;
+  const { data: prefs } = await admin.from("user_preferences").select("email_followups, email_promotions").eq("user_id", profile.id).maybeSingle();
+  if (!prefs) return false;
+  return template.startsWith("eval-d") ? prefs.email_followups === false : prefs.email_promotions === false;
+}
+
+/**
+ * "optout": a marketing email the account turned off in Preferencias; nothing is sent.
  * "duplicate": already sent under this key. "failed": Resend refused it for good (e.g. a bad
  * address); it isn't retried. Temporary failures (network, 429, 5xx) throw and free the key, so
  * the next run tries again.
  */
-export async function sendTemplate(admin: SupabaseClient, input: SendInput): Promise<"sent" | "stubbed" | "duplicate" | "failed"> {
+export async function sendTemplate(admin: SupabaseClient, input: SendInput): Promise<"sent" | "stubbed" | "duplicate" | "failed" | "optout"> {
   const tpl = (await templates(admin)).get(input.template);
   if (!tpl) throw new Error(`unknown email template ${input.template}`);
 
@@ -93,9 +106,11 @@ export async function sendTemplate(admin: SupabaseClient, input: SendInput): Pro
   const headers: Record<string, string> = {};
   if (tpl.marketing) {
     if (!input.unsubscribeToken) throw new Error(`${input.template} is marketing: unsubscribe token required`);
+    if (await optedOut(admin, input.template, input.to)) return "optout";
     const t = encodeURIComponent(input.unsubscribeToken);
+    // "Darme de baja" works signed out (the lead's token); also turns the account's preferences off.
     vars.baja_url = `${siteUrl()}/desuscribir?t=${t}`;
-    vars.preferencias_url = vars.baja_url; // the only preference today is opting out
+    vars.preferencias_url = `${siteUrl()}/app/cuenta/preferencias`;
     // RFC 8058 one-click: mail apps POST "List-Unsubscribe=One-Click" here, no page involved.
     headers["List-Unsubscribe"] = `<${functionsUrl()}/send-email?unsubscribe=${t}>`;
     headers["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click";

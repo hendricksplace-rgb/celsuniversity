@@ -4,12 +4,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export type NavItem = { href: string; label: string; icon: "home" | "courses" | "progress" | "classes" };
+export type NavItem = { href: string; label: string; icon: "home" | "courses" | "progress" | "classes" | "account" };
 
 const ICONS: Record<NavItem["icon"], React.ReactNode> = {
   home: <path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5.5h-5V21H5a1 1 0 0 1-1-1z" />,
   courses: <path d="M5 4.5h5a2 2 0 0 1 2 2V20a2 2 0 0 0-2-2H5zM19 4.5h-5a2 2 0 0 0-2 2V20a2 2 0 0 1 2-2h5z" />,
   progress: <path d="M5 20V13M10 20V9M15 20v-5M20 20V5" />,
+  account: <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4.5 20a7.5 7.5 0 0 1 15 0" />,
   classes: <path d="M12 4 3 8.5l9 4.5 9-4.5zM7 10.6V15c0 1.4 2.2 3 5 3s5-1.6 5-3v-4.4" />,
 };
 

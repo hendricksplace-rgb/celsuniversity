@@ -9,6 +9,7 @@ import { getViewer, isAdminRole } from "@/lib/access";
 import { InstallButton } from "@/components/install/InstallApp";
 import { SignOutButton } from "@/components/SignOutButton";
 import { TabBar, TopNav, type NavItem } from "./AppNav";
+import { withDefaults } from "@/lib/prefs";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const { lang, t } = await getDictionary();
@@ -17,7 +18,12 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   if (!viewer) redirect("/entrar?next=/app");
 
   // Teachers see "Mis clases" when they teach a class; staff always do.
-  const { count } = await supabase.from("class_members").select("class_id", { count: "exact", head: true }).eq("user_id", viewer.user.id).eq("member_role", "teacher");
+  const [{ count }, { data: me }, { data: prefRow }] = await Promise.all([
+    supabase.from("class_members").select("class_id", { count: "exact", head: true }).eq("user_id", viewer.user.id).eq("member_role", "teacher"),
+    supabase.from("profiles").select("avatar_url").eq("id", viewer.user.id).maybeSingle(),
+    supabase.from("user_preferences").select("sound_effects, show_spanish, autoplay_audio, text_size").eq("user_id", viewer.user.id).maybeSingle(),
+  ]);
+  const prefs = withDefaults(prefRow);
   const teaches = viewer.isStaff || (count ?? 0) > 0;
   const items: NavItem[] = [
     { href: "/app", label: t.shell.home, icon: "home" },
@@ -28,7 +34,14 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const name = viewer.displayName || viewer.user.email || "";
 
   return (
-    <div className="min-h-screen bg-[#F7F5FA] text-[#1B1830]">
+    <div
+      className="min-h-screen bg-[#F7F5FA] text-[#1B1830]"
+      data-prefs=""
+      data-sound={prefs.sound_effects ? "on" : "off"}
+      data-es={prefs.show_spanish ? "on" : "off"}
+      data-autoplay={prefs.autoplay_audio ? "on" : "off"}
+      data-text={prefs.text_size}
+    >
       <header className="sticky top-0 z-30 border-b border-[#EFE6F2] bg-white/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5">
           <Link href="/app" className="flex items-center gap-1.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F5178C]">
@@ -43,12 +56,20 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             <details className="relative">
               <summary
                 aria-label={t.shell.account}
-                className="grid h-9 w-9 cursor-pointer list-none place-items-center rounded-full bg-gradient-to-br from-[#F5178C] to-[#35C3F0] text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C] [&::-webkit-details-marker]:hidden"
+                className="grid h-9 w-9 cursor-pointer list-none place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#F5178C] to-[#35C3F0] text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C] [&::-webkit-details-marker]:hidden"
               >
-                {name.trim().charAt(0).toUpperCase() || "?"}
+                {me?.avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- public avatar, 256 px
+                  <img src={me.avatar_url} alt="" width={36} height={36} className="h-full w-full object-cover" />
+                ) : (
+                  name.trim().charAt(0).toUpperCase() || "?"
+                )}
               </summary>
               <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#EFE6F2] bg-white p-2 text-sm shadow-xl">
                 <p className="truncate px-3 py-2 text-xs font-semibold text-[#6B6680]">{viewer.user.email}</p>
+                <Link href="/app/cuenta" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                  {t.cuenta.title}
+                </Link>
                 <Link href="/cursos" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
                   {t.shell.catalog}
                 </Link>
@@ -82,7 +103,8 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
       </header>
       <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">{children}</main>
-      <TabBar items={items} />
+      {/* Phones also get "Cuenta" as a tab; on larger screens it's in the avatar menu. */}
+      <TabBar items={[...items, { href: "/app/cuenta", label: t.cuenta.title, icon: "account" }]} />
     </div>
   );
 }

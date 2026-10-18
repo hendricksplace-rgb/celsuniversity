@@ -71,6 +71,20 @@ export async function signInWithGoogle(formData: FormData) {
   redirect(data.url);
 }
 
+/**
+ * "¿Olvidaste tu contraseña?": always the same answer, so it never reveals whether the email has an
+ * account. Called from the server so the PKCE verifier cookie lands in this browser; the link
+ * returns to /nueva-contrasena with a code.
+ */
+export async function requestPasswordReset(formData: FormData) {
+  const email = String(formData.get("email") ?? "").trim();
+  if (email) {
+    const supabase = await createClient();
+    await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${await siteUrl()}/nueva-contrasena` });
+  }
+  redirect("/recuperar?enviado=1");
+}
+
 export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();

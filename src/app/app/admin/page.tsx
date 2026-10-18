@@ -14,6 +14,7 @@ export default async function AdminHome() {
     { href: "/app/admin/equipo", title: "Equipo y roles", text: viewer.role === "super_admin" ? "Quién es administrador, profesor o estudiante. Tú cambias los roles." : "Quién es administrador, profesor o estudiante." },
     { href: "/app/admin/libros", title: "Libros", text: "Revisa y publica los libros interactivos." },
     { href: "/app/admin/salud", title: "Salud del contenido", text: "Lecciones vacías, videos en Wistia o faltantes, episodios sin imagen, quizzes sin audio, e-books sin publicar." },
+    { href: "/app/admin/bajas", title: "Solicitudes de eliminación", text: "Quién pidió borrar su cuenta y cuándo se completó (ARCO)." },
     { href: "/app/admin/entregas", title: "Entregas por revisar", text: "Las tareas de CelsBSNS que los estudiantes entregaron a su coach." },
     { href: "/app/clases", title: "Clases", text: "Las clases y sus tareas asignadas." },
   ];
