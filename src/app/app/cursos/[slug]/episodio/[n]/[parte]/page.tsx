@@ -13,6 +13,43 @@ import { CardsPart, type Card } from "@/components/part/CardsPart";
 import { QuizPart } from "@/components/part/QuizPart";
 import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
+import { CelsBookPart, type CelsBook, type BookSection } from "@/components/part/CelsBookPart";
+
+/** Interactive CelsBook (block `celsbook`, version 1) with signed audio. "Episode 6: Let's eat" → kicker + "Let's eat". */
+function toCelsBook(data: Record<string, unknown>, episode: { title: string; artwork: string | null }, sign: (ref: string) => string | null, kicker: string): CelsBook {
+  const str = (v: unknown) => (typeof v === "string" ? v : "");
+  const audio = (v: unknown) => (typeof v === "string" && v ? sign(v) : null);
+  const cover = (data.cover ?? {}) as Record<string, unknown>;
+  const sections = (Array.isArray(data.sections) ? (data.sections as Record<string, unknown>[]) : [])
+    .filter((sec) => ["words", "verbs", "phrases"].includes(str(sec.key)))
+    .map(
+      (sec): BookSection => ({
+        key: str(sec.key) as BookSection["key"],
+        title: str(sec.title),
+        titleEs: str(sec.title_es),
+        items: (Array.isArray(sec.items) ? (sec.items as Record<string, unknown>[]) : [])
+          .filter((it) => str(it.en))
+          .map((it) => ({
+            en: str(it.en),
+            es: str(it.es),
+            audio: audio(it.audio),
+            exEn: str(it.example_en) || undefined,
+            exEs: str(it.example_es) || undefined,
+            exAudio: audio(it.example_audio),
+            exWt: Array.isArray(it.example_wt) ? (it.example_wt as unknown[]).filter((x): x is number => typeof x === "number") : undefined,
+          })),
+      }),
+    )
+    .filter((sec) => sec.items.length);
+  return {
+    kicker,
+    title: str(cover.title_en).replace(/^Episode\s*\d+\s*:\s*/i, "") || episode.title,
+    subEn: str(cover.subtitle_en),
+    subEs: str(cover.subtitle_es),
+    image: episode.artwork,
+    sections,
+  };
+}
 import { AudioPart, type Chapter, type Cue } from "@/components/part/AudioPart";
 import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
 
@@ -61,10 +98,11 @@ function toCards(blocks: Block[], sign: (ref: string) => string | null): Card[] 
     }));
 }
 
-type Props = { params: Promise<{ slug: string; n: string; parte: string }> };
+type Props = { params: Promise<{ slug: string; n: string; parte: string }>; searchParams: Promise<{ original?: string }> };
 
-export default async function PartPage({ params }: Props) {
+export default async function PartPage({ params, searchParams }: Props) {
   const { slug, n, parte } = await params;
+  const { original } = await searchParams;
   if (!PART_KEYS.includes(parte as PartKey)) notFound();
   const key = parte as PartKey;
   const { t } = await getDictionary();
@@ -99,13 +137,27 @@ export default async function PartPage({ params }: Props) {
       : { data: [] as { data: unknown }[] };
     const cards = (cardBlocks ?? []).flatMap((b) => rawCards((b.data as Record<string, unknown>)?.settings));
     body = <QuizPart questions={buildQuiz(settingsOf(quiz), cards, (r) => (typeof r === "string" ? (content.signed.get(r) ?? null) : null), part.id)} />;
+  } else if (key === "celsbook" && original !== "1" && blocks.some((b) => b.block_type === "celsbook")) {
+    const partHref = `${episodePath(page.course.slug, episode.n)}/celsbook`;
+    const hasOriginal = blocks.some((b) => b.block_type === "flipbook" && Array.isArray(settingsOf(b).pages));
+    body = (
+      <CelsBookPart
+        book={toCelsBook(blocks.find((b) => b.block_type === "celsbook")!.data, episode, (r) => content.signed.get(r) ?? null, fill(t.part.bookKicker, { n: episode.n }))}
+        lessonId={part.id}
+        finishLabel={finishLabel}
+        originalHref={hasOriginal ? `${partHref}?original=1` : null}
+      />
+    );
   } else if (key === "celsbook" && blocks.some((b) => b.block_type === "flipbook" && Array.isArray(settingsOf(b).pages))) {
     const book = settingsOf(blocks.find((b) => b.block_type === "flipbook")!);
     const pages = (book.pages as { n?: number; url?: string }[])
       .slice()
       .sort((a, b) => Number(a.n) - Number(b.n))
       .map((pg) => ({ url: pg.url ? (content.signed.get(pg.url) ?? null) : null }));
-    body = <BookPart pages={pages} ratio={Number(book.aspectRatio) > 0 ? Number(book.aspectRatio) : 0.7} lessonId={part.id} finishLabel={finishLabel} />;
+    const interactive = blocks.some((b) => b.block_type === "celsbook") ? `${episodePath(page.course.slug, episode.n)}/celsbook` : undefined;
+    body = (
+      <BookPart pages={pages} ratio={Number(book.aspectRatio) > 0 ? Number(book.aspectRatio) : 0.7} lessonId={part.id} finishLabel={finishLabel} interactiveHref={interactive} />
+    );
   } else if (key === "celsaudio") {
     const b = blocks.find((x) => x.block_type === "audio");
     const media = typeof b?.data.media_url === "string" ? b.data.media_url : null;
