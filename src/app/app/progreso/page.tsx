@@ -4,11 +4,9 @@ import { getDictionary } from "@/lib/i18n/server";
 import { loadProgress } from "@/lib/progress-page";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const GOAL = 50;
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 const focus = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]";
 const card = "rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm sm:p-6";
-const MEDAL_COLORS = ["#F5178C", "#FF8A3D", "#35C3F0", "#6DC067", "#8E5CF0", "#E5484D", "#C7A24E", "#1FA39A"];
 
 export const metadata = { title: "Progreso · CelsU" };
 
@@ -19,14 +17,19 @@ export default async function Progreso() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const d = await loadProgress(supabase, user!.id); // the /app shell already sent signed-out visitors to /entrar
+  const [d, { data: prefs }] = await Promise.all([
+    loadProgress(supabase, user!.id), // the /app shell already sent signed-out visitors to /entrar
+    supabase.from("user_preferences").select("daily_goal_xp").eq("user_id", user!.id).maybeSingle(),
+  ]);
+  // Cuenta → Preferencias → Meta diaria de XP.
+  const GOAL = prefs?.daily_goal_xp ?? 50;
 
   const weekTotal = d.xpWeek.reduce((a, b) => a + b, 0);
   const max = Math.max(GOAL, ...d.xpWeek);
   const bestDay = weekTotal ? d.xpWeek.indexOf(Math.max(...d.xpWeek)) : -1;
   const levelIdx = d.level ? LEVELS.indexOf(d.level) : -1;
-  const medals = p.medalList;
-  const earnedCount = medals.filter((m) => d.earned.has(m.id)).length;
+  const medals = d.medals;
+  const earnedCount = medals.filter((m) => d.earned.has(m.code)).length;
   const locale = lang === "en" ? "en-US" : "es-MX";
 
   const tiles = [
@@ -166,23 +169,23 @@ export default async function Progreso() {
           <span className="text-sm font-extrabold text-[#6D28D9]">{fill(p.medalsCount, { n: earnedCount, total: medals.length })}</span>
         </div>
         <ul className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {medals.map((m, i) => {
-            const on = d.earned.has(m.id);
+          {medals.map((m) => {
+            const on = d.earned.has(m.code);
             return (
-              <li key={m.id} className="flex flex-col items-center text-center">
+              <li key={m.code} className="flex flex-col items-center text-center">
                 <span
                   className="grid h-16 w-16 place-items-center rounded-full text-2xl font-extrabold"
                   style={
                     on
-                      ? { background: MEDAL_COLORS[i], color: "#fff", boxShadow: `0 0 0 4px #fff, 0 0 0 6px ${MEDAL_COLORS[i]}` }
+                      ? { background: m.color, color: "#fff", boxShadow: `0 0 0 4px #fff, 0 0 0 6px ${m.color}` }
                       : { background: "#F1EDF5", color: "#8A86A0", boxShadow: "0 0 0 4px #fff, 0 0 0 6px #E4DEEA" }
                   }
                   aria-hidden
                 >
-                  {on ? "★" : "?"}
+                  {on ? "★" : "🔒"}
                 </span>
                 <b className="mt-3 text-sm font-extrabold">{m.name}</b>
-                <span className="text-xs font-semibold text-[#6B6680]">{m.req}</span>
+                <span className="text-xs font-semibold text-[#6B6680]">{m.requirement}</span>
                 <span className="sr-only">{on ? "✓" : ""}</span>
               </li>
             );

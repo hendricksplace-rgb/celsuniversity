@@ -1,7 +1,7 @@
 // Data for Progreso (/app/progreso): stats, XP per day this week, the English level and its history,
 // the CelsUS practice-exam panel and the medals.
 import type { Client } from "@/lib/supabase/types";
-import { accessibleCourses, courseStats, todayIndex, weekIndex } from "@/lib/learning";
+import { accessibleCourses, todayIndex, weekIndex } from "@/lib/learning";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
@@ -10,12 +10,11 @@ const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v
 const TOPIC_OF: Record<string, number> = { "American Government": 0, "American History": 1, "Symbols and Holidays": 2 };
 
 export async function loadProgress(supabase: Client, userId: string) {
-  const [{ data: profile }, { data: game }, { data: week }, { data: history }, { data: books }, access, { data: attempts }] = await Promise.all([
+  const [{ data: profile }, { data: game }, { data: week }, { data: history }, access, { data: attempts }] = await Promise.all([
     supabase.from("profiles").select("evaluation_level, evaluation_date").eq("id", userId).maybeSingle(),
     supabase.from("gamification").select("current_streak, longest_streak, total_xp, badges").eq("user_id", userId).maybeSingle(),
     supabase.from("progress").select("xp_earned, last_activity").eq("user_id", userId).gte("last_activity", new Date(Date.now() - 8 * 864e5).toISOString()),
     supabase.rpc("my_evaluation_history"),
-    supabase.from("ebook_answers").select("completed_at").eq("user_id", userId).not("completed_at", "is", null),
     accessibleCourses(supabase, userId),
     supabase
       .from("evaluation_attempts")
@@ -33,9 +32,7 @@ export async function loadProgress(supabase: Client, userId: string) {
   }
 
   // CelsUS panel: only for students who have the CelsUS course.
-  const { data: brandCourses } = await supabase.from("courses").select("id, slug").in("slug", ["celsus-para-ciudadania", "celstv-english-for-our-generation"]);
-  const celsus = brandCourses?.find((c) => c.slug === "celsus-para-ciudadania");
-  const celstvId = brandCourses?.find((c) => c.slug === "celstv-english-for-our-generation")?.id;
+  const { data: celsus } = await supabase.from("courses").select("id").eq("slug", "celsus-para-ciudadania").maybeSingle();
   const hasCelsus = !!celsus && access.ids.includes(celsus.id);
   const exams = (attempts ?? []).filter((a) => pick(a.evaluation)?.test_version === "2025" && a.total > 0);
   let civics: { best: { score: number; total: number } | null; topics: (number | null)[]; weakest: number | null } | null = null;
@@ -67,21 +64,11 @@ export async function loadProgress(supabase: Client, userId: string) {
     civics = { best, topics, weakest: scored.length ? scored.sort((x, y) => x[0] - y[0])[0][1] : null };
   }
 
-  // Medals: stored badges, plus the ones the data already proves.
-  const stored = new Set(
-    (Array.isArray(game?.badges) ? game.badges : []).map((b) => (typeof b === "string" ? b : typeof b === "object" && b && "id" in b ? String((b as { id: unknown }).id) : "")),
-  );
-  const levels = (history ?? []).map((h) => LEVELS.indexOf(h.level)).filter((i) => i >= 0);
-  const celstv = celstvId && access.ids.includes(celstvId) ? (await courseStats(supabase, userId, [celstvId])).get(celstvId) : undefined;
-  const longest = Math.max(game?.longest_streak ?? 0, game?.current_streak ?? 0);
-  const earned = new Set(stored);
-  if (celstv && celstv.done > 0) earned.add("primer-episodio");
-  if (longest >= 7) earned.add("racha-7");
-  if (longest >= 30) earned.add("racha-30");
-  if ((books ?? []).length >= 3) earned.add("lector");
-  if (levels.some((l, i) => i > 0 && l > Math.min(...levels.slice(0, i)))) earned.add("subiste-nivel");
-  if (exams.some((a) => a.total === 20 && a.score >= 18)) earned.add("ciudadano-listo");
-  if ((game?.total_xp ?? 0) >= 10000) earned.add("imparable");
+  // Medals: the catalog (public.badges) and what the student has earned (gamification.badges, awarded
+  // by private.award_badges; the shell's BadgeWatcher celebrates new ones).
+  const { data: catalog } = await supabase.from("badges").select("code, name, requirement, color").eq("active", true).order("sort_order");
+  const owned = game?.badges && typeof game.badges === "object" && !Array.isArray(game.badges) ? Object.keys(game.badges) : [];
+  const earned = new Set(owned);
 
   const retakeAt = profile?.evaluation_date ? new Date(profile.evaluation_date).getTime() + 30 * 864e5 : 0;
   return {
@@ -94,6 +81,7 @@ export async function loadProgress(supabase: Client, userId: string) {
     retakeDays: retakeAt > Date.now() ? Math.ceil((retakeAt - Date.now()) / 864e5) : 0,
     civics,
     earned,
+    medals: catalog ?? [],
   };
 }
 

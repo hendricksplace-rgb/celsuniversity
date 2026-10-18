@@ -131,6 +131,8 @@ const es = {
     newBook: "Nuevo",
   },
   progress: {
+    newMedal: "¡Nueva medalla!",
+    seeMedals: "Ver",
     title: "Progreso",
     streak: "Días de racha",
     xp: "XP total",
@@ -156,16 +158,6 @@ const es = {
     practice: "Practicar",
     medalsTitle: "Medallas",
     medalsCount: "{n} de {total}",
-    medalList: [
-      { id: "primer-episodio", name: "Primer episodio", req: "Termina tu primer episodio" },
-      { id: "racha-7", name: "Racha de 7", req: "7 días seguidos" },
-      { id: "poliglota", name: "Políglota", req: "500 palabras practicadas" },
-      { id: "lector", name: "Lector", req: "3 libros leídos" },
-      { id: "subiste-nivel", name: "Subiste de nivel", req: "Sube un nivel de inglés" },
-      { id: "racha-30", name: "Racha de 30", req: "30 días seguidos" },
-      { id: "ciudadano-listo", name: "Ciudadano listo", req: "18 de 20 en el examen de práctica" },
-      { id: "imparable", name: "Imparable", req: "10,000 XP" },
-    ],
   },
   classes: {
     title: "Mis clases",
@@ -1197,6 +1189,8 @@ const en: Dictionary = {
     newBook: "New",
   },
   progress: {
+    newMedal: "New medal!",
+    seeMedals: "See",
     title: "Progress",
     streak: "Day streak",
     xp: "Total XP",
@@ -1222,16 +1216,6 @@ const en: Dictionary = {
     practice: "Practice",
     medalsTitle: "Medals",
     medalsCount: "{n} of {total}",
-    medalList: [
-      { id: "primer-episodio", name: "First episode", req: "Finish your first episode" },
-      { id: "racha-7", name: "7-day streak", req: "7 days in a row" },
-      { id: "poliglota", name: "Polyglot", req: "500 words practiced" },
-      { id: "lector", name: "Reader", req: "3 books read" },
-      { id: "subiste-nivel", name: "Level up", req: "Move up an English level" },
-      { id: "racha-30", name: "30-day streak", req: "30 days in a row" },
-      { id: "ciudadano-listo", name: "Citizen ready", req: "18 of 20 on the practice test" },
-      { id: "imparable", name: "Unstoppable", req: "10,000 XP" },
-    ],
   },
   classes: {
     title: "My classes",

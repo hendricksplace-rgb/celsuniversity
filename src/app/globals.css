@@ -363,3 +363,14 @@ body {
 [data-text="large"] .t-panel {
   zoom: 1.15;
 }
+
+@keyframes cu-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

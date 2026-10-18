@@ -2160,6 +2160,10 @@ export type Database = {
           level: string
         }[]
       }
+      my_new_badges: {
+        Args: never
+        Returns: { code: string; name: string; color: string }[]
+      }
       my_resume_reviews: {
         Args: never
         Returns: {
