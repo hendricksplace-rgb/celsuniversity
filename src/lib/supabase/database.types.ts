@@ -1580,6 +1580,10 @@ export type Database = {
         Args: { p_finish?: boolean; p_lesson: string; p_part?: string }
         Returns: Json
       }
+      content_health: {
+        Args: never;
+        Returns: { course_id: string | null; course: string | null; course_sort: number | null; kind: string; lesson_id: string | null; module_n: number | null; title: string; detail: string | null; link: string }[];
+      };
       can_use_ai_tools: { Args: never; Returns: boolean };
       my_resume_reviews: {
         Args: never;

@@ -5,14 +5,14 @@ import { getDictionary } from "@/lib/i18n/server";
 import { getViewer, one } from "@/lib/access";
 import { setEbookStatus } from "./actions";
 
-type Props = { searchParams: Promise<{ status?: string; error?: string; ok?: string }> };
+type Props = { searchParams: Promise<{ status?: string; curso?: string; error?: string; ok?: string }> };
 
 const ADMIN_ROLES = ["super_admin", "director", "administrator"];
 
 type Screen = { narration?: { audio?: string | null } | null };
 
 export default async function BookReviewPage({ searchParams }: Props) {
-  const { status: filter, error, ok } = await searchParams;
+  const { status: filter, curso, error, ok } = await searchParams;
   const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
@@ -25,11 +25,19 @@ export default async function BookReviewPage({ searchParams }: Props) {
   // Staff can read every book (ebooks_read policy), whatever its status.
   let query = supabase
     .from("ebooks")
-    .select("id, slug, title, subtitle, program, status, review_notes, screens, quiz, updated_at, course:courses(title)")
+    .select("id, slug, title, subtitle, program, status, review_notes, screens, quiz, updated_at, course_id, course:courses(title)")
     .order("status")
     .order("title");
   if (filter && ["draft", "review", "published"].includes(filter)) query = query.eq("status", filter);
-  const { data: books } = await query;
+  if (curso) query = query.eq("course_id", curso);
+  const [{ data: books }, { data: withBooks }] = await Promise.all([query, supabase.from("ebooks").select("course:courses(id, title)")]);
+  const courseList = [...new Map((withBooks ?? []).map((b) => one(b.course)).filter((c) => !!c).map((c) => [c!.id, c!.title])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  const href = (s?: string, c?: string) => {
+    const q = new URLSearchParams();
+    if (s) q.set("status", s);
+    if (c) q.set("curso", c);
+    return `/app/admin/libros${q.size ? `?${q}` : ""}`;
+  };
 
   const label = (s: string) => (s === "published" ? t.admin.published : s === "review" ? t.admin.review : t.admin.draft);
   const fmt = new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", { dateStyle: "medium", timeStyle: "short" });
@@ -47,13 +55,26 @@ export default async function BookReviewPage({ searchParams }: Props) {
         {[undefined, "review", "published", "draft"].map((s) => (
           <Link
             key={s ?? "all"}
-            href={s ? `/app/admin/libros?status=${s}` : "/app/admin/libros"}
+            href={href(s, curso)}
             className={filter === s ? "btn-primary !py-1" : "btn-ghost !py-1"}
           >
             {s ? label(s) : t.admin.filterAll}
           </Link>
         ))}
       </nav>
+
+      {courseList.length > 1 && (
+        <nav className="flex flex-wrap gap-2 text-sm" aria-label="Curso">
+          <Link href={href(filter, undefined)} className={!curso ? "btn-primary !py-1" : "btn-ghost !py-1"}>
+            {t.admin.filterAll}
+          </Link>
+          {courseList.map(([id, title]) => (
+            <Link key={id} href={href(filter, id)} className={curso === id ? "btn-primary !py-1" : "btn-ghost !py-1"}>
+              {title}
+            </Link>
+          ))}
+        </nav>
+      )}
 
       <ul className="space-y-4">
         {(books ?? []).map((b) => {
