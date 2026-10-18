@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor: string | null
+          after: Json | null
+          at: string
+          before: Json | null
+          course_id: string | null
+          id: number
+          lesson_id: string | null
+          row_id: string | null
+          table_name: string
+          undone_at: string | null
+        }
+        Insert: {
+          action: string
+          actor?: string | null
+          after?: Json | null
+          at?: string
+          before?: Json | null
+          course_id?: string | null
+          id?: number
+          lesson_id?: string | null
+          row_id?: string | null
+          table_name: string
+          undone_at?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string | null
+          after?: Json | null
+          at?: string
+          before?: Json | null
+          course_id?: string | null
+          id?: number
+          lesson_id?: string | null
+          row_id?: string | null
+          table_name?: string
+          undone_at?: string | null
+        }
+        Relationships: []
+      }
       account_deletion_requests: {
         Row: {
           completed_at: string | null
@@ -153,6 +195,18 @@ export type Database = {
           rule?: Json
           sort_order?: number
         }
+        Relationships: []
+      }
+      client_errors: {
+        Row: { at: string; id: number; kind: string; message: string; route: string | null; session_id: string; stack: string | null; user_agent: string | null; user_id: string | null }
+        Insert: { at?: string; id?: never; kind?: string; message: string; route?: string | null; session_id: string; stack?: string | null; user_agent?: string | null; user_id?: string | null }
+        Update: { at?: string; id?: never; kind?: string; message?: string; route?: string | null; session_id?: string; stack?: string | null; user_agent?: string | null; user_id?: string | null }
+        Relationships: []
+      }
+      function_errors: {
+        Row: { at: string; function: string; id: number; message: string; status: number | null }
+        Insert: { at?: string; function: string; id?: never; message: string; status?: number | null }
+        Update: { at?: string; function?: string; id?: never; message?: string; status?: number | null }
         Relationships: []
       }
       class_assignments: {
@@ -2130,7 +2184,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_duplicate_module: { Args: { p_module: string }; Returns: string }
       can_use_ai_tools: { Args: never; Returns: boolean }
+      log_client_error: {
+        Args: { p_kind?: string; p_message: string; p_route: string; p_session_id: string; p_stack?: string; p_user_agent?: string }
+        Returns: boolean
+      }
       content_health: {
         Args: never
         Returns: {

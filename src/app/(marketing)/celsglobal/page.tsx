@@ -6,7 +6,7 @@ export const metadata = {
   title: "CelsGLOBAL · Tu carrera internacional en 6 meses",
   description: "Inglés de negocios, resume para EE.UU., práctica de entrevista con IA, finanzas personales y la Visa TN. 8 programas en una sola ruta por $499 USD o 5 pagos.",
   alternates: { canonical: "/celsglobal" },
-  openGraph: { title: "CelsGLOBAL · Tu carrera internacional en 6 meses", description: "Inglés de negocios, resume para EE.UU., práctica de entrevista con IA, finanzas personales y la Visa TN. 8 programas en una sola ruta por $499 USD o 5 pagos.", locale: "es_MX", type: "website", images: [{ url: "/og/celsglobal.png", width: 1200, height: 630 }] },
+  openGraph: { title: "CelsGLOBAL · Tu carrera internacional en 6 meses", description: "Inglés de negocios, resume para EE.UU., práctica de entrevista con IA, finanzas personales y la Visa TN. 8 programas en una sola ruta por $499 USD o 5 pagos.", locale: "es_MX", type: "website" },
 };
 
 /** CelsGLOBAL sales page (board CelsGLOBAL.dc.html). The student route is /app/programas/celsglobal. */

@@ -10,6 +10,7 @@
 // Deployed with verify_jwt = false (pg_net and mail apps don't send a user JWT).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { firstName, hasTemplate, mxn, sendTemplate, siteUrl } from "../_shared/mailer.ts";
+import { logFunctionError } from "../_shared/errors.ts";
 
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, {
   auth: { persistSession: false },
@@ -108,7 +109,7 @@ Deno.serve(async (req) => {
     }
     return json({ error: "body" }, 400);
   } catch (e) {
-    console.error("send-email", e instanceof Error ? e.message : e);
+    await logFunctionError("send-email", 500, e);
     return json({ error: "send failed" }, 500);
   }
 });

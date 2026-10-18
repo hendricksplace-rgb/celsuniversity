@@ -11,6 +11,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { esc, firstName, sendTemplate, siteUrl } from "../_shared/mailer.ts";
 import { evaluateResume, extractResumeText } from "./resume.ts";
 import { QUESTIONS, evaluateAnswer, summarize, transcribe, type Feedback } from "./interview.ts";
+import { logFunctionError } from "../_shared/errors.ts";
 
 const URL_ = Deno.env.get("SUPABASE_URL")!;
 const admin = createClient(URL_, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
@@ -117,7 +118,7 @@ async function notifyResumes() {
         });
         if (status === "sent" || status === "stubbed") sent++;
       } catch (e) {
-        console.error("resume-ready", r.id, e instanceof Error ? e.message : e);
+        await logFunctionError("ai-tools:resume-ready-email", null, e);
         continue; // temporary: the next run tries again
       }
     }
@@ -193,7 +194,7 @@ async function interviewFinish(userId: string, body: Record<string, unknown>) {
         preguntas_html: rows,
         boton_url: `${siteUrl()}/app/herramientas/entrevista`,
       },
-    }).catch((e) => console.error("interview-summary", e instanceof Error ? e.message : e));
+    }).catch((e) => logFunctionError("ai-tools:interview-summary", null, e));
   }
   return json({ summary });
 }
@@ -215,7 +216,7 @@ Deno.serve(async (req) => {
     if (body.action === "interview_finish") return await interviewFinish(user.id, body);
     return json({ error: "action" }, 400);
   } catch (e) {
-    console.error("ai-tools", body.action, e instanceof Error ? e.message : e);
+    await logFunctionError(`ai-tools:${body.action}`, 500, e);
     return json({ error: "failed" }, 500);
   }
 });

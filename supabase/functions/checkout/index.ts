@@ -8,6 +8,7 @@
 // Deployed with verify_jwt = false: guests buy too. The session id is the credential for "status".
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { PRODUCT_COLUMNS, siteUrl, stripe, type Product } from "../_shared/stripe.ts";
+import { logFunctionError } from "../_shared/errors.ts";
 
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
 
@@ -124,7 +125,7 @@ Deno.serve(async (req) => {
     if (body.action === "status") return await status(body);
     return json({ error: "action" }, 400);
   } catch (e) {
-    console.error("checkout", e instanceof Error ? e.message : e);
+    await logFunctionError("checkout", 500, e);
     return json({ error: "server" }, 500);
   }
 });

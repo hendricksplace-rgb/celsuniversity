@@ -8,7 +8,7 @@ export const metadata = {
   title: "CelsTV · Aprende inglés con una serie de TV",
   description: "32 episodios con historias reales, tarjetas, libro interactivo, audio y quiz. Aprende inglés para la vida diaria a tu ritmo, desde $99 USD con 1 año de acceso.",
   alternates: { canonical: "/celstv" },
-  openGraph: { title: "CelsTV · Aprende inglés con una serie de TV", description: "32 episodios con historias reales, tarjetas, libro interactivo, audio y quiz. Aprende inglés para la vida diaria a tu ritmo, desde $99 USD con 1 año de acceso.", locale: "es_MX", type: "website", images: [{ url: "/og/celstv.png", width: 1200, height: 630 }] },
+  openGraph: { title: "CelsTV · Aprende inglés con una serie de TV", description: "32 episodios con historias reales, tarjetas, libro interactivo, audio y quiz. Aprende inglés para la vida diaria a tu ritmo, desde $99 USD con 1 año de acceso.", locale: "es_MX", type: "website" },
 };
 
 // Episode titles and artwork change rarely: read them at most once an hour.

@@ -8,6 +8,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { firstName, sendTemplate } from "../_shared/mailer.ts";
 import { stripe } from "../_shared/stripe.ts";
+import { logFunctionError } from "../_shared/errors.ts";
 
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
 const cors = {
@@ -81,7 +82,10 @@ Deno.serve(async (req) => {
     .insert({ user_id: uid, email, reason: typeof body.reason === "string" ? body.reason.slice(0, 1000) : null })
     .select("id, requested_at")
     .single();
-  if (rq) return json({ error: "failed" }, 500);
+  if (rq) {
+    await logFunctionError("delete-account:request", 500, rq.message);
+    return json({ error: "failed" }, 500);
+  }
 
   try {
     // 2. Remaining installments: cancel the subscription (only when Stripe is configured).
@@ -120,7 +124,7 @@ Deno.serve(async (req) => {
     if (du) throw new Error(`deleteUser: ${du.message}`);
     await admin.from("account_deletion_requests").update({ completed_at: new Date().toISOString() }).eq("id", request.id);
   } catch (e) {
-    console.error("delete-account", uid, e instanceof Error ? e.message : e);
+    await logFunctionError("delete-account", 500, e);
     return json({ error: "failed" }, 500);
   }
 
@@ -133,7 +137,7 @@ Deno.serve(async (req) => {
         nombre: firstName(profile?.display_name) || "",
         fecha: new Date(request.requested_at).toLocaleDateString("es-MX", { timeZone: "America/Mexico_City", dateStyle: "long" }),
       },
-    }).catch((e) => console.error("account-deleted email", e instanceof Error ? e.message : e));
+    }).catch((e) => logFunctionError("delete-account:email", null, e));
   }
   return json({ ok: true });
 });

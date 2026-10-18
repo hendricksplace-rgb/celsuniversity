@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { OfflineSync } from "@/components/OfflineSync";
+import { ErrorReporter } from "@/components/errors/ErrorReporter";
 import { InstallProvider, captureInstallPrompt } from "@/components/install/InstallApp";
 import { getDictionary } from "@/lib/i18n/server";
 import "./globals.css";
@@ -41,6 +42,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
         <InstallProvider t={t.install}>
           <OfflineSync />
+          <ErrorReporter />
           {children}
         </InstallProvider>
       </body>

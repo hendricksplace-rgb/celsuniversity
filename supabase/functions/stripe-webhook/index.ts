@@ -14,6 +14,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import type Stripe from "npm:stripe@16.12.0";
 import { cryptoProvider, PRODUCT_COLUMNS, stripe, type Product } from "../_shared/stripe.ts";
+import { logFunctionError } from "../_shared/errors.ts";
 
 const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!, { auth: { persistSession: false } });
 const text = (body: string, status = 200) => new Response(body, { status });
@@ -204,7 +205,7 @@ Deno.serve(async (req) => {
     }
   } catch (e) {
     // Not recorded: Stripe retries the event, and the handlers are safe to run again.
-    console.error("stripe-webhook", event.type, e instanceof Error ? e.message : e);
+    await logFunctionError(`stripe-webhook:${event.type}`, 500, e);
     return text("error", 500);
   }
   await admin.from("stripe_events").insert({ id: event.id, type: event.type });

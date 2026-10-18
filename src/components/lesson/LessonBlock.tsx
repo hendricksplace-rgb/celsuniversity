@@ -55,6 +55,8 @@ export function youtubeEmbed(url: string | null) {
 export function directMedia(url: string | null, signed: SignedRefs) {
   if (!url) return null;
   if (/^https:\/\/embed-ssl\.wistia\.com\/deliveries\//.test(url)) return url;
+  // A direct .mp4 link (a video hosted outside, e.g. Bunny or Mux) plays as a file.
+  if (/^https:\/\/[^\s?#]+\.mp4(?:[?#]|$)/i.test(url)) return url;
   return url.startsWith("storage://") ? (signed.get(url) ?? null) : null;
 }
 

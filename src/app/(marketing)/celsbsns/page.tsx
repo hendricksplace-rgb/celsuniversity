@@ -8,7 +8,7 @@ export const metadata = {
   title: "CelsBSNS · Inglés de negocios en 10 semanas",
   description: "Inglés para juntas, entrevistas, correos y presentaciones. 10 semanas de práctica real con un proyecto final. Desde $120 USD.",
   alternates: { canonical: "/celsbsns" },
-  openGraph: { title: "CelsBSNS · Inglés de negocios en 10 semanas", description: "Inglés para juntas, entrevistas, correos y presentaciones. 10 semanas de práctica real con un proyecto final. Desde $120 USD.", locale: "es_MX", type: "website", images: [{ url: "/og/celsbsns.png", width: 1200, height: 630 }] },
+  openGraph: { title: "CelsBSNS · Inglés de negocios en 10 semanas", description: "Inglés para juntas, entrevistas, correos y presentaciones. 10 semanas de práctica real con un proyecto final. Desde $120 USD.", locale: "es_MX", type: "website" },
 };
 
 // Week titles change rarely: rebuild the page at most once an hour.
