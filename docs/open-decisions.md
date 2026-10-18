@@ -15,17 +15,7 @@ Items that need a decision from Matt or Cowork. Batch 3 (2026-10-18).
 
 ## Database hardening (batch 3 §1)
 
-- **Needs approval: merging the duplicate policies and dropping the leftover tables.** The Supabase connector asks a person to confirm any statement containing `DROP`. No one was there, so every attempt timed out and nothing was applied (each time it rolled back cleanly).
-  - The SQL is ready in `supabase/manual/batch3-needs-approval.sql`:
-    - one policy per action on 28 tables (fixes the 41 "multiple permissive policies" warnings);
-    - drops `private.civics2025_staging`, `private.teacher_guides_staging` and `public.handoff_files`.
-  - Each merged policy is the OR of the ones it replaces, so access doesn't change.
-  - To apply it:
-    1. run `supabase/tests/rls-visibility.sql`;
-    2. apply the file and confirm the prompt;
-    3. run the check again and compare;
-    4. move the file into `supabase/migrations/`.
-  - Code can do this in a session where Matt is present to confirm.
+- **Done:** the policy merge and the staging-table drops. Matt approved them and ran them in the SQL editor on 2026-10-18; see `supabase/migrations/20261018230415_rls_one_policy_per_action_and_cleanup.sql`.
 - **Edge Functions to delete in the dashboard:** `ebook-signed-url` and `import-designrr-ebooks`. The MCP can't delete functions, so they now return 410. Also `import-celsaudio`, `import-media` and `handoff-upload` (stubbed earlier). `secret-check` and `debug-ip-headers` look like leftover debug tools too; Matt to confirm.
 - **Launch checklist:** turn on leaked-password protection (Auth settings). The full list is in `docs/security.md`.
 

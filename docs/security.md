@@ -35,13 +35,13 @@ Only the service role (Edge Functions, cron) reads or writes these. With no poli
 | `eval_sessions` | `evaluation`: in-progress free evaluations. Students see their history only through `my_evaluation_history()`. |
 | `ebook_source_text` | E-book import source text (staff tooling). |
 
-`private.civics2025_staging`, `private.teacher_guides_staging` and `public.handoff_files` are also on the advisor's list. They are leftovers, and their removal is in `supabase/manual/batch3-needs-approval.sql`.
+`private.civics2025_staging`, `private.teacher_guides_staging` and `public.handoff_files` were leftovers and were dropped on 2026-10-18.
 
 ## Policies
 
 - `auth.uid()` in policies is always wrapped as `(select auth.uid())`, so it is evaluated once per query.
 - The goal is one permissive policy per table, action and role: staff or admin access is ORed with the owner or catalog rule.
-- The merge for the 28 tables that still have `admin_all` plus a read policy is ready in `supabase/manual/batch3-needs-approval.sql`. It is waiting for approval: the Supabase connector asks a person to confirm any DROP.
+- Done on 2026-10-18 for 28 tables (migration `20261018230415`). `leads` and `import_logs` keep their single `admin_all` policy, since there's nothing to merge.
 - `supabase/tests/rls-visibility.sql` counts the rows a visitor, a student, an administrator and the super admin can see in each table. Run it before and after any policy change.
 
 ## Launch checklist (dashboard settings, for Matt)

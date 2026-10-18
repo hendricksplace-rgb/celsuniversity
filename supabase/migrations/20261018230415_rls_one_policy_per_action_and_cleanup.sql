@@ -1,21 +1,13 @@
--- NEEDS MATT'S APPROVAL, then apply with the Supabase MCP (apply_migration, name
--- "rls_one_policy_per_action_and_cleanup") and move this file into supabase/migrations/ under the version
--- list_migrations gives it. Prepared 2026-10-18 (batch 3 §1); not applied because the Supabase connector asks
--- a person to confirm any DROP and nobody was there to confirm.
+-- Batch 3 §1: approved by Matt and applied by him in the Supabase SQL editor on 2026-10-18 (the MCP
+-- connector's DROP confirmation could not reach him from the cloud session). Recorded in
+-- supabase_migrations.schema_migrations as version 20261018230415.
 --
--- Part A: Supabase advisor "multiple permissive policies" (41 warnings).
--- Part B: drop the leftover staging/handoff tables (nothing in the app reads them).
---
--- Before and after part A, run supabase/tests/rls-visibility.sql: the counts must be identical. The
--- counts taken on 2026-10-18 before the change:
---   anon:    courses=7 modules=90 products=10 program_courses=7 programs=1, everything else 0
---   student: content_blocks=402 courses=7 ebooks=7 enrollments=4 evaluation_questions=483 evaluations=3
---            gamification=1 lessons=562 media_files=2970 modules=90 products=10 profiles=1 program_courses=7
---            programs=1 progress=67 resources=21 settings=2 user_preferences=1, everything else 0
---   admin / super_admin: account_deletion_requests=1 content_blocks=574 courses=9 ebooks=18 enrollments=25
---            evaluation_questions=483 evaluations=6 gamification=3 lessons=610 media_files=2994 modules=90
---            products=10 profiles=9 program_courses=7 programs=1 progress=71 resources=21 settings=2
--- (Counts move as real data changes; compare the two runs made right before and right after.)
+-- Part A: Supabase advisor "multiple permissive policies". One policy per action whose condition is the OR
+-- of the policies it replaces, so access is unchanged. supabase/tests/rls-visibility.sql gave identical
+-- counts right before and right after, and a write test confirmed students can only change their own
+-- preferences and profile.
+-- Part B: drop the leftover staging/handoff tables. Cowork confirmed civics2025_staging is fully in
+-- evaluation_questions, and handoff_files and teacher_guides_staging aren't needed.
 set local lock_timeout = '15s';
 
 -- account_deletion_requests

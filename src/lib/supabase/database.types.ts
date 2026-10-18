@@ -1037,27 +1037,6 @@ export type Database = {
           },
         ]
       }
-      handoff_files: {
-        Row: {
-          content: string
-          path: string
-          source: string | null
-          uploaded_at: string
-        }
-        Insert: {
-          content: string
-          path: string
-          source?: string | null
-          uploaded_at?: string
-        }
-        Update: {
-          content?: string
-          path?: string
-          source?: string | null
-          uploaded_at?: string
-        }
-        Relationships: []
-      }
       import_logs: {
         Row: {
           admin_id: string | null
