@@ -4,6 +4,7 @@ import { getDictionary } from "@/lib/i18n/server";
 import { setLanguage } from "@/lib/actions";
 import { SignOutButton } from "./SignOutButton";
 import { getViewer } from "@/lib/access";
+import { InstallButton } from "./install/InstallApp";
 
 export async function SiteHeader() {
   const { lang, t } = await getDictionary();
@@ -17,8 +18,9 @@ export async function SiteHeader() {
         <Link href="/" className="text-xl font-extrabold tracking-tight">
           Cels<span className="text-brand">U</span>
         </Link>
-        <div className="ml-auto flex items-center gap-1 text-sm sm:gap-3">
-          <Link href="/cursos" className="rounded-lg px-2 py-1.5 hover:bg-white/10">
+        <div className="ml-auto flex items-center gap-1 whitespace-nowrap text-sm sm:gap-3">
+          {/* On phones a signed-in student reaches the catalog from Inicio: room for "Descargar app". */}
+          <Link href="/cursos" className={`rounded-lg px-2 py-1.5 hover:bg-white/10 ${user ? "hidden sm:inline-block" : ""}`}>
             {t.nav.courses}
           </Link>
           {user ? (
@@ -43,6 +45,7 @@ export async function SiteHeader() {
               </Link>
             </>
           )}
+          <InstallButton />
           <form action={setLanguage}>
             <input type="hidden" name="lang" value={lang === "es" ? "en" : "es"} />
             <button

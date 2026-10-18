@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { OfflineSync } from "@/components/OfflineSync";
+import { InstallProvider, captureInstallPrompt } from "@/components/install/InstallApp";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import "./globals.css";
@@ -19,8 +20,18 @@ const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], wei
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
-  return { title: t.meta.title, description: t.meta.description };
+  return {
+    title: t.meta.title,
+    description: t.meta.description,
+    applicationName: "CelsU",
+    // iOS "Add to Home Screen": full-screen app named CelsU with the icon below.
+    appleWebApp: { capable: true, title: "CelsU", statusBarStyle: "default" },
+    icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
+    other: { "apple-mobile-web-app-capable": "yes" },
+  };
 }
+
+export const viewport: Viewport = { themeColor: "#F5178C" };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { lang, t } = await getDictionary();
@@ -30,12 +41,15 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang={lang}>
       <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} antialiased`}>
-        <SiteHeader />
-        <OfflineSync userId={user?.id ?? null} />
-        <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>
-        <footer className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-          © {new Date().getFullYear()} {t.footer.rights}
-        </footer>
+        <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
+        <InstallProvider t={t.install}>
+          <SiteHeader />
+          <OfflineSync userId={user?.id ?? null} />
+          <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>
+          <footer className="border-t border-white/10 py-6 text-center text-xs text-white/50">
+            © {new Date().getFullYear()} {t.footer.rights}
+          </footer>
+        </InstallProvider>
       </body>
     </html>
   );

@@ -317,3 +317,11 @@ body {
   color: var(--cx-navy);
   border-radius: 3px;
 }
+
+/* "Descargar app" iPhone steps: each step lights up in turn, on a loop. */
+@keyframes install-step {
+  0%, 28% { box-shadow: 0 0 0 2px #F5178C; background: #fff; }
+  34%, 100% { box-shadow: 0 0 0 0 transparent; }
+}
+.install-step { animation: install-step 3.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .install-step { animation: none; } }

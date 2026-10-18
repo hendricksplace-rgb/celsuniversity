@@ -221,6 +221,14 @@ The approved designs are in `emails/` (see `emails/README.md`). The 11 in `email
 - **Triggers:** results at the end of the evaluation; follow-ups from the daily job; receipt + `welcome-<product code>` when an `orders` row becomes `paid` (trigger `order_paid_emails` → `send-email`). The Stripe webhook only has to mark the order paid and set `orders.card_last4`.
 - **Edge function `send-email`** (`verify_jwt = false`): `{ event: "order_paid", order_id }` or `{ template, to, vars, dedupe_key }` with the `send-email` job token; `POST ?unsubscribe=<token>` is the public one-click unsubscribe.
 
+### Student home (/app)
+
+`src/lib/home.ts` loads it; `src/components/home/Home.tsx` draws it. With an active enrollment (direct, or through a program), the student sees their personal home: the lesson to continue (last one touched, else the next unfinished), this week's activity and streak, their programs with lesson progress (`progress.status = 'completed'`), and "Sigue creciendo". Everyone else sees the two free evaluations (English → `/evaluacion`; CelsUS civics → `settings.civics_pretest_url`, "Muy pronto" while it's null) and the four programs. Each program card has its brand's look; CelsGLOBAL is one card for all its courses. Logos are in `public/brand/`.
+
+### Installable app ("Descargar app")
+
+CelsU installs as a web app: `src/app/manifest.ts`, icons in `public/icons/`, the iOS meta tags in the root layout, and `public/sw.js` (registered on every page by `OfflineSync`). `src/components/install/InstallApp.tsx` holds the install flow: `InstallProvider` (root layout) detects the environment and keeps Chrome's install prompt; `InstallButton` (top bar), `InstallCard` (Inicio; "Ahora no" hides it 7 days) and `InstallLink` open the sheet that fits: Android/desktop Chrome → native prompt, iPhone → the 3 Safari steps, Instagram/Facebook/WhatsApp/TikTok → open in the browser, desktop → QR code. Hidden once installed. `/app?instalar=1` opens the sheet on arrival. An install fires `celsu:appinstalled` on `window` for analytics.
+
 ### Program themes
 
 Course and lesson pages wrap their content in `data-theme="…"`. Components use only the tokens defined in `globals.css` (`--t-bg`, `--t-surface`, `--t-text`, `--t-muted`, `--t-accent`, `--t-link`, `--t-border`, `--t-radius`, `--t-card-top`, `--t-font`, `--t-heading`, `--t-heading-weight`). Adding a brand means adding one token block.

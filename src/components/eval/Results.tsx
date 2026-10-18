@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { LEVELS, SECTIONS, type Goal, type Product } from "@/lib/eval-engine";
+import { InstallLink } from "@/components/install/InstallApp";
 import { BigButton, C, Pill, fill, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
 
 export type FinalResult = {
@@ -161,6 +162,10 @@ export function Results({ t, name, goal, result, writingText, student }: { t: Ev
           </p>
         </div>
       )}
+
+      <InstallLink className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-white/15 bg-white/5 py-3.5 text-sm font-extrabold text-white transition hover:bg-white/10">
+        ⬇ {t.getApp}
+      </InstallLink>
 
       {student ? (
         <Link href="/app" className="btn-primary w-full !rounded-2xl !py-4 text-base font-extrabold">
