@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SITE_INDEXABLE, SITE_URL } from "@/lib/site";
 import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { OfflineSync } from "@/components/OfflineSync";
 import { ErrorReporter } from "@/components/errors/ErrorReporter";
@@ -20,8 +21,9 @@ const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], wei
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
   return {
-    // Canonical URLs and Open Graph images resolve against the public domain (nuevo.celstv.com is noindex).
-    metadataBase: new URL("https://celstv.com"),
+    // Canonical URLs and Open Graph images resolve against SITE_URL (src/lib/site.ts).
+    metadataBase: new URL(SITE_URL),
+    robots: SITE_INDEXABLE ? undefined : { index: false, follow: false },
     title: t.meta.title,
     description: t.meta.description,
     applicationName: "CelsU",

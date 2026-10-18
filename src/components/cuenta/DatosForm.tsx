@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { setLanguage } from "@/lib/actions";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { card, input, primary } from "./ui";
+import { SITE_URL } from "@/lib/site";
 
 type T = Dictionary["cuenta"];
 
@@ -87,7 +88,7 @@ export function DatosForm({
 
   const changeEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await createClient().auth.updateUser({ email: newEmail.trim() });
+    const { error } = await createClient().auth.updateUser({ email: newEmail.trim() }, { emailRedirectTo: `${SITE_URL}/auth/callback?next=/app/cuenta/datos` });
     setEmailMsg({ ok: !error, text: error ? t.emailError : t.emailSent });
     if (!error) setEditingEmail(false);
   };

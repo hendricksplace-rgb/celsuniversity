@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { LEVELS, SECTIONS, type Goal, type Product } from "@/lib/eval-engine";
 import { InstallLink } from "@/components/install/InstallApp";
 import { BigButton, C, Pill, fill, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
+import { SITE_URL } from "@/lib/site";
 
 export type FinalResult = {
   g: number;
@@ -101,7 +102,7 @@ export function Results({ t, name, goal, result, writingText, student }: { t: Ev
   const q = new URLSearchParams({ name, level: result.band, goal });
 
   const share = async () => {
-    const text = `${fill(t.shareTitle, { band: result.band })} · ${window.location.origin}/evaluacion`;
+    const text = `${fill(t.shareTitle, { band: result.band })} · ${SITE_URL}/evaluacion`;
     try {
       if (navigator.share) return await navigator.share({ text });
     } catch {

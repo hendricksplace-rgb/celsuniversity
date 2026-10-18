@@ -1,20 +1,18 @@
 "use server";
 
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { LANG_COOKIE, isLang } from "@/lib/i18n/dictionaries";
 import { safeNextPath } from "@/lib/safe-next";
+import { SITE_URL } from "@/lib/site";
 
 const safeNext = (value: FormDataEntryValue | null) => safeNextPath(value);
 
+/** Auth email links and OAuth return to SITE_URL (src/lib/site.ts), whatever host the request came from. */
 async function siteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "https";
-  return `${proto}://${host}`;
+  return SITE_URL;
 }
 
 export async function setLanguage(formData: FormData) {

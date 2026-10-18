@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { InstallLink } from "@/components/install/InstallApp";
 import { PROGRAMS, type ProgramKey } from "@/lib/purchase-programs";
+import { SITE_URL } from "@/lib/site";
 
 type Status = { state: "pending" | "active" | "failed"; product?: string; program?: string; name?: string | null; email?: string; access?: string; lessonId?: string | null };
 
@@ -110,7 +111,7 @@ export function Welcome({ sessionId, signedIn }: { sessionId: string; signedIn: 
             if (!s.email) return;
             await createClient().auth.signInWithOtp({
               email: s.email,
-              options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(lessonHref)}` },
+              options: { shouldCreateUser: false, emailRedirectTo: `${SITE_URL}/auth/callback?next=${encodeURIComponent(lessonHref)}` },
             });
             setLinkSent(true);
           }}
