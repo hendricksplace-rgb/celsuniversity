@@ -28,3 +28,16 @@ Items that need a decision from Matt or Cowork. Batch 3 (2026-10-18).
   - Code can do this in a session where Matt is present to confirm.
 - **Edge Functions to delete in the dashboard:** `ebook-signed-url` and `import-designrr-ebooks`. The MCP can't delete functions, so they now return 410. Also `import-celsaudio`, `import-media` and `handoff-upload` (stubbed earlier). `secret-check` and `debug-ip-headers` look like leftover debug tools too; Matt to confirm.
 - **Launch checklist:** turn on leaked-password protection (Auth settings). The full list is in `docs/security.md`.
+
+## Constructor de cursos
+
+- **Who can edit.** The builder opens for super_admin, administrator and director. That's who the existing content policies (`admin_all` → `private.is_admin()`) let write. Teachers can't edit courses.
+  - Should coaches or teachers be able to edit their own courses? That would need new policies.
+- **File size cap.** The `course-media` bucket has no `file_size_limit` of its own. The builder caps uploads at 50 MB, which is Supabase's default global limit.
+  - Large lesson videos should go to Vimeo, YouTube or Mux/Bunny instead.
+  - If Matt wants a different cap, set it on the bucket and in `MAX_UPLOAD_MB` (`src/lib/builder.ts`).
+- **Deleting content.** Deleting a module or lesson is refused once any student has progress in it, because the delete would cascade and erase that progress. Unpublish it instead.
+  - Courses can only be deleted while they're drafts with no enrollments.
+- **Undo scope.** "Deshacer último cambio" works per lesson: block edits, block adds/deletes/reorders, and the lesson's own title, status and teacher-only flag.
+  - Module and course changes are recorded in `admin_audit_log` but have no undo button.
+- **MP4 links.** Video blocks now also play a direct `https://….mp4` link (for videos hosted outside, e.g. on Bunny or Mux). Previously only YouTube, Vimeo, Storage and Wistia played.
