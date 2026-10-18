@@ -49,8 +49,8 @@ export function AudioPart({ tracks, title, episodeKey, finishLabel }: { tracks: 
 
 function Player({ track, title, episodeKey, finishLabel }: { track: Track | null; title: string; episodeKey: string; finishLabel: string }) {
   const src = track?.src ?? null;
-  const cues = track?.cues ?? [];
-  const chapters = track?.chapters ?? [];
+  const cues = useMemo(() => track?.cues ?? [], [track]);
+  const chapters = useMemo(() => track?.chapters ?? [], [track]);
   const { t, setProgress, finish } = usePartShell();
   const audio = useRef<HTMLAudioElement>(null);
   const [url, setUrl] = useState(src);
