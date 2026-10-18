@@ -28,11 +28,11 @@ export default async function EbookPage({ params }: Props) {
   const course = one(ebook.course);
 
   const resourceSlugs = (ebook.resources ?? []).map((r: { ebook: string }) => r.ebook);
-  const [{ data: saved }, { data: related }, signed] = await Promise.all([
+  const [{ data: saved }, { data: related }, signed, { data: host }] = await Promise.all([
     // Owner-only table: this returns the viewer's own row and nothing else.
     supabase
       .from("ebook_answers")
-      .select("answers, last_screen, completed_at")
+      .select("answers, last_screen, completed_at, updated_at")
       .eq("ebook_id", ebook.id)
       .eq("user_id", viewer.user.id)
       .maybeSingle(),
@@ -44,7 +44,17 @@ export default async function EbookPage({ params }: Props) {
       collectStorageRefs([ebook.pdf_path, ebook.cover_path, ebook.screens]),
       { courseId: ebook.course_id, viewer },
     ),
+    // The module whose lesson shows this book's PDF: offline_downloads tracks the download per module.
+    ebook.pdf_path
+      ? supabase
+          .from("content_blocks")
+          .select("lesson:lessons(module_id)")
+          .eq("data->>ebook_pdf", ebook.pdf_path)
+          .limit(1)
+          .maybeSingle()
+      : Promise.resolve({ data: null }),
   ]);
+  const moduleId = (one(host?.lesson) as { module_id?: string } | null)?.module_id ?? null;
 
   return (
     <div data-theme={ebook.program} className="t-panel space-y-6">
@@ -76,6 +86,7 @@ export default async function EbookPage({ params }: Props) {
         ebook={ebook as unknown as Ebook}
         userId={viewer.user.id}
         initial={saved ?? null}
+        moduleId={moduleId}
         signed={Object.fromEntries(signed)}
         resourceTitles={Object.fromEntries((related ?? []).map((r) => [r.slug, r.title]))}
         t={t.reader}

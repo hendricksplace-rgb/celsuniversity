@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { Block, EbookLink } from "@/lib/ebook-format";
+import type { Block, EbookLink, Spoken } from "@/lib/ebook-format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { useSignedRef } from "./media";
 
 type T = Dictionary["reader"];
 type Props = { block: Block; value: unknown; onChange: (v: unknown) => void; t: T };
@@ -137,6 +138,17 @@ export function ReaderBlock({ block, value, onChange, t }: Props) {
     case "glossary":
       return <Glossary groups={block.groups} t={t} />;
 
+    case "compare":
+      return (
+        <Section title={block.title}>
+          <div className="space-y-3">
+            {block.items.map((it, i) => (
+              <Compare key={i} bad={it.bad} good={it.good} t={t} />
+            ))}
+          </div>
+        </Section>
+      );
+
     case "phrases":
       return (
         <Section title={block.title}>
@@ -147,7 +159,7 @@ export function ReaderBlock({ block, value, onChange, t }: Props) {
                   <p className="font-medium">{it.en}</p>
                   <p className="t-muted text-sm">{it.es}</p>
                 </div>
-                <Speak text={it.en} lang="en-US" t={t} />
+                <Speak text={it.en} lang="en-US" audioRef={it.audio} t={t} />
               </li>
             ))}
           </ul>
@@ -309,14 +321,22 @@ function EbookLinkButton({ link }: { link: EbookLink }) {
   );
 }
 
-/** Pronunciation with the device's own voices (Web Speech API): nothing leaves the browser. */
-function Speak({ text, lang, t }: { text: string; lang: string; t: T }) {
+/**
+ * Pronunciation: the recorded ElevenLabs file when the item has one (offline cache first),
+ * otherwise the device's own voices (Web Speech API), so nothing leaves the browser.
+ */
+function Speak({ text, lang, audioRef, t }: { text: string; lang: string; audioRef?: string | null; t: T }) {
+  const src = useSignedRef(audioRef);
   return (
     <button
       type="button"
       aria-label={t.speak}
       title={t.speak}
       onClick={() => {
+        if (src) {
+          void new Audio(src).play();
+          return;
+        }
         if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
         window.speechSynthesis.cancel();
         const u = new SpeechSynthesisUtterance(text);
@@ -331,10 +351,33 @@ function Speak({ text, lang, t }: { text: string; lang: string; t: T }) {
   );
 }
 
-function Glossary({ groups, t }: { groups: { name: string; items: { en: string; es: string }[] }[]; t: T }) {
+/** "Así no" first; the student taps to reveal "Mejor así". */
+function Compare({ bad, good, t }: { bad: string; good: string; t: T }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="t-card space-y-3">
+      <div className="t-opt-wrong rounded-[var(--t-radius)] border p-3">
+        <p className="text-xs font-semibold uppercase tracking-wide">✗ {t.notLikeThis}</p>
+        <p className="mt-1">{bad}</p>
+      </div>
+      {open ? (
+        <div className="t-opt-correct rounded-[var(--t-radius)] border p-3" aria-live="polite">
+          <p className="text-xs font-semibold uppercase tracking-wide">✓ {t.betterLikeThis}</p>
+          <p className="mt-1">{good}</p>
+        </div>
+      ) : (
+        <button onClick={() => setOpen(true)} aria-expanded={open} className="t-btn-ghost w-full">
+          👉 {t.tapToSee}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function Glossary({ groups, t }: { groups: { name: string; items: Spoken[] }[]; t: T }) {
   const [q, setQ] = useState("");
   const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
-  const match = (it: { en: string; es: string }) => !q || norm(it.en + " " + it.es).includes(norm(q));
+  const match = (it: Spoken) => !q || norm(it.en + " " + it.es).includes(norm(q));
   return (
     <section className="space-y-3">
       <input
@@ -355,7 +398,7 @@ function Glossary({ groups, t }: { groups: { name: string; items: { en: string; 
                   <span>
                     <strong>{it.en}</strong> <span className="t-muted">· {it.es}</span>
                   </span>
-                  <Speak text={it.en} lang="en-US" t={t} />
+                  <Speak text={it.en} lang="en-US" audioRef={it.audio} t={t} />
                 </li>
               ))}
             </ul>

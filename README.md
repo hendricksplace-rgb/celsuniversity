@@ -50,9 +50,12 @@ src/
     app/cursos/[slug]      course outline (modules → lessons)
     app/lecciones/[id]     lesson page: renders every content block
     app/libros/[slug]      interactive e-book reader
+    app/admin/libros       staff review page: publish / send back to review (admins only)
   components/SiteHeader    nav, auth state, language toggle
   components/lesson/       one renderer per block type, styled only with theme tokens
   components/reader/       e-book reader (client): screens, narration, interactive blocks, quiz, autosave
+  components/OfflineSync   renews offline downloads and sends queued answers whenever the app is online
+public/sw.js               service worker: serves downloaded e-books offline until they expire
   lib/
     supabase/              browser, server and middleware clients (@supabase/ssr)
     i18n/                  es/en dictionaries; getDictionary() on the server
@@ -60,10 +63,12 @@ src/
     access.ts              viewer + role, canAccessCourse() (mirrors private.has_course_access)
     storage.ts             storage://bucket/path → short-lived signed URL, after the access check
     themes.ts              course → program theme (celstv, celsbsns, celsus, celsglobal)
-    ebook-format.ts        TypeScript types for the e-book format (screens, 19 block types, quiz)
+    ebook-format.ts        TypeScript types for the e-book format (screens, 20 block types, quiz)
+    offline.ts             offline downloads: Cache Storage, manifest, offline_downloads, answer queue
   middleware.ts            refreshes the session; guards /app
 supabase/migrations/       schema history, recreated from the live database
 scripts/migrate-base44/    one-off Base44 → Supabase data + file migration
+scripts/narration/         ElevenLabs narration + English pronunciation for the e-books
 ```
 
 ## Auth
@@ -134,6 +139,33 @@ Block types: `text` (plain text, URLs and file links made clickable), `image`, `
 - **Pronunciation:** `phrases`, `glossary` and `say` have 🔊 buttons that use the device's own speech voices, so nothing leaves the browser.
 - **Saving:** answers autosave about a second after each change, straight from the browser to `ebook_answers` (RLS: the student's own row only). Keys are `"<screen id>:<block index>"` and `"quiz:<n>"`, and `last_screen` lets the reader resume where the student stopped.
 - **Lesson pages:** an e-book block whose PDF has an interactive version visible to the viewer gets a "Leer versión interactiva" button.
+- **`compare` block:** shows the "Así no" text; the student taps to reveal "Mejor así".
+- **Narration:** `narration.audio` plays in the screen header. When `narration.wt` (word start times) has one entry per word of the script, the script highlights each word as it's spoken.
+- **Pronunciation:** glossary and phrases items play their recorded `audio` when present, and fall back to the device voice otherwise.
+
+#### Review and publish
+
+`/app/admin/libros` (linked in the header for staff) lists every book with its status, review notes, a preview link and Publish / Volver a revisión. All staff can open it. Only admins (super_admin, director, administrator) can change a status, and the `ebooks.admin_all` RLS policy enforces that in the database. Students only ever see `published` books.
+
+#### Offline reading
+
+"Descargar para leer sin conexión" in the reader stores the book's page, the app code it needs and its audio (never video, never the PDF) in Cache Storage. It also records the download in `offline_downloads` (per module and device, 7 days).
+
+- `public/sw.js` serves the downloaded page only when the network fails, and only before `expiresAt`. After that it shows "Tu descarga venció".
+- `OfflineSync` (root layout) runs on load, on `online` and when the tab becomes visible. It calls `renew_offline_downloads(device)`, which resets the 7 days and deletes any book the student has lost access to. It also sends answers saved on the device while offline.
+- Signing out, or a different account on the same device, wipes the downloads on the next sync.
+
+#### Narration audio (ElevenLabs)
+
+```bash
+npm run narration -- --dry-run     # what would be generated (characters ≈ credits)
+npm run narration                  # generate; re-runnable, skips anything with audio
+npm run narration -- --only <slug> # one book
+```
+
+Spanish narration uses voice `OZxMHsGaBmV5pjMIDIn0` with `eleven_multilingual_v2` and the `/with-timestamps` endpoint. The script converts each MP3 to AAC `.m4a` with ffmpeg and uploads it to `course-media/<course_id>/ebooks/audio/<slug>-<screen>.m4a`. It then writes `narration.audio` and `narration.wt` back into the row. Before each write it re-reads the row, so concurrent edits survive; if the text changed in the meantime, it skips that item. The English side of glossary and phrases items gets the same treatment and needs `ELEVENLABS_EN_VOICE_ID`.
+
+Secrets: `ELEVENLABS_API_KEY` (and `SUPABASE_SECRET_KEY`) go in `.env.local` or the environment, never in git. The script needs `ffmpeg` with the `aac` encoder on PATH, and network access to `api.elevenlabs.io`.
 
 ### Program themes
 
@@ -145,6 +177,8 @@ Course and lesson pages wrap their content in `data-theme="…"`. Components use
 | `celsbsns` | English For Business | professional navy on white, Inter, tight corners |
 | `celsus` | CelsUS Para Ciudadanía | formal, low tones: parchment, serif headings, burgundy rule |
 | `celsglobal` | CV, interviews, finances, Visa TN | muted sage and warm gray, for adult professionals |
+
+The same themes are used on the course catalog (`/cursos`), the student dashboard (`/app`), course and lesson pages, the e-book reader (`ebooks.program`) and the review page.
 
 The course → theme map lives in `src/lib/themes.ts`, keyed by slug. `themeForCourse()` already reads a `courses.theme` column first, so the map can move into the database later.
 

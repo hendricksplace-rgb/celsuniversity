@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Source_Serif_4 } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
+import { OfflineSync } from "@/components/OfflineSync";
+import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import "./globals.css";
 
@@ -21,10 +23,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { lang, t } = await getDictionary();
+  const {
+    data: { user },
+  } = await (await createClient()).auth.getUser();
   return (
     <html lang={lang}>
       <body className={`${poppins.variable} ${inter.variable} ${serif.variable} antialiased`}>
         <SiteHeader />
+        <OfflineSync userId={user?.id ?? null} />
         <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>
         <footer className="border-t border-white/10 py-6 text-center text-xs text-white/50">
           © {new Date().getFullYear()} {t.footer.rights}

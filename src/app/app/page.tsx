@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
+import { THEMES, themeForCourse } from "@/lib/themes";
 
 export default async function StudentHome() {
   const { t } = await getDictionary();
@@ -65,11 +66,21 @@ export default async function StudentHome() {
               const pick = <T,>(v: T | T[] | null) => (Array.isArray(v) ? v[0] : v);
               const item = pick(e.course) ?? pick(e.program);
               if (!item) return null;
+              const slug = "slug" in item ? String(item.slug) : null;
+              // Programs (IPD) are for adult professionals; courses use their own program theme.
+              const theme = slug ? themeForCourse({ slug }) : "celsglobal";
               return (
-                <li key={e.id} className="card relative" style={{ borderTop: `4px solid ${item.accent_color ?? "#F5178C"}` }}>
-                  <h3 className="font-bold">
-                    {"slug" in item ? (
-                      <Link href={`/app/cursos/${item.slug}`} className="after:absolute after:inset-0">
+                <li
+                  key={e.id}
+                  data-theme={theme}
+                  className="t-card t-card-accent relative"
+                >
+                  <p className="t-muted text-xs font-semibold uppercase tracking-wide">
+                    {THEMES[theme].label}
+                  </p>
+                  <h3 className="t-heading mt-1">
+                    {slug ? (
+                      <Link href={`/app/cursos/${slug}`} className="after:absolute after:inset-0">
                         {item.title}
                       </Link>
                     ) : (

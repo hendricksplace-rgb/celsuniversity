@@ -2,13 +2,13 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { setLanguage, signOut } from "@/lib/actions";
+import { getViewer } from "@/lib/access";
 
 export async function SiteHeader() {
   const { lang, t } = await getDictionary();
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const viewer = await getViewer(supabase);
+  const user = viewer?.user;
 
   return (
     <header className="sticky top-0 z-20 border-b border-white/10 bg-[#1A1128]/80 backdrop-blur">
@@ -25,6 +25,11 @@ export async function SiteHeader() {
               <Link href="/app" className="rounded-lg px-2 py-1.5 hover:bg-white/10">
                 {t.nav.myLearning}
               </Link>
+              {viewer?.isStaff && (
+                <Link href="/app/admin/libros" className="rounded-lg px-2 py-1.5 hover:bg-white/10">
+                  {t.admin.booksTitle}
+                </Link>
+              )}
               <form action={signOut}>
                 <button className="rounded-lg px-2 py-1.5 text-white/70 hover:bg-white/10">{t.nav.signOut}</button>
               </form>

@@ -2,6 +2,8 @@
 // Written from the content Cowork loaded on 18 Oct 2026. Keep in step with claude/celsu-ebook-reader-format.md.
 
 export type EbookLink = { ebook: string; label: string }; // ebook = another e-book's slug
+/** English term/phrase; audio + wt are added by scripts/narration (ElevenLabs). */
+export type Spoken = { en: string; es: string; audio?: string | null; wt?: number[] };
 
 export type Block =
   | { type: "para"; text: string }
@@ -13,10 +15,11 @@ export type Block =
   | { type: "expand"; items: { title: string; body: string; icon?: string }[]; title?: string }
   | { type: "whatif"; items: { q: string; a: string }[]; title?: string }
   | { type: "myth"; items: { q: string; a: string; real: boolean }[]; title?: string }
-  | { type: "glossary"; groups: { name: string; items: { en: string; es: string }[] }[] }
-  | { type: "phrases"; items: { en: string; es: string }[]; title?: string }
+  | { type: "glossary"; groups: { name: string; items: Spoken[] }[] }
+  | { type: "phrases"; items: Spoken[]; title?: string }
   | { type: "say"; items: string[]; title?: string }
   | { type: "activity"; text: string; link?: EbookLink }
+  | { type: "compare"; items: { bad: string; good: string }[]; title?: string }
   // Blocks the student fills in (saved to ebook_answers under "<screen id>:<block index>")
   | { type: "checklist"; items: { text: string; link?: EbookLink }[]; title?: string; done_text?: string }
   | { type: "notes"; title?: string; placeholder?: string; min?: number; max?: number }
@@ -30,7 +33,7 @@ export type Screen = {
   title: string;
   kicker?: string;
   minutes?: number;
-  narration?: { script?: string; audio?: string | null } | null;
+  narration?: { script?: string; audio?: string | null; wt?: number[] } | null;
   blocks: Block[];
 };
 
