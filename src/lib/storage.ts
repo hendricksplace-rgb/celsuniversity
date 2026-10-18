@@ -1,5 +1,5 @@
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Client } from "@/lib/supabase/types";
 import { canAccessCourse } from "@/lib/access";
 
 /**
@@ -43,7 +43,7 @@ export function storageRefName(ref: string) {
  * - user-uploads: only the viewer's own `<userId>/` folder.
  */
 export async function signStorageRefs(
-  supabase: SupabaseClient,
+  supabase: Client,
   refs: Iterable<string>,
   opts: { courseId: string; viewer: { user: { id: string }; isStaff: boolean } | null; access?: boolean },
 ): Promise<SignedRefs> {

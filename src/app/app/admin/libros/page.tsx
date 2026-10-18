@@ -66,7 +66,7 @@ export default async function BookReviewPage({ searchParams }: Props) {
                 <div className="space-y-1">
                   <h2 className="t-heading text-lg">{b.title}</h2>
                   <p className="t-muted text-sm">
-                    {course?.title} · {screens.length} {t.admin.screens} · {(b.quiz ?? []).length} {t.admin.quiz} ·{" "}
+                    {course?.title} · {screens.length} {t.admin.screens} · {Array.isArray(b.quiz) ? b.quiz.length : 0} {t.admin.quiz} ·{" "}
                     {narrated}/{screens.length} {t.admin.narrated}
                   </p>
                   <p className="t-muted text-xs">

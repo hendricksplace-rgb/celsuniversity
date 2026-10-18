@@ -1,7 +1,8 @@
 import Link from "next/link";
 import sanitizeHtml from "sanitize-html";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { storageRefName, type SignedRefs } from "@/lib/storage";
+import { collectStorageRefs, storageRefName, type SignedRefs } from "@/lib/storage";
+import { Activity } from "./activities/Activity";
 
 export type Block = {
   id: string;
@@ -16,6 +17,7 @@ type Props = {
   block: Block;
   signed: SignedRefs;
   t: Dictionary["lesson"];
+  activityT: Dictionary["activity"];
   isStaff: boolean;
   /** original PDF ref → slug of its interactive e-book, when the viewer can read one */
   readers?: Record<string, string>;
@@ -25,7 +27,7 @@ type Props = {
 const LINK_RE = /(storage:\/\/[^\s"'<>)\]]+|https?:\/\/[^\s"'<>)\]]+)/g;
 const IMAGE_EXT = /\.(png|jpe?g|gif|webp|svg)$/i;
 const AUDIO_EXT = /\.(mp3|m4a|wav|ogg|aac)$/i;
-// Interactive block types that get their own players later.
+// Interactive block types with their own players (activities/).
 const ACTIVITY_TYPES = new Set(["flashcard", "grammar", "quiz", "celstv_quiz"]);
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
@@ -43,7 +45,17 @@ function withDownload(url: string, name: string) {
   return `${url}${url.includes("?") ? "&" : "?"}download=${encodeURIComponent(name)}`;
 }
 
-export function LessonBlock({ block, signed, t, isStaff, readers, readLabel }: Props) {
+/** Only this block's signed URLs go to the browser. */
+function urlsFor(value: unknown, signed: SignedRefs) {
+  const out: Record<string, string> = {};
+  for (const ref of collectStorageRefs(value)) {
+    const url = signed.get(ref);
+    if (url) out[ref] = url;
+  }
+  return out;
+}
+
+export function LessonBlock({ block, signed, t, activityT, isStaff, readers, readLabel }: Props) {
   const type = block.block_type;
   const media = str(block.data.media_url);
   const settings = settingsOf(block);
@@ -62,16 +74,32 @@ export function LessonBlock({ block, signed, t, isStaff, readers, readLabel }: P
 
   // E-books: designrr embeds converted to PDFs, and CelsBook flipbooks.
   const ebook = str(block.data.ebook_pdf) ?? (type === "flipbook" ? str(settings.pdfUrl) : null);
-  if (ebook)
+  if (ebook) {
+    const title = block.title ?? str(settings.title);
+    // CelsBooks have page images: a page-by-page viewer instead of the inline PDF.
+    const pages = type === "flipbook" && Array.isArray(settings.pages) && settings.pages.length > 0;
     return (
       <EbookBlock
         refUrl={ebook}
-        title={block.title ?? str(settings.title)}
+        title={title}
         signed={signed}
         t={t}
         reader={readers?.[ebook] ? { slug: readers[ebook], label: readLabel ?? "" } : undefined}
+        viewer={
+          pages ? (
+            <Activity
+              type="flipbook"
+              settings={settings}
+              urls={urlsFor(settings.pages, signed)}
+              t={activityT}
+              seed={block.id}
+              title={title ?? ""}
+            />
+          ) : undefined
+        }
       />
     );
+  }
 
   if (type === "video") {
     const yt = youtubeEmbed(media);
@@ -133,9 +161,17 @@ export function LessonBlock({ block, signed, t, isStaff, readers, readLabel }: P
   }
 
   if (ACTIVITY_TYPES.has(type)) {
+    const data = block.data.settings;
+    const empty = Array.isArray(data) ? !data.length : !data || typeof data !== "object";
+    const badge = type === "flashcard" ? activityT.flashcards : type === "grammar" ? activityT.grammar : activityT.quiz;
+    const heading = block.title ?? (type === "grammar" ? str(settings.title) : null);
     return (
-      <BlockCard title={block.title}>
-        <Placeholder icon="✏️" text={t.activitySoon} />
+      <BlockCard title={heading} badge={badge}>
+        {empty ? (
+          <Placeholder icon="✏️" text={t.activitySoon} />
+        ) : (
+          <Activity type={type} settings={data} urls={urlsFor(data, signed)} t={activityT} seed={block.id} />
+        )}
       </BlockCard>
     );
   }
@@ -199,12 +235,14 @@ function EbookBlock({
   signed,
   t,
   reader,
+  viewer,
 }: {
   refUrl: string;
   title: string | null;
   signed: SignedRefs;
   t: Props["t"];
   reader?: { slug: string; label: string };
+  viewer?: React.ReactNode;
 }) {
   const url = signed.get(refUrl);
   const name = storageRefName(refUrl);
@@ -225,13 +263,17 @@ function EbookBlock({
               {t.download}
             </a>
           </div>
-          {/* Most phone browsers can't show a PDF inline; there the buttons above are the viewer. */}
-          <iframe
-            src={`${url}#view=FitH`}
-            title={title ?? name}
-            className="hidden h-[75vh] w-full rounded-[var(--t-radius)] border border-[var(--t-border)] bg-white md:block"
-          />
+          {viewer ?? (
+            // Most phone browsers can't show a PDF inline; there the buttons above are the viewer.
+            <iframe
+              src={`${url}#view=FitH`}
+              title={title ?? name}
+              className="hidden h-[75vh] w-full rounded-[var(--t-radius)] border border-[var(--t-border)] bg-white md:block"
+            />
+          )}
         </>
+      ) : viewer ? (
+        viewer
       ) : (
         <Placeholder icon="📕" text={t.unavailable} />
       )}

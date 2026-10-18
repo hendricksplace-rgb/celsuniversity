@@ -1,12 +1,12 @@
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Client } from "@/lib/supabase/types";
 
 export const STAFF_ROLES = ["super_admin", "director", "administrator", "teacher"] as const;
 
 /** Embedded relations come back as an object at runtime but are typed as arrays without generated DB types. */
 export const one = <T,>(v: T | T[] | null | undefined): T | null => (Array.isArray(v) ? (v[0] ?? null) : (v ?? null));
 
-export async function getViewer(supabase: SupabaseClient) {
+export async function getViewer(supabase: Client) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -26,7 +26,7 @@ export async function getViewer(supabase: SupabaseClient) {
  * Storage RLS runs the same check again when the URL is signed.
  */
 export async function canAccessCourse(
-  supabase: SupabaseClient,
+  supabase: Client,
   viewer: { user: { id: string }; isStaff: boolean } | null,
   courseId: string,
 ) {

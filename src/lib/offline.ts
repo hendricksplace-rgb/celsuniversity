@@ -1,6 +1,7 @@
 "use client";
 
-import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Client } from "@/lib/supabase/types";
+import type { Answers } from "@/lib/ebook-format";
 
 // Offline e-books: Cache Storage (page, app code, audio) + a manifest the service worker reads,
 // mirrored in public.offline_downloads so access is re-checked (renew_offline_downloads) on every reconnect.
@@ -10,6 +11,9 @@ export const ASSETS = "celsu-assets-v1";
 export const MEDIA = "celsu-media-v1";
 const META = "celsu-meta-v1";
 const MANIFEST_KEY = "/__offline/manifest";
+/** Who is signed in on this device, as last seen online; the service worker serves books only to their owner. */
+const USER_KEY = "/__offline/user";
+const PENDING = "celsu:pending:";
 
 export type OfflineBook = { moduleId: string; ebookId: string; expiresAt: string; page: string; media: string[]; bytes: number };
 export type Manifest = { userId: string | null; books: Record<string, OfflineBook> };
@@ -34,6 +38,24 @@ export async function readManifest(): Promise<Manifest> {
 
 async function writeManifest(m: Manifest) {
   await (await caches.open(META)).put(MANIFEST_KEY, new Response(JSON.stringify(m), { headers: { "Content-Type": "application/json" } }));
+}
+
+/**
+ * Everything user-specific goes: downloaded pages (they carry the student's own answers), audio,
+ * the manifest and unsent answers. Whole caches are deleted, so half-finished downloads go too.
+ */
+export async function wipeOffline() {
+  if (!offlineSupported()) return;
+  await Promise.all([PAGES, MEDIA, META].map((c) => caches.delete(c)));
+  Object.keys(localStorage)
+    .filter((k) => k.startsWith(PENDING))
+    .forEach((k) => localStorage.removeItem(k));
+}
+
+export async function setOfflineUser(userId: string | null) {
+  const meta = await caches.open(META);
+  if (userId) await meta.put(USER_KEY, new Response(JSON.stringify({ userId })));
+  else await meta.delete(USER_KEY);
 }
 
 /** Signed Storage URLs change every load; cache audio by object path so any signed URL finds it. */
@@ -70,58 +92,68 @@ function pageAssets() {
 }
 
 export async function downloadBook(
-  supabase: SupabaseClient,
+  supabase: Client,
   opts: { slug: string; ebookId: string; moduleId: string; userId: string; audio: string[] },
 ): Promise<OfflineBook> {
   await registerServiceWorker();
   const page = `/app/libros/${opts.slug}`;
   let bytes = 0;
-
-  const pageRes = await fetch(page, { credentials: "same-origin" });
-  if (!pageRes.ok) throw new Error(`page ${pageRes.status}`);
-  bytes += Number(pageRes.headers.get("content-length") ?? 0);
-  await (await caches.open(PAGES)).put(page, pageRes);
-
-  const assets = await caches.open(ASSETS);
-  for (const a of pageAssets()) {
-    if (!(await assets.match(a))) await assets.add(a).catch(() => undefined);
-  }
-
-  const media = await caches.open(MEDIA);
   const keys: string[] = [];
-  for (const url of opts.audio) {
-    const res = await fetch(url, { mode: "cors" });
-    if (!res.ok) continue;
-    const blob = await res.blob();
-    bytes += blob.size;
-    const key = mediaKey(url);
-    await media.put(key, new Response(blob, { headers: { "Content-Type": blob.type || "audio/mp4" } }));
-    keys.push(key);
+  const before = await readManifest();
+  if (before.userId && before.userId !== opts.userId) await wipeOffline();
+  // Owner first, so anything cached below is always attributable (and wiped with the rest).
+  await writeManifest({ userId: opts.userId, books: before.userId === opts.userId ? before.books : {} });
+
+  try {
+    const pageRes = await fetch(page, { credentials: "same-origin" });
+    if (!pageRes.ok) throw new Error(`page ${pageRes.status}`);
+    bytes += Number(pageRes.headers.get("content-length") ?? 0);
+    await (await caches.open(PAGES)).put(page, pageRes);
+
+    const assets = await caches.open(ASSETS);
+    for (const a of pageAssets()) {
+      if (!(await assets.match(a))) await assets.add(a).catch(() => undefined);
+    }
+
+    const media = await caches.open(MEDIA);
+    for (const url of opts.audio) {
+      const res = await fetch(url, { mode: "cors" });
+      if (!res.ok) continue;
+      const blob = await res.blob();
+      bytes += blob.size;
+      const key = mediaKey(url);
+      await media.put(key, new Response(blob, { headers: { "Content-Type": blob.type || "audio/mp4" } }));
+      keys.push(key);
+    }
+
+    const { data, error } = await supabase
+      .from("offline_downloads")
+      .upsert(
+        {
+          user_id: opts.userId,
+          module_id: opts.moduleId,
+          device_id: deviceId(),
+          bytes,
+          downloaded_at: new Date().toISOString(),
+          last_validated_at: new Date().toISOString(),
+          expires_at: new Date(Date.now() + 7 * 864e5).toISOString(),
+          removed_at: null,
+        },
+        { onConflict: "user_id,module_id,device_id" },
+      )
+      .select("expires_at")
+      .single();
+    if (error) throw error;
+
+    const book: OfflineBook = { moduleId: opts.moduleId, ebookId: opts.ebookId, expiresAt: data.expires_at, page, media: keys, bytes };
+    const manifest = await readManifest();
+    await writeManifest({ userId: opts.userId, books: { ...manifest.books, [opts.slug]: book } });
+    return book;
+  } catch (err) {
+    // Don't leave a half-downloaded book behind.
+    await dropFromCache({ moduleId: opts.moduleId, ebookId: opts.ebookId, expiresAt: "", page, media: keys, bytes });
+    throw err;
   }
-
-  const { data, error } = await supabase
-    .from("offline_downloads")
-    .upsert(
-      {
-        user_id: opts.userId,
-        module_id: opts.moduleId,
-        device_id: deviceId(),
-        bytes,
-        downloaded_at: new Date().toISOString(),
-        last_validated_at: new Date().toISOString(),
-        expires_at: new Date(Date.now() + 7 * 864e5).toISOString(),
-        removed_at: null,
-      },
-      { onConflict: "user_id,module_id,device_id" },
-    )
-    .select("expires_at")
-    .single();
-  if (error) throw error;
-
-  const book: OfflineBook = { moduleId: opts.moduleId, ebookId: opts.ebookId, expiresAt: data.expires_at, page, media: keys, bytes };
-  const manifest = await readManifest();
-  await writeManifest({ userId: opts.userId, books: { ...manifest.books, [opts.slug]: book } });
-  return book;
 }
 
 async function dropFromCache(book: OfflineBook) {
@@ -130,7 +162,7 @@ async function dropFromCache(book: OfflineBook) {
   await Promise.all(book.media.map((k) => media.delete(k)));
 }
 
-export async function removeBook(supabase: SupabaseClient | null, slug: string) {
+export async function removeBook(supabase: Client | null, slug: string) {
   const manifest = await readManifest();
   const book = manifest.books[slug];
   if (!book) return;
@@ -149,16 +181,17 @@ export async function removeBook(supabase: SupabaseClient | null, slug: string) 
 }
 
 /** On every reconnect: renew the 7 days, and delete books the student can no longer access. */
-export async function renewDownloads(supabase: SupabaseClient, userId: string | null) {
+export async function renewDownloads(supabase: Client, userId: string | null) {
   if (!offlineSupported()) return;
+  await setOfflineUser(userId);
   const manifest = await readManifest();
-  const slugs = Object.keys(manifest.books);
-  if (!slugs.length) return;
   // Signed out, or a different account on this device: nothing downloaded may stay.
-  if (!userId || (manifest.userId && manifest.userId !== userId)) {
-    for (const slug of slugs) await removeBook(null, slug);
+  if (manifest.userId && manifest.userId !== userId) {
+    await wipeOffline();
+    if (userId) await setOfflineUser(userId);
     return;
   }
+  if (!userId || !Object.keys(manifest.books).length) return;
   const { data, error } = await supabase.rpc("renew_offline_downloads", { p_device: deviceId() });
   if (error) return; // offline or transient: try again next time
   const rows = new Map((data as { module_id: string; expires_at: string; allowed: boolean }[]).map((r) => [r.module_id, r]));
@@ -177,8 +210,7 @@ export async function renewDownloads(supabase: SupabaseClient, userId: string | 
 
 // ---------- answers written while offline ----------
 
-const PENDING = "celsu:pending:";
-export type PendingAnswers = { user_id: string; ebook_id: string; answers: unknown; last_screen: string | null; completed_at: string | null; savedAt: string };
+export type PendingAnswers = { user_id: string; ebook_id: string; answers: Answers; last_screen: string | null; completed_at: string | null; savedAt: string };
 
 export function keepLocal(row: PendingAnswers) {
   localStorage.setItem(PENDING + row.ebook_id, JSON.stringify(row));
@@ -194,7 +226,7 @@ export function clearLocal(ebookId: string) {
   localStorage.removeItem(PENDING + ebookId);
 }
 
-export async function flushPending(supabase: SupabaseClient, userId: string | null) {
+export async function flushPending(supabase: Client, userId: string | null) {
   for (const key of Object.keys(localStorage).filter((k) => k.startsWith(PENDING))) {
     const row = JSON.parse(localStorage.getItem(key) ?? "null") as PendingAnswers | null;
     if (!row) continue;

@@ -77,6 +77,7 @@ export default async function LessonPage({ params }: Props) {
               block={block}
               signed={signed}
               t={t.lesson}
+              activityT={t.activity}
               isStaff={viewer.isStaff}
               readers={readers}
               readLabel={t.reader.interactive}

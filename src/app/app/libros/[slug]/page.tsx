@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { getViewer, one } from "@/lib/access";
 import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
-import type { Ebook } from "@/lib/ebook-format";
+import type { Answers, Ebook } from "@/lib/ebook-format";
 import { EbookReader } from "@/components/reader/EbookReader";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -27,7 +27,7 @@ export default async function EbookPage({ params }: Props) {
   if (!ebook) notFound();
   const course = one(ebook.course);
 
-  const resourceSlugs = (ebook.resources ?? []).map((r: { ebook: string }) => r.ebook);
+  const resourceSlugs = ((ebook.resources ?? []) as { ebook: string }[]).map((r) => r.ebook);
   const [{ data: saved }, { data: related }, signed, { data: host }] = await Promise.all([
     // Owner-only table: this returns the viewer's own row and nothing else.
     supabase
@@ -85,7 +85,7 @@ export default async function EbookPage({ params }: Props) {
       <EbookReader
         ebook={ebook as unknown as Ebook}
         userId={viewer.user.id}
-        initial={saved ?? null}
+        initial={saved ? { ...saved, answers: (saved.answers ?? {}) as Answers } : null}
         moduleId={moduleId}
         signed={Object.fromEntries(signed)}
         resourceTitles={Object.fromEntries((related ?? []).map((r) => [r.slug, r.title]))}

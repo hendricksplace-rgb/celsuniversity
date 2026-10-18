@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
-import { setLanguage, signOut } from "@/lib/actions";
+import { setLanguage } from "@/lib/actions";
+import { SignOutButton } from "./SignOutButton";
 import { getViewer } from "@/lib/access";
 
 export async function SiteHeader() {
@@ -30,9 +31,7 @@ export async function SiteHeader() {
                   {t.admin.booksTitle}
                 </Link>
               )}
-              <form action={signOut}>
-                <button className="rounded-lg px-2 py-1.5 text-white/70 hover:bg-white/10">{t.nav.signOut}</button>
-              </form>
+              <SignOutButton label={t.nav.signOut} />
             </>
           ) : (
             <>

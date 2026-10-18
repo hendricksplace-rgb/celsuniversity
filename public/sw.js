@@ -5,6 +5,7 @@ const PAGES = "celsu-pages-v1";
 const ASSETS = "celsu-assets-v1";
 const META = "celsu-meta-v1";
 const MANIFEST_KEY = "/__offline/manifest";
+const USER_KEY = "/__offline/user";
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (event) => event.waitUntil(self.clients.claim()));
@@ -35,6 +36,9 @@ self.addEventListener("fetch", (event) => {
       fetch(req).catch(async () => {
         const slug = decodeURIComponent(url.pathname.split("/")[3] || "");
         const manifest = await readManifest();
+        // Only the account that downloaded the book, and only while it is the one signed in here.
+        const user = await readJson(USER_KEY);
+        if (!manifest.userId || manifest.userId !== user?.userId) return offlinePage("missing");
         const book = manifest.books?.[slug];
         if (!book) return offlinePage("missing");
         if (new Date(book.expiresAt).getTime() < Date.now()) return offlinePage("expired");
@@ -45,9 +49,13 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
+async function readJson(key) {
+  const res = await (await caches.open(META)).match(key);
+  return res ? res.json().catch(() => null) : null;
+}
+
 async function readManifest() {
-  const res = await (await caches.open(META)).match(MANIFEST_KEY);
-  return res ? res.json() : { books: {} };
+  return (await readJson(MANIFEST_KEY)) || { books: {} };
 }
 
 function offlinePage(reason) {

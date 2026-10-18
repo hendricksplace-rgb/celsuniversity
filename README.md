@@ -125,7 +125,14 @@ Lesson content stores files as `storage://<bucket>/<path>`. Raw Storage URLs nev
    - `user-uploads` → only the viewer's own `<user_id>/` folder.
 3. Renders anything not resolved as "not available".
 
-Block types: `text` (plain text, URLs and file links made clickable), `image`, `audio`, files/PDFs, e-books (`data.ebook_pdf` and CelsBook flipbooks: open/download buttons plus an inline viewer on desktop), `teacher_guide` (sanitized HTML, staff only; RLS already hides these from students), `video` (placeholder until a host is chosen; YouTube is embedded through youtube-nocookie), and a placeholder for the interactive types (flashcard, grammar, quiz, celstv_quiz).
+Block types: `text` (plain text, URLs and file links made clickable), `image`, `audio`, files/PDFs, e-books (`data.ebook_pdf` and CelsBook flipbooks: open/download buttons plus an inline viewer on desktop), `teacher_guide` (sanitized HTML, staff only; RLS already hides these from students), `video` (placeholder until a host is chosen; YouTube is embedded through youtube-nocookie), and the interactive types (`src/components/lesson/activities/`):
+
+- `flashcard`: tap to flip, recorded audio, filter by words / verbs / phrases, shuffle.
+- `quiz` and `celstv_quiz`: one question at a time with instant feedback, then a score. CelsTV questions can be text, listening, image or sound choices.
+- `grammar`: a stepper through the exercises. Build the sentence (tap words in order), choose the sentence, fill the blanks, funics (tap a word to hear it), listen and read, and pick the recording.
+- `flipbook`: CelsBook pages one at a time, with thumbnails; this works on phones, unlike inline PDFs.
+
+Activities are practice only: answers aren't saved yet (`progress` has `quiz_score` for that). Each block gets only its own signed URLs. Media is loaded only from our Storage, or from inline `data:audio/` in the migrated content.
 
 ### Interactive e-books
 
@@ -184,13 +191,13 @@ The course → theme map lives in `src/lib/themes.ts`, keyed by slug. `themeForC
 
 ### TypeScript types
 
-Generate the database types after any schema change:
+`src/lib/supabase/database.types.ts` is generated from the live schema, and all clients are typed with it (`Client` in `src/lib/supabase/types.ts`). Regenerate it after any schema change, with the Supabase MCP `generate_typescript_types` or:
 
 ```bash
 npx supabase gen types typescript --project-id pbpnhsgygwqxnkklhyuz > src/lib/supabase/database.types.ts
 ```
 
-(needs `npx supabase login`). Then pass `Database` to `createBrowserClient<Database>` / `createServerClient<Database>`.
+(needs `npx supabase login`).
 
 ## Base44 → Supabase migration
 

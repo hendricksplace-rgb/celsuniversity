@@ -1,3 +1,5 @@
+import type { Json } from "@/lib/supabase/types";
+
 // Interactive e-book format (public.ebooks, format_version 1).
 // Written from the content Cowork loaded on 18 Oct 2026. Keep in step with claude/celsu-ebook-reader-format.md.
 
@@ -57,7 +59,7 @@ export type Ebook = {
 };
 
 /** Saved per student in ebook_answers.answers. Values depend on the block type. */
-export type Answers = Record<string, unknown>;
+export type Answers = { [key: string]: Json | undefined };
 
 export const answerKey = (screenId: string, blockIndex: number) => `${screenId}:${blockIndex}`;
 export const quizKey = (n: number) => `quiz:${n}`;

@@ -5,12 +5,9 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { LANG_COOKIE, isLang } from "@/lib/i18n/dictionaries";
+import { safeNextPath } from "@/lib/safe-next";
 
-function safeNext(value: FormDataEntryValue | null) {
-  const next = typeof value === "string" ? value : "";
-  // Only allow same-site relative paths.
-  return next.startsWith("/") && !next.startsWith("//") ? next : "/app";
-}
+const safeNext = (value: FormDataEntryValue | null) => safeNextPath(value);
 
 async function siteUrl() {
   if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;

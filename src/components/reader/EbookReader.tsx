@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import type { Answers, Ebook } from "@/lib/ebook-format";
+import type { Json } from "@/lib/supabase/types";
 import { answerKey, quizKey } from "@/lib/ebook-format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { ReaderBlock } from "./ReaderBlocks";
@@ -123,7 +124,7 @@ export function EbookReader({ ebook, userId, initial, moduleId, signed, resource
   useEffect(() => () => void (pending.current && clearTimeout(pending.current)), []);
 
   const setAnswer = (key: string, value: unknown) => {
-    const next = { ...answers, [key]: value };
+    const next = { ...answers, [key]: value as Json };
     setAnswers(next);
     schedule({ answers: next, last_screen: screenIdAt(step), completed_at: completedAt });
   };
