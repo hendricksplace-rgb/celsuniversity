@@ -10,3 +10,6 @@ select cron.schedule('eval-cleanup', '17 4 * * *', $$
   delete from public.eval_sessions where created_at < now() - interval '7 days' and (user_id is null or finished_at is null);
   delete from public.eval_rate_limits where window_start < now() - interval '1 day';
 $$);
+
+-- CelsGLOBAL Resume Review: email "Tu revisión de resume está lista" when the 48-hour hold ends.
+select cron.schedule('resume-ready', '*/15 * * * *', $$select private.kick_resume_ready()$$);

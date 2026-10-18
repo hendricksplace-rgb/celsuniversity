@@ -285,6 +285,49 @@
         "total_mxn",
         "ultimos4"
       ]
+    },
+    {
+      "id": "resume-ready",
+      "file": "app/resume-ready.html",
+      "program": "CelsGLOBAL",
+      "from_name": "CelsGLOBAL · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "trigger": "Revisión de resume: terminan las 48 horas (pg_cron cada 15 min)",
+      "subject": "Tu revisión de resume está lista",
+      "preheader": "Tu calificación y tu resume reescrito en inglés te esperan.",
+      "variables": [
+        "archivo",
+        "ayuda_url",
+        "boton_url",
+        "fecha",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "interview-summary",
+      "file": "app/interview-summary.html",
+      "program": "CelsGLOBAL",
+      "from_name": "CelsGLOBAL · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "trigger": "Práctica de entrevista: al terminar la sesión",
+      "subject": "Tu práctica de entrevista: {{puntos}} de {{maximo}} puntos STAR",
+      "preheader": "Tu resumen y las respuestas sugeridas para practicar.",
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "fortaleza",
+        "maximo",
+        "nombre",
+        "practicar",
+        "preguntas_html",
+        "privacidad_url",
+        "puntos"
+      ]
     }
   ]
 }

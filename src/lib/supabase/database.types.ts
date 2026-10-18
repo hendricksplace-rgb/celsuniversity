@@ -1571,6 +1571,11 @@ export type Database = {
         Args: { p_finish?: boolean; p_lesson: string; p_part?: string }
         Returns: Json
       }
+      can_use_ai_tools: { Args: never; Returns: boolean };
+      my_resume_reviews: {
+        Args: never;
+        Returns: { id: string; file_name: string | null; status: string; created_at: string; unlock_at: string; result: Json | null; original_text: string | null }[];
+      };
       my_evaluation_history: {
         Args: never
         Returns: {
