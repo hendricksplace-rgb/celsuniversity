@@ -5,13 +5,41 @@ import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { PART_KEYS, episodePath, loadCoursePage, type PartKey } from "@/lib/course-page";
 import { loadLessonContent } from "@/lib/lesson-content";
-import { LessonBlock, settingsOf, youtubeEmbed } from "@/components/lesson/LessonBlock";
+import { LessonBlock, settingsOf, urlsFor, youtubeEmbed } from "@/components/lesson/LessonBlock";
 import { PartShell, Empty, FinishButton } from "@/components/part/PartShell";
 import { VideoPart } from "@/components/part/VideoPart";
 import { fill } from "@/components/course/kit";
 import { CardsPart, type Card } from "@/components/part/CardsPart";
 import { QuizPart } from "@/components/part/QuizPart";
 import { buildQuiz } from "@/lib/quiz";
+import { BookPart } from "@/components/part/BookPart";
+import { AudioPart, type Chapter, type Cue } from "@/components/part/AudioPart";
+import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
+
+// Same list as the exercise renderers (components/lesson/activities/Grammar.tsx).
+const GRAMMAR_TYPES = new Set(["drag_drop_single", "choose_text_from_audio", "drag_drop_multiple", "funics", "listen_only", "listening_select_inverted"]);
+
+/** The rule screen: the first exercise's explanation (paragraphs, example list, EN/ES audio), else its description and examples. */
+function grammarRule(g: Record<string, unknown>, exercises: Record<string, unknown>[], sign: (ref: string) => string | null): GrammarRule {
+  const rule: GrammarRule = { title: String(g.subtitle || g.grammarTopic || g.title || "Grammar"), text: [], examples: [], en: null, es: null };
+  for (const ex of exercises) {
+    const c = (ex.content ?? {}) as Record<string, unknown>;
+    const groups = Array.isArray(c.instructions) ? (c.instructions as unknown[]).flat() : [];
+    for (const item of groups as Record<string, unknown>[]) {
+      if (item?.type === "paragraph" && typeof item.text === "string" && !/^for example:?$/i.test(item.text.trim())) rule.text.push(item.text);
+      if (item?.type === "list" && Array.isArray(item.items)) rule.examples.push(...(item.items as unknown[]).filter((x): x is string => typeof x === "string"));
+      if (item?.type === "audios") {
+        rule.en ??= typeof item.english === "string" ? sign(item.english) : null;
+        rule.es ??= typeof item.spanish === "string" ? sign(item.spanish) : null;
+      }
+    }
+    if (!rule.text.length && typeof c.description === "string") rule.text.push(c.description);
+    if (!rule.examples.length && Array.isArray(c.examples)) rule.examples.push(...(c.examples as unknown[]).filter((x): x is string => typeof x === "string"));
+    if (rule.text.length) break;
+  }
+  rule.examples = rule.examples.slice(0, 6);
+  return rule;
+}
 import type { Block } from "@/components/lesson/LessonBlock";
 
 type RawCard = { front: string; back: string; category?: string; back_audio?: string | null; image?: string | null };
@@ -71,6 +99,39 @@ export default async function PartPage({ params }: Props) {
       : { data: [] as { data: unknown }[] };
     const cards = (cardBlocks ?? []).flatMap((b) => rawCards((b.data as Record<string, unknown>)?.settings));
     body = <QuizPart questions={buildQuiz(settingsOf(quiz), cards, (r) => (typeof r === "string" ? (content.signed.get(r) ?? null) : null), part.id)} />;
+  } else if (key === "celsbook" && blocks.some((b) => b.block_type === "flipbook" && Array.isArray(settingsOf(b).pages))) {
+    const book = settingsOf(blocks.find((b) => b.block_type === "flipbook")!);
+    const pages = (book.pages as { n?: number; url?: string }[])
+      .slice()
+      .sort((a, b) => Number(a.n) - Number(b.n))
+      .map((pg) => ({ url: pg.url ? (content.signed.get(pg.url) ?? null) : null }));
+    body = <BookPart pages={pages} ratio={Number(book.aspectRatio) > 0 ? Number(book.aspectRatio) : 0.7} lessonId={part.id} finishLabel={finishLabel} />;
+  } else if (key === "celsaudio") {
+    const b = blocks.find((x) => x.block_type === "audio");
+    const media = typeof b?.data.media_url === "string" ? b.data.media_url : null;
+    const list = <T,>(v: unknown, ok: (x: T) => boolean) => (Array.isArray(v) ? (v as T[]).filter(ok) : []);
+    body = (
+      <AudioPart
+        src={media ? (content.signed.get(media) ?? null) : null}
+        title={episode.title || fill(t.episode.tag, { n: episode.n })}
+        cues={list<Cue>(b?.data.transcript, (c) => typeof c?.start === "number" && typeof c?.text === "string")}
+        chapters={list<Chapter>(b?.data.chapters, (c) => typeof c?.start === "number" && typeof c?.title === "string")}
+        episodeKey={episodePath(page.course.slug, episode.n)}
+        finishLabel={finishLabel}
+      />
+    );
+  } else if (key === "grammar" && blocks.some((b) => b.block_type === "grammar")) {
+    const g = settingsOf(blocks.find((b) => b.block_type === "grammar")!);
+    const exercises = (Array.isArray(g.exercises) ? (g.exercises as Record<string, unknown>[]) : []).filter((e) => GRAMMAR_TYPES.has(String(e?.type)));
+    body = (
+      <GrammarPart
+        rule={grammarRule(g, exercises, (r) => content.signed.get(r) ?? null)}
+        exercises={exercises}
+        urls={urlsFor(g, content.signed)}
+        activityT={t.activity}
+        seed={part.id}
+      />
+    );
   } else if (!blocks.length) {
     body = (
       <>

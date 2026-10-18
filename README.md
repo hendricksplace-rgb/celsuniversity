@@ -264,6 +264,13 @@ Guests can buy, so the pages live outside `/app`: `/comprar/[programa]` (step 1,
 - Stripe setup: add the endpoint `https://pbpnhsgygwqxnkklhyuz.supabase.co/functions/v1/stripe-webhook` with the 4 events above, then set the two secrets.
 - Expired or paused enrollments show a notice on the course page with "Renovar mi acceso".
 
+### Course page, episodes and parts (course-episode kit)
+
+- `/app/cursos/[slug]` (`src/lib/course-page.ts`, `src/components/course/`): CelsTV gets the hero with the progress ring and "Continúa donde te quedaste" (latest `progress.last_activity`), units of 8 episodes, cards from 640 px and rows on phones. CelsBSNS and the CelsGLOBAL courses list weeks/sections; CelsUS lists its episodes, the practice exam (best score) and Recursos. An episode is a `lesson_week` module; its parts are its lessons without `teacher_only` (the Teachersbook never shows to students; staff get a "Guía del maestro" link on the episode). A part is done when its progress row is `completed`. Nothing is locked.
+- `/app/cursos/[slug]/episodio/[n]`: hero (`modules.artwork_url` or a color tile), ring and XP, continue card, "Llévatelo sin internet" (downloads the episode and every part but the video for 7 days: `downloadEpisode` in `src/lib/offline.ts`, served offline by `public/sw.js`), and the 6 parts as a path. `?hecho=<part>` pops that node's check.
+- `/app/cursos/[slug]/episodio/[n]/[parte]` (`celsvideo`, `celscards`, `celsbook`, `celsaudio`, `grammar`, `quiz`): `PartShell` gives the top bar and the finish flow (`record_lesson_progress`; queued in localStorage when offline and sent on reconnect). Each screen works with the content that exists and shows a calm empty state otherwise. The quiz's 5 formats are built from the episode's questions and CelsCards (`src/lib/quiz.ts`). CelsAudio plays only files in our Storage and shows a karaoke transcript when the block has `data.transcript` (`[{ start, text }]`) and chapters with `data.chapters` (`[{ start, title }]`).
+- Part icons: `public/parts/*.svg`, the kit files unchanged.
+
 ### Program themes
 
 Course and lesson pages wrap their content in `data-theme="…"`. Components use only the tokens defined in `globals.css` (`--t-bg`, `--t-surface`, `--t-text`, `--t-muted`, `--t-accent`, `--t-link`, `--t-border`, `--t-radius`, `--t-card-top`, `--t-font`, `--t-heading`, `--t-heading-weight`). Adding a brand means adding one token block.

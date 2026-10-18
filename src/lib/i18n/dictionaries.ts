@@ -443,6 +443,8 @@ const es = {
     topics: "Cómo vas",
     sectionDone: "¡Sección terminada!",
     continue: "Continuar",
+    gtypes: { drag_drop_single: "Escucha y ordena", drag_drop_multiple: "Completa", choose_text_from_audio: "Elige lo que escuchas", listening_select_inverted: "¿Cuál es?", funics: "Funics", listen_only: "Escucha y lee" },
+    grammarKicker: "Grammar · Episodio {n}",
   },
   lesson: {
     prev: "Anterior",
@@ -1204,6 +1206,8 @@ const en: Dictionary = {
     topics: "How you're doing",
     sectionDone: "Section done!",
     continue: "Continue",
+    gtypes: { drag_drop_single: "Listen and order", drag_drop_multiple: "Complete", choose_text_from_audio: "Choose what you hear", listening_select_inverted: "Which one is it?", funics: "Funics", listen_only: "Listen and read" },
+    grammarKicker: "Grammar · Episode {n}",
   },
   lesson: {
     prev: "Previous",

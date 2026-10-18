@@ -5,7 +5,7 @@ import { usePartDone } from "../progress";
 import { arr, AudioButton, Feedback, obj, Option, Rich, seededShuffle, speak, str, useResolve, useScrollIntoView, useT } from "./shared";
 
 type Ex = Record<string, unknown>;
-const KNOWN = new Set([
+export const KNOWN = new Set([
   "drag_drop_single",
   "choose_text_from_audio",
   "drag_drop_multiple",
@@ -53,7 +53,7 @@ export function Grammar({ settings, seed }: { settings: unknown; seed: string })
   );
 }
 
-function Exercise({ ex, seed }: { ex: Ex; seed: string }) {
+export function Exercise({ ex, seed }: { ex: Ex; seed: string }) {
   const resolve = useResolve();
   const c = obj(ex.content);
   const audio = resolve(ex.audioFile);
