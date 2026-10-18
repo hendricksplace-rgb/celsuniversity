@@ -18,7 +18,9 @@ Each was checked for three things:
 | `record_lesson_progress(p_lesson, p_part, p_finish)` | definer | Writes `progress` and the `gamification` XP and streak, which students must not set themselves. It checks the lesson is published, not teacher-only, and that the caller has access, and that the part belongs to the lesson. The user is always `(select auth.uid())`. |
 | `renew_offline_downloads(p_device)` | **invoker** (was definer) | Only updates the caller's own `offline_downloads` rows, which the student's own RLS already allows. It re-checks course access. |
 
-The advisor will keep flagging the four that stay definer. That's expected, because they're meant to be called by students.
+`log_client_error(...)` (added in batch 3 §4) is also definer and is callable by visitors on purpose, so any page can report a crash. It only inserts into `client_errors`, caps reports at 20 per browser session per day and 5,000 per hour overall, and truncates long fields. Nobody but staff can read the table.
+
+The advisor will keep flagging the five that stay definer. That's expected, because they're meant to be called by students.
 
 ## Tables with RLS on and no policies (service-only, on purpose)
 
