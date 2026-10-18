@@ -2,6 +2,10 @@
 
 Not needed for the October 19, 2026 switch. The order is roughly by value.
 
+## Current students
+- **No Kajabi import (Matt, 2026-10-18).** There's no Kajabi access, so current students sign up themselves with their usual email, and staff give them their program in **Admin → Estudiantes → Dar acceso** (`source = 'manual'`, logged in `admin_audit_log`).
+- `scripts/migrate-students.mjs` is parked. It still works (dry run by default; `--apply` needs `MIGRATION_APPROVED=yes`) if a Kajabi export ever turns up.
+
 ## Product and content
 - **CelsTV episodes 3–8 have no CelsVideo.** It's a content gap for Cowork; the part shows "llega muy pronto".
 - **Testimonials.** The section stays hidden until Matt sends real ones (`celsu-website-spec.md`).

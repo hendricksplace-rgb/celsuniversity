@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { CheckoutForm } from "@/components/shop/CheckoutForm";
 import { Mxn } from "@/components/shop/Mxn";
 import { PROGRAMS, productsFor, programOf, usd } from "@/lib/purchase";
+import { missingGrants, type Grant } from "@/lib/grants";
 
 type Props = { searchParams: Promise<{ producto?: string }> };
 export const metadata = { title: "Tu compra · CelsU" };
@@ -17,9 +18,18 @@ export default async function Resumen({ searchParams }: Props) {
   const meta = PROGRAMS[program];
   const plan = p.installments;
   const today = plan ? plan[0] : p.price_usd_cents;
+  const supabase = await createClient();
   const {
     data: { user },
-  } = await (await createClient()).auth.getUser();
+  } = await supabase.auth.getUser();
+  // Already enrolled in everything this product gives (e.g. a current student whose access staff added):
+  // say so instead of charging again.
+  let owned = false;
+  if (user) {
+    const { data: row } = await supabase.from("products").select("grants").eq("code", p.code).maybeSingle();
+    const grants = Array.isArray(row?.grants) ? (row.grants as Grant[]) : [];
+    owned = grants.length > 0 && (await missingGrants(supabase, user.id, grants)).length === 0;
+  }
   const change = p.program === "bundle" ? (p.code === "bundle_tv_bsns" ? "/celsbsns" : "/cursos") : `/comprar/${p.program}`;
 
   return (
@@ -74,14 +84,27 @@ export default async function Resumen({ searchParams }: Props) {
         </dl>
       </section>
 
-      <CheckoutForm product={p.code} signedInEmail={user?.email ?? null} payLabel={`Pagar ${usd(today)} con tarjeta`} color={meta.color} ink={meta.ink} />
+      {owned ? (
+        <section className="space-y-3 rounded-3xl bg-white p-5 text-center shadow-sm" role="status">
+          <h2 className="text-xl font-extrabold">Ya tienes acceso</h2>
+          <p className="text-sm font-semibold text-[#6B6680]">Tu cuenta ya incluye {p.name}. No necesitas pagar otra vez.</p>
+          <Link href="/app/cursos" className="inline-flex rounded-full px-5 py-3 text-sm font-extrabold" style={{ background: meta.color, color: meta.ink }}>
+            Ir a Mis cursos →
+          </Link>
+        </section>
+      ) : (
+        <CheckoutForm product={p.code} signedInEmail={user?.email ?? null} payLabel={`Pagar ${usd(today)} con tarjeta`} color={meta.color} ink={meta.ink} />
+      )}
 
       <p className="text-center text-xs font-semibold leading-relaxed text-[#6B6680]">
         El pago lo procesa Stripe; no guardamos tu tarjeta. Acceso por {p.access_label} desde hoy. Reembolso en las primeras 72 horas.{" "}
-        <Link href="/ayuda" className="underline">
+        <Link href="/terminos" className="underline">
           Términos
         </Link>{" "}
-        · Aviso de Privacidad (muy pronto)
+        ·{" "}
+        <Link href="/privacidad" className="underline">
+          Aviso de Privacidad
+        </Link>
       </p>
     </div>
   );

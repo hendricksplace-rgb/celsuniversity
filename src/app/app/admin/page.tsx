@@ -12,6 +12,7 @@ export default async function AdminHome() {
   if (!isAdminRole(viewer.role)) notFound();
   const links = [
     { href: "/app/admin/equipo", title: "Equipo y roles", text: viewer.role === "super_admin" ? "Quién es administrador, profesor o estudiante. Tú cambias los roles." : "Quién es administrador, profesor o estudiante." },
+    { href: "/app/admin/estudiantes", title: "Estudiantes", text: "Busca a un estudiante y dale acceso a su programa (los estudiantes actuales se registran solos)." },
     { href: "/app/admin/cursos", title: "Cursos", text: "Constructor de cursos: módulos, lecciones y bloques, con vista previa e historial." },
     { href: "/app/admin/libros", title: "Libros", text: "Revisa y publica los libros interactivos." },
     { href: "/app/admin/salud", title: "Salud del contenido", text: "Lecciones vacías, videos en Wistia o faltantes, episodios sin imagen, quizzes sin audio, e-books sin publicar." },

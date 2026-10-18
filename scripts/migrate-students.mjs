@@ -1,3 +1,6 @@
+// PARKED (Matt, 2026-10-18): no Kajabi access, so no import. Current students sign up themselves and staff
+// grant access in Admin → Estudiantes (docs/after-launch.md). Kept in case an export turns up.
+//
 // Student migration: Kajabi export (+ Base44, if it has students) → Supabase Auth + enrollments.
 //
 //   node --env-file=.env.local scripts/migrate-students.mjs --kajabi <people.csv> [--kajabi-offers <offers.csv>]
