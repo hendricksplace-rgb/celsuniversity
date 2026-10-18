@@ -42,11 +42,15 @@ export default async function LessonPage({ params }: Props) {
   ]);
 
   const visible = (blocks ?? []).filter((b) => viewer.isStaff || !b.teacher_only) as Block[];
-  const signed = await signStorageRefs(supabase, collectStorageRefs(visible), {
-    courseId: course.id,
-    viewer,
-    access,
-  });
+  const ebookPdfs = visible.map((b) => b.data?.ebook_pdf).filter((v): v is string => typeof v === "string");
+  const [signed, { data: readerBooks }] = await Promise.all([
+    signStorageRefs(supabase, collectStorageRefs(visible), { courseId: course.id, viewer, access }),
+    // Interactive versions of this lesson's PDFs (RLS: students only see published ones).
+    ebookPdfs.length
+      ? supabase.from("ebooks").select("slug, pdf_path").in("pdf_path", ebookPdfs)
+      : Promise.resolve({ data: [] as { slug: string; pdf_path: string }[] }),
+  ]);
+  const readers = Object.fromEntries((readerBooks ?? []).map((e) => [e.pdf_path, e.slug]));
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
   const prev = index > 0 ? siblings![index - 1] : null;
@@ -68,7 +72,15 @@ export default async function LessonPage({ params }: Props) {
       ) : (
         <div className="space-y-5">
           {visible.map((block) => (
-            <LessonBlock key={block.id} block={block} signed={signed} t={t.lesson} isStaff={viewer.isStaff} />
+            <LessonBlock
+              key={block.id}
+              block={block}
+              signed={signed}
+              t={t.lesson}
+              isStaff={viewer.isStaff}
+              readers={readers}
+              readLabel={t.reader.interactive}
+            />
           ))}
           {signed.size > 0 && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
         </div>

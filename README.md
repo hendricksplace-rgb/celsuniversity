@@ -49,8 +49,10 @@ src/
     app/                   student area (/app), needs a signed-in user
     app/cursos/[slug]      course outline (modules → lessons)
     app/lecciones/[id]     lesson page: renders every content block
+    app/libros/[slug]      interactive e-book reader
   components/SiteHeader    nav, auth state, language toggle
   components/lesson/       one renderer per block type, styled only with theme tokens
+  components/reader/       e-book reader (client): screens, narration, interactive blocks, quiz, autosave
   lib/
     supabase/              browser, server and middleware clients (@supabase/ssr)
     i18n/                  es/en dictionaries; getDictionary() on the server
@@ -58,6 +60,7 @@ src/
     access.ts              viewer + role, canAccessCourse() (mirrors private.has_course_access)
     storage.ts             storage://bucket/path → short-lived signed URL, after the access check
     themes.ts              course → program theme (celstv, celsbsns, celsus, celsglobal)
+    ebook-format.ts        TypeScript types for the e-book format (screens, 19 block types, quiz)
   middleware.ts            refreshes the session; guards /app
 supabase/migrations/       schema history, recreated from the live database
 scripts/migrate-base44/    one-off Base44 → Supabase data + file migration
@@ -87,6 +90,8 @@ Google sign-in also needs the Google provider turned on under Authentication →
 | 20261017230234 | staging_teacher_guides | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML (now copied into `content_blocks`; the table can be dropped) |
 | 20261017235047 | enable_pg_net | `pg_net` extension |
 | 20261017235906 | staging_ebook_text | `public.ebook_source_text`: temporary extracted text of the designrr PDFs for the CelsBook redesign |
+| 20261018001216 | ebooks_reader_content | `public.ebooks`: interactive e-book content (from Cowork) |
+| 20261018003317 | ebook_answers | `public.ebook_answers`: each student's own answers in an e-book. **Owner-only**: no staff or admin read |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 
@@ -116,6 +121,19 @@ Lesson content stores files as `storage://<bucket>/<path>`. Raw Storage URLs nev
 3. Renders anything not resolved as "not available".
 
 Block types: `text` (plain text, URLs and file links made clickable), `image`, `audio`, files/PDFs, e-books (`data.ebook_pdf` and CelsBook flipbooks: open/download buttons plus an inline viewer on desktop), `teacher_guide` (sanitized HTML, staff only; RLS already hides these from students), `video` (placeholder until a host is chosen; YouTube is embedded through youtube-nocookie), and a placeholder for the interactive types (flashcard, grammar, quiz, celstv_quiz).
+
+### Interactive e-books
+
+`/app/libros/<slug>` renders a row of `public.ebooks` in its program's theme (`ebooks.program`).
+
+- **Who sees what:** RLS shows published books to students with course access. Staff also see `draft` and `review` books, with a preview banner and the review notes.
+- **Structure:** each book is a list of screens (`kicker`, `title`, `minutes`, `narration {script, audio}`, `blocks`), then the quiz, then a finish page with related books and the original PDF.
+- **Block types:** `src/lib/ebook-format.ts` lists all 19 types, written from the content loaded on 18 Oct 2026.
+  - Read-only: `para quote tip list keys steps expand whatif glossary phrases say activity`.
+  - The student fills in: `checklist notes reflect fields plan practice myth`.
+- **Pronunciation:** `phrases`, `glossary` and `say` have 🔊 buttons that use the device's own speech voices, so nothing leaves the browser.
+- **Saving:** answers autosave about a second after each change, straight from the browser to `ebook_answers` (RLS: the student's own row only). Keys are `"<screen id>:<block index>"` and `"quiz:<n>"`, and `last_screen` lets the reader resume where the student stopped.
+- **Lesson pages:** an e-book block whose PDF has an interactive version visible to the viewer gets a "Leer versión interactiva" button.
 
 ### Program themes
 

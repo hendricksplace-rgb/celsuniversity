@@ -1,3 +1,4 @@
+import Link from "next/link";
 import sanitizeHtml from "sanitize-html";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { storageRefName, type SignedRefs } from "@/lib/storage";
@@ -11,7 +12,15 @@ export type Block = {
   teacher_only: boolean;
 };
 
-type Props = { block: Block; signed: SignedRefs; t: Dictionary["lesson"]; isStaff: boolean };
+type Props = {
+  block: Block;
+  signed: SignedRefs;
+  t: Dictionary["lesson"];
+  isStaff: boolean;
+  /** original PDF ref → slug of its interactive e-book, when the viewer can read one */
+  readers?: Record<string, string>;
+  readLabel?: string;
+};
 
 const LINK_RE = /(storage:\/\/[^\s"'<>)\]]+|https?:\/\/[^\s"'<>)\]]+)/g;
 const IMAGE_EXT = /\.(png|jpe?g|gif|webp|svg)$/i;
@@ -34,7 +43,7 @@ function withDownload(url: string, name: string) {
   return `${url}${url.includes("?") ? "&" : "?"}download=${encodeURIComponent(name)}`;
 }
 
-export function LessonBlock({ block, signed, t, isStaff }: Props) {
+export function LessonBlock({ block, signed, t, isStaff, readers, readLabel }: Props) {
   const type = block.block_type;
   const media = str(block.data.media_url);
   const settings = settingsOf(block);
@@ -53,7 +62,16 @@ export function LessonBlock({ block, signed, t, isStaff }: Props) {
 
   // E-books: designrr embeds converted to PDFs, and CelsBook flipbooks.
   const ebook = str(block.data.ebook_pdf) ?? (type === "flipbook" ? str(settings.pdfUrl) : null);
-  if (ebook) return <EbookBlock refUrl={ebook} title={block.title ?? str(settings.title)} signed={signed} t={t} />;
+  if (ebook)
+    return (
+      <EbookBlock
+        refUrl={ebook}
+        title={block.title ?? str(settings.title)}
+        signed={signed}
+        t={t}
+        reader={readers?.[ebook] ? { slug: readers[ebook], label: readLabel ?? "" } : undefined}
+      />
+    );
 
   if (type === "video") {
     const yt = youtubeEmbed(media);
@@ -175,7 +193,19 @@ function YouTube({ src, title }: { src: string; title: string | null }) {
   );
 }
 
-function EbookBlock({ refUrl, title, signed, t }: { refUrl: string; title: string | null; signed: SignedRefs; t: Props["t"] }) {
+function EbookBlock({
+  refUrl,
+  title,
+  signed,
+  t,
+  reader,
+}: {
+  refUrl: string;
+  title: string | null;
+  signed: SignedRefs;
+  t: Props["t"];
+  reader?: { slug: string; label: string };
+}) {
   const url = signed.get(refUrl);
   const name = storageRefName(refUrl);
   return (
@@ -183,7 +213,12 @@ function EbookBlock({ refUrl, title, signed, t }: { refUrl: string; title: strin
       {url ? (
         <>
           <div className="flex flex-wrap gap-2">
-            <a href={url} target="_blank" rel="noopener" className="t-btn">
+            {reader && (
+              <Link href={`/app/libros/${reader.slug}`} className="t-btn">
+                ✨ {reader.label}
+              </Link>
+            )}
+            <a href={url} target="_blank" rel="noopener" className={reader ? "t-btn-ghost" : "t-btn"}>
               📖 {t.openPdf}
             </a>
             <a href={withDownload(url, name)} className="t-btn-ghost">

@@ -205,3 +205,15 @@ body {
   color: var(--t-link);
   text-decoration: underline;
 }
+/* E-book reader quiz options */
+.t-opt-correct {
+  border-color: #15803d !important;
+  background: rgb(21 128 61 / 0.14);
+}
+.t-opt-wrong {
+  border-color: #b91c1c !important;
+  background: rgb(185 28 28 / 0.12);
+}
+.t-opt-dim {
+  opacity: 0.6;
+}

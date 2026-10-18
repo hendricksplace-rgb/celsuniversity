@@ -479,6 +479,13 @@ async function main() {
       sort_order: num(r.order),
     });
   }
+  // Lessons marked teacher-only in Supabase after the import (e.g. teacher-guide lessons) stay that way.
+  if (!DRY_RUN) {
+    const { data: locked, error } = await supabase.from("lessons").select("legacy_id").eq("teacher_only", true);
+    if (error) throw error;
+    const keep = new Set(locked.map((l) => l.legacy_id as string));
+    for (const r of lessonRows) if (keep.has(r.legacy_id)) r.teacher_only = true;
+  }
   await upsert("Lesson", lessonRows);
   const lessonModule = new Map(lessonRows.map((r) => [ids.lessons.get(r.legacy_id)!, r.module_id]));
 
