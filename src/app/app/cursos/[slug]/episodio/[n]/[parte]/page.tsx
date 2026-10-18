@@ -15,6 +15,33 @@ import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
 import { CelsBookPart, type CelsBook, type BookSection } from "@/components/part/CelsBookPart";
 
+/** CelsCast (block `celscast`, version 1): lines with speaker and per-word start times (`wt`). */
+function celscastTrack(data: Record<string, unknown>, sign: (ref: string) => string | null): Track {
+  const speakers = (data.speakers ?? {}) as Record<string, string>;
+  const lines = (Array.isArray(data.lines) ? data.lines : []) as { speaker?: string; text?: string; start?: number; wt?: number[] }[];
+  const cues: Cue[] = lines
+    .filter((l) => typeof l.text === "string" && typeof l.start === "number")
+    .map((l) => {
+      const parts = l.text!.split(/\s+/).filter(Boolean);
+      const wt = Array.isArray(l.wt) ? l.wt.filter((x) => typeof x === "number") : [];
+      return {
+        start: l.start!,
+        text: l.text!,
+        speaker: l.speaker ? (speakers[l.speaker] ?? l.speaker) : undefined,
+        words: wt.length === parts.length ? parts.map((text, i) => ({ start: wt[i], text })) : undefined,
+      };
+    });
+  const chapters = (Array.isArray(data.chapters) ? data.chapters : []) as Chapter[];
+  return {
+    key: "celscast",
+    label: "CelsCast",
+    src: typeof data.audio === "string" ? sign(data.audio) : null,
+    cues,
+    chapters: chapters.filter((c) => typeof c?.start === "number" && typeof c?.title === "string"),
+    voice: Object.values(speakers).join(" y "),
+  };
+}
+
 type Timed = { start?: unknown; text?: unknown };
 /** audio_transcripts.words → player lines, each with its own words (by start time). */
 function transcriptCues(w: unknown): Cue[] {
@@ -64,7 +91,7 @@ function toCelsBook(data: Record<string, unknown>, episode: { title: string; art
     sections,
   };
 }
-import { AudioPart, type Chapter, type Cue } from "@/components/part/AudioPart";
+import { AudioPart, type Chapter, type Cue, type Track } from "@/components/part/AudioPart";
 import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
 
 // Same list as the exercise renderers (components/lesson/activities/Grammar.tsx).
@@ -182,15 +209,18 @@ export default async function PartPage({ params, searchParams }: Props) {
       const { data: tr } = await supabase.from("audio_transcripts").select("words").eq("path", media.slice("storage://course-media/".length)).eq("status", "done").maybeSingle();
       cues = transcriptCues(tr?.words);
     }
+    const original: Track = {
+      key: "original",
+      label: t.part.originalAudio,
+      src: media ? (content.signed.get(media) ?? null) : null,
+      cues,
+      chapters: list<Chapter>(b?.data.chapters, (c) => typeof c?.start === "number" && typeof c?.title === "string"),
+      voice: null,
+    };
+    const cast = blocks.find((x) => x.block_type === "celscast");
+    const tracks = cast ? [celscastTrack(cast.data, (r) => content.signed.get(r) ?? null), original] : [original];
     body = (
-      <AudioPart
-        src={media ? (content.signed.get(media) ?? null) : null}
-        title={episode.title || fill(t.episode.tag, { n: episode.n })}
-        cues={cues}
-        chapters={list<Chapter>(b?.data.chapters, (c) => typeof c?.start === "number" && typeof c?.title === "string")}
-        episodeKey={episodePath(page.course.slug, episode.n)}
-        finishLabel={finishLabel}
-      />
+      <AudioPart tracks={tracks} title={episode.title || fill(t.episode.tag, { n: episode.n })} episodeKey={episodePath(page.course.slug, episode.n)} finishLabel={finishLabel} />
     );
   } else if (key === "grammar" && blocks.some((b) => b.block_type === "grammar")) {
     const g = settingsOf(blocks.find((b) => b.block_type === "grammar")!);

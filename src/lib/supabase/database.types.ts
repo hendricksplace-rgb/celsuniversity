@@ -16,6 +16,12 @@ export type Database = {
   }
   public: {
     Tables: {
+      submissions: {
+        Row: { id: string; user_id: string; lesson_id: string; body: string; media_path: string | null; status: string; coach_feedback: string | null; reviewed_by: string | null; reviewed_at: string | null; submitted_at: string | null; created_at: string; updated_at: string };
+        Insert: { id?: string; user_id?: string; lesson_id: string; body?: string; media_path?: string | null; status?: string; coach_feedback?: string | null; reviewed_by?: string | null; reviewed_at?: string | null; submitted_at?: string | null; created_at?: string; updated_at?: string };
+        Update: { id?: string; user_id?: string; lesson_id?: string; body?: string; media_path?: string | null; status?: string; coach_feedback?: string | null; reviewed_by?: string | null; reviewed_at?: string | null; submitted_at?: string | null; created_at?: string; updated_at?: string };
+        Relationships: [];
+      };
       audio_transcripts: {
         Row: { path: string; status: string; language: string | null; text: string | null; words: Json | null; error: string | null; created_at: string; done_at: string | null };
         Insert: { path: string; status?: string; language?: string | null; text?: string | null; words?: Json | null; error?: string | null; created_at?: string; done_at?: string | null };

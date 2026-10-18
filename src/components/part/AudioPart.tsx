@@ -2,34 +2,55 @@
 
 // CelsAudio (board "CelsBook, CelsAudio y Grammar", phone 2): a player with a live karaoke transcript
 // (tap a line to jump to it), chapters, speed 0.75 / 1 / 1.25×, a repeat-phrase loop and an offline badge.
-// Works with just the audio; the transcript and chapters show when the block has them
-// (data.transcript: [{ start, text }], data.chapters: [{ start, title }], seconds). Done when the audio ends.
+// Tracks are tabs: CelsCast (the podcast recap, Amy and Brian) first when the episode has one, then the
+// original recording. Each works with just the audio; lines, words and chapters show when they exist.
+// Finishing either track completes the part.
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cachedMediaUrl, offlineEntry } from "@/lib/offline";
 import { fill } from "@/components/course/kit";
 import { Empty, FinishButton, usePartShell } from "./PartShell";
 
 /** A transcript line; `words` (with their start times) light up one by one while the line plays. */
-export type Cue = { start: number; text: string; words?: { start: number; text: string }[] };
+export type Cue = { start: number; text: string; words?: { start: number; text: string }[]; speaker?: string };
+export type Track = { key: string; label: string; src: string | null; cues: Cue[]; chapters: Chapter[]; voice: string | null };
+// CelsCast hosts: Amy in pink, Brian in cyan; anyone else in white.
+const SPEAKER_COLOR: Record<string, string> = { Amy: "#FF7AB8", Brian: "#5CE1FF" };
 export type Chapter = { start: number; title: string };
 const SPEEDS = [1, 1.25, 0.75];
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
-export function AudioPart({
-  src,
-  title,
-  cues,
-  chapters,
-  episodeKey,
-  finishLabel,
-}: {
-  src: string | null;
-  title: string;
-  cues: Cue[];
-  chapters: Chapter[];
-  episodeKey: string;
-  finishLabel: string;
-}) {
+export function AudioPart({ tracks, title, episodeKey, finishLabel }: { tracks: Track[]; title: string; episodeKey: string; finishLabel: string }) {
+  const playable = tracks.filter((x) => x.src);
+  const [tab, setTab] = useState(playable[0]?.key ?? "");
+  const track = playable.find((x) => x.key === tab) ?? playable[0];
+  return (
+    <div className="flex flex-1 flex-col gap-3 pt-2">
+      {playable.length > 1 && (
+        <div className="flex gap-2" role="tablist">
+          {playable.map((x) => (
+            <button
+              key={x.key}
+              type="button"
+              role="tab"
+              aria-selected={x.key === track?.key}
+              onClick={() => setTab(x.key)}
+              className={`kit-focus-light rounded-full px-3.5 py-1.5 text-[13px] font-extrabold transition ${x.key === track?.key ? "bg-[#C5F58F] text-[#0E2B07]" : "bg-white/10 text-white/85"}`}
+            >
+              {x.label}
+            </button>
+          ))}
+        </div>
+      )}
+      {/* key: each track starts with its own time, speed and loop */}
+      <Player key={track?.key ?? "none"} track={track ?? null} title={title} episodeKey={episodeKey} finishLabel={finishLabel} />
+    </div>
+  );
+}
+
+function Player({ track, title, episodeKey, finishLabel }: { track: Track | null; title: string; episodeKey: string; finishLabel: string }) {
+  const src = track?.src ?? null;
+  const cues = track?.cues ?? [];
+  const chapters = track?.chapters ?? [];
   const { t, setProgress, finish } = usePartShell();
   const audio = useRef<HTMLAudioElement>(null);
   const [url, setUrl] = useState(src);
@@ -52,6 +73,11 @@ export function AudioPart({
   const chapter = useMemo(() => chapters.findLast((c) => c.start <= time + 0.05) ?? chapters[0], [chapters, time]);
 
   useEffect(() => setProgress(dur ? time / dur : 0), [time, dur, setProgress]);
+  // The metadata can load before hydration attaches onLoadedMetadata.
+  useEffect(() => {
+    const el = audio.current;
+    if (el && el.readyState >= 1 && Number.isFinite(el.duration)) setDur(el.duration);
+  }, [url]);
   useEffect(() => {
     const el = lineRefs.current[line];
     // Keep the current line in the middle of the transcript box (only the box scrolls, not the page).
@@ -94,6 +120,7 @@ export function AudioPart({
         src={url}
         preload="metadata"
         onLoadedMetadata={() => setDur(a().duration || 0)}
+        onDurationChange={() => Number.isFinite(a().duration) && setDur(a().duration)}
         onTimeUpdate={onTime}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
@@ -119,12 +146,9 @@ export function AudioPart({
 
       <div className="text-center">
         <h2 className="text-2xl font-extrabold">
-          {title} · {t.audioTitle}
+          {title} · {track?.key === "celscast" ? "CelsCast" : t.audioTitle}
         </h2>
-        <p className="text-sm text-white/75">
-          {chapter ? `${chapter.title} · ` : ""}
-          {t.audioVoice}
-        </p>
+        <p className="text-sm text-white/75">{[chapter?.title, track?.voice].filter(Boolean).join(" · ")}</p>
       </div>
 
       <div ref={box} className="relative max-h-48 overflow-y-auto rounded-3xl bg-black/25 p-4" aria-live="off">
@@ -143,6 +167,11 @@ export function AudioPart({
                   }}
                   className={`kit-focus-light w-full rounded-lg px-1 text-left text-[15px] font-bold transition-colors ${i === line ? (c.words?.length ? "text-white" : "text-[#FFEF05]") : i < line ? "text-white/70" : "text-white/45"}`}
                 >
+                  {c.speaker && (
+                    <span className="mr-1.5 text-xs font-extrabold uppercase tracking-wide" style={{ color: SPEAKER_COLOR[c.speaker] ?? "#FFFFFF" }}>
+                      {c.speaker}
+                    </span>
+                  )}
                   {i === line && c.words?.length
                     ? c.words.map((w, k) => (
                         <span
