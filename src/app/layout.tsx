@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Source_Serif_4 } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { SiteHeader } from "@/components/SiteHeader";
 import { OfflineSync } from "@/components/OfflineSync";
 import { createClient } from "@/lib/supabase/server";
@@ -12,9 +12,10 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
 });
-// Program themes (CelsBSNS, CelsGLOBAL body text; CelsUS headings).
+// Program themes (CelsBSNS, CelsGLOBAL body text; CelsUS: Jakarta for the interface, Source Serif for headings and questions).
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
-const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], weight: ["600", "700"] });
+const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
+const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
@@ -28,7 +29,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   } = await (await createClient()).auth.getUser();
   return (
     <html lang={lang}>
-      <body className={`${poppins.variable} ${inter.variable} ${serif.variable} antialiased`}>
+      <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} antialiased`}>
         <SiteHeader />
         <OfflineSync userId={user?.id ?? null} />
         <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>

@@ -14,12 +14,15 @@ export function useExamAudio(evaluationId: string, initial: Record<string, strin
   const audio = useRef<HTMLAudioElement | null>(null);
   const run = useRef(0);
   const [playing, setPlaying] = useState(false);
+  // Which recording is playing and where, for word highlighting.
+  const [position, setPosition] = useState<{ ref?: string; time: number }>({ time: -1 });
 
   const stop = useCallback(() => {
     run.current++;
     audio.current?.pause();
     if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
     setPlaying(false);
+    setPosition({ time: -1 });
   }, []);
 
   useEffect(() => stop, [stop]);
@@ -45,23 +48,37 @@ export function useExamAudio(evaluationId: string, initial: Record<string, strin
         if (run.current !== id) return;
         const url = await urlFor(clip.ref);
         if (run.current !== id) return;
-        if (url) await playUrl(url, audio);
+        if (url) await playUrl(url, audio, (time) => run.current === id && setPosition({ ref: clip.ref, time }));
         else await speak(clip.text, clip.lang);
       }
-      if (run.current === id) setPlaying(false);
+      if (run.current === id) {
+        setPlaying(false);
+        setPosition({ time: -1 });
+      }
     },
     [stop, urlFor],
   );
 
-  return { play, stop, playing };
+  return { play, stop, playing, position };
 }
 
-function playUrl(url: string, holder: React.RefObject<HTMLAudioElement | null>) {
+function playUrl(url: string, holder: React.RefObject<HTMLAudioElement | null>, onTime: (t: number) => void) {
   return new Promise<void>((resolve) => {
     const a = new Audio(url);
     holder.current = a;
-    a.onended = a.onerror = a.onpause = () => resolve();
-    a.play().catch(() => resolve());
+    let frame = 0;
+    // Every frame rather than on timeupdate (~4 per second), so the highlight keeps up with the voice.
+    const tick = () => {
+      onTime(a.currentTime);
+      frame = requestAnimationFrame(tick);
+    };
+    const end = () => {
+      cancelAnimationFrame(frame);
+      resolve();
+    };
+    a.onplay = () => (frame = requestAnimationFrame(tick));
+    a.onended = a.onerror = a.onpause = end;
+    a.play().catch(end);
   });
 }
 

@@ -100,6 +100,9 @@ Google sign-in also needs the Google provider turned on under Authentication →
 | 20261018021938 | audio_jobs_queue | `audio_jobs` queue and `job_tokens`, service role only (Cowork) |
 | 20261018022042 | apply_audio_jobs_fn | `private.apply_audio_jobs()`: writes generated audio into exam questions and e-book narration (Cowork) |
 | 20261018022948 | kick_audio_fn | `private.kick_audio()`: calls the `generate-audio` edge function (Cowork). **Differs from live in one value:** the anon key is replaced by a placeholder |
+| 20261018025745 | tighten_eval_read | `private.evaluation_course()`; evaluations and their questions readable only by staff or students with course access; archived evaluations hidden from students (Cowork) |
+| 20261018025752 | guard_profile_evaluation_fields | `guard_profile_update`: only staff change `evaluation_level` / `evaluation_skills` / `evaluation_date`; role and organization checks apply to signed-in users only, so server-side changes work (Cowork) |
+| 20261018025809 | kick_audio_from_vault | `private.kick_audio()` reads the anon key from Vault secret `supabase_anon_key` (Cowork) |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 
@@ -171,9 +174,10 @@ Audio is generated in Supabase, not in this repo: the `audio_jobs` queue, the `g
 
 ### CelsUS 2025 civics exams
 
+- **Look:** the CelsUS theme is navy `#0E2A4F` / `#194876`, gold `#FFD24D` / `#B8901F`, ivory `#F4F1E8`, Source Serif 4 for headings and questions, Plus Jakarta Sans for the interface. Navy panels (`.cx-navy`) carry a faint guilloche; the exam pieces (`.cx-*`) are in `globals.css`.
 - **Where:** a lesson's `evaluation` block (`data.evaluation_id`) links to `/app/examen-civico/<id>`. `/app/examen-civico` is the start screen: the three exams with their rules and last result, progress by section, and a card linking the official pages for the 8 questions whose answers change.
 - **Which exams:** `evaluations` with `test_version = '2025'` and `archived = false`. English (mock interview) and Spanish: ask 20, pass 12. 65/20 (the 20 starred questions, large print): ask 10, pass 6. `evaluations` is readable by any signed-in user, so `src/lib/civics-server.ts` checks course access before sending questions or signing audio.
-- **Mock interview (English):** the officer plays `data.audio.q`; the question text is shown small and can be hidden. Answers by voice (Web Speech, `en-US`) count when they contain `answers_en` (parentheses optional) or `keywords_en`; `multi` questions need `data.need` different answers. "Ver opciones" shows `options_en` shuffled (pick exactly `need`). After each question: accepted answers with ▶ `audio.a_en`, and "Para entenderlo" (`explain_es` + `hint_es`).
+- **Mock interview (English):** the officer plays `data.audio.q` (gold waveform while speaking); the question text highlights each word with `q_wt` and can be hidden. Answers by voice (Web Speech, `en-US`) count when they contain `answers_en` (parentheses optional) or `keywords_en`; `multi` questions need `data.need` different answers. "Ver opciones" shows `options_en` shuffled (pick exactly `need`). After each question: accepted answers with ▶ `audio.a_en`, and "Para entenderlo" (`explain_es` + `hint_es`).
 - **Spanish exam:** same rules, multiple choice with `options_es` shuffled, ▶ the Spanish question and "Escuchar en inglés".
 - **Stop rule:** as USCIS, the exam ends as soon as the result is decided (12 right, or 9 wrong; 6 / 5 for 65/20). The end screen is a gold seal when passed. Each attempt goes to `evaluation_attempts` (the student's own history).
 - **Study cards:** question in Spanish, ▶ "Escuchar en inglés" (`audio.q_en`), then the answer in ES + EN, the explanation and the hint, with "Lo sé / Repasar". Progress is per student, by question number, in `progress.flashcard_state` on every 2025 exam lesson (kept identical, so it is shared by the three exams).

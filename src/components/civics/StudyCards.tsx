@@ -72,17 +72,18 @@ export function StudyCards({ exam, audio, state, onMark, t }: Props) {
         </button>
       </div>
 
-      <article className="t-card t-card-accent space-y-4">
+      <article className="space-y-5 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-7">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <p className="t-muted text-xs font-semibold uppercase tracking-wide">
-            {t.question} {q.n} {q.star && <span title={t.starNote}>· *</span>}
-          </p>
-          {(known || toReview) && <span className="t-badge">{known ? `✓ ${t.iKnow}` : `↻ ${t.toReview}`}</span>}
+          <span className="cx-chip" title={q.star ? t.starNote : undefined}>
+            {q.star && <span className="text-[var(--cx-gold-dark)]">★</span>}
+            {t.question} {q.n}
+          </span>
+          {(known || toReview) && <span className="cx-chip">{known ? `${t.iKnow} ✓` : `↻ ${t.toReview}`}</span>}
         </div>
-        <p className="t-heading text-[1.4em] leading-snug">{q.q_es}</p>
+        <p className="cx-serif text-[1.55em] font-semibold leading-snug text-[var(--cx-navy)]">{q.q_es}</p>
         <button
           type="button"
-          className="t-btn-ghost !px-3 !py-1.5 text-sm"
+          className="cx-chip-gold !px-4 !py-1.5 !text-sm"
           onClick={() => void audio.play([{ ref: q.audio.q_en, text: q.q_en, lang: "en-US" }])}
         >
           ▶ {t.hearEnglish}
@@ -91,8 +92,8 @@ export function StudyCards({ exam, audio, state, onMark, t }: Props) {
         {q.type === "check_online" ? (
           <LinkCard q={q} t={t} />
         ) : !revealed ? (
-          <button type="button" className="t-btn w-full !py-3" onClick={() => setRevealed(true)}>
-            {t.reveal}
+          <button type="button" className="cx-dashed" onClick={() => setRevealed(true)}>
+            {t.thinkTap}
           </button>
         ) : (
           <div className="space-y-3">
@@ -104,7 +105,7 @@ export function StudyCards({ exam, audio, state, onMark, t }: Props) {
               <button
                 type="button"
                 aria-pressed={toReview}
-                className={toReview ? "t-btn" : "t-btn-ghost"}
+                className="t-btn-ghost rounded-full bg-white !py-3"
                 onClick={() => {
                   onMark(q.n, false);
                   go(index + 1);
@@ -115,13 +116,13 @@ export function StudyCards({ exam, audio, state, onMark, t }: Props) {
               <button
                 type="button"
                 aria-pressed={known}
-                className={known ? "t-btn" : "t-btn-ghost"}
+                className="t-btn rounded-full !py-3"
                 onClick={() => {
                   onMark(q.n, true);
                   go(index + 1);
                 }}
               >
-                ✓ {t.iKnow}
+                {t.iKnow} ✓
               </button>
             </div>
           </div>
@@ -146,12 +147,12 @@ export function StudyCards({ exam, audio, state, onMark, t }: Props) {
 /** Questions whose answer depends on the student's state or the date: not graded, point to where to look. */
 export function LinkCard({ q, t }: { q: CivicsExam["questions"][number]; t: CivicsT }) {
   return (
-    <div className="t-card space-y-2 text-sm">
+    <div className="cx-navy space-y-2 rounded-xl p-4 text-sm">
       <p className="font-semibold">🔎 {t.checkOnline}</p>
       <p className="t-muted">{t.checkOnlineSub}</p>
       {q.hint_es && <p>{q.hint_es}</p>}
       {q.link && (
-        <a href={q.link} target="_blank" rel="noopener noreferrer" className="t-btn inline-flex">
+        <a href={q.link} target="_blank" rel="noopener noreferrer" className="cx-chip-gold !px-4 !py-1.5 !text-sm">
           {t.openLink} ↗
         </a>
       )}

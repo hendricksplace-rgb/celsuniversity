@@ -23,6 +23,8 @@ export type CivicsQuestion = {
   link: string | null;
   /** storage refs; resolved to signed URLs by the page */
   audio: { q?: string; q_en?: string; q_es?: string; a_en?: string };
+  /** word start times (seconds) for each recording, for highlighting the text as it is read */
+  wt: { q?: number[]; q_en?: number[]; q_es?: number[] };
 };
 
 export type ExamKind = "interview" | "spanish" | "6520";
@@ -41,6 +43,7 @@ export type CivicsExam = {
 
 const strs = (v: unknown) => (Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : []);
 const s = (v: unknown) => (typeof v === "string" ? v : "");
+const times = (v: unknown) => (Array.isArray(v) && v.every((x) => typeof x === "number") ? (v as number[]) : undefined);
 
 export function toQuestion(row: { id: string; question_type: string | null; is_asterisked: boolean; data: unknown }): CivicsQuestion {
   const d = (row.data && typeof row.data === "object" ? row.data : {}) as Record<string, unknown>;
@@ -71,7 +74,17 @@ export function toQuestion(row: { id: string; question_type: string | null; is_a
       q_es: s(audio.q_es) || undefined,
       a_en: s(audio.a_en) || undefined,
     },
+    wt: { q: times(audio.q_wt), q_en: times(audio.q_en_wt), q_es: times(audio.q_es_wt) },
   };
+}
+
+/** Index of the word being spoken at `time`, when the timings line up with the text's words. */
+export function wordAt(text: string, wt: number[] | undefined, time: number) {
+  const words = text.split(/\s+/).filter(Boolean);
+  if (!wt || wt.length !== words.length || time < 0) return -1;
+  let i = -1;
+  while (i + 1 < wt.length && wt[i + 1] <= time) i++;
+  return i;
 }
 
 /** English = the mock interview; the 65/20 exam is the starred subset, in large print. */

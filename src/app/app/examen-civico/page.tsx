@@ -6,7 +6,7 @@ import { getViewer, one } from "@/lib/access";
 import { kindOf } from "@/lib/civics";
 import { examLessons, listExams, loadCardState } from "@/lib/civics-server";
 import { themeForCourse } from "@/lib/themes";
-import { Rules, fill } from "@/components/civics/shared";
+import { fill } from "@/components/civics/shared";
 
 const CHANGING_LINKS = [
   ["https://www.uscis.gov/citizenship/testupdates", "linkTestUpdates"],
@@ -55,16 +55,31 @@ export default async function CivicsStart() {
   const lastAttempt = (id: string) => (attempts ?? []).find((a) => a.evaluation_id === id);
   const fmt = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" });
 
+  const bankKnown = [...bank.keys()].filter((n) => known.has(n)).length;
+  const readiness = bank.size ? Math.round((bankKnown / bank.size) * 100) : 0;
+  const label = (k: string) => (k === "interview" ? "EN" : k === "6520" ? "65/20" : "ES");
+
   return (
     <div data-theme={course ? themeForCourse(course) : "celsus"} className="t-panel space-y-6">
-      <header className="space-y-2">
-        {course && (
-          <Link href={`/app/cursos/${course.slug}`} className="t-muted text-sm hover:underline">
-            ← {course.title}
-          </Link>
+      <header className="cx-navy -mx-5 -mt-5 flex flex-col gap-6 rounded-t-[calc(var(--t-radius)*1.5)] px-5 py-8 sm:-mx-8 sm:-mt-8 sm:flex-row sm:items-center sm:px-8">
+        <div className="flex-1 space-y-2">
+          {course && (
+            <Link href={`/app/cursos/${course.slug}`} className="text-sm text-white/75 hover:underline">
+              ← {course.title}
+            </Link>
+          )}
+          <h1 className="cx-serif text-3xl font-semibold sm:text-4xl">{t.civics.title}</h1>
+          <p className="max-w-xl text-white/80">{t.civics.sub}</p>
+        </div>
+        {exams.length > 0 && (
+          <div className="flex items-center gap-4">
+            <Ring pct={readiness} />
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--cx-gold)]">{t.civics.readiness}</p>
+              <p className="text-sm text-white/80">{fill(t.civics.readinessSub, { known: bankKnown, total: bank.size })}</p>
+            </div>
+          </div>
         )}
-        <h1 className="t-heading text-3xl">{t.civics.title}</h1>
-        <p className="t-muted">{t.civics.sub}</p>
       </header>
 
       {!exams.length ? (
@@ -78,26 +93,26 @@ export default async function CivicsStart() {
               const k = qs.filter((r) => known.has(Number(r.n))).length;
               const last = lastAttempt(e.id);
               return (
-                <li key={e.id} className="t-card t-card-accent flex flex-col gap-3">
-                  <span className="text-3xl" aria-hidden>
-                    {kind === "interview" ? "🎙️" : kind === "6520" ? "🔎" : "📝"}
-                  </span>
+                <li key={e.id} className="t-card-accent relative flex flex-col gap-3 overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="grid h-11 min-w-11 place-items-center rounded-full bg-[var(--cx-navy)] px-2 text-sm font-bold text-[var(--cx-gold)]">{label(kind)}</span>
+                    <span className="cx-chip">{fill(t.civics.ruleChip, { count: e.exam_question_count, pass: e.pass_count })}</span>
+                  </div>
                   <div className="space-y-1">
-                    <h2 className="t-heading text-xl">
+                    <h2 className="cx-serif text-xl font-semibold text-[var(--cx-navy)]">
                       {kind === "interview" ? t.civics.kindInterview : kind === "6520" ? t.civics.kind6520 : t.civics.kindSpanish}
                     </h2>
                     <p className="t-muted text-sm">
                       {kind === "interview" ? t.civics.kindInterviewSub : kind === "6520" ? t.civics.kind6520Sub : t.civics.kindSpanishSub}
                     </p>
                   </div>
-                  <Rules exam={{ kind, count: e.exam_question_count, pass: e.pass_count }} t={t.civics} />
                   <Bar value={k} total={qs.length} label={fill(t.civics.knownCount, { known: k, total: qs.length })} />
                   <p className="t-muted text-xs">
                     {last
                       ? `${t.civics.lastResult}: ${last.score}/${last.total} · ${last.passed ? "✓" : "✗"} · ${fmt.format(new Date(last.created_at))}`
                       : t.civics.noAttempts}
                   </p>
-                  <Link href={`/app/examen-civico/${e.id}`} className="t-btn mt-auto">
+                  <Link href={`/app/examen-civico/${e.id}`} className="t-btn mt-auto rounded-full !py-2.5">
                     {t.civics.blockCta} →
                   </Link>
                 </li>
@@ -105,21 +120,21 @@ export default async function CivicsStart() {
             })}
           </ul>
 
-          <section className="t-card space-y-3">
-            <h2 className="t-heading text-lg">{t.civics.progressTitle}</h2>
+          <section className="space-y-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5 sm:p-6">
+            <h2 className="cx-serif text-xl font-semibold text-[var(--cx-navy)]">{t.civics.progressTitle}</h2>
             {[...sections].map(([name, s]) => (
               <Bar key={name} value={s.known} total={s.total} label={`${t.civics.sectionNames[name] ?? name} · ${s.known}/${s.total}`} />
             ))}
           </section>
 
-          <section className="t-card t-card-accent space-y-3">
-            <h2 className="t-heading text-lg">🔎 {t.civics.changingTitle}</h2>
-            <p className="t-muted text-sm">{t.civics.changingSub}</p>
-            <ul className="grid gap-2 sm:grid-cols-2">
+          <section className="cx-navy space-y-3 rounded-2xl p-5 sm:p-6">
+            <h2 className="cx-serif text-xl font-semibold">{t.civics.changingTitle}</h2>
+            <p className="text-sm text-white/80">{t.civics.changingSub}</p>
+            <ul className="flex flex-wrap gap-2">
               {CHANGING_LINKS.map(([href, key]) => (
                 <li key={href}>
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="t-btn-ghost w-full justify-between">
-                    {t.civics[key]} <span aria-hidden>↗</span>
+                  <a href={href} target="_blank" rel="noopener noreferrer" className="cx-chip-gold !px-3.5 !py-1.5 !text-sm">
+                    {t.civics[key]} ↗
                   </a>
                 </li>
               ))}
@@ -131,13 +146,40 @@ export default async function CivicsStart() {
   );
 }
 
+/** Readiness: share of the graded bank the student marked "Lo sé". */
+function Ring({ pct }: { pct: number }) {
+  const r = 34;
+  const c = 2 * Math.PI * r;
+  return (
+    <svg viewBox="0 0 84 84" className="h-24 w-24 shrink-0" role="img" aria-label={`${pct}%`}>
+      <circle cx="42" cy="42" r={r} fill="none" stroke="rgb(255 255 255 / 0.15)" strokeWidth="8" />
+      {pct > 0 && (
+      <circle
+        cx="42"
+        cy="42"
+        r={r}
+        fill="none"
+        stroke="#FFD24D"
+        strokeWidth="8"
+        strokeLinecap="round"
+        strokeDasharray={`${(pct / 100) * c} ${c}`}
+        transform="rotate(-90 42 42)"
+      />
+      )}
+      <text x="42" y="48" textAnchor="middle" fontSize="18" fontWeight="700" fill="#fff" fontFamily="var(--font-serif), Georgia, serif">
+        {pct}%
+      </text>
+    </svg>
+  );
+}
+
 function Bar({ value, total, label }: { value: number; total: number; label: string }) {
   const pct = total ? Math.round((value / total) * 100) : 0;
   return (
     <div className="space-y-1">
       <p className="text-sm">{label}</p>
       <div className="h-2 overflow-hidden rounded-full bg-[var(--t-border)]" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
-        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "var(--t-accent)" }} />
+        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, var(--cx-gold-dark), var(--cx-gold))" }} />
       </div>
     </div>
   );

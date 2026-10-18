@@ -37,12 +37,12 @@ export default async function CivicsExamPage({ params }: Props) {
 
   return (
     <div data-theme={themeForCourse(course)} className="t-panel space-y-6">
-      <header className="space-y-2">
-        <Link href="/app/examen-civico" className="t-muted text-sm hover:underline">
+      <header className="cx-navy -mx-5 -mt-5 space-y-2 rounded-t-[calc(var(--t-radius)*1.5)] px-5 py-7 sm:-mx-8 sm:-mt-8 sm:px-8">
+        <Link href="/app/examen-civico" className="text-sm text-white/75 hover:underline">
           ← {t.civics.title}
         </Link>
-        <h1 className="t-heading text-3xl">{heading}</h1>
-        <p className="t-muted text-sm">{exam.title}</p>
+        <h1 className="cx-serif text-3xl font-semibold sm:text-4xl">{heading}</h1>
+        <p className="text-sm text-white/70">{exam.title}</p>
       </header>
       <CivicsApp exam={exam} urls={urls} userId={viewer.user.id} lessonIds={lessons} cards={cards} t={t.civics} />
     </div>

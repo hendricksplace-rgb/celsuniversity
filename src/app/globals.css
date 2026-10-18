@@ -72,18 +72,23 @@ body {
   --t-heading-case: none;
 }
 [data-theme="celsus"] {
-  /* Formal, low tones: citizenship */
-  --t-bg: #f3f0e8;
-  --t-surface: #fbf9f4;
-  --t-text: #22262e;
-  --t-muted: #575e6b;
-  --t-accent: #1f3a5f;
+  /* Formal citizenship: navy, gold and ivory, like a certificate */
+  --cx-navy: #0e2a4f;
+  --cx-navy-2: #194876;
+  --cx-gold: #ffd24d;
+  --cx-gold-dark: #b8901f;
+  --cx-ivory: #f4f1e8;
+  --t-bg: var(--cx-ivory);
+  --t-surface: #ffffff;
+  --t-text: #14243d;
+  --t-muted: #5b6577;
+  --t-accent: var(--cx-navy);
   --t-accent-ink: #ffffff;
-  --t-link: #1f3a5f;
-  --t-border: #dcd5c6;
-  --t-radius: 0.25rem;
-  --t-card-top: linear-gradient(90deg, #7a2a2a, #7a2a2a);
-  --t-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-link: var(--cx-navy-2);
+  --t-border: #e3dccb;
+  --t-radius: 0.75rem;
+  --t-card-top: linear-gradient(90deg, var(--cx-gold-dark), var(--cx-gold), var(--cx-gold-dark));
+  --t-font: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --t-heading: var(--font-serif), Georgia, serif;
   --t-heading-weight: 600;
   --t-heading-case: none;
@@ -216,4 +221,99 @@ body {
 }
 .t-opt-dim {
   opacity: 0.6;
+}
+
+/* ---------- CelsUS civics exam ---------- */
+/* Navy panels with a faint certificate guilloche (wavy gold lines). */
+.cx-navy {
+  background-color: var(--cx-navy);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='48' viewBox='0 0 240 48'%3E%3Cg fill='none' stroke='%23FFD24D' stroke-opacity='.13' stroke-width='1'%3E%3Cpath d='M0 24C30 0 90 48 120 24S210 0 240 24'/%3E%3Cpath d='M0 24C30 48 90 0 120 24S210 48 240 24'/%3E%3Cpath d='M0 12C40 0 80 24 120 12S200 0 240 12'/%3E%3Cpath d='M0 36C40 48 80 24 120 36S200 48 240 36'/%3E%3C/g%3E%3C/svg%3E"),
+    linear-gradient(160deg, var(--cx-navy) 0%, var(--cx-navy-2) 100%);
+  color: #fff;
+}
+.cx-navy .t-muted {
+  color: rgb(255 255 255 / 0.72);
+}
+.cx-serif {
+  font-family: var(--font-serif), Georgia, serif;
+}
+.cx-chip {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  background: rgb(14 42 79 / 0.08);
+  color: var(--cx-navy);
+}
+.cx-chip-gold {
+  @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold transition;
+  background: var(--cx-gold);
+  color: var(--cx-navy);
+}
+.cx-chip-gold:hover {
+  background: #ffe080;
+}
+.cx-btn-gold {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold transition;
+  background: var(--cx-gold);
+  color: var(--cx-navy);
+  box-shadow: 0 1px 0 var(--cx-gold-dark);
+}
+.cx-btn-gold:hover {
+  background: #ffe080;
+}
+.cx-dashed {
+  @apply w-full rounded-xl px-4 py-5 text-center text-sm font-semibold transition;
+  border: 2px dashed var(--cx-gold-dark);
+  color: var(--cx-gold-dark);
+  background: rgb(255 210 77 / 0.08);
+}
+.cx-dashed:hover {
+  background: rgb(255 210 77 / 0.18);
+}
+/* The big round mic button */
+.cx-mic {
+  @apply grid h-24 w-24 place-items-center rounded-full text-4xl transition;
+  background: radial-gradient(circle at 35% 30%, #ffe48a, var(--cx-gold) 55%, var(--cx-gold-dark));
+  color: var(--cx-navy);
+  box-shadow: 0 10px 24px rgb(184 144 31 / 0.35), inset 0 -3px 0 rgb(0 0 0 / 0.12);
+}
+.cx-mic:hover {
+  transform: scale(1.04);
+}
+.cx-mic[data-live="true"] {
+  animation: cx-pulse 1.2s ease-in-out infinite;
+}
+@keyframes cx-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(255 210 77 / 0.55); }
+  50% { box-shadow: 0 0 0 16px rgb(255 210 77 / 0); }
+}
+/* Gold waveform while the officer speaks */
+.cx-wave span {
+  display: inline-block;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--cx-gold);
+  height: 6px;
+  transition: height 0.2s;
+}
+.cx-wave[data-on="true"] span {
+  animation: cx-wave 0.9s ease-in-out infinite;
+}
+@keyframes cx-wave {
+  0%, 100% { height: 6px; }
+  50% { height: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cx-wave[data-on="true"] span,
+  .cx-mic[data-live="true"] {
+    animation: none;
+  }
+  .cx-wave[data-on="true"] span {
+    height: 16px;
+  }
+}
+/* Word being spoken */
+.cx-word-on {
+  background: var(--cx-gold);
+  color: var(--cx-navy);
+  border-radius: 3px;
 }

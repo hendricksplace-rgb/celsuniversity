@@ -56,7 +56,7 @@ export function CivicsApp({ exam, urls, userId, lessonIds, cards, t }: Props) {
   if (mode === "cards")
     return (
       <div className={`space-y-4 ${big}`}>
-        <button type="button" className="t-btn-ghost" onClick={toMenu}>
+        <button type="button" className="t-btn-ghost rounded-full bg-white" onClick={toMenu}>
           ← {t.toMenu}
         </button>
         <StudyCards exam={exam} audio={audio} state={state} onMark={mark} t={t} />
@@ -69,21 +69,19 @@ export function CivicsApp({ exam, urls, userId, lessonIds, cards, t }: Props) {
     <div className={`space-y-5 ${big}`}>
       <Rules exam={exam} t={t} />
       <div className="grid gap-4 sm:grid-cols-2">
-        <button type="button" onClick={() => setMode("run")} className="t-card t-card-accent space-y-2 text-left transition hover:-translate-y-0.5">
-          <span className="text-3xl" aria-hidden>
-            {interview ? "🎙️" : "📝"}
+        <button type="button" onClick={() => setMode("run")} className="cx-navy space-y-3 rounded-2xl p-6 text-left shadow-md transition hover:-translate-y-0.5">
+          <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--cx-gold)] text-2xl text-[var(--cx-navy)]" aria-hidden>
+            {interview ? "🎤" : "📝"}
           </span>
-          <span className="t-heading block text-xl">{interview ? t.modeInterview : t.modeExam}</span>
-          <span className="t-muted block text-sm">
-            {exam.count} {t.asked} · {exam.pass} {t.toPass}
-          </span>
+          <span className="cx-serif block text-2xl font-semibold">{interview ? t.modeInterview : t.modeExam}</span>
+          <span className="cx-chip-gold">{fill(t.ruleChip, { count: exam.count, pass: exam.pass })}</span>
         </button>
-        <button type="button" onClick={() => setMode("cards")} className="t-card t-card-accent space-y-2 text-left transition hover:-translate-y-0.5">
-          <span className="text-3xl" aria-hidden>
+        <button type="button" onClick={() => setMode("cards")} className="space-y-3 rounded-2xl bg-white p-6 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5">
+          <span className="grid h-12 w-12 place-items-center rounded-full bg-[var(--cx-ivory)] text-2xl" aria-hidden>
             🗂️
           </span>
-          <span className="t-heading block text-xl">{t.modeCards}</span>
-          <span className="t-muted block text-sm">{fill(t.knownCount, { known, total: graded.length })}</span>
+          <span className="cx-serif block text-2xl font-semibold text-[var(--cx-navy)]">{t.modeCards}</span>
+          <span className="cx-chip">{fill(t.knownCount, { known, total: graded.length })}</span>
         </button>
       </div>
     </div>
