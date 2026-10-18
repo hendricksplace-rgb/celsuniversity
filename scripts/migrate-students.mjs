@@ -117,6 +117,7 @@ function addOffer(s, from, offer, created, end, status) {
     const t = target(part);
     if (!t) {
       unknownOffers.set(part, (unknownOffers.get(part) ?? 0) + 1);
+      (s.unknown ??= []).push(part);
       continue;
     }
     s.offers.push({ from, offer: part, target: t, created: date(created), end: date(end), status: status || "active" });
@@ -188,6 +189,16 @@ const { data: programs } = await admin.from("programs").select("id, slug");
 const courseId = new Map((courses ?? []).map((c) => [c.slug, c.id]));
 const programId = new Map((programs ?? []).map((p) => [p.slug, p.id]));
 const now = new Date();
+// Access length per program comes from what the product grants today (public.products.grants, the longest
+// grant wins); TARGETS' months are only the fallback (the CelsGLOBAL courses bought on their own).
+const { data: products } = await admin.from("products").select("grants").eq("active", true);
+for (const t of TARGETS) {
+  const months = (products ?? [])
+    .flatMap((p) => (Array.isArray(p.grants) ? p.grants : []))
+    .filter((g) => (t.course && g.course === t.course) || (t.program && g.program === t.program))
+    .map((g) => g.months);
+  if (months.length) t.months = Math.max(...months);
+}
 
 const plan = [...students.values()].map((s) => {
   // One enrollment per landing course/program: the latest end date wins.
@@ -214,11 +225,19 @@ const plan = [...students.values()].map((s) => {
   if (enrollments.some((e) => !e.expires_at)) flags.push("no end date");
   if (enrollments.length && enrollments.every((e) => e.expired)) flags.push("all access expired");
   if (s.sources.length > 1) flags.push("in Kajabi and Base44");
+  if (s.unknown?.length) flags.push("unknown product: " + [...new Set(s.unknown)].join(", "));
   return { ...s, offers: undefined, enrollments, flags, existingUserId: already.get(s.email) ?? null };
 });
 
 const summary = {
   mode: APPLY ? "apply" : "dry-run",
+  // Batch 4 §3: matched (already has a CelsU account), new (account to create), unknown product (at least one
+  // Kajabi product we can't map), expired (every access already ended).
+  matched: plan.filter((p) => p.existingUserId).length,
+  new: plan.filter((p) => !p.existingUserId && p.enrollments.length).length,
+  unknownProduct: plan.filter((p) => p.unknown?.length).length,
+  expired: plan.filter((p) => p.flags.includes("all access expired")).length,
+  accessMonths: Object.fromEntries(TARGETS.map((t) => [t.label, t.months])),
   sources: counts,
   students: plan.length,
   matchedKajabiAndBase44: plan.filter((p) => p.sources.length > 1).length,
@@ -242,18 +261,22 @@ console.log(JSON.stringify(summary, null, 2));
 
 // ---- Apply (never in dry run) ----
 if (APPLY) {
+  const totals = { accountsCreated: 0, accountsReused: 0, enrollmentsCreated: 0, enrollmentsSkipped: 0, errors: 0 };
   for (const p of plan) {
     if (p.flags.includes("no mappable program")) continue;
     let uid = p.existingUserId;
     if (!uid) {
-      // No email is sent: createUser with email_confirm does not invite or notify.
+      // No password and no email: createUser with email_confirm does not invite or notify. Students set a
+      // password with "¿Olvidaste tu contraseña?" or the moving email's link (sent later, only with approval).
       const { data, error } = await admin.auth.admin.createUser({ email: p.email, email_confirm: true, user_metadata: { display_name: p.name } });
       if (error) {
         console.error("createUser", p.email, error.message);
+        totals.errors++;
         continue;
       }
       uid = data.user.id;
-    }
+      totals.accountsCreated++;
+    } else totals.accountsReused++;
     if (p.legacyId) await admin.from("profiles").update({ legacy_id: p.legacyId }).eq("id", uid);
     for (const e of p.enrollments) {
       const row = {
@@ -266,9 +289,20 @@ if (APPLY) {
         starts_at: e.starts_at,
         expires_at: e.expires_at,
       };
+      // Safe to re-run: an enrollment this migration already created is not added twice.
+      let dup = admin.from("enrollments").select("id", { count: "exact", head: true }).eq("user_id", uid).eq("source", "migration");
+      dup = row.course_id ? dup.eq("course_id", row.course_id) : dup.eq("program_id", row.program_id);
+      const { count } = await dup;
+      if (count) {
+        totals.enrollmentsSkipped++;
+        continue;
+      }
       const { error } = await admin.from("enrollments").insert(row);
-      if (error) console.error("enrollment", p.email, e.label, error.message);
+      if (error) {
+        console.error("enrollment", p.email, e.label, error.message);
+        totals.errors++;
+      } else totals.enrollmentsCreated++;
     }
   }
-  console.log("Applied.");
+  console.log("Applied.", JSON.stringify(totals));
 }
