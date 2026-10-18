@@ -140,8 +140,19 @@ export function Part({ id, kind, children }: { id: string; kind: PartKind; child
   }, [kind, already, done]);
 
   // "video": the YouTube player reports time and state once we start listening.
+  useYouTubeWatched(ref, kind === "video" && !already, done, id);
+
+  return (
+    <div ref={ref}>
+      <PartCtx.Provider value={kind === "activity" ? done : null}>{children}</PartCtx.Provider>
+    </div>
+  );
+}
+
+/** Calls `onDone` when the YouTube iframe inside `ref` reaches 90 % or ends (needs enablejsapi=1). */
+export function useYouTubeWatched(ref: React.RefObject<HTMLElement | null>, active: boolean, onDone: () => void, id: string) {
   useEffect(() => {
-    if (kind !== "video" || already || !ref.current) return;
+    if (!active || !ref.current) return;
     const frame = ref.current.querySelector("iframe");
     if (!frame) return;
     const listen = () => frame.contentWindow?.postMessage(JSON.stringify({ event: "listening", id }), "*");
@@ -154,7 +165,7 @@ export function Part({ id, kind, children }: { id: string; kind: PartKind; child
         const info = typeof msg.info === "object" ? msg.info : null;
         const ended = msg.event === "onStateChange" ? msg.info === 0 : info?.playerState === 0;
         const watched = info?.duration && info.currentTime ? info.currentTime / info.duration >= 0.9 : false;
-        if (ended || watched) done();
+        if (ended || watched) onDone();
       } catch {
         /* not a player message */
       }
@@ -164,11 +175,5 @@ export function Part({ id, kind, children }: { id: string; kind: PartKind; child
       frame.removeEventListener("load", listen);
       window.removeEventListener("message", onMessage);
     };
-  }, [kind, already, done, id]);
-
-  return (
-    <div ref={ref}>
-      <PartCtx.Provider value={kind === "activity" ? done : null}>{children}</PartCtx.Provider>
-    </div>
-  );
+  }, [ref, active, onDone, id]);
 }

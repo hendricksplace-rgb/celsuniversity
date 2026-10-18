@@ -3,9 +3,9 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer, one } from "@/lib/access";
-import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
+import { loadLessonContent } from "@/lib/lesson-content";
 import { themeForCourse } from "@/lib/themes";
-import { LessonBlock, partKind, type Block } from "@/components/lesson/LessonBlock";
+import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
 
 type Props = { params: Promise<{ id: string }> };
@@ -30,32 +30,10 @@ export default async function LessonPage({ params }: Props) {
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
 
-  const [{ data: blocks }, { data: siblings }] = await Promise.all([
-    // RLS also filters blocks by course access and hides teacher-only blocks from students.
-    access
-      ? supabase
-          .from("content_blocks")
-          .select("id, block_type, title, body, data, teacher_only")
-          .eq("lesson_id", lesson.id)
-          .order("sort_order")
-      : Promise.resolve({ data: [] as Block[] }),
+  const [{ visible, signed, kinds, partIds, readers, progress }, { data: siblings }] = await Promise.all([
+    loadLessonContent(supabase, viewer, lesson.id, course.id, access),
     supabase.from("lessons").select("id, title").eq("module_id", lessonModule.id).order("sort_order"),
   ]);
-
-  const visible = (blocks ?? []).filter((b) => viewer.isStaff || !b.teacher_only) as Block[];
-  const ebookPdfs = visible.map((b) => b.data?.ebook_pdf).filter((v): v is string => typeof v === "string");
-  const [signed, { data: readerBooks }, { data: progress }] = await Promise.all([
-    signStorageRefs(supabase, collectStorageRefs(visible), { courseId: course.id, viewer, access }),
-    // Interactive versions of this lesson's PDFs (RLS: students only see published ones).
-    ebookPdfs.length
-      ? supabase.from("ebooks").select("slug, pdf_path").in("pdf_path", ebookPdfs)
-      : Promise.resolve({ data: [] as { slug: string; pdf_path: string }[] }),
-    supabase.from("progress").select("status, parts").eq("user_id", viewer.user.id).eq("lesson_id", lesson.id).maybeSingle(),
-  ]);
-  // The parts of the lesson: every block that shows something to this viewer.
-  const kinds = new Map(visible.map((b) => [b.id, partKind(b, viewer.isStaff)] as const));
-  const partIds = visible.filter((b) => kinds.get(b.id) !== "none").map((b) => b.id);
-  const readers = Object.fromEntries((readerBooks ?? []).map((e) => [e.pdf_path, e.slug]));
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
   const prev = index > 0 ? siblings![index - 1] : null;

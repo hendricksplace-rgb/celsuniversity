@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true" style="display:block;overflow:visible">
+<defs>
+<linearGradient id="bgvcelsvideo" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#FF5FA2"/><stop offset="1" stop-color="#C2185B"/></linearGradient>
+<radialGradient id="glvcelsvideo" cx="0.3" cy="0.12" r="0.75"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="wfvcelsvideo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F1ECF7"/></linearGradient>
+<filter id="dsvcelsvideo" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#C2185B" flood-opacity=".55"/></filter>
+<filter id="gsvcelsvideo" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.2" flood-color="#000000" flood-opacity=".22"/></filter>
+</defs>
+<g filter="url(#dsvcelsvideo)">
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#bgvcelsvideo)"/>
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#glvcelsvideo)"/>
+<path d="M32 3.2c16.8 0 28.8 4.3 28.8 28.8" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1.2"/>
+</g>
+<g filter="url(#gsvcelsvideo)">
+<path d="M24 18 31 24M40 18 33 24" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="24" cy="17.5" r="2.2" fill="#FFEF05"/><circle cx="40" cy="17.5" r="2.2" fill="#FFEF05"/>
+<rect x="13" y="24" width="38" height="26" rx="8" fill="url(#wfvcelsvideo)"/>
+<rect x="17" y="28" width="30" height="18" rx="5" fill="#2A1033"/>
+<path d="M28.5 32.2v9.6l8.4-4.8z" fill="#FF5FA2"/>
+<path d="M19 29.5c4-1 8-1.2 12-.8" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+</g>
+</svg>

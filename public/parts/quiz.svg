@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true" style="display:block;overflow:visible">
+<defs>
+<linearGradient id="bgqquiz" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#FF7AB8"/><stop offset="1" stop-color="#D4145A"/></linearGradient>
+<radialGradient id="glqquiz" cx="0.3" cy="0.12" r="0.75"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="wfqquiz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F1ECF7"/></linearGradient>
+<filter id="dsqquiz" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#D4145A" flood-opacity=".55"/></filter>
+<filter id="gsqquiz" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.2" flood-color="#000000" flood-opacity=".22"/></filter>
+</defs>
+<g filter="url(#dsqquiz)">
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#bgqquiz)"/>
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#glqquiz)"/>
+<path d="M32 3.2c16.8 0 28.8 4.3 28.8 28.8" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1.2"/>
+</g>
+<g filter="url(#gsqquiz)">
+<path d="M14 22 6 16M50 22l8-6M32 12V5" stroke="#FFEF05" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M11 31H5M53 31h6" stroke="#43D6FE" stroke-width="3.2" stroke-linecap="round"/>
+<path d="M32 16c11 0 19 7 19 16s-8 16-19 16c-2.2 0-4.3-.3-6.2-.8L17 52l2.6-7.6C15.5 41.5 13 37 13 32c0-9 8-16 19-16z" fill="url(#wfqquiz)"/>
+<path d="m22.5 32.5 6.5 6.5 13-13" fill="none" stroke="#7CC94A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m22.5 32.5 6.5 6.5 13-13" fill="none" stroke="#B3EC79" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 -1.2)"/>
+<path d="M47 45l1.4 3 3 1.4-3 1.4-1.4 3-1.4-3-3-1.4 3-1.4z" fill="#FFEF05"/>
+</g>
+</svg>

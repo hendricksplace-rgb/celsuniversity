@@ -1,4 +1,4 @@
-/* CelsU service worker: offline reading of downloaded e-books (text + audio, never video).
+/* CelsU service worker: offline use of downloaded e-books and episodes (text, audio, images; never video).
  * The page decides what to download (src/lib/offline.ts); this worker only serves it back.
  * Expiry is enforced here from the manifest, which the app renews on every reconnect. */
 const PAGES = "celsu-pages-v1";
@@ -25,6 +25,23 @@ self.addEventListener("fetch", (event) => {
         const res = await fetch(req);
         if (res.ok) cache.put(req, res.clone());
         return res;
+      }),
+    );
+    return;
+  }
+
+  // Downloaded episodes (the episode screen and its parts): same rules as e-books.
+  if (req.mode === "navigate" && url.pathname.startsWith("/app/cursos/")) {
+    event.respondWith(
+      fetch(req).catch(async () => {
+        const manifest = await readManifest();
+        const user = await readJson(USER_KEY);
+        if (!manifest.userId || manifest.userId !== user?.userId) return offlinePage("missing");
+        const book = Object.values(manifest.books || {}).find((b) => (b.pages || []).includes(url.pathname));
+        if (!book) return offlinePage("missing");
+        if (new Date(book.expiresAt).getTime() < Date.now()) return offlinePage("expired");
+        const page = await (await caches.open(PAGES)).match(url.pathname);
+        return page || offlinePage("missing");
       }),
     );
     return;
@@ -62,7 +79,7 @@ function offlinePage(reason) {
   const msg =
     reason === "expired"
       ? ["Tu descarga venció", "Conéctate a internet y abre CelsU para renovarla por 7 días más.", "Your download expired. Go online and open CelsU to renew it for 7 more days."]
-      : ["Sin conexión", "Este libro no está descargado. Conéctate a internet para leerlo.", "You're offline and this book isn't downloaded."];
+      : ["Sin conexión", "Esto no está descargado. Conéctate a internet para abrirlo.", "You're offline and this isn't downloaded."];
   return new Response(
     `<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${msg[0]} · CelsU</title><body style="font-family:system-ui,sans-serif;background:#12101f;color:#fff;display:grid;place-items:center;min-height:100vh;margin:0;padding:16px;text-align:center">

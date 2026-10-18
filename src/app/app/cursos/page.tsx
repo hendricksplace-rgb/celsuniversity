@@ -126,7 +126,11 @@ export default async function MisCursos({ searchParams }: Props) {
         </ul>
       ) : filter === "done" ? (
         <div className="flex flex-col items-center rounded-3xl border border-[#EFE6F2] bg-white px-6 py-12 text-center">
-          <span className="grid h-24 w-24 place-items-center rounded-full p-1.5" style={{ background: "conic-gradient(#F5178C 0 25%, #FFC531 25% 50%, #6DC067 50% 75%, #35C3F0 75% 100%)" }} aria-hidden>
+          <span
+            className="grid h-24 w-24 place-items-center rounded-full p-1.5"
+            style={{ background: "conic-gradient(#F5178C 0 25%, #FFC531 25% 50%, #6DC067 50% 75%, #35C3F0 75% 100%)" }}
+            aria-hidden
+          >
             <span className="grid h-full w-full place-items-center rounded-full bg-white text-3xl font-extrabold text-[#1B1830]">✓</span>
           </span>
           <h2 className="mt-4 text-xl font-extrabold">{m.emptyDoneTitle}</h2>

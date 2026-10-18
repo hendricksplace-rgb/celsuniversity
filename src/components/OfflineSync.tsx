@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { flushPending, offlineSupported, registerServiceWorker, renewDownloads } from "@/lib/offline";
+import { flushFinishedLessons, flushPending, offlineSupported, registerServiceWorker, renewDownloads } from "@/lib/offline";
 
-/** Mounted once in the root layout: whenever the app is (back) online, renew downloads and send queued answers. */
+/** Mounted once in the root layout: whenever the app is (back) online, renew downloads, send queued answers and finished parts. */
 export function OfflineSync({ userId }: { userId: string | null }) {
   useEffect(() => {
     if (!offlineSupported()) return;
@@ -12,6 +12,7 @@ export function OfflineSync({ userId }: { userId: string | null }) {
     const sync = () => {
       if (!navigator.onLine) return;
       void flushPending(supabase, userId);
+      void flushFinishedLessons(supabase, userId);
       void renewDownloads(supabase, userId);
     };
     void registerServiceWorker();

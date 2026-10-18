@@ -32,10 +32,10 @@ const AUDIO_EXT = /\.(mp3|m4a|wav|ogg|aac)$/i;
 const ACTIVITY_TYPES = new Set(["flashcard", "grammar", "quiz", "celstv_quiz"]);
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null);
-const settingsOf = (b: Block) => (b.data.settings && typeof b.data.settings === "object" ? (b.data.settings as Record<string, unknown>) : {});
+export const settingsOf = (b: Block) => (b.data.settings && typeof b.data.settings === "object" ? (b.data.settings as Record<string, unknown>) : {});
 
 /** Public videos are the one thing allowed to live outside (YouTube). Returns a privacy-friendly embed URL. */
-function youtubeEmbed(url: string | null) {
+export function youtubeEmbed(url: string | null) {
   if (!url) return null;
   const m =
     /(?:youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/.exec(url);
@@ -48,7 +48,7 @@ function withDownload(url: string, name: string) {
 }
 
 /** Only this block's signed URLs go to the browser. */
-function urlsFor(value: unknown, signed: SignedRefs) {
+export function urlsFor(value: unknown, signed: SignedRefs) {
   const out: Record<string, string> = {};
   for (const ref of collectStorageRefs(value)) {
     const url = signed.get(ref);

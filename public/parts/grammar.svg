@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" aria-hidden="true" style="display:block;overflow:visible">
+<defs>
+<linearGradient id="bgggrammar" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#A88BFF"/><stop offset="1" stop-color="#5B3BD6"/></linearGradient>
+<radialGradient id="glggrammar" cx="0.3" cy="0.12" r="0.75"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".55" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+<linearGradient id="wfggrammar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#F1ECF7"/></linearGradient>
+<filter id="dsggrammar" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#5B3BD6" flood-opacity=".55"/></filter>
+<filter id="gsggrammar" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.2" flood-color="#000000" flood-opacity=".22"/></filter>
+</defs>
+<g filter="url(#dsggrammar)">
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#bgggrammar)"/>
+<path d="M32 2c17.5 0 30 4.5 30 30s-12.5 30-30 30S2 57.5 2 32 14.5 2 32 2z" fill="url(#glggrammar)"/>
+<path d="M32 3.2c16.8 0 28.8 4.3 28.8 28.8" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1.2"/>
+</g>
+<g filter="url(#gsggrammar)">
+<rect x="12" y="32" width="18" height="18" rx="4.5" fill="url(#wfggrammar)"/>
+<rect x="34" y="32" width="18" height="18" rx="4.5" fill="#FFEF05"/>
+<rect x="23" y="13" width="18" height="18" rx="4.5" transform="rotate(-10 32 22)" fill="#43D6FE"/>
+<text x="21" y="46" text-anchor="middle" font-family="Plus Jakarta Sans, Arial, sans-serif" font-weight="800" font-size="13" fill="#5B3BD6">A</text>
+<text x="43" y="46" text-anchor="middle" font-family="Plus Jakarta Sans, Arial, sans-serif" font-weight="800" font-size="13" fill="#7A5A00">B</text>
+<text x="32" y="27" transform="rotate(-10 32 22)" text-anchor="middle" font-family="Plus Jakarta Sans, Arial, sans-serif" font-weight="800" font-size="13" fill="#FFFFFF">C</text>
+</g>
+</svg>
