@@ -1,0 +1,257 @@
+{
+  "sender": "CelsU <hola@mail.celstv.com>",
+  "images_base": "https://pbpnhsgygwqxnkklhyuz.supabase.co/storage/v1/object/public/email-assets/",
+  "emails": [
+    {
+      "id": "confirm",
+      "file": "supabase/confirm.html",
+      "program": "CelsU",
+      "trigger": "Supabase Auth → Confirm signup",
+      "subject": "Confirma tu correo y empieza en CelsU",
+      "preheader": "Un clic y tu cuenta queda lista.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": []
+    },
+    {
+      "id": "magic",
+      "file": "supabase/magic-link.html",
+      "program": "CelsU",
+      "trigger": "Supabase Auth → Magic Link",
+      "subject": "Tu enlace para entrar a CelsU",
+      "preheader": "Entra sin contraseña con un solo clic.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": []
+    },
+    {
+      "id": "reset",
+      "file": "supabase/reset-password.html",
+      "program": "CelsU",
+      "trigger": "Supabase Auth → Reset Password",
+      "subject": "Crea una nueva contraseña para CelsU",
+      "preheader": "Recibimos tu solicitud para cambiar la contraseña.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": []
+    },
+    {
+      "id": "eval-results",
+      "file": "app/eval-results.html",
+      "program": "CelsU",
+      "trigger": "Al terminar la evaluación de inglés (inmediato)",
+      "subject": "{{nombre}}, tu nivel de inglés es {{nivel}}",
+      "preheader": "Tu resultado por habilidad y el plan que te recomendamos.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "auditiva_nivel",
+        "auditiva_pct",
+        "ayuda_url",
+        "boton_url",
+        "escala_html",
+        "escritura_nivel",
+        "escritura_pct",
+        "lectura_nivel",
+        "lectura_pct",
+        "nivel",
+        "nivel_nombre",
+        "nivel_texto",
+        "nombre",
+        "oferta_mxn",
+        "oferta_precio",
+        "oferta_texto",
+        "oferta_titulo",
+        "oral_nivel",
+        "oral_pct",
+        "privacidad_url",
+        "vocabulario_nivel",
+        "vocabulario_pct"
+      ]
+    },
+    {
+      "id": "eval-d1",
+      "file": "app/eval-d1.html",
+      "program": "CelsU",
+      "trigger": "Evaluación +1 día (si no ha comprado)",
+      "subject": "Tu plan para pasar de {{nivel}} a {{siguiente_nivel}}",
+      "preheader": "Lo que harías tu primera semana, paso a paso.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": true,
+      "variables": [
+        "ayuda_url",
+        "baja_url",
+        "boton_url",
+        "nivel",
+        "preferencias_url",
+        "siguiente_nivel"
+      ]
+    },
+    {
+      "id": "eval-d3",
+      "file": "app/eval-d3.html",
+      "program": "CelsU",
+      "trigger": "Evaluación +3 días (si no ha comprado)",
+      "subject": "Así se ve un episodio por dentro",
+      "preheader": "Video, tarjetas, libro, audio, gramática y quiz.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": true,
+      "variables": [
+        "ayuda_url",
+        "baja_url",
+        "boton_url",
+        "preferencias_url"
+      ]
+    },
+    {
+      "id": "eval-d7",
+      "file": "app/eval-d7.html",
+      "program": "CelsU",
+      "trigger": "Evaluación +7 días (si no ha comprado)",
+      "subject": "¿Dudas antes de empezar? Aquí las respuestas",
+      "preheader": "Precio, tiempo, nivel y cómo se paga.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": true,
+      "variables": [
+        "ayuda_url",
+        "baja_url",
+        "boton_url",
+        "preferencias_url"
+      ]
+    },
+    {
+      "id": "eval-d30",
+      "file": "app/eval-d30.html",
+      "program": "CelsU",
+      "trigger": "Evaluación +30 días (todos)",
+      "subject": "Ya puedes medir tu inglés otra vez",
+      "preheader": "Han pasado 30 días. ¿Cuánto avanzaste?",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": true,
+      "variables": [
+        "ayuda_url",
+        "baja_url",
+        "boton_url",
+        "nivel",
+        "preferencias_url"
+      ]
+    },
+    {
+      "id": "welcome-celstv",
+      "file": "app/welcome-celstv.html",
+      "program": "CelsTV",
+      "trigger": "Compra de CelsTV",
+      "subject": "¡Bienvenido a CelsTV! Tu primer episodio te espera",
+      "preheader": "Todo listo para empezar hoy.",
+      "from_name": "CelsTV · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "welcome-celsbsns",
+      "file": "app/welcome-celsbsns.html",
+      "program": "CelsBSNS",
+      "trigger": "Compra de CelsBSNS",
+      "subject": "Bienvenido a CelsBSNS: inglés para tu trabajo",
+      "preheader": "Tus 10 semanas empiezan hoy.",
+      "from_name": "CelsBSNS · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "welcome-celsus",
+      "file": "app/welcome-celsus.html",
+      "program": "CelsUS",
+      "trigger": "Compra de CelsUS",
+      "subject": "Bienvenido a CelsUS: tu camino a la ciudadanía",
+      "preheader": "Tu preparación para la entrevista empieza hoy.",
+      "from_name": "CelsUS · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "welcome-celsglobal",
+      "file": "app/welcome-celsglobal.html",
+      "program": "CelsGLOBAL",
+      "trigger": "Compra de CelsGLOBAL",
+      "subject": "Bienvenido a CelsGLOBAL: tu ruta de 6 meses",
+      "preheader": "Tu carrera internacional empieza hoy.",
+      "from_name": "CelsGLOBAL · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "welcome-bundle",
+      "file": "app/welcome-bundle.html",
+      "program": "CelsTV",
+      "trigger": "Compra del paquete CelsTV + CelsBSNS",
+      "subject": "Tu paquete CelsTV + CelsBSNS está listo",
+      "preheader": "Dos programas, un solo camino.",
+      "from_name": "CelsTV · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "receipt",
+      "file": "app/receipt.html",
+      "program": "CelsU",
+      "trigger": "Pago confirmado (webhook de Stripe)",
+      "subject": "Recibo de tu compra: {{programa_corto}}",
+      "preheader": "Tu acceso ya está activo.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "variables": [
+        "acceso",
+        "ayuda_url",
+        "boton_url",
+        "fecha",
+        "folio",
+        "privacidad_url",
+        "programa",
+        "programa_corto",
+        "total",
+        "total_mxn",
+        "ultimos4"
+      ]
+    }
+  ]
+}

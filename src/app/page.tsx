@@ -10,7 +10,10 @@ export default async function Home() {
         <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl">{t.home.headline}</h1>
         <p className="text-lg text-white/75">{t.home.sub}</p>
         <div className="flex flex-wrap gap-3">
-          <Link href="/registro" className="btn-primary">
+          <Link href="/evaluacion" className="btn-primary">
+            {t.home.ctaEval}
+          </Link>
+          <Link href="/registro" className="btn-ghost">
             {t.home.ctaPrimary}
           </Link>
           <Link href="/cursos" className="btn-ghost">

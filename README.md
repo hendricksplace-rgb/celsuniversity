@@ -36,6 +36,17 @@ npx tsc --noEmit && npm run lint && npm run build
 | `SUPABASE_SECRET_KEY` | **local only**, migration script | Bypasses RLS. Never add it to the app or to `NEXT_PUBLIC_*` |
 | `BASE44_APP_ID`, `BASE44_API_KEY` | **local only**, migration script | Read access to the old Base44 app |
 
+Edge function secrets (Supabase → Edge Functions → Secrets, never in the repo):
+
+| Name | Used by | Notes |
+| --- | --- | --- |
+| `ANTHROPIC_API_KEY` | `evaluation` | Claude grades the writing and speaking answers |
+| `OPENAI_API_KEY` | `evaluation` | `gpt-4o-mini-transcribe` turns the spoken answer into text |
+| `RESEND_API_KEY` | `evaluation`, `send-email` | Without it emails are only logged (`email_outbox.status = 'stubbed'`) |
+| `SITE_URL` | optional | Links in emails. Default `https://celsuniversity.vercel.app` |
+| `EMAIL_REPLY_TO` | optional | Reply-to on app emails (the receipt says "Responde a este correo") |
+| `EVAL_IP_SALT` | optional | Salt for the hashed IPs in the evaluation rate limit |
+
 ## Project layout
 
 ```
@@ -51,10 +62,15 @@ src/
     app/lecciones/[id]     lesson page: renders every content block
     app/libros/[slug]      interactive e-book reader
     app/admin/libros       staff review page: publish / send back to review (admins only)
+    evaluacion/            public English evaluation (/evaluacion)
+    celstv/, celsbsns/     sales pages the evaluation recommends
+    desuscribir/           unsubscribe link from the evaluation emails
   components/SiteHeader    nav, auth state, language toggle
   components/lesson/       one renderer per block type, styled only with theme tokens
   components/reader/       e-book reader (client): screens, narration, interactive blocks, quiz, autosave
   components/OfflineSync   renews offline downloads and sends queued answers whenever the app is online
+  components/eval/        English evaluation screens (client), talking to the `evaluation` edge function
+  components/sales/       building blocks of the sales pages
 public/sw.js               service worker: serves downloaded e-books offline until they expire
   lib/
     supabase/              browser, server and middleware clients (@supabase/ssr)
@@ -67,6 +83,9 @@ public/sw.js               service worker: serves downloaded e-books offline unt
     offline.ts             offline downloads: Cache Storage, manifest, offline_downloads, answer queue
   middleware.ts            refreshes the session; guards /app
 supabase/migrations/       schema history, recreated from the live database
+supabase/functions/        edge functions (Deno): evaluation, send-email, shared code in _shared/
+supabase/manual/           SQL to run by hand in the SQL editor (pg_cron)
+emails/                    approved email designs: app/ (sent by the app), supabase/ (Auth templates), preview/
 scripts/migrate-base44/    one-off Base44 → Supabase data + file migration
 ```
 
@@ -183,6 +202,24 @@ Audio is generated in Supabase, not in this repo: the `audio_jobs` queue, the `g
 - **Study cards:** question in Spanish, ▶ "Escuchar en inglés" (`audio.q_en`), then the answer in ES + EN, the explanation and the hint, with "Lo sé / Repasar". Progress is per student, by question number, in `progress.flashcard_state` on every 2025 exam lesson (kept identical, so it is shared by the three exams).
 - **`check_online` questions** (8; answers depend on the state or the date) are never graded: they show as a link card (`data.link`, note).
 - Speech recognition works in Chrome, Edge and Safari; elsewhere the options are the way to answer.
+
+### English evaluation (/evaluacion)
+
+Ported from Base44 with the same logic: the item bank, the adaptive engine (two right → level up, two wrong → level down, carried across sections), CEFR scoring, the recommendation (B1 + work goal → CelsTV + CelsBSNS; CelsBSNS from B2), the 30-day retake lock and student mode. Speaking comes right after Escucha, free writing right after Escritura.
+
+- **Engine:** `supabase/functions/_shared/eval-engine.ts`, shared by the pages (`src/lib/eval-engine.ts` re-exports it) and the edge function. The browser sends only its answers; the function replays them against the bank, so a level can't be forged.
+- **Edge function `evaluation`** (public, `verify_jwt = false`): `start` (rate limit: 3 per hour per hashed IP), `writing` (Claude), `speaking` (multipart audio → `speechToText` → Claude), `finish` (writes `leads`, or for a signed-in student `profiles.evaluation_*`, and sends the results email), `unsubscribe`, `followups` (job token).
+- **Speech to text** is behind the `SpeechToText` interface in `supabase/functions/evaluation/transcribe.ts`; swap `speechToText` there (e.g. for Azure Pronunciation Assessment).
+- **Follow-ups:** pg_cron calls `private.kick_followups()` daily (see `supabase/manual/eval_cron.sql`). D1, D3 and D7 only while the lead hasn't bought (paid order, active enrollment or `converted_to_student`); D30 to everyone. Never after an unsubscribe.
+
+### App emails
+
+The approved designs are in `emails/` (see `emails/README.md`). The 11 in `emails/app/` are sent through Resend from `hola@mail.celstv.com`; the 3 in `emails/supabase/` are pasted by hand into Supabase → Authentication → Emails → Templates.
+
+- **Templates** are read from the private bucket `email-templates`. After editing one, upload it: `node --env-file=.env.local scripts/upload-email-templates.mjs`.
+- **Sending:** `supabase/functions/_shared/mailer.ts` fills the `{{variables}}` (HTML-escaped), adds a plain-text version and, for the marketing emails (`eval-d*`), the `List-Unsubscribe` + one-click headers. Every email is logged in `email_outbox`; `dedupe_key` sends each one at most once.
+- **Triggers:** results at the end of the evaluation; follow-ups from the daily job; receipt + `welcome-<product code>` when an `orders` row becomes `paid` (trigger `order_paid_emails` → `send-email`). The Stripe webhook only has to mark the order paid and set `orders.card_last4`.
+- **Edge function `send-email`** (`verify_jwt = false`): `{ event: "order_paid", order_id }` or `{ template, to, vars, dedupe_key }` with the `send-email` job token; `POST ?unsubscribe=<token>` is the public one-click unsubscribe.
 
 ### Program themes
 

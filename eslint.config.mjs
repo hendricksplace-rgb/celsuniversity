@@ -18,6 +18,8 @@ const eslintConfig = [
       "out/**",
       "build/**",
       "next-env.d.ts",
+      // Deno edge functions: checked with `deno check`, not the Next.js config.
+      "supabase/functions/**",
     ],
   },
 ];
