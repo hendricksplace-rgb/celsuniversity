@@ -41,7 +41,7 @@ export default async function CoursePage({ params }: Props) {
         {course.description && <p className="t-muted max-w-3xl">{course.description}</p>}
       </header>
 
-      {!access && <p className="t-card t-card-accent">{t.course.noAccess}</p>}
+      {!access && <AccessNotice userId={viewer.user.id} courseId={course.id} slug={course.slug ?? slug} fallback={t.course.noAccess} />}
 
       <ol className="grid gap-4 md:grid-cols-2">
         {(modules ?? []).map((m) => {
@@ -70,6 +70,52 @@ export default async function CoursePage({ params }: Props) {
           );
         })}
       </ol>
+    </div>
+  );
+}
+
+const PROGRAM_OF_SLUG: Record<string, string> = {
+  "celstv-english-for-our-generation": "celstv",
+  "english-for-business": "celsbsns",
+  "celsus-para-ciudadania": "celsus",
+};
+
+/** Why there's no access: ended ("Tu acceso terminó"), paused (unpaid plan) or never bought. Progress stays. */
+async function AccessNotice({ userId, courseId, slug, fallback }: { userId: string; courseId: string; slug: string; fallback: string }) {
+  const supabase = await createClient();
+  const { data: rows } = await supabase
+    .from("enrollments")
+    .select("status, expires_at, course_id, program:programs(program_courses(course_id))")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  const mine = (rows ?? []).filter(
+    (e) => e.course_id === courseId || (Array.isArray(e.program) ? e.program[0] : e.program)?.program_courses?.some((pc: { course_id: string }) => pc.course_id === courseId),
+  );
+  const buy = `/comprar/${PROGRAM_OF_SLUG[slug] ?? "celsglobal"}`;
+  const btn = "t-btn mt-3 inline-flex";
+  if (mine.some((e) => e.status === "paused"))
+    return (
+      <div className="t-card t-card-accent">
+        <p className="font-bold">Tu acceso está en pausa.</p>
+        <p className="t-muted mt-1 text-sm">No pudimos cobrar tu pago mensual. Actualiza tu tarjeta con el enlace que te enviamos por correo y tu acceso vuelve en cuanto se complete el pago. Tu avance está guardado.</p>
+      </div>
+    );
+  if (mine.some((e) => e.status === "active" && e.expires_at && new Date(e.expires_at) < new Date()) || mine.some((e) => e.status === "completed"))
+    return (
+      <div className="t-card t-card-accent">
+        <p className="font-bold">Tu acceso terminó.</p>
+        <p className="t-muted mt-1 text-sm">Tu avance está guardado: renueva y sigue donde te quedaste.</p>
+        <Link href={buy} className={btn}>
+          Renovar mi acceso →
+        </Link>
+      </div>
+    );
+  return (
+    <div className="t-card t-card-accent">
+      <p>{fallback}</p>
+      <Link href={buy} className={btn}>
+        Ver planes →
+      </Link>
     </div>
   );
 }

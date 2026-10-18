@@ -17,18 +17,20 @@ const admin = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE
 
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 
-// product code → short program name for the receipt subject
-const SHORT: Record<string, string> = { celstv: "CelsTV", celsbsns: "CelsBSNS", bundle: "CelsTV + CelsBSNS", celsus: "CelsUS", celsglobal: "CelsGLOBAL" };
+// program → short name for the receipt subject
+const SHORT: Record<string, string> = { celstv: "CelsTV", celsbsns: "CelsBSNS", celsus: "CelsUS", celsglobal: "CelsGLOBAL" };
+// Bundles welcome with their main program's email.
+const BUNDLE_WELCOME: Record<string, string> = { bundle_tv_bsns: "welcome-bundle", bundle_us_tvpremium: "welcome-celsus" };
 
 async function orderPaid(orderId: string) {
   const { data: order, error } = await admin
     .from("orders")
-    .select("id, user_id, email, amount_usd_cents, status, card_last4, created_at, product:products(code, name, price_usd_cents)")
+    .select("id, user_id, email, amount_usd_cents, status, card_last4, created_at, paid_at, product:products(code, name, price_usd_cents, program, access_label)")
     .eq("id", orderId)
     .maybeSingle();
   if (error) throw error;
   if (!order || order.status !== "paid") return json({ error: "order" }, 404);
-  const product = order.product as unknown as { code: string; name: string; price_usd_cents: number } | null;
+  const product = order.product as unknown as { code: string; name: string; price_usd_cents: number; program: string | null; access_label: string | null } | null;
   const { data: profile } = order.user_id ? await admin.from("profiles").select("email, display_name").eq("id", order.user_id).maybeSingle() : { data: null };
   const to = (profile?.email ?? order.email ?? "").trim().toLowerCase();
   if (!to) return json({ error: "no email" }, 422);
@@ -39,13 +41,10 @@ async function orderPaid(orderId: string) {
   const nombre = firstName(profile?.display_name) || firstName(leads?.[0]?.name) || "estudiante";
 
   const code = product?.code ?? "";
+  const program = product?.program ?? "";
   const usd = (order.amount_usd_cents ?? product?.price_usd_cents ?? 0) / 100;
-  // Access length, from the enrollments the purchase created.
-  const { data: enr } = order.user_id
-    ? await admin.from("enrollments").select("starts_at, expires_at").eq("user_id", order.user_id).eq("status", "active").order("created_at", { ascending: false }).limit(1).maybeSingle()
-    : { data: null };
-  const months = enr?.expires_at ? Math.round((new Date(enr.expires_at).getTime() - new Date(enr.starts_at).getTime()) / (30.44 * 864e5)) : 12;
   const peso = await mxn(usd);
+  const paidAt = order.paid_at ?? order.created_at;
   const results: Record<string, string> = {};
 
   results.receipt = await sendTemplate(admin, {
@@ -53,13 +52,13 @@ async function orderPaid(orderId: string) {
     to,
     vars: {
       programa: product?.name ?? "CelsU",
-      programa_corto: SHORT[code] ?? product?.name ?? "CelsU",
-      acceso: months > 0 ? `${months} meses` : "Sin vencimiento",
+      programa_corto: SHORT[program] ?? product?.name ?? "CelsU",
+      acceso: product?.access_label ?? "",
       total: `$${usd.toFixed(2)} USD`,
       total_mxn: peso ? `≈ ${peso} MXN (se cobra en dólares)` : "Se cobra en dólares",
       ultimos4: order.card_last4 ?? "····",
-      fecha: new Date(order.created_at).toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "America/Mexico_City" }),
-      folio: `CU-${new Date(order.created_at).getFullYear()}-${order.id.slice(0, 8).toUpperCase()}`,
+      fecha: new Date(paidAt).toLocaleDateString("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "America/Mexico_City" }),
+      folio: `CU-${new Date(paidAt).getFullYear()}-${order.id.slice(0, 8).toUpperCase()}`,
       boton_url: `${siteUrl()}/app`,
     },
     dedupeKey: `receipt:${order.id}`,
@@ -67,7 +66,7 @@ async function orderPaid(orderId: string) {
     userId: order.user_id,
   });
 
-  const welcome = `welcome-${code}`;
+  const welcome = BUNDLE_WELCOME[code] ?? `welcome-${program}`;
   if (await hasTemplate(admin, welcome)) {
     results.welcome = await sendTemplate(admin, {
       template: welcome,

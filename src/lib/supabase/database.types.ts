@@ -455,6 +455,7 @@ export type Database = {
       }
       enrollments: {
         Row: {
+          order_id: string | null
           class_id: string | null
           course_id: string | null
           created_at: string
@@ -470,6 +471,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          order_id?: string | null
           class_id?: string | null
           course_id?: string | null
           created_at?: string
@@ -485,6 +487,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          order_id?: string | null
           class_id?: string | null
           course_id?: string | null
           created_at?: string
@@ -1081,6 +1084,10 @@ export type Database = {
       }
       orders: {
         Row: {
+          buyer_name: string | null
+          paid_at: string | null
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
           amount_usd_cents: number | null
           created_at: string
           email: string | null
@@ -1091,6 +1098,10 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          buyer_name?: string | null
+          paid_at?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           amount_usd_cents?: number | null
           created_at?: string
           email?: string | null
@@ -1101,6 +1112,10 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          buyer_name?: string | null
+          paid_at?: string | null
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
           amount_usd_cents?: number | null
           created_at?: string
           email?: string | null
@@ -1168,6 +1183,12 @@ export type Database = {
       }
       products: {
         Row: {
+          access_label: string | null
+          features: Json
+          installments: Json | null
+          program: string | null
+          sort_order: number
+          tier: string | null
           active: boolean
           code: string
           grants: Json
@@ -1177,6 +1198,12 @@ export type Database = {
           stripe_price_id: string | null
         }
         Insert: {
+          access_label?: string | null
+          features?: Json
+          installments?: Json | null
+          program?: string | null
+          sort_order?: number
+          tier?: string | null
           active?: boolean
           code: string
           grants?: Json
@@ -1186,6 +1213,12 @@ export type Database = {
           stripe_price_id?: string | null
         }
         Update: {
+          access_label?: string | null
+          features?: Json
+          installments?: Json | null
+          program?: string | null
+          sort_order?: number
+          tier?: string | null
           active?: boolean
           code?: string
           grants?: Json

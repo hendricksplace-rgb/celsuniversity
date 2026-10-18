@@ -56,7 +56,7 @@ function Hero({ t, data }: { t: T; data: RouteData }) {
         <div className="relative">
           <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight sm:text-4xl">{t.pitchTitle}</h1>
           {data.description && <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed text-white/80 sm:text-base">{data.description}</p>}
-          <Link href="/registro?plan=celsglobal" className={`mt-5 inline-flex rounded-full px-6 py-3.5 text-base font-extrabold ${focus}`} style={{ background: K.goldLight, color: K.night }}>
+          <Link href="/comprar/celsglobal" className={`mt-5 inline-flex rounded-full px-6 py-3.5 text-base font-extrabold ${focus}`} style={{ background: K.goldLight, color: K.night }}>
             {t.start} →
           </Link>
           <p className="mt-3 text-xs font-bold text-white/75">{t.pitchNote}</p>

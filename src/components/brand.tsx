@@ -29,7 +29,7 @@ export const BRAND: Record<ThemeKey, { href: string; bg: string; ink: string; mu
     logo: <Image src="/brand/celsbsns.png" alt="CelsBSNS" width={150} height={42} />,
   },
   celsus: {
-    href: "/cursos",
+    href: "/comprar/celsus",
     bg: "linear-gradient(150deg,#194876 0%,#0E2A4F 100%)",
     ink: "#F4F1E8",
     muted: "#C9D3E2",

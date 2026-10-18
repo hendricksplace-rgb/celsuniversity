@@ -46,6 +46,8 @@ Edge function secrets (Supabase → Edge Functions → Secrets, never in the rep
 | `SITE_URL` | optional | Links in emails. Default `https://celsuniversity.vercel.app` |
 | `EMAIL_REPLY_TO` | optional | Reply-to on app emails (the receipt says "Responde a este correo") |
 | `EVAL_IP_SALT` | optional | Salt for the hashed IPs in the evaluation rate limit |
+| `STRIPE_SECRET_KEY` | `checkout`, `stripe-webhook` | Without it the pay button says payments aren't active yet |
+| `STRIPE_WEBHOOK_SECRET` | `stripe-webhook` | Signing secret of the webhook endpoint; unsigned requests get 400 |
 
 ## Project layout
 
@@ -252,6 +254,15 @@ Everything under `/app` shares `AppShell`: the light CelsU background, a top bar
 ### Installable app ("Descargar app")
 
 CelsU installs as a web app: `src/app/manifest.ts`, icons in `public/icons/`, the iOS meta tags in the root layout, and `public/sw.js` (registered on every page by `OfflineSync`). `src/components/install/InstallApp.tsx` holds the install flow: `InstallProvider` (root layout) detects the environment and keeps Chrome's install prompt; `InstallButton` (top bar), `InstallCard` (Inicio; "Ahora no" hides it 7 days) and `InstallLink` open the sheet that fits: Android/desktop Chrome → native prompt, iPhone → the 3 Safari steps, Instagram/Facebook/WhatsApp/TikTok → open in the browser, desktop → QR code. Hidden once installed. `/app?instalar=1` opens the sheet on arrival. An install fires `celsu:appinstalled` on `window` for analytics.
+
+### Purchase flow (Stripe)
+
+Guests can buy, so the pages live outside `/app`: `/comprar/[programa]` (step 1, plans; CelsGLOBAL shows one payment or 5 monthly payments with their dates), `/comprar/resumen?producto=<code>` (step 2, summary, name and email when signed out), Stripe Checkout (step 3), then `/bienvenida?session_id=…` (polls `checkout` until access is open) or `/pago-fallido`. Prices, access periods and what each product grants are rows in `public.products`; the MXN reference is a cached exchange-rate fetch.
+
+- `supabase/functions/checkout`: `start` creates a pending order and the Checkout Session (`mode: payment`; the CelsGLOBAL plan uses `mode: subscription`); `status` reports pending / active / failed for the welcome page.
+- `supabase/functions/stripe-webhook`: `checkout.session.completed` finds or creates the buyer's account, creates one enrollment per program with its own `expires_at`, logs the payment and marks the order paid (the orders trigger sends the receipt and the welcome email). The plan gets a subscription schedule of 4 × $100 + 1 × $99 that then cancels. `invoice.paid` logs an installment and reactivates paused enrollments; `invoice.payment_failed` pauses them only after Stripe's last retry; `charge.refunded` (full refunds) sets them to refunded and cancels the plan. Progress is never deleted. Events are stored in `stripe_events`, so each runs once.
+- Stripe setup: add the endpoint `https://pbpnhsgygwqxnkklhyuz.supabase.co/functions/v1/stripe-webhook` with the 4 events above, then set the two secrets.
+- Expired or paused enrollments show a notice on the course page with "Renovar mi acceso".
 
 ### Program themes
 
