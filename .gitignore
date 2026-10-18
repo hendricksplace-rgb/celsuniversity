@@ -48,3 +48,6 @@ next-env.d.ts
 /e2e/.auth/
 /test-results/
 /playwright-report/
+
+# Throwaway local scripts (they read .env.local; never commit them)
+/zz-*.mjs
