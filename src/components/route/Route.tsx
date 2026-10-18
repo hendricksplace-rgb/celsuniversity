@@ -209,13 +209,19 @@ export function RoutePage({ t, data }: { t: T; data: RouteData }) {
 
       <section className="mt-4 grid gap-4 md:grid-cols-3">
         {[
-          { title: t.resumeTitle, text: t.resumeText, stage: resume },
-          { title: t.interviewTitle, text: t.interviewText, stage: interview },
+          { title: t.resumeTitle, text: t.resumeText, stage: resume, href: "/app/herramientas/resume", icon: "/ai/icon-resume-review.svg" },
+          { title: t.interviewTitle, text: t.interviewText, stage: interview, href: "/app/herramientas/entrevista", icon: "/ai/icon-interview-practice.svg" },
         ].map((c) => (
-          <Link key={c.title} href={c.stage ? `/app/cursos/${c.stage.slug}` : "/app"} className={`group overflow-hidden rounded-[20px] bg-white shadow-sm ${focus}`}>
-            <div className="relative aspect-video bg-[#E9E4D8]">{c.stage?.cover && <Image src={c.stage.cover} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition group-hover:scale-[1.02] motion-reduce:transition-none" />}</div>
+          <Link key={c.title} href={c.href} className={`group overflow-hidden rounded-[20px] bg-white shadow-sm ${focus}`}>
+            <div className="relative aspect-video bg-[#E9E4D8]">
+              {c.stage?.cover && <Image src={c.stage.cover} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition group-hover:scale-[1.02] motion-reduce:transition-none" />}
+              <Image src={c.icon} alt="" width={52} height={52} className="absolute bottom-3 left-3 drop-shadow-md" />
+            </div>
             <div className="p-4">
-              <h3 className="font-serif text-lg font-semibold">{c.title}</h3>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.16em]" style={{ color: K.teal }}>
+                {t.aiKicker}
+              </p>
+              <h3 className="mt-0.5 font-serif text-lg font-semibold">{c.title}</h3>
               <p className="mt-1 text-sm" style={{ color: K.muted }}>
                 {c.text}
               </p>

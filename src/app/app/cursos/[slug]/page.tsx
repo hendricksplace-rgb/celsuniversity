@@ -21,7 +21,13 @@ export default async function CoursePage({ params }: Props) {
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   if (!page) notFound();
   const access = await canAccessCourse(supabase, viewer, page.course.id);
-  const notice = access ? null : <AccessNotice userId={viewer.user.id} courseId={page.course.id} slug={page.course.slug} fallback={t.course.noAccess} />;
+  const tool = AI_TOOL_OF_SLUG[slug];
+  const notice = (
+    <>
+      {!access && <AccessNotice userId={viewer.user.id} courseId={page.course.id} slug={page.course.slug} fallback={t.course.noAccess} />}
+      {tool && <AiToolCard href={tool.href} icon={tool.icon} kicker={t.route.aiKicker} title={t.route[tool.title]} text={t.route[tool.text]} />}
+    </>
+  );
 
   if (page.layout === "episodes") return <EpisodesView page={page} t={t.course} notice={notice} />;
   if (page.layout === "citizenship") return <CitizenshipView page={page} t={t.course} best={await bestCivicsScore(supabase, viewer)} notice={notice} />;
@@ -44,6 +50,29 @@ async function bestCivicsScore(supabase: Awaited<ReturnType<typeof createClient>
   const pool = rows.some((r) => r.total === 20) ? rows.filter((r) => r.total === 20) : rows;
   const top = pool.sort((a, b) => b.score / (b.total || 1) - a.score / (a.total || 1))[0];
   return top ? `${top.score}/${top.total}` : null;
+}
+
+// CelsGLOBAL stages 2 and 3 open their AI tool from the course page.
+const AI_TOOL_OF_SLUG: Record<string, { href: string; icon: string; title: "resumeTitle" | "interviewTitle"; text: "resumeText" | "interviewText" }> = {
+  "from-cv-to-u-s-resume-a-step-by-step-guide": { href: "/app/herramientas/resume", icon: "/ai/icon-resume-review.svg", title: "resumeTitle", text: "resumeText" },
+  "crack-the-u-s-interview-code": { href: "/app/herramientas/entrevista", icon: "/ai/icon-interview-practice.svg", title: "interviewTitle", text: "interviewText" },
+};
+
+function AiToolCard({ href, icon, kicker, title, text }: { href: string; icon: string; kicker: string; title: string; text: string }) {
+  return (
+    <Link href={href} className="kit-focus flex items-center gap-4 rounded-2xl bg-[#14182B] p-4 text-white transition hover:bg-[#1F2540]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={icon} alt="" width={52} height={52} className="shrink-0" />
+      <span className="min-w-0 flex-1">
+        <span className="block text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#EBD08C]">{kicker}</span>
+        <span className="block font-serif text-lg font-semibold">{title}</span>
+        <span className="block text-sm text-white/80">{text}</span>
+      </span>
+      <span aria-hidden className="text-xl text-[#EBD08C]">
+        ›
+      </span>
+    </Link>
+  );
 }
 
 const PROGRAM_OF_SLUG: Record<string, string> = {
