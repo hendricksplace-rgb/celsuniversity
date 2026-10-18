@@ -2,7 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { HelpCenter } from "@/components/help/HelpCenter";
 
-export const metadata = { title: "Centro de ayuda · CelsU", description: "Respuestas rápidas sobre tu cuenta, la app, la evaluación de inglés, pagos y cursos." };
+// Title and description: celsu-website-copy.md §2.
+export const metadata = {
+  title: "Centro de ayuda · CelsU",
+  description: "Respuestas sobre tu cuenta, la app, los pagos, los reembolsos y tus cursos.",
+  alternates: { canonical: "/ayuda" },
+  openGraph: { title: "Centro de ayuda · CelsU", description: "Respuestas sobre tu cuenta, la app, los pagos, los reembolsos y tus cursos.", locale: "es_MX", type: "website", images: [{ url: "/og/celsu.png", width: 1200, height: 630 }] },
+};
 
 /** Public help center: light CelsU style, one 720 px column. */
 export default function AyudaPage() {

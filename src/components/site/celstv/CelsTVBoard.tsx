@@ -302,6 +302,7 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 </div>
 </div>
 </div>
+<p style={{ position: "relative", margin: "32px auto 0", maxWidth: "1240px", textAlign: "center", fontSize: "14px", fontWeight: "700", color: "#D5DCEA" }}>Reembolso por cualquier motivo en las primeras 72 horas. <a href="/terminos" style={{ color: "#FFFFFF", textDecoration: "underline" }}>Ver términos</a></p>
 </section>
 
 {/* TESTIMONIALS (hidden until real ones arrive) */}

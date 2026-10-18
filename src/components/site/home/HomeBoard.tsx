@@ -817,6 +817,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 <p style={{ margin: "0", fontSize: "14px", color: "#A9B4CC" }}>¿No sabes cuál elegir? <a href="/evaluacion" style={{ color: "#00CCFE", fontWeight: "700" }}>Haz la evaluación gratis</a> y te recomendamos el programa y el plan.</p>
 </div>
+<p style={{ position: "relative", margin: "32px auto 0", maxWidth: "1240px", textAlign: "center", fontSize: "14px", fontWeight: "700", color: "#D5DCEA" }}>Reembolso por cualquier motivo en las primeras 72 horas. <a href="/terminos" style={{ color: "#FFFFFF", textDecoration: "underline" }}>Ver términos</a></p>
 </section>
 
 {/* TESTIMONIALS: hidden until Matt sends real ones (never invent any). */}

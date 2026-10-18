@@ -20,6 +20,8 @@ const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], wei
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
   return {
+    // Canonical URLs and Open Graph images resolve against the public domain (nuevo.celstv.com is noindex).
+    metadataBase: new URL("https://celstv.com"),
     title: t.meta.title,
     description: t.meta.description,
     applicationName: "CelsU",

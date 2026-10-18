@@ -2,17 +2,12 @@ import { sitePrices } from "@/components/site/prices-server";
 import { createClient } from "@/lib/supabase/server";
 import CelsTVBoard, { type Episode } from "@/components/site/celstv/CelsTVBoard";
 
+// Title and description: celsu-website-copy.md §2.
 export const metadata = {
-  title: "CelsTV: English for Our Generation · Inglés para la vida",
-  description: "Aprende inglés para tu día a día con 32 episodios en video: historias, música y cultura, con flashcards, libro, audio, gramática y quiz en cada episodio. Desde $99 USD.",
+  title: "CelsTV · Aprende inglés con una serie de TV",
+  description: "32 episodios con historias reales, tarjetas, libro interactivo, audio y quiz. Aprende inglés para la vida diaria a tu ritmo, desde $99 USD con 1 año de acceso.",
   alternates: { canonical: "/celstv" },
-  openGraph: {
-    title: "CelsTV: English for Our Generation",
-    description: "Inglés para la vida en 32 episodios cortos. Desde $99 USD.",
-    url: "/celstv",
-    locale: "es_MX",
-    images: [{ url: "/site/celstv-e.webp", alt: "CelsTV" }],
-  },
+  openGraph: { title: "CelsTV · Aprende inglés con una serie de TV", description: "32 episodios con historias reales, tarjetas, libro interactivo, audio y quiz. Aprende inglés para la vida diaria a tu ritmo, desde $99 USD con 1 año de acceso.", locale: "es_MX", type: "website", images: [{ url: "/og/celstv.png", width: 1200, height: 630 }] },
 };
 
 // Episode titles and artwork change rarely: rebuild the page at most once an hour.

@@ -1,6 +1,6 @@
 "use client";
 
-// CelsVideo: the episode on YouTube (or a video file not moved yet). Done at 90 % watched, at the end
+// CelsVideo: the episode on YouTube or Vimeo (or a video file not moved yet). Done at 90 % watched, at the end
 // of a file, or with the button. Videos never download.
 import { useCallback, useRef } from "react";
 import { useYouTubeWatched } from "@/components/lesson/progress";
@@ -28,7 +28,7 @@ export function VideoPart({ src, file, title, finishLabel }: { src: string | nul
   return (
     <div className="mt-4 flex flex-1 flex-col">
       <div ref={ref} className="aspect-video w-full overflow-hidden rounded-3xl bg-black shadow-2xl">
-        <iframe src={src} title={title} className="h-full w-full" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+        <iframe src={src} title={title} className="h-full w-full" allow="accelerometer; autoplay; encrypted-media; fullscreen; gyroscope; picture-in-picture" allowFullScreen />
       </div>
       <FinishButton label={finishLabel} />
     </div>

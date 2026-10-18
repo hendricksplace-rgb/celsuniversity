@@ -5,7 +5,7 @@ import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { PART_KEYS, episodePath, loadCoursePage, type PartKey } from "@/lib/course-page";
 import { loadLessonContent } from "@/lib/lesson-content";
-import { LessonBlock, directMedia, settingsOf, urlsFor, youtubeEmbed } from "@/components/lesson/LessonBlock";
+import { LessonBlock, directMedia, settingsOf, urlsFor, videoEmbed } from "@/components/lesson/LessonBlock";
 import { PartShell, Empty, FinishButton } from "@/components/part/PartShell";
 import { VideoPart } from "@/components/part/VideoPart";
 import { fill } from "@/components/course/kit";
@@ -167,7 +167,7 @@ export default async function PartPage({ params, searchParams }: Props) {
   if (key === "celsvideo") {
     const b = blocks.find((x) => x.block_type === "video" || x.block_type === "embed");
     const raw = b ? (b.block_type === "video" ? (b.data.media_url as string | null) : ((settingsOf(b).src as string | undefined) ?? b.body)) : null;
-    body = <VideoPart src={youtubeEmbed(raw ?? null)} file={directMedia(raw ?? null, content.signed)} title={`${part.name} · ${episode.title}`} finishLabel={finishLabel} />;
+    body = <VideoPart src={videoEmbed(raw ?? null)} file={directMedia(raw ?? null, content.signed)} title={`${part.name} · ${episode.title}`} finishLabel={finishLabel} />;
   } else if (key === "celscards" && blocks.some((b) => b.block_type === "flashcard")) {
     body = <CardsPart cards={toCards(blocks, (r) => content.signed.get(r) ?? null)} />;
   } else if (key === "quiz" && blocks.some(isEpisodeQuiz)) {

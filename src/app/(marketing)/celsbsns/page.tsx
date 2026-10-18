@@ -3,19 +3,12 @@ import { createClient } from "@/lib/supabase/server";
 import { weekTitle } from "@/lib/bsns";
 import CelsBSNSBoard from "@/components/site/celsbsns/CelsBSNSBoard";
 
+// Title and description: celsu-website-copy.md §2.
 export const metadata = {
-  title: "CelsBSNS · Inglés de negocios en 10 semanas | CelsUniversity",
-  description:
-    "English for Business: 10 semanas para dominar juntas, correos, presentaciones y entrevistas en inglés. Para nivel B2. Standard $120 USD, Premium $199 USD.",
+  title: "CelsBSNS · Inglés de negocios en 10 semanas",
+  description: "Inglés para juntas, entrevistas, correos y presentaciones. 10 semanas de práctica real con un proyecto final. Desde $120 USD.",
   alternates: { canonical: "/celsbsns" },
-  openGraph: {
-    title: "CelsBSNS · Inglés de negocios en 10 semanas",
-    description: "Juntas, correos, presentaciones y entrevistas en inglés, semana a semana.",
-    url: "/celsbsns",
-    images: [{ url: "/site/celsbsns-logo.png" }],
-    locale: "es_MX",
-    type: "website",
-  },
+  openGraph: { title: "CelsBSNS · Inglés de negocios en 10 semanas", description: "Inglés para juntas, entrevistas, correos y presentaciones. 10 semanas de práctica real con un proyecto final. Desde $120 USD.", locale: "es_MX", type: "website", images: [{ url: "/og/celsbsns.png", width: 1200, height: 630 }] },
 };
 
 // Week titles change rarely: rebuild the page at most once an hour.

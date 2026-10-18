@@ -58,6 +58,18 @@ export function directMedia(url: string | null, signed: SignedRefs) {
   return url.startsWith("storage://") ? (signed.get(url) ?? null) : null;
 }
 
+/** Vimeo links ("vimeo.com/<id>" or "vimeo.com/<id>/<hash>" for unlisted videos) as a privacy-friendly embed. */
+export function vimeoEmbed(url: string | null) {
+  if (!url) return null;
+  const m = /vimeo\.com\/(?:video\/)?(\d{6,})(?:\/([0-9a-f]{6,}))?/i.exec(url) ?? null;
+  if (!m) return null;
+  const h = m[2] ?? new URL(url, "https://vimeo.com").searchParams.get("h");
+  return `https://player.vimeo.com/video/${m[1]}?dnt=1${h ? `&h=${h}` : ""}`;
+}
+
+/** YouTube or Vimeo embed URL for a video link, or null. */
+export const videoEmbed = (url: string | null) => youtubeEmbed(url) ?? vimeoEmbed(url);
+
 function withDownload(url: string, name: string) {
   return `${url}${url.includes("?") ? "&" : "?"}download=${encodeURIComponent(name)}`;
 }
@@ -171,7 +183,7 @@ export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, rea
   }
 
   if (type === "video") {
-    const yt = youtubeEmbed(media);
+    const yt = videoEmbed(media);
     if (yt) return <YouTube src={yt} title={block.title} />;
     const poster = str(block.data.thumbnail_url);
     const file = directMedia(media, signed);
@@ -190,7 +202,7 @@ export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, rea
 
   if (type === "embed") {
     const src = str(settings.src) ?? str(block.body);
-    const yt = youtubeEmbed(src);
+    const yt = videoEmbed(src);
     if (yt) return <YouTube src={yt} title={block.title} />;
     return (
       <BlockCard title={block.title}>
@@ -325,7 +337,7 @@ function YouTube({ src, title }: { src: string; title: string | null }) {
           src={src}
           title={title ?? "YouTube"}
           className="h-full w-full"
-          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+          allow="accelerometer; autoplay; encrypted-media; fullscreen; gyroscope; picture-in-picture"
           allowFullScreen
           loading="lazy"
         />
