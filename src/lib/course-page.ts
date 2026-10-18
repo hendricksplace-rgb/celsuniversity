@@ -38,6 +38,11 @@ export type Part = {
   id: string;
   key: PartKey | null;
   name: string;
+  /** The lesson's own title and type. */
+  title: string;
+  type: string | null;
+  /** CelsUS: which of the 6 core parts this is. */
+  role?: UsRole;
   done: boolean;
   started: boolean;
   xpReward: number;
@@ -54,6 +59,8 @@ export type Episode = {
   artwork: string | null;
   isReview: boolean;
   parts: Part[];
+  /** CelsUS: the lessons beyond the 6 core parts ("Material extra"); they don't count toward x/6. */
+  extra: Part[];
   done: number;
   state: EpisodeState;
   /** The part to open from "Continuar": the first part not done (the first part when all are done). */
@@ -78,6 +85,25 @@ export const unitOf = (n: number) => Math.ceil(n / UNIT_SIZE);
 /** "Episode 6: Let's eat" → "Let's eat"; "Week 2 – Business Etiquette" → "Business Etiquette"; "Episode 34" → "". */
 export function cleanTitle(title: string) {
   return title.replace(/^(CelsUS\s+)?(Episode|Episodio|Module|Módulo|Modulo|Week|Semana)\s*\d+\s*[:–—-]?\s*/i, "").trim();
+}
+
+export type UsRole = "video" | "cards" | "book" | "audio" | "live" | "quiz";
+export const US_ROLES: UsRole[] = ["video", "cards", "book", "audio", "live", "quiz"];
+
+/** CelsUS: the 6 core parts in order (first lesson of each kind), everything else is extra. */
+export function splitCelsus(parts: Part[]) {
+  const pick = (role: UsRole, test: (p: Part) => boolean) => {
+    const p = parts.find((x) => !x.role && test(x));
+    if (p) p.role = role;
+  };
+  pick("video", (p) => p.type === "video");
+  pick("cards", (p) => p.type === "flashcard");
+  pick("book", (p) => /celsbook/i.test(p.title));
+  pick("audio", (p) => p.type === "audio");
+  pick("live", (p) => p.type === "grammar" || /abogado|live/i.test(p.title));
+  pick("quiz", (p) => p.type === "quiz");
+  const core = US_ROLES.map((r) => parts.find((p) => p.role === r)).filter((p): p is Part => !!p);
+  return { core, extra: parts.filter((p) => !p.role) };
 }
 
 export const episodePath = (slug: string, n: number) => `/app/cursos/${slug}/episodio/${n}`;
@@ -113,6 +139,8 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
         id: l.id,
         key,
         name: key ? PART_NAME[key] : l.title,
+        title: l.title,
+        type: l.lesson_type,
         done: p?.status === "completed",
         started: !!p,
         xpReward: l.xp_reward ?? 0,
@@ -125,7 +153,8 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
   const weeks = (modules ?? []).filter((m) => m.kind === "lesson_week");
   const episodes = weeks.map((m, i): Episode => {
     const n = i + 1;
-    const parts = toParts(m, n);
+    const all = toParts(m, n);
+    const { core: parts, extra } = layout === "citizenship" ? splitCelsus(all) : { core: all, extra: [] as Part[] };
     const done = parts.filter((p) => p.done).length;
     const state: EpisodeState = parts.length > 0 && done === parts.length ? "done" : done > 0 ? "now" : "new";
     return {
@@ -136,6 +165,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       artwork: m.artwork_url,
       isReview: /^review/i.test(cleanTitle(m.title)),
       parts,
+      extra,
       done,
       state,
       next: parts.find((p) => !p.done) ?? parts[0] ?? null,

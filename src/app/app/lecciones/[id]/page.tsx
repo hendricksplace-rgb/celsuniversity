@@ -18,11 +18,7 @@ export default async function LessonPage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/lecciones/${id}`);
 
   // RLS: students only see published, non-teacher lessons.
-  const { data: lesson } = await supabase
-    .from("lessons")
-    .select("id, title, module_id, module:modules(id, title, course:courses(id, slug, title))")
-    .eq("id", id)
-    .maybeSingle();
+  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, module:modules(id, title, course:courses(id, slug, title))").eq("id", id).maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   if (!lesson || !lessonModule || !course) notFound();
@@ -34,6 +30,7 @@ export default async function LessonPage({ params }: Props) {
     loadLessonContent(supabase, viewer, lesson.id, course.id, access),
     supabase.from("lessons").select("id, title").eq("module_id", lessonModule.id).order("sort_order"),
   ]);
+  const backHref = await moduleHref(supabase, course, lessonModule.id);
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
   const prev = index > 0 ? siblings![index - 1] : null;
@@ -42,7 +39,7 @@ export default async function LessonPage({ params }: Props) {
   return (
     <div data-theme={theme} className="t-panel space-y-6">
       <header className="space-y-2">
-        <Link href={`/app/cursos/${course.slug}`} className="t-muted text-sm hover:underline">
+        <Link href={backHref} className="t-muted text-sm hover:underline">
           ← {course.title} · {lessonModule.title}
         </Link>
         <h1 className="t-heading text-3xl">{lesson.title}</h1>
@@ -103,11 +100,20 @@ export default async function LessonPage({ params }: Props) {
             {t.lesson.next} →
           </Link>
         ) : (
-          <Link href={`/app/cursos/${course.slug}`} className="t-btn">
+          <Link href={backHref} className="t-btn">
             {t.lesson.backToCourse}
           </Link>
         )}
       </nav>
     </div>
   );
+}
+
+/** Back to the lesson's episode (CelsUS, CelsTV, CelsGLOBAL) or week (CelsBSNS); other modules go to the course. */
+async function moduleHref(supabase: Awaited<ReturnType<typeof createClient>>, course: { id: string; slug: string | null }, moduleId: string) {
+  const courseHref = `/app/cursos/${course.slug}`;
+  const { data: weeks } = await supabase.from("modules").select("id").eq("course_id", course.id).eq("kind", "lesson_week").order("sort_order");
+  const i = (weeks ?? []).findIndex((m) => m.id === moduleId);
+  if (i < 0) return courseHref;
+  return themeForCourse(course) === "celsbsns" ? `${courseHref}/semana/${i + 1}` : `${courseHref}/episodio/${i + 1}`;
 }
