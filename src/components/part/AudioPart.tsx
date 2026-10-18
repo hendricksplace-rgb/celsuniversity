@@ -9,7 +9,8 @@ import { cachedMediaUrl, offlineEntry } from "@/lib/offline";
 import { fill } from "@/components/course/kit";
 import { Empty, FinishButton, usePartShell } from "./PartShell";
 
-export type Cue = { start: number; text: string };
+/** A transcript line; `words` (with their start times) light up one by one while the line plays. */
+export type Cue = { start: number; text: string; words?: { start: number; text: string }[] };
 export type Chapter = { start: number; title: string };
 const SPEEDS = [1, 1.25, 0.75];
 const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
@@ -39,6 +40,7 @@ export function AudioPart({
   const [loop, setLoop] = useState(false);
   const [offline, setOffline] = useState(false);
   const lineRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const box = useRef<HTMLDivElement>(null);
 
   // Downloaded episode: play the saved copy (signed URLs change on every load).
   useEffect(() => {
@@ -52,7 +54,12 @@ export function AudioPart({
   useEffect(() => setProgress(dur ? time / dur : 0), [time, dur, setProgress]);
   useEffect(() => {
     const el = lineRefs.current[line];
-    if (el && playing) el.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    // Keep the current line in the middle of the transcript box (only the box scrolls, not the page).
+    if (el && playing && box.current)
+      box.current.scrollTo({
+        top: el.offsetTop - box.current.clientHeight / 2 + el.clientHeight / 2,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      });
   }, [line, playing]);
 
   if (!url) {
@@ -120,7 +127,7 @@ export function AudioPart({
         </p>
       </div>
 
-      <div className="max-h-48 overflow-y-auto rounded-3xl bg-black/25 p-4" aria-live="off">
+      <div ref={box} className="relative max-h-48 overflow-y-auto rounded-3xl bg-black/25 p-4" aria-live="off">
         {cues.length ? (
           <ol className="space-y-2">
             {cues.map((c, i) => (
@@ -134,9 +141,20 @@ export function AudioPart({
                     seek(c.start);
                     void a().play();
                   }}
-                  className={`kit-focus-light w-full rounded-lg px-1 text-left text-[15px] font-bold transition-colors ${i === line ? "text-[#FFEF05]" : i < line ? "text-white/70" : "text-white/45"}`}
+                  className={`kit-focus-light w-full rounded-lg px-1 text-left text-[15px] font-bold transition-colors ${i === line ? (c.words?.length ? "text-white" : "text-[#FFEF05]") : i < line ? "text-white/70" : "text-white/45"}`}
                 >
-                  {c.text}
+                  {i === line && c.words?.length
+                    ? c.words.map((w, k) => (
+                        <span
+                          key={k}
+                          className={
+                            w.start <= time + 0.05 ? (c.words![k + 1] && c.words![k + 1].start <= time + 0.05 ? "text-[#FFEF05]" : "rounded bg-[#FFEF05] text-[#0E2B07]") : ""
+                          }
+                        >
+                          {w.text}{" "}
+                        </span>
+                      ))
+                    : c.text}
                 </button>
               </li>
             ))}

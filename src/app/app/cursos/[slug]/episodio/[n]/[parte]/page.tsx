@@ -15,6 +15,20 @@ import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
 import { CelsBookPart, type CelsBook, type BookSection } from "@/components/part/CelsBookPart";
 
+type Timed = { start?: unknown; text?: unknown };
+/** audio_transcripts.words → player lines, each with its own words (by start time). */
+function transcriptCues(w: unknown): Cue[] {
+  const ok = (x: Timed): x is { start: number; text: string } => typeof x?.start === "number" && typeof x?.text === "string" && !!x.text.trim();
+  const data = (w ?? {}) as { segments?: Timed[]; words?: Timed[] };
+  const segs = (Array.isArray(data.segments) ? data.segments : []).filter(ok);
+  const words = (Array.isArray(data.words) ? data.words : []).filter(ok);
+  return segs.map((s, i) => {
+    const end = segs[i + 1]?.start ?? Infinity;
+    const mine = words.filter((x) => x.start >= s.start && x.start < end).map((x) => ({ start: x.start, text: x.text.trim() }));
+    return { start: s.start, text: s.text.trim(), words: mine.length ? mine : undefined };
+  });
+}
+
 /** Interactive CelsBook (block `celsbook`, version 1) with signed audio. "Episode 6: Let's eat" → kicker + "Let's eat". */
 function toCelsBook(data: Record<string, unknown>, episode: { title: string; artwork: string | null }, sign: (ref: string) => string | null, kicker: string): CelsBook {
   const str = (v: unknown) => (typeof v === "string" ? v : "");
@@ -162,11 +176,17 @@ export default async function PartPage({ params, searchParams }: Props) {
     const b = blocks.find((x) => x.block_type === "audio");
     const media = typeof b?.data.media_url === "string" ? b.data.media_url : null;
     const list = <T,>(v: unknown, ok: (x: T) => boolean) => (Array.isArray(v) ? (v as T[]).filter(ok) : []);
+    // Transcript: the block's own data.transcript, else the one generated for this file (audio_transcripts).
+    let cues = list<Cue>(b?.data.transcript, (c) => typeof c?.start === "number" && typeof c?.text === "string");
+    if (!cues.length && media?.startsWith("storage://course-media/")) {
+      const { data: tr } = await supabase.from("audio_transcripts").select("words").eq("path", media.slice("storage://course-media/".length)).eq("status", "done").maybeSingle();
+      cues = transcriptCues(tr?.words);
+    }
     body = (
       <AudioPart
         src={media ? (content.signed.get(media) ?? null) : null}
         title={episode.title || fill(t.episode.tag, { n: episode.n })}
-        cues={list<Cue>(b?.data.transcript, (c) => typeof c?.start === "number" && typeof c?.text === "string")}
+        cues={cues}
         chapters={list<Chapter>(b?.data.chapters, (c) => typeof c?.start === "number" && typeof c?.title === "string")}
         episodeKey={episodePath(page.course.slug, episode.n)}
         finishLabel={finishLabel}

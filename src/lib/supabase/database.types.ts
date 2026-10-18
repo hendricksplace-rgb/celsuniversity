@@ -16,6 +16,12 @@ export type Database = {
   }
   public: {
     Tables: {
+      audio_transcripts: {
+        Row: { path: string; status: string; language: string | null; text: string | null; words: Json | null; error: string | null; created_at: string; done_at: string | null };
+        Insert: { path: string; status?: string; language?: string | null; text?: string | null; words?: Json | null; error?: string | null; created_at?: string; done_at?: string | null };
+        Update: { path?: string; status?: string; language?: string | null; text?: string | null; words?: Json | null; error?: string | null; created_at?: string; done_at?: string | null };
+        Relationships: [];
+      };
       audio_jobs: {
         Row: {
           attempts: number
