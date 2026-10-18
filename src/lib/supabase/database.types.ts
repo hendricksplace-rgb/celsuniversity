@@ -22,6 +22,12 @@ export type Database = {
         Update: { id?: string; user_id?: string; lesson_id?: string; body?: string; media_path?: string | null; status?: string; coach_feedback?: string | null; reviewed_by?: string | null; reviewed_at?: string | null; submitted_at?: string | null; created_at?: string; updated_at?: string };
         Relationships: [];
       };
+      interview_answers: {
+        Row: { id: string; session_id: string; user_id: string; question_key: string; audio_path: string | null; transcript: string | null; duration_s: number | null; feedback: Json | null; score: number | null; created_at: string };
+        Insert: { id?: string; session_id: string; user_id: string; question_key: string; audio_path?: string | null; transcript?: string | null; duration_s?: number | null; feedback?: Json | null; score?: number | null; created_at?: string };
+        Update: { id?: string; session_id?: string; user_id?: string; question_key?: string; audio_path?: string | null; transcript?: string | null; duration_s?: number | null; feedback?: Json | null; score?: number | null; created_at?: string };
+        Relationships: [];
+      };
       audio_transcripts: {
         Row: { path: string; status: string; language: string | null; text: string | null; words: Json | null; error: string | null; created_at: string; done_at: string | null };
         Insert: { path: string; status?: string; language?: string | null; text?: string | null; words?: Json | null; error?: string | null; created_at?: string; done_at?: string | null };
