@@ -52,19 +52,23 @@ Edge function secrets (Supabase → Edge Functions → Secrets, never in the rep
 ```
 src/
   app/
-    page.tsx               marketing home (/)
-    cursos/                public course catalog (/cursos)
-    (auth)/entrar          sign in (/entrar)
-    (auth)/registro        sign up (/registro)
+    (site)/                public pages, with the dark site header and footer:
+      page.tsx             marketing home (/)
+      cursos/              public course catalog (/cursos)
+      (auth)/entrar        sign in (/entrar); (auth)/registro: sign up
     auth/callback          email-confirmation + OAuth code exchange
-    app/                   student area (/app), needs a signed-in user
+    app/                   student area (/app), needs a signed-in user; light shell (components/app/AppShell)
+    app/cursos             Mis cursos (filters, course cards, Mis libros)
+    app/progreso           Progreso (stats, XP this week, level history, CelsUS panel, medals)
+    app/programas/celsglobal  the CelsGLOBAL route (5 stages, never locked)
+    app/clases             a teacher's classes; app/clases/[id] assigns courses or modules
     app/cursos/[slug]      course outline (modules → lessons)
     app/lecciones/[id]     lesson page: renders every content block
     app/libros/[slug]      interactive e-book reader
     app/admin/libros       staff review page: publish / send back to review (admins only)
-    evaluacion/            public English evaluation (/evaluacion)
-    celstv/, celsbsns/     sales pages the evaluation recommends
-    desuscribir/           unsubscribe link from the evaluation emails
+      evaluacion/          public English evaluation (/evaluacion)
+      celstv/, celsbsns/   sales pages the evaluation recommends
+      desuscribir/         unsubscribe link from the evaluation emails
   components/SiteHeader    nav, auth state, language toggle
   components/lesson/       one renderer per block type, styled only with theme tokens
   components/reader/       e-book reader (client): screens, narration, interactive blocks, quiz, autosave
@@ -224,6 +228,16 @@ The approved designs are in `emails/` (see `emails/README.md`). The 11 in `email
 ### Student home (/app)
 
 `src/lib/home.ts` loads it; `src/components/home/Home.tsx` draws it. With an active enrollment (direct, or through a program), the student sees their personal home: the lesson to continue (last one touched, else the next unfinished), this week's activity and streak, their programs with lesson progress (`progress.status = 'completed'`), and "Sigue creciendo". Everyone else sees the two free evaluations (English → `/evaluacion`; CelsUS civics → `settings.civics_pretest_url`, "Muy pronto" while it's null) and the four programs. Each program card has its brand's look; CelsGLOBAL is one card for all its courses. Logos are in `public/brand/`.
+
+### Student area shell, route, Mis cursos and Progreso
+
+Everything under `/app` shares `AppShell`: the light CelsU background, a top bar (Inicio, Mis cursos, Progreso, and Mis clases for teachers) and a bottom tab bar on phones. The CelsGLOBAL route paints its own ivory page.
+
+- **Progress data:** `src/lib/learning.ts` finds the courses a student can open (direct enrollment, program, or class) and their per-module and per-lesson progress from `progress.status = 'completed'`. The home, the route and Mis cursos all use it.
+- **CelsGLOBAL route:** `src/lib/route.ts`. Stage → course slug and color are in `STAGES`. A stage is Completada / En curso / Asignada / Disponible; none is ever locked.
+- **Class assignments:** `class_assignments` (class, course, optional module, note ≤ 280 characters, due date). Admins and the class's teachers write (RLS, `private.is_class_teacher`); class members read. Students see them on the route (badge + note) and on the home until they start the course.
+- **Level history:** `public.my_evaluation_history()` returns the student's own finished evaluation sessions (the nightly cleanup keeps those).
+- **Medals:** the 8 in the dictionary (`progress.medalList`). Earned = listed in `gamification.badges`, or proven by the data (streaks, XP, books read, a level up, 18/20 on a practice exam, a finished CelsTV lesson).
 
 ### Installable app ("Descargar app")
 

@@ -67,6 +67,68 @@ export type Database = {
         }
         Relationships: []
       }
+      class_assignments: {
+        Row: {
+          class_id: string
+          course_id: string
+          created_at: string
+          created_by: string | null
+          due_at: string | null
+          id: string
+          module_id: string | null
+          note: string | null
+        }
+        Insert: {
+          class_id: string
+          course_id: string
+          created_at?: string
+          created_by?: string | null
+          due_at?: string | null
+          id?: string
+          module_id?: string | null
+          note?: string | null
+        }
+        Update: {
+          class_id?: string
+          course_id?: string
+          created_at?: string
+          created_by?: string | null
+          due_at?: string | null
+          id?: string
+          module_id?: string | null
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "class_assignments_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_assignments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_assignments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "class_assignments_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       class_courses: {
         Row: {
           class_id: string
@@ -1457,6 +1519,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      my_evaluation_history: {
+        Args: never
+        Returns: {
+          evaluated_at: string
+          level: string
+        }[]
+      }
       renew_offline_downloads: {
         Args: { p_device: string }
         Returns: {

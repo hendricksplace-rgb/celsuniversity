@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
-import { SiteHeader } from "@/components/SiteHeader";
 import { OfflineSync } from "@/components/OfflineSync";
 import { InstallProvider, captureInstallPrompt } from "@/components/install/InstallApp";
 import { createClient } from "@/lib/supabase/server";
@@ -43,12 +42,8 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
         <InstallProvider t={t.install}>
-          <SiteHeader />
           <OfflineSync userId={user?.id ?? null} />
-          <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>
-          <footer className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-            © {new Date().getFullYear()} {t.footer.rights}
-          </footer>
+          {children}
         </InstallProvider>
       </body>
     </html>

@@ -1,60 +1,15 @@
 // Student home (/app). Two views: enrolled students get their personal home; everyone else gets
 // the two free evaluations and the four programs. Each program card carries its own brand look.
-import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { BRANDS, type ContinueLesson, type HomeData, type HomeProgram } from "@/lib/home";
+import { BRANDS, type ContinueLesson, type HomeData, type HomeProgram, type OpenAssignment } from "@/lib/home";
 import type { ThemeKey } from "@/lib/themes";
 import { InstallCard } from "@/components/install/InstallApp";
+import { BRAND } from "@/components/brand";
 
 type T = Dictionary["dash"];
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
-const BRAND: Record<ThemeKey, { href: string; bg: string; ink: string; muted: string; accent: string; bar: string; logo: React.ReactNode }> = {
-  celstv: {
-    href: "/celstv",
-    bg: "linear-gradient(150deg,#2a1240 0%,#1a1030 60%,#12101f 100%)",
-    ink: "#FFFFFF",
-    muted: "#C9C2DD",
-    accent: "#F5178C",
-    bar: "linear-gradient(90deg,#F5178C,#FFC531,#6DC067,#35C3F0)",
-    logo: (
-      <span className="flex items-center gap-2">
-        <Image src="/brand/celstv-e.png" alt="" width={34} height={36} />
-        <span className="text-2xl font-extrabold text-white">
-          Cels<span className="text-[#F5178C]">TV</span>
-        </span>
-      </span>
-    ),
-  },
-  celsbsns: {
-    href: "/celsbsns",
-    bg: "linear-gradient(150deg,#13284D 0%,#0c1a33 100%)",
-    ink: "#FFFFFF",
-    muted: "#A9BBD9",
-    accent: "#35C3F0",
-    bar: "#35C3F0",
-    logo: <Image src="/brand/celsbsns.png" alt="CelsBSNS" width={150} height={42} />,
-  },
-  celsus: {
-    href: "/cursos",
-    bg: "linear-gradient(150deg,#194876 0%,#0E2A4F 100%)",
-    ink: "#F4F1E8",
-    muted: "#C9D3E2",
-    accent: "#FFD24D",
-    bar: "#FFD24D",
-    logo: <Image src="/brand/celsus.jpg" alt="CelsUS" width={120} height={48} className="rounded-md" />,
-  },
-  celsglobal: {
-    href: "/cursos",
-    bg: "linear-gradient(150deg,#F3F1EC 0%,#E4E8E1 100%)",
-    ink: "#2F3A36",
-    muted: "#5E6B66",
-    accent: "#5C7F6E",
-    bar: "#5C7F6E",
-    logo: <Image src="/brand/celsglobal.png" alt="CelsGLOBAL" width={170} height={38} />,
-  },
-};
 
 function Bar({ value, color, track }: { value: number; color: string; track: string }) {
   return (
@@ -68,11 +23,11 @@ function Greeting({ t, name, sub, level, levelLabel }: { t: T; name: string | nu
   return (
     <header className="flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="text-3xl font-extrabold text-white sm:text-4xl">{name ? fill(t.hi, { name }) : t.hiAnon} 👋</h1>
-        <p className="mt-1.5 max-w-xl text-sm font-semibold text-[#A9A4C0] sm:text-base">{sub}</p>
+        <h1 className="text-3xl font-extrabold text-[#1B1830] sm:text-4xl">{name ? fill(t.hi, { name }) : t.hiAnon} 👋</h1>
+        <p className="mt-1.5 max-w-xl text-sm font-semibold text-[#4A4766] sm:text-base">{sub}</p>
       </div>
       {level && (
-        <span className="rounded-full border border-[#FFC531]/40 bg-[#FFC531]/10 px-3.5 py-1.5 text-sm font-extrabold text-[#FFC531]">
+        <span className="rounded-full bg-[#FFE3F0] px-3.5 py-1.5 text-sm font-extrabold text-[#B5007E]">
           {levelLabel} {level}
         </span>
       )}
@@ -85,7 +40,7 @@ function EvaluationCards({ t, data, locale }: { t: T; data: HomeData; locale: st
   const locked = retake && retake > new Date();
   return (
     <section>
-      <h2 className="text-xl font-extrabold text-white">{t.evaluations}</h2>
+      <h2 className="text-xl font-extrabold text-[#1B1830]">{t.evaluations}</h2>
       <div className="mt-3 grid gap-4 md:grid-cols-2">
         <div className="relative overflow-hidden rounded-3xl p-5 sm:p-6" style={{ background: "linear-gradient(140deg,#F5178C 0%,#B5007E 55%,#13284D 100%)" }}>
           <span className="rounded-full bg-[#FFEF05] px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#1B1830]">{t.free}</span>
@@ -170,6 +125,11 @@ function MyProgramCard({ t, program }: { t: T; program: HomeProgram }) {
           </span>
         )}
       </div>
+      {program.brand === "celsglobal" && (
+        <Link href="/app/programas/celsglobal" className="mt-3 inline-flex rounded-full px-4 py-2 text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2" style={{ background: b.accent }}>
+          {t.viewRoute} →
+        </Link>
+      )}
       <ul className="mt-4 space-y-3.5">
         {program.courses.map((c) => (
           <li key={c.id}>
@@ -217,24 +177,24 @@ function ContinueCard({ t, lesson }: { t: T; lesson: ContinueLesson }) {
 
 function WeekCard({ t, data }: { t: T; data: HomeData }) {
   return (
-    <div className="card flex flex-col justify-between !rounded-3xl">
-      <h2 className="text-base font-extrabold text-white">{t.week}</h2>
+    <div className="flex flex-col justify-between rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm sm:p-6">
+      <h2 className="text-base font-extrabold text-[#1B1830]">{t.week}</h2>
       <ol className="mt-4 grid grid-cols-7 gap-1.5">
         {t.weekDays.map((d, i) => (
           <li key={i} className="flex flex-col items-center gap-1.5">
             <span
-              className={`grid h-9 w-9 place-items-center rounded-full text-sm font-extrabold ${i === data.today ? "ring-2 ring-[#FFC531]" : ""}`}
-              style={{ background: data.week[i] ? "#6DC067" : "rgba(255,255,255,.08)", color: data.week[i] ? "#0d2210" : "#A9A4C0" }}
+              className={`grid h-9 w-9 place-items-center rounded-full text-sm font-extrabold ${i === data.today ? "ring-2 ring-[#F5178C]" : ""}`}
+              style={{ background: data.week[i] ? "#6DC067" : "#F1EDF5", color: data.week[i] ? "#0d2210" : "#8A86A0" }}
             >
               {data.week[i] ? "✓" : ""}
             </span>
-            <span className="text-[11px] font-bold text-[#A9A4C0]">{d}</span>
+            <span className="text-[11px] font-bold text-[#6B6680]">{d}</span>
           </li>
         ))}
       </ol>
       <div className="mt-4 flex flex-wrap gap-2 text-sm font-extrabold">
-        <span className="rounded-full bg-[#F5178C]/15 px-3 py-1.5 text-[#F5178C]">🔥 {fill(t.streakDays, { n: data.streak })}</span>
-        <span className="rounded-full bg-[#FFC531]/15 px-3 py-1.5 text-[#FFC531]">⚡ {fill(t.weeklyXp, { n: data.weeklyXp })}</span>
+        <span className="rounded-full bg-[#FFE3F0] px-3 py-1.5 text-[#B5007E]">🔥 {fill(t.streakDays, { n: data.streak })}</span>
+        <span className="rounded-full bg-[#FFF3D6] px-3 py-1.5 text-[#7A5600]">⚡ {fill(t.weeklyXp, { n: data.weeklyXp })}</span>
       </div>
     </div>
   );
@@ -252,8 +212,9 @@ export function StudentHome({ t, levelLabel, data }: { t: T; levelLabel: string;
         {data.continueLesson && <ContinueCard t={t} lesson={data.continueLesson} />}
         <WeekCard t={t} data={data} />
       </div>
+      {data.assignments.length > 0 && <Assignments t={t} items={data.assignments} />}
       <section>
-        <h2 className="text-xl font-extrabold text-white">{t.myPrograms}</h2>
+        <h2 className="text-xl font-extrabold text-[#1B1830]">{t.myPrograms}</h2>
         <div className="mt-3 grid gap-4 md:grid-cols-2">
           {data.programs.map((p) => (
             <MyProgramCard key={p.brand} t={t} program={p} />
@@ -262,7 +223,7 @@ export function StudentHome({ t, levelLabel, data }: { t: T; levelLabel: string;
       </section>
       {(canEvaluate || others.length > 0) && (
         <section>
-          <h2 className="text-xl font-extrabold text-white">{t.grow}</h2>
+          <h2 className="text-xl font-extrabold text-[#1B1830]">{t.grow}</h2>
           <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {canEvaluate && <EvaluationMini t={t} again={!!data.evaluationDate} />}
             {others.map((b) => (
@@ -293,7 +254,7 @@ export function GuestHome({ t, levelLabel, data, locale }: { t: T; levelLabel: s
       <InstallCard />
       <EvaluationCards t={t} data={data} locale={locale} />
       <section>
-        <h2 className="text-xl font-extrabold text-white">{t.programs}</h2>
+        <h2 className="text-xl font-extrabold text-[#1B1830]">{t.programs}</h2>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
           {BRANDS.map((b) => (
             <ProgramCard key={b} t={t} brand={b} />
@@ -301,5 +262,29 @@ export function GuestHome({ t, levelLabel, data, locale }: { t: T; levelLabel: s
         </div>
       </section>
     </div>
+  );
+}
+
+/** Class assignments not started yet: they stay here until the student opens the course. */
+function Assignments({ t, items }: { t: T; items: OpenAssignment[] }) {
+  return (
+    <section className="space-y-3">
+      {items.map((a) => (
+        <div key={a.id} className="flex flex-col gap-3 rounded-3xl border-2 border-[#14182B] bg-white p-5 sm:flex-row sm:items-center">
+          <div className="min-w-0 flex-1">
+            <span className="inline-block rounded-md bg-[#14182B] px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white">{t.assignment}</span>
+            <h3 className="mt-2 text-lg font-extrabold leading-snug">{a.courseTitle}</h3>
+            {a.note && <p className="mt-1 rounded-xl bg-[#FBF3DD] px-3 py-2 text-sm font-semibold text-[#5C4A12]">{a.note}</p>}
+            {a.dueAt && <p className="mt-1.5 text-xs font-bold text-[#6B6680]">{fill(t.due, { date: new Date(a.dueAt).toLocaleDateString("es-MX", { weekday: "long", day: "numeric", month: "long" }) })}</p>}
+          </div>
+          <Link
+            href={a.lessonId ? `/app/lecciones/${a.lessonId}` : `/app/cursos/${a.courseSlug}`}
+            className="inline-flex shrink-0 justify-center rounded-full bg-[#14182B] px-5 py-3 text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]"
+          >
+            {t.startTask} →
+          </Link>
+        </div>
+      ))}
+    </section>
   );
 }

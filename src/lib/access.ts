@@ -17,7 +17,7 @@ export async function getViewer(supabase: Client) {
     .eq("id", user.id)
     .maybeSingle();
   const role = (profile?.role as string | undefined) ?? "individual_student";
-  return { user, role, isStaff: (STAFF_ROLES as readonly string[]).includes(role) };
+  return { user, role, displayName: profile?.display_name ?? null, isStaff: (STAFF_ROLES as readonly string[]).includes(role) };
 }
 
 /**
