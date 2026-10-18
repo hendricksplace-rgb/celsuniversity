@@ -1353,6 +1353,7 @@ export type Database = {
           last_activity: string
           legacy_id: string | null
           lesson_id: string
+          parts: Json
           quiz_max_score: number | null
           quiz_score: number | null
           status: string
@@ -1367,6 +1368,7 @@ export type Database = {
           last_activity?: string
           legacy_id?: string | null
           lesson_id: string
+          parts?: Json
           quiz_max_score?: number | null
           quiz_score?: number | null
           status?: string
@@ -1381,6 +1383,7 @@ export type Database = {
           last_activity?: string
           legacy_id?: string | null
           lesson_id?: string
+          parts?: Json
           quiz_max_score?: number | null
           quiz_score?: number | null
           status?: string
@@ -1519,6 +1522,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      record_lesson_progress: {
+        Args: { p_finish?: boolean; p_lesson: string; p_part?: string }
+        Returns: Json
+      }
       my_evaluation_history: {
         Args: never
         Returns: {

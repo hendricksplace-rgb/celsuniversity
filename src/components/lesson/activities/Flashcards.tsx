@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { usePartDone } from "../progress";
 import { AudioButton, seededShuffle, str, useResolve, useT } from "./shared";
 
 type Card = { front?: string; back?: string; category?: string; front_audio?: string | null; back_audio?: string | null };
@@ -22,6 +23,11 @@ export function Flashcards({ cards, seed }: { cards: Card[]; seed: string }) {
     const filtered = category ? valid.filter((c) => c.category === category) : valid;
     return shuffled ? seededShuffle(filtered, `${seed}:${round}`) : filtered;
   }, [valid, category, shuffled, round, seed]);
+
+  const partDone = usePartDone();
+  useEffect(() => {
+    if (deck.length && index >= deck.length - 1) partDone();
+  }, [index, deck.length, partDone]);
 
   if (!deck.length) return null;
   const card = deck[Math.min(index, deck.length - 1)];

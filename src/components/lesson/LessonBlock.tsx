@@ -39,7 +39,8 @@ function youtubeEmbed(url: string | null) {
   if (!url) return null;
   const m =
     /(?:youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/.exec(url);
-  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}` : null;
+  // enablejsapi: the lesson tracker listens for the player's progress (90 % watched counts as done).
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?enablejsapi=1` : null;
 }
 
 function withDownload(url: string, name: string) {
@@ -54,6 +55,30 @@ function urlsFor(value: unknown, signed: SignedRefs) {
     if (url) out[ref] = url;
   }
   return out;
+}
+
+/**
+ * How a block counts toward finishing the lesson (see ./progress.tsx), or "none" when it renders
+ * nothing for this viewer. Mirrors the branches of LessonBlock below.
+ */
+export function partKind(block: Block, isStaff: boolean): "none" | "seen" | "video" | "activity" {
+  const type = block.block_type;
+  const settings = settingsOf(block);
+  if (type === "teacher_guide" || block.teacher_only) return isStaff && type !== "teacher_guide" ? "seen" : "none";
+  const ebook = str(block.data.ebook_pdf) ?? (type === "flipbook" ? str(settings.pdfUrl) : null);
+  if (ebook) return type === "flipbook" && Array.isArray(settings.pages) && settings.pages.length > 0 ? "activity" : "seen";
+  if (type === "video" || type === "embed") {
+    const src = type === "video" ? str(block.data.media_url) : (str(settings.src) ?? str(block.body));
+    return youtubeEmbed(src) ? "video" : "seen";
+  }
+  if (type === "evaluation") return /^[0-9a-f-]{36}$/i.test(str(block.data.evaluation_id) ?? "") ? "seen" : "none";
+  if (ACTIVITY_TYPES.has(type)) {
+    const data = block.data.settings;
+    const empty = Array.isArray(data) ? !data.length : !data || typeof data !== "object";
+    return empty ? "seen" : "activity";
+  }
+  if (["audio", "image", "file", "pdf", "download"].includes(type) || str(block.data.media_url)) return "seen";
+  return !str(block.body) && !block.title ? "none" : "seen";
 }
 
 export function LessonBlock({ block, signed, t, activityT, civicsT, isStaff, readers, readLabel }: Props) {

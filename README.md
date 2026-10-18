@@ -229,6 +229,16 @@ The approved designs are in `emails/` (see `emails/README.md`). The 11 in `email
 
 `src/lib/home.ts` loads it; `src/components/home/Home.tsx` draws it. With an active enrollment (direct, or through a program), the student sees their personal home: the lesson to continue (last one touched, else the next unfinished), this week's activity and streak, their programs with lesson progress (`progress.status = 'completed'`), and "Sigue creciendo". Everyone else sees the two free evaluations (English → `/evaluacion`; CelsUS civics → `settings.civics_pretest_url`, "Muy pronto" while it's null) and the four programs. Each program card has its brand's look; CelsGLOBAL is one card for all its courses. Logos are in `public/brand/`.
 
+### Lesson completion
+
+Each visible content block is a *part* of its lesson (`partKind` in `LessonBlock.tsx`, tracker in `src/components/lesson/progress.tsx`):
+
+- **Seen:** text, images, audio, files and e-books are done after about 2 seconds on screen.
+- **Video:** YouTube is done at 90 % watched or at the end (the embed has `enablejsapi=1`).
+- **Activity:** flashcards, quizzes, grammar and flipbooks are done when the student reaches the end.
+
+The lesson is finished when every part is done, or with "Marcar como terminada". `public.record_lesson_progress(lesson, part, finish)` does every write: the `progress` row (`status`, and `parts` holding the finished block ids), the lesson's `xp_reward` once, and the daily streak and weekly XP in `gamification` (Mexico City days). Opening a lesson counts as studying that day.
+
 ### Student area shell, route, Mis cursos and Progreso
 
 Everything under `/app` shares `AppShell`: the light CelsU background, a top bar (Inicio, Mis cursos, Progreso, and Mis clases for teachers) and a bottom tab bar on phones. The CelsGLOBAL route paints its own ivory page.

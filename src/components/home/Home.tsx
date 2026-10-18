@@ -193,7 +193,7 @@ function WeekCard({ t, data }: { t: T; data: HomeData }) {
         ))}
       </ol>
       <div className="mt-4 flex flex-wrap gap-2 text-sm font-extrabold">
-        <span className="rounded-full bg-[#FFE3F0] px-3 py-1.5 text-[#B5007E]">🔥 {fill(t.streakDays, { n: data.streak })}</span>
+        <span className="rounded-full bg-[#FFE3F0] px-3 py-1.5 text-[#B5007E]">🔥 {data.streak === 1 ? t.streakDay : fill(t.streakDays, { n: data.streak })}</span>
         <span className="rounded-full bg-[#FFF3D6] px-3 py-1.5 text-[#7A5600]">⚡ {fill(t.weeklyXp, { n: data.weeklyXp })}</span>
       </div>
     </div>

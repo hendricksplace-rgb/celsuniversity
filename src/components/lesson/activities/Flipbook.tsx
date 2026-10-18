@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePartDone } from "../progress";
 import { arr, obj, useResolve, useT } from "./shared";
 
 /** CelsBook page images, one page at a time (works on phones, unlike inline PDFs). */
@@ -14,6 +15,10 @@ export function Flipbook({ settings, title }: { settings: unknown; title: string
     .map((p) => ({ url: resolve(p.url), thumb: resolve(p.thumb) ?? resolve(p.url) }));
   const ratio = Number(s.aspectRatio) > 0 ? Number(s.aspectRatio) : 0.65;
   const [index, setIndex] = useState(0);
+  const partDone = usePartDone();
+  useEffect(() => {
+    if (pages.length && index >= pages.length - 1) partDone();
+  }, [index, pages.length, partDone]);
   if (!pages.length) return null;
   const go = (i: number) => setIndex(Math.max(0, Math.min(pages.length - 1, i)));
   const page = pages[index];

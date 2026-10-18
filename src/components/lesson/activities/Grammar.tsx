@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePartDone } from "../progress";
 import { arr, AudioButton, Feedback, obj, Option, Rich, seededShuffle, speak, str, useResolve, useScrollIntoView, useT } from "./shared";
 
 type Ex = Record<string, unknown>;
@@ -19,6 +20,10 @@ export function Grammar({ settings, seed }: { settings: unknown; seed: string })
   const exercises = arr<Ex>(s.exercises).filter((e) => KNOWN.has(str(obj(e).type)));
   const [index, setIndex] = useState(0);
   const top = useScrollIntoView<HTMLDivElement>(index);
+  const partDone = usePartDone();
+  useEffect(() => {
+    if (exercises.length && index >= exercises.length - 1) partDone();
+  }, [index, exercises.length, partDone]);
   if (!exercises.length) return null;
   const ex = obj(exercises[index]);
   const heading = [str(s.subtitle), str(s.grammarTopic)].filter(Boolean).join(" · ");

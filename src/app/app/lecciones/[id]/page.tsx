@@ -5,7 +5,8 @@ import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer, one } from "@/lib/access";
 import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
 import { themeForCourse } from "@/lib/themes";
-import { LessonBlock, type Block } from "@/components/lesson/LessonBlock";
+import { LessonBlock, partKind, type Block } from "@/components/lesson/LessonBlock";
+import { LessonProgress, Part } from "@/components/lesson/progress";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -43,13 +44,17 @@ export default async function LessonPage({ params }: Props) {
 
   const visible = (blocks ?? []).filter((b) => viewer.isStaff || !b.teacher_only) as Block[];
   const ebookPdfs = visible.map((b) => b.data?.ebook_pdf).filter((v): v is string => typeof v === "string");
-  const [signed, { data: readerBooks }] = await Promise.all([
+  const [signed, { data: readerBooks }, { data: progress }] = await Promise.all([
     signStorageRefs(supabase, collectStorageRefs(visible), { courseId: course.id, viewer, access }),
     // Interactive versions of this lesson's PDFs (RLS: students only see published ones).
     ebookPdfs.length
       ? supabase.from("ebooks").select("slug, pdf_path").in("pdf_path", ebookPdfs)
       : Promise.resolve({ data: [] as { slug: string; pdf_path: string }[] }),
+    supabase.from("progress").select("status, parts").eq("user_id", viewer.user.id).eq("lesson_id", lesson.id).maybeSingle(),
   ]);
+  // The parts of the lesson: every block that shows something to this viewer.
+  const kinds = new Map(visible.map((b) => [b.id, partKind(b, viewer.isStaff)] as const));
+  const partIds = visible.filter((b) => kinds.get(b.id) !== "none").map((b) => b.id);
   const readers = Object.fromEntries((readerBooks ?? []).map((e) => [e.pdf_path, e.slug]));
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
@@ -67,25 +72,44 @@ export default async function LessonPage({ params }: Props) {
 
       {!access ? (
         <p className="t-card t-card-accent">{t.lesson.noAccess}</p>
-      ) : visible.length === 0 ? (
-        <p className="t-card t-muted">{t.lesson.empty}</p>
       ) : (
-        <div className="space-y-5">
-          {visible.map((block) => (
-            <LessonBlock
-              key={block.id}
-              block={block}
-              signed={signed}
-              t={t.lesson}
-              activityT={t.activity}
-              civicsT={t.civics}
-              isStaff={viewer.isStaff}
-              readers={readers}
-              readLabel={t.reader.interactive}
-            />
-          ))}
-          {signed.size > 0 && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
-        </div>
+        <LessonProgress
+          lessonId={lesson.id}
+          partIds={partIds}
+          initialParts={(progress?.parts ?? {}) as Record<string, unknown>}
+          initialStatus={progress?.status ?? null}
+          t={{ parts: t.lesson.partsDone, finish: t.lesson.markDone, finished: t.lesson.finished, xp: t.lesson.xpEarned }}
+        >
+          {visible.length === 0 ? (
+            <p className="t-card t-muted">{t.lesson.empty}</p>
+          ) : (
+            <div className="space-y-5">
+              {visible.map((block) => {
+                const kind = kinds.get(block.id)!;
+                const node = (
+                  <LessonBlock
+                    block={block}
+                    signed={signed}
+                    t={t.lesson}
+                    activityT={t.activity}
+                    civicsT={t.civics}
+                    isStaff={viewer.isStaff}
+                    readers={readers}
+                    readLabel={t.reader.interactive}
+                  />
+                );
+                return kind === "none" ? (
+                  <div key={block.id}>{node}</div>
+                ) : (
+                  <Part key={block.id} id={block.id} kind={kind}>
+                    {node}
+                  </Part>
+                );
+              })}
+              {signed.size > 0 && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
+            </div>
+          )}
+        </LessonProgress>
       )}
 
       <nav className="flex flex-wrap justify-between gap-3 border-t border-[var(--t-border)] pt-5">

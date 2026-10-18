@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePartDone } from "../progress";
 import { arr, AudioButton, Feedback, obj, Option, str, useResolve, useScrollIntoView, useT } from "./shared";
 
 /** One shape for both the plain `quiz` blocks and the CelsTV episode quizzes. */
@@ -52,8 +53,13 @@ export function ChoiceQuiz({ questions, heading }: { questions: Question[]; head
   const [answers, setAnswers] = useState<(number | null)[]>(() => valid.map(() => null));
   const top = useScrollIntoView<HTMLDivElement>(index);
 
-  if (!valid.length) return null;
   const done = index >= valid.length;
+  const partDone = usePartDone();
+  useEffect(() => {
+    if (done && valid.length) partDone();
+  }, [done, valid.length, partDone]);
+
+  if (!valid.length) return null;
   const score = answers.filter((a, i) => a === valid[i]?.correct).length;
 
   if (done) {
