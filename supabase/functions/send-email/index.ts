@@ -72,7 +72,7 @@ async function orderPaid(orderId: string) {
     results.welcome = await sendTemplate(admin, {
       template: welcome,
       to,
-      vars: { nombre, boton_url: `${siteUrl()}/app` },
+      vars: { nombre, boton_url: `${siteUrl()}/app`, app_url: `${siteUrl()}/app?instalar=1` },
       dedupeKey: `${welcome}:${order.id}`,
       orderId: order.id,
       userId: order.user_id,

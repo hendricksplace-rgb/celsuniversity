@@ -16,7 +16,7 @@ export type FinalResult = {
 };
 export type LockedInfo = { retake_on: string; cefr_level?: string | null; skill_levels?: Record<string, string> | null; lead?: boolean };
 
-const PRICE: Record<Product, number> = { celstv: 99, celsbsns: 99, bundle: 150 };
+const PRICE: Record<Product, number> = { celstv: 99, celsbsns: 120, bundle: 150 };
 
 function Gauge({ g }: { g: number }) {
   const arc = useRef<SVGPathElement>(null);

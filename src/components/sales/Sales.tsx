@@ -109,6 +109,7 @@ export function PriceCard({
   color,
   plan,
   rate,
+  access,
   children,
 }: {
   label: string;
@@ -118,6 +119,8 @@ export function PriceCard({
   color: string;
   plan: Plan;
   rate: number | null;
+  /** "un año", "6 meses"… */
+  access: string;
   children?: React.ReactNode;
 }) {
   return (
@@ -126,7 +129,7 @@ export function PriceCard({
         {label}
       </span>
       <div className="mt-2 text-4xl font-extrabold text-white">
-        ${amount} <span className="text-sm font-bold text-[#A9A4C0]">USD · acceso por un año</span>
+        ${amount} <span className="text-sm font-bold text-[#A9A4C0]">USD · acceso por {access}</span>
       </div>
       <Mxn usd={amount} rate={rate} />
       <ul className="mt-3">
@@ -162,11 +165,11 @@ export function BundleCard({ rate }: { rate: number | null }) {
         Del inglés cotidiano al inglés de negocios en un paquete inteligente. Si tu nivel es B1 y tu meta es profesional, esta es tu ruta: CelsTV te lleva a B2 mientras CelsBSNS te espera listo.
       </p>
       <div className="mt-3 flex flex-wrap items-center">
-        <span className="mr-2 text-xl font-extrabold text-[#A9A4C0] line-through">$198</span>
+        <span className="mr-2 text-xl font-extrabold text-[#A9A4C0] line-through">$219</span>
         <span className="text-3xl font-extrabold text-white">$150</span>
         <span className="ml-1 text-sm font-extrabold text-[#A9A4C0]">USD</span>
         <span className="ml-2 inline-block rounded-full px-3 py-1 text-xs font-extrabold text-[#0d2210]" style={{ background: C.green }}>
-          AHORRA $48
+          AHORRA $69
         </span>
       </div>
       <Mxn usd={150} rate={rate} />

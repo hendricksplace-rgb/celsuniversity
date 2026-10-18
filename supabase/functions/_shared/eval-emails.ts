@@ -29,8 +29,8 @@ const LEVEL_TEXT: Record<Band, string> = {
 const SKILLS: [string, string][] = [["vocabulario", "V"], ["auditiva", "L"], ["lectura", "R"], ["escritura", "W"], ["oral", "S"]];
 const OFFER = {
   celstv: { titulo: "CelsTV", texto: "Inglés real en episodios cortos, con tarjetas, audio y quizzes. Empiezas en el episodio que va con tu nivel.", usd: 99 },
-  celsbsns: { titulo: "CelsBSNS", texto: "10 semanas de inglés para tu trabajo: reuniones, correos, entrevistas y presentaciones.", usd: 99 },
-  bundle: { titulo: "CelsTV + CelsBSNS", texto: "Empiezas con CelsTV para ganar fluidez y entras a CelsBSNS cuando llegues a B2. Ahorras $48.", usd: 150 },
+  celsbsns: { titulo: "CelsBSNS", texto: "10 semanas de inglés para tu trabajo: reuniones, correos, entrevistas y presentaciones.", usd: 120 },
+  bundle: { titulo: "CelsTV + CelsBSNS", texto: "Empiezas con CelsTV para ganar fluidez y entras a CelsBSNS cuando llegues a B2. $150 · Ahorras $69.", usd: 150 },
 };
 
 const band = (l: string | null | undefined): Band => (LEVELS.includes(l as Band) ? (l as Band) : "A1");

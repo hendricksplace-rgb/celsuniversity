@@ -1,5 +1,6 @@
 {
   "sender": "CelsU <hola@mail.celstv.com>",
+  "reply_to": "hola@celstv.com",
   "images_base": "https://pbpnhsgygwqxnkklhyuz.supabase.co/storage/v1/object/public/email-assets/",
   "emails": [
     {
@@ -12,6 +13,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": []
     },
     {
@@ -24,6 +26,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": []
     },
     {
@@ -36,6 +39,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": []
     },
     {
@@ -48,6 +52,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "auditiva_nivel",
         "auditiva_pct",
@@ -83,6 +88,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": true,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "ayuda_url",
         "baja_url",
@@ -102,6 +108,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": true,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "ayuda_url",
         "baja_url",
@@ -119,6 +126,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": true,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "ayuda_url",
         "baja_url",
@@ -136,6 +144,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": true,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "ayuda_url",
         "baja_url",
@@ -154,7 +163,9 @@
       "from_name": "CelsTV · CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
+        "app_url",
         "ayuda_url",
         "boton_url",
         "nombre",
@@ -171,7 +182,9 @@
       "from_name": "CelsBSNS · CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
+        "app_url",
         "ayuda_url",
         "boton_url",
         "nombre",
@@ -188,7 +201,9 @@
       "from_name": "CelsUS · CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
+        "app_url",
         "ayuda_url",
         "boton_url",
         "nombre",
@@ -205,7 +220,9 @@
       "from_name": "CelsGLOBAL · CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
+        "app_url",
         "ayuda_url",
         "boton_url",
         "nombre",
@@ -222,7 +239,9 @@
       "from_name": "CelsTV · CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
+        "app_url",
         "ayuda_url",
         "boton_url",
         "nombre",
@@ -239,6 +258,7 @@
       "from_name": "CelsU",
       "from_email": "hola@mail.celstv.com",
       "marketing": false,
+      "reply_to": "hola@celstv.com",
       "variables": [
         "acceso",
         "ayuda_url",

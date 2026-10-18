@@ -39,7 +39,7 @@
 </td></tr>
 <tr><td class="pad" bgcolor="#FFFFFF" style="padding:36px;background:#FFFFFF;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td class="px" style="padding:0 0 14px 0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-weight:800;font-size:28px;line-height:1.2;color:#1B1830;"><h1 class="h1" style="margin:0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-weight:800;font-size:28px;line-height:1.2;color:#1B1830;">¡Hola, {{ if .Data.display_name }}{{ .Data.display_name }}{{ else }}hola{{ end }}! Ya casi está</h1></td></tr>
+<tr><td class="px" style="padding:0 0 14px 0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-weight:800;font-size:28px;line-height:1.2;color:#1B1830;"><h1 class="h1" style="margin:0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-weight:800;font-size:28px;line-height:1.2;color:#1B1830;">¡Hola{{ if .Data.display_name }}, {{ .Data.display_name }}{{ end }}! Ya casi está</h1></td></tr>
 <tr><td style="padding:0 0 16px 0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-size:16px;line-height:1.6;color:#4A4766;">Gracias por crear tu cuenta en CelsU. Solo falta confirmar que este correo es tuyo.</td></tr>
 <tr><td style="padding:6px 0 20px 0;"><table role="presentation" class="btn" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="#F5178C" style="border-radius:999px;background:#F5178C;"><!--[if mso]><table role="presentation" cellpadding="0" cellspacing="0"><tr><td style="padding:14px 28px;"><![endif]--><a href="{{ .ConfirmationURL }}" target="_blank" style="display:inline-block;padding:15px 28px;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-weight:800;font-size:16px;line-height:1.2;color:#FFFFFF;text-decoration:none;border-radius:999px;">Confirmar mi correo</a><!--[if mso]></td></tr></table><![endif]--></td></tr></table></td></tr>
 <tr><td style="padding:4px 0 14px 0;font-family:'Plus Jakarta Sans', Arial, Helvetica, sans-serif;font-size:13px;line-height:1.55;color:#6B6680;">El botón funciona por 24 horas. Si tú no creaste esta cuenta, ignora este correo y no pasa nada.</td></tr>
@@ -50,7 +50,7 @@
 <img src="https://pbpnhsgygwqxnkklhyuz.supabase.co/storage/v1/object/public/email-assets/lam.png" width="70" height="23" alt="Latin American Media" style="display:block;margin:0 auto 8px;border:0;width:70px;height:auto;">
 CelsU es un producto de Latin American Media · Aguascalientes, México<br>
 Recibes este correo porque tienes una cuenta en CelsU.<br>
-<div style="padding-top:6px;"><a href="{{ .SiteURL }}/ayuda" style="color:#6B6680;font-weight:700;text-decoration:underline;">Ayuda</a> &nbsp;·&nbsp; <a href="{{ .SiteURL }}/privacidad" style="color:#6B6680;font-weight:700;text-decoration:underline;">Privacidad</a></div>
+<div style="padding-top:6px;"><a href="mailto:hola@celstv.com" style="color:#6B6680;font-weight:700;text-decoration:underline;">Ayuda</a></div>
 </td></tr>
 </table>
 <!--[if mso]></td></tr></table><![endif]-->

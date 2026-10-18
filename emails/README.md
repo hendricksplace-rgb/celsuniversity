@@ -1,69 +1,62 @@
 # CelsU email templates (14)
 
-These are production versions of the 14 emails Matt approved on the design board. They are built to work in email clients: table layout, inline styles, a 600 px width that adapts to phones, a hidden preheader, and Outlook fallbacks. Every email is in Spanish.
+These are the production versions of the 14 emails Matt approved on the design board. They are built to work in email clients: table layout, inline styles, 600 px wide and adapted for phones, a hidden preheader, and Outlook fallbacks. All of them are in Spanish.
 
 ## Files
 
-- `supabase/`: 3 Supabase Auth templates, already in Supabase's Go-template syntax (`{{ .ConfirmationURL }}`, `{{ .Data.display_name }}`, `{{ .SiteURL }}`).
+- `supabase/` holds the 3 Supabase Auth templates. They are **already installed** in Supabase (Authentication → Emails → Templates) and use Supabase's Go template syntax (`{{ .ConfirmationURL }}`, `{{ .Data.display_name }}`).
   - `confirm.html` → Confirm signup
   - `magic-link.html` → Magic Link
   - `reset-password.html` → Reset Password
-- `app/`: 11 emails the app sends itself, through Resend, from an Edge Function. They use `{{variable}}` placeholders.
-- `manifest.json`: the subject, preheader, sender, trigger and variable list for each email.
-- `preview/`: every email filled with sample data, so you can look at it in a browser.
+- `app/` holds the 11 emails the app sends itself, through Resend from an Edge Function. They use `{{variable}}` placeholders.
+- `manifest.json` lists, for each email: subject, preheader, sender, reply_to, trigger and variables.
+- `preview/` has every email filled with sample data, so you can open it in a browser.
 
 ## Sender
 
-`CelsU <hola@mail.celstv.com>`. Program emails use `CelsTV · CelsU`, `CelsBSNS · CelsU`, and so on; the manifest gives the exact `from_name` for each. The domain `mail.celstv.com` is set up in Resend.
-
-**Reply-to:** the receipt email says "Responde a este correo", so set `reply_to` to a real inbox. Matt will confirm which address.
+- **From:** `CelsU <hola@mail.celstv.com>`. Program emails use the sender name `CelsTV · CelsU`, `CelsBSNS · CelsU`, and so on; the manifest has the right `from_name` for each email.
+- **Domain:** `mail.celstv.com` is verified in Resend.
+- **Reply-to:** `hola@celstv.com` on every email. That inbox receives mail through Google Workspace.
 
 ## Images
 
-The images load from the public Supabase bucket `email-assets`:
+The images are public in the Supabase bucket `email-assets`:
 
 `https://pbpnhsgygwqxnkklhyuz.supabase.co/storage/v1/object/public/email-assets/`
 
 The files are `celsu-u.png`, `celstv-e.png`, `celsbsns.png`, `celsus.jpg`, `celsglobal.png` and `lam.png`.
 
-## App emails: how to send
+## Sending the app emails
 
-1. Load the HTML file and the manifest entry.
-2. Replace every `{{variable}}` in the HTML and in the subject. **HTML-escape the values.**
-3. Send through Resend: `from`, `to`, `subject`, `html`. Also send a plain-text version, which can be generated from the HTML.
+1. Load the HTML file and its entry in the manifest.
+2. Replace every `{{variable}}` in both the HTML and the subject. **HTML-escape the values.**
+3. Send through Resend with `from`, `reply_to`, `to`, `subject` and `html`. Include a plain-text version as well; you can generate it from the HTML.
 
-Variables that every app email uses:
-
+**Variables in every app email:**
 - `nombre`: the student's first name.
 - `boton_url`: where the main button goes.
-- `ayuda_url`, `privacidad_url`.
+- `ayuda_url` and `privacidad_url`: `/ayuda` and `/privacidad` (content in `celsu-ayuda-privacidad.md`).
+- `app_url` (welcome emails only): `/app?instalar=1`, which opens the install sheet.
 
-Marketing emails (`eval-d1`, `eval-d3`, `eval-d7`, `eval-d30`) also use `preferencias_url` and `baja_url`.
+**Marketing emails** (`eval-d1`, `eval-d3`, `eval-d7`, `eval-d30`) also use `preferencias_url` and `baja_url`:
+- `baja_url` must be a one-click unsubscribe link with a signed token.
+- Send the headers `List-Unsubscribe` and `List-Unsubscribe-Post: List-Unsubscribe=One-Click`.
+- Never send to someone who unsubscribed.
+- Stop the d1/d3/d7 follow-ups as soon as the student buys.
 
-- **Unsubscribe is required.** `baja_url` must be a one-click unsubscribe link with a signed token. Also send the headers `List-Unsubscribe` and `List-Unsubscribe-Post: List-Unsubscribe=One-Click`.
-- Don't send these emails to anyone who unsubscribed.
-- Stop the follow-up sequence (d1, d3, d7) as soon as the student buys.
+**Evaluation results** (`eval-results`) uses these variables:
+- `nivel`: A1–C2.
+- `nivel_nombre`: for example, Intermedio.
+- `nivel_texto`: a short description of the level.
+- One level and one whole-number percentage (0–100) per skill: `vocabulario_nivel`/`_pct`, `auditiva_nivel`/`_pct`, `lectura_nivel`/`_pct`, `escritura_nivel`/`_pct`, `oral_nivel`/`_pct`.
+- `escala_html`: the A1–C2 row with the student's level highlighted. `scale_html()` in the generator is the reference for how to build it.
+- `oferta_titulo`, `oferta_texto`, `oferta_precio`, `oferta_mxn`: the recommended offer.
 
-### Evaluation results (`eval-results`)
+**Follow-ups:** `eval-d1` uses `nivel` and `siguiente_nivel`; `eval-d30` uses `nivel`.
 
-- `nivel`: the overall level, A1 to C2.
-- `nivel_nombre`: the level's name, for example Intermedio.
-- `nivel_texto`: one sentence about what the level means.
-- For each skill, a level and a whole-number percent from 0 to 100: `vocabulario_nivel`/`_pct`, `auditiva_nivel`/`_pct`, `lectura_nivel`/`_pct`, `escritura_nivel`/`_pct`, `oral_nivel`/`_pct`.
-- `escala_html`: the A1–C2 scale. Build it with the student's level highlighted; the reference function is `scale_html()` in the generator.
-- The recommended offer: `oferta_titulo`, `oferta_texto`, `oferta_precio`, `oferta_mxn`.
+**Receipt** (`receipt`) uses `programa`, `programa_corto`, `acceso`, `total`, `total_mxn`, `ultimos4`, `fecha` and `folio`. Send it from the Stripe webhook after the payment is confirmed.
 
-### Follow-ups
-
-`eval-d1` uses `nivel` and `siguiente_nivel`. `eval-d30` uses `nivel`.
-
-### Receipt (`receipt`)
-
-The receipt uses `programa`, `programa_corto`, `acceso`, `total`, `total_mxn`, `ultimos4`, `fecha` and `folio`.
-
-Send it from the Stripe webhook after the payment is confirmed.
-
-### When each email goes out
+## Triggers
 
 | Email | Trigger |
 |---|---|
@@ -72,11 +65,3 @@ Send it from the Stripe webhook after the payment is confirmed.
 | eval-d30 | 30 days after the evaluation, to everyone |
 | welcome-* | On purchase, one per program (`welcome-bundle` for CelsTV + CelsBSNS) |
 | receipt | When the payment is confirmed |
-
-## Supabase Auth setup (dashboard)
-
-1. **Authentication → Emails → SMTP Settings → Enable custom SMTP:**
-   - Host `smtp.resend.com`, port `465`, user `resend`.
-   - Password: the Resend API key.
-   - Sender email `hola@mail.celstv.com`, sender name `CelsU`.
-2. **Authentication → Emails → Templates:** paste each file from `supabase/` and use the subject from the manifest.

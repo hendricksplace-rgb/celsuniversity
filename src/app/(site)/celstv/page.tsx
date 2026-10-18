@@ -115,8 +115,8 @@ export default async function CelsTVPage({ searchParams }: Props) {
       <SectionTitle>Lo que dicen los estudiantes</SectionTitle>
       <Testimonials items={TESTIMONIALS} />
       <SectionTitle>Tu plan</SectionTitle>
-      <PriceCard label="CelsTV · English For Our Generation" amount={99} includes={INCLUDES} cta="Empezar con CelsTV: $99 →" color={C.pink} plan="celstv" rate={rate}>
-        <p className="mt-2.5 text-center text-xs font-bold text-[#A9A4C0]">💡 ¿Tu meta es profesional? Mira el paquete CelsTV + CelsBSNS por $150 y ahorra $48.</p>
+      <PriceCard label="CelsTV · English For Our Generation" amount={99} includes={INCLUDES} cta="Empezar con CelsTV: $99 →" color={C.pink} plan="celstv" rate={rate} access="un año">
+        <p className="mt-2.5 text-center text-xs font-bold text-[#A9A4C0]">💡 ¿Tu meta es profesional? Mira el paquete CelsTV + CelsBSNS por $150 y ahorra $69.</p>
       </PriceCard>
       <SectionTitle>Preguntas frecuentes</SectionTitle>
       <FAQ items={FAQ_ITEMS} />

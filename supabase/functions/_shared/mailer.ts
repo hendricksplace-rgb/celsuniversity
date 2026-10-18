@@ -5,7 +5,7 @@
 // Without RESEND_API_KEY nothing leaves: the row is stored with status 'stubbed'.
 import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 
-type ManifestEntry = { id: string; file: string; subject: string; from_name: string; from_email: string; marketing: boolean; variables: string[] };
+type ManifestEntry = { id: string; file: string; subject: string; from_name: string; from_email: string; reply_to?: string; marketing: boolean; variables: string[] };
 type Template = ManifestEntry & { html: string };
 
 export const siteUrl = () => (Deno.env.get("SITE_URL") ?? "https://celsuniversity.vercel.app").replace(/\/$/, "");
@@ -135,7 +135,7 @@ export async function sendTemplate(admin: SupabaseClient, input: SendInput): Pro
       html,
       text,
       headers,
-      ...(Deno.env.get("EMAIL_REPLY_TO") ? { reply_to: Deno.env.get("EMAIL_REPLY_TO") } : {}),
+      ...((tpl.reply_to ?? Deno.env.get("EMAIL_REPLY_TO")) ? { reply_to: tpl.reply_to ?? Deno.env.get("EMAIL_REPLY_TO") } : {}),
       tags: [{ name: "template", value: tpl.id.replace(/[^a-zA-Z0-9_-]/g, "_") }],
     }),
   }).catch((e: Error) => e);

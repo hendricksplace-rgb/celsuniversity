@@ -198,7 +198,7 @@ export function recommendation(g: number, goal: Goal | null) {
   if (work && g >= 3)
     return { product: "celsbsns" as Product, emoji: "💼", name: "CelsBSNS", hex: "#5B8DEF", why: `Con tu nivel ${band} ya estás listo para el inglés profesional: juntas, correos, negociación y entrevistas.`, path: null };
   if (work && g === 2)
-    return { product: "bundle" as Product, emoji: "🚀", name: "CelsTV + CelsBSNS", hex: "#FFC531", why: `Tu meta es profesional y tu nivel es B1. Este paquete usa CelsTV para llevarte a B2 mientras te preparas para dominar CelsBSNS.`, path: null };
+    return { product: "bundle" as Product, emoji: "🚀", name: "CelsTV + CelsBSNS", hex: "#FFC531", why: `Tu meta es profesional y tu nivel es B1. Este paquete usa CelsTV para llevarte a B2 mientras te preparas para dominar CelsBSNS. $150 · Ahorras $69.`, path: null };
   if (g <= 1)
     return {
       product: "celstv" as Product,

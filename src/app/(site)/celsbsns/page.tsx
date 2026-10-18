@@ -44,7 +44,7 @@ const TESTIMONIALS = [
 
 const FAQ_ITEMS = [
   { q: "¿Por qué se requiere B2?", a: "El programa se imparte en inglés profesional real: correos corporativos, casos de estudio y presentaciones auténticas. Con B2 lo aprovechas al máximo; con menos, te frustras. Por eso existe el paquete: CelsTV te lleva ahí." },
-  { q: "¿Mi evaluación dijo B1: puedo entrar directo?", a: "Te recomendamos el paquete CelsTV + CelsBSNS por $150: avanzas con CelsTV y entras a CelsBSNS cuando estés listo. Además ahorras $48." },
+  { q: "¿Mi evaluación dijo B1: puedo entrar directo?", a: "Te recomendamos el paquete CelsTV + CelsBSNS por $150: avanzas con CelsTV y entras a CelsBSNS cuando estés listo. Además ahorras $69." },
   { q: "¿Funciona en el teléfono?", a: "Sí, todo CelsU está diseñado primero para tu teléfono." },
 ];
 
@@ -99,12 +99,12 @@ export default async function CelsBSNSPage({ searchParams }: Props) {
       <SectionTitle>Lo que dicen los estudiantes</SectionTitle>
       <Testimonials items={TESTIMONIALS} />
       <SectionTitle>Tu plan</SectionTitle>
-      <PriceCard label="CelsBSNS · English for Business" amount={99} includes={INCLUDES} cta="Empezar con CelsBSNS: $99 →" color={C.blue} plan="celsbsns" rate={rate} />
+      <PriceCard label="CelsBSNS · English for Business" amount={120} includes={INCLUDES} cta="Empezar con CelsBSNS: $120 →" color={C.blue} plan="celsbsns" rate={rate} access="6 meses" />
       <BundleCard rate={rate} />
       <SectionTitle>Preguntas frecuentes</SectionTitle>
       <FAQ items={FAQ_ITEMS} />
       <SalesFooter product="celsbsns" />
-      <StickyCTA label="Empezar con CelsBSNS: $99 →" color={C.blue} plan="celsbsns" />
+      <StickyCTA label="Empezar con CelsBSNS: $120 →" color={C.blue} plan="celsbsns" />
     </div>
   );
 }
