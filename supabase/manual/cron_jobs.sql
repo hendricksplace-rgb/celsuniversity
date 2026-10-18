@@ -1,6 +1,6 @@
 -- Scheduled jobs. Run ONCE in the Supabase SQL editor (pg_cron and DELETE statements time out through the
 -- MCP migration tool, which waits for a confirmation it can't show). Safe to run again: each job is
--- unscheduled first. Not run yet as of 2026-10-18: until it is, none of these jobs happen.
+-- unscheduled first. Run by Matt on 2026-10-18; all four jobs active (checked in cron.job).
 --
 --   eval-followups   09:00 Mexico City: the evaluation follow-up emails (D1/D3/D7/D30) to leads who asked
 --                    for them (public.leads is empty today, so nothing goes out until real people evaluate).
