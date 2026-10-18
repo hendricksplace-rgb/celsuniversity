@@ -1,3 +1,4 @@
+import { sitePrices } from "@/components/site/prices-server";
 import HomeBoard from "@/components/site/home/HomeBoard";
 
 export const metadata = {
@@ -6,6 +7,9 @@ export const metadata = {
   alternates: { canonical: "/" },
 };
 
-export default function Home() {
-  return <HomeBoard />;
+// Prices come from public.products; refreshed at most once an hour.
+export const revalidate = 3600;
+
+export default async function Home() {
+  return <HomeBoard prices={await sitePrices()} />;
 }

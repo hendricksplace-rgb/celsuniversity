@@ -1,3 +1,4 @@
+import { sitePrices } from "@/components/site/prices-server";
 import { createClient } from "@/lib/supabase/server";
 import CelsTVBoard, { type Episode } from "@/components/site/celstv/CelsTVBoard";
 
@@ -39,5 +40,5 @@ async function seasonOne(): Promise<Episode[]> {
 }
 
 export default async function CelsTVPage() {
-  return <CelsTVBoard episodes={await seasonOne()} />;
+  return <CelsTVBoard episodes={await seasonOne()} prices={await sitePrices()} />;
 }

@@ -1,3 +1,4 @@
+import { sitePrices } from "@/components/site/prices-server";
 import CelsGLOBALBoard from "@/components/site/celsglobal/CelsGLOBALBoard";
 
 export const metadata = {
@@ -15,6 +16,9 @@ export const metadata = {
 };
 
 /** CelsGLOBAL sales page (board CelsGLOBAL.dc.html). The student route is /app/programas/celsglobal. */
-export default function CelsGlobalPage() {
-  return <CelsGLOBALBoard />;
+// Prices come from public.products; refreshed at most once an hour.
+export const revalidate = 3600;
+
+export default async function CelsGlobalPage() {
+  return <CelsGLOBALBoard prices={await sitePrices()} />;
 }

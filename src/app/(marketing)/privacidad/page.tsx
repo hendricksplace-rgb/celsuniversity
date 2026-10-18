@@ -1,4 +1,8 @@
-import { LegalPage } from "@/components/site/SiteChrome";
+import { LegalHold, LegalPage } from "@/components/site/SiteChrome";
+
+// Not published while the text has [BRACKETS] or is waiting for legal review (Matt, 2026-10-18).
+// Flip to true once the final text from claude/celsu-website-copy.md is in.
+const PUBLISHED = false;
 
 export const metadata = {
   title: "Aviso de Privacidad · CelsU",
@@ -19,6 +23,7 @@ const PROVIDERS = [
 ];
 
 export default function Privacidad() {
+  if (!PUBLISHED) return <LegalHold title="Aviso de Privacidad Integral" />;
   return (
     <LegalPage title="Aviso de Privacidad Integral">
       <p className="rounded-xl bg-[#FFF4D6] px-4 py-3 text-sm font-semibold text-[#6B4E00]">Versión preliminar · en revisión legal.</p>

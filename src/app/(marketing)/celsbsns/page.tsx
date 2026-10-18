@@ -1,3 +1,4 @@
+import { sitePrices } from "@/components/site/prices-server";
 import { createClient } from "@/lib/supabase/server";
 import { weekTitle } from "@/lib/bsns";
 import CelsBSNSBoard from "@/components/site/celsbsns/CelsBSNSBoard";
@@ -34,5 +35,5 @@ async function weekTopics() {
 }
 
 export default async function CelsBSNSPage() {
-  return <CelsBSNSBoard weeks={await weekTopics()} />;
+  return <CelsBSNSBoard weeks={await weekTopics()} prices={await sitePrices()} />;
 }

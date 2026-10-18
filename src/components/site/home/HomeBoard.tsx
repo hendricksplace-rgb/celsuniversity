@@ -4,12 +4,13 @@
 // Generated from the approved board Main.dc.html by scripts/board-to-tsx.py, then wired by hand.
 import { Component, Fragment } from "react";
 import { css } from "@/components/site/css";
+import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
 
 // Testimonials stay hidden until there are real ones (celsu-website-spec.md).
 const SHOW_TESTIMONIALS = false;
 
-export default class MainBoard extends Component<Record<string, never>, any> {
+export default class MainBoard extends Component<{ prices: SitePrices }, any> {
   constructor(props) {
     super(props);
     this.Q = [
@@ -167,6 +168,7 @@ export default class MainBoard extends Component<Record<string, never>, any> {
   }
   componentWillUnmount() { clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
   renderVals() {
+    var PR = this.props.prices;
     var self = this;
     var s = this.state;
     var burst = function (list) {
@@ -178,10 +180,10 @@ export default class MainBoard extends Component<Record<string, never>, any> {
     };
     var heroWords = ['carrera.', 'negocio.', 'ciudadanía.', 'inglés.'];
     var recs = {
-      everyday: { kind: 'tv', tag: 'CELSTV · INGLÉS PARA LA VIDA', text: '#C8005F', tint: '#FDF0F6', name: 'English for Our Generation', short: 'CelsTV', price: 'Desde $99 USD', blurb: 'Aprende inglés para tu día a día con una serie en video: historias, música y cultura, en episodios cortos.', note: '', href: '/celstv' },
-      work: { kind: 'bsns', tag: 'CELSBSNS · INGLÉS DE NEGOCIOS', text: '#2C6BC4', tint: '#0F0D1E', name: 'English for Business', short: 'CelsBSNS', price: 'Desde $120 USD', blurb: '10 semanas para dominar juntas, correos, presentaciones y entrevistas en inglés.', note: 'Requiere nivel B2. Si aún no lo tienes, te recomendamos el paquete CelsTV + CelsBSNS.', href: '/celsbsns' },
-      citizen: { kind: 'us', tag: 'CELSUS · CIUDADANÍA', text: '#1E4877', tint: '#0A2340', name: 'CelsUS Para Ciudadanía', short: 'CelsUS', price: 'Desde $139 USD', blurb: 'Las 128 preguntas de cívica con audio, inglés para la entrevista y simulacros, en inglés y español.', note: '', href: '/celsus' },
-      intl: { kind: 'ph', tag: 'CELSGLOBAL · DESARROLLO INTERNACIONAL', text: '#3F8FA6', tint: 'linear-gradient(160deg, #23395A, #14182B)', name: 'International Business Development', short: 'CelsGLOBAL', price: '$499 USD · 6 meses', blurb: 'Inglés de negocios, resume al estilo americano, entrevistas, finanzas personales y tu camino con la Visa TN, en un programa guiado de 6 meses.', note: '', href: '/celsglobal' }
+      everyday: { kind: 'tv', tag: 'CELSTV · INGLÉS PARA LA VIDA', text: '#C8005F', tint: '#FDF0F6', name: 'English for Our Generation', short: 'CelsTV', price: 'Desde ' + fmtPrice(PR, 'celstv_standard') + ' USD', blurb: 'Aprende inglés para tu día a día con una serie en video: historias, música y cultura, en episodios cortos.', note: '', href: '/celstv' },
+      work: { kind: 'bsns', tag: 'CELSBSNS · INGLÉS DE NEGOCIOS', text: '#2C6BC4', tint: '#0F0D1E', name: 'English for Business', short: 'CelsBSNS', price: 'Desde ' + fmtPrice(PR, 'celsbsns_standard') + ' USD', blurb: '10 semanas para dominar juntas, correos, presentaciones y entrevistas en inglés.', note: 'Requiere nivel B2. Si aún no lo tienes, te recomendamos el paquete CelsTV + CelsBSNS.', href: '/celsbsns' },
+      citizen: { kind: 'us', tag: 'CELSUS · CIUDADANÍA', text: '#1E4877', tint: '#0A2340', name: 'CelsUS Para Ciudadanía', short: 'CelsUS', price: 'Desde ' + fmtPrice(PR, 'celsus_estandar') + ' USD', blurb: 'Las 128 preguntas de cívica con audio, inglés para la entrevista y simulacros, en inglés y español.', note: '', href: '/celsus' },
+      intl: { kind: 'ph', tag: 'CELSGLOBAL · DESARROLLO INTERNACIONAL', text: '#3F8FA6', tint: 'linear-gradient(160deg, #23395A, #14182B)', name: 'International Business Development', short: 'CelsGLOBAL', price: fmtPrice(PR, 'celsglobal') + ' USD · 6 meses', blurb: 'Inglés de negocios, resume al estilo americano, entrevistas, finanzas personales y tu camino con la Visa TN, en un programa guiado de 6 meses.', note: '', href: '/celsglobal' }
     };
     var tiles = [
       { id: 'everyday', label: 'Inglés para la vida', program: 'CelsTV · English for Our Generation', kind: 'tv', tint: '#FDE4F0', ring: '#F20174', featured: true },
@@ -343,16 +345,16 @@ export default class MainBoard extends Component<Record<string, never>, any> {
       price: (function () {
         var P = {
           tv: { label: 'CelsTV', accent: '#C8005F', accentDark: '#FF7DB8', note: '', plans: [
-            { code: 'celstv_standard', name: 'Standard', price: '$99', mxn: '≈ $1,900 MXN · se cobra en dólares', features: ['Todos los episodios de la temporada', 'Práctica interactiva de gramática y vocabulario', 'Flashcards, quizzes y entrenamiento Funics', 'CELS Audio', '1 año de acceso en cualquier dispositivo', 'Evaluaciones periódicas'] },
-            { code: 'celstv_premium', name: 'Premium', price: '$149', mxn: '≈ $2,800 MXN · se cobra en dólares', featured: true, features: ['Todo lo de Standard', 'E-books y actividades descargables', 'Clases en vivo cada semana', 'Precio preferente en la Temporada 2', 'Acceso anticipado a nuevos productos'] } ] },
+            { code: 'celstv_standard', name: 'Standard', price: fmtPrice(PR, 'celstv_standard'), mxn: (fmtMxn(PR, 'celstv_standard') ? fmtMxn(PR, 'celstv_standard') + ' · ' : '') + 'se cobra en dólares', features: ['Todos los episodios de la temporada', 'Práctica interactiva de gramática y vocabulario', 'Flashcards, quizzes y entrenamiento Funics', 'CELS Audio', '1 año de acceso en cualquier dispositivo', 'Evaluaciones periódicas'] },
+            { code: 'celstv_premium', name: 'Premium', price: fmtPrice(PR, 'celstv_premium'), mxn: (fmtMxn(PR, 'celstv_premium') ? fmtMxn(PR, 'celstv_premium') + ' · ' : '') + 'se cobra en dólares', featured: true, features: ['Todo lo de Standard', 'E-books y actividades descargables', 'Clases en vivo cada semana', 'Precio preferente en la Temporada 2', 'Acceso anticipado a nuevos productos'] } ] },
           bsns: { label: 'CelsBSNS', accent: '#2C6BC4', accentDark: '#7FB8FF', note: 'Requiere nivel B2. Si aún no lo tienes, mira el paquete CelsTV + CelsBSNS.', plans: [
-            { code: 'celsbsns_standard', name: 'Standard', price: '$120', mxn: '≈ $2,200 MXN · se cobra en dólares', features: ['10 módulos en video', 'Tareas semanales y materiales descargables', 'PDF semanal de vocabulario', 'Quizzes con retroalimentación automática', 'Certificado CelsUniversity', '12 meses de acceso'] },
-            { code: 'celsbsns_premium', name: 'Premium', price: '$199', mxn: '≈ $3,800 MXN · se cobra en dólares', featured: true, features: ['Todo lo de Standard', 'Revisión de tu currículum estilo EE.UU. por un instructor', 'Entrevista de práctica individual con retroalimentación', 'Análisis y estrategia de tu perfil profesional', 'Acceso prioritario a recursos adicionales'] } ] },
+            { code: 'celsbsns_standard', name: 'Standard', price: fmtPrice(PR, 'celsbsns_standard'), mxn: (fmtMxn(PR, 'celsbsns_standard') ? fmtMxn(PR, 'celsbsns_standard') + ' · ' : '') + 'se cobra en dólares', features: ['10 módulos en video', 'Tareas semanales y materiales descargables', 'PDF semanal de vocabulario', 'Quizzes con retroalimentación automática', 'Certificado CelsUniversity', '12 meses de acceso'] },
+            { code: 'celsbsns_premium', name: 'Premium', price: fmtPrice(PR, 'celsbsns_premium'), mxn: (fmtMxn(PR, 'celsbsns_premium') ? fmtMxn(PR, 'celsbsns_premium') + ' · ' : '') + 'se cobra en dólares', featured: true, features: ['Todo lo de Standard', 'Revisión de tu currículum estilo EE.UU. por un instructor', 'Entrevista de práctica individual con retroalimentación', 'Análisis y estrategia de tu perfil profesional', 'Acceso prioritario a recursos adicionales'] } ] },
           us: { label: 'CelsUS', accent: '#194876', accentDark: '#9CC7FF', note: '', plans: [
-            { code: 'celsus_estandar', name: 'Acceso Estándar', price: '$139', mxn: 'Se cobra en dólares', features: ['Curso completo con lecciones de cívica', 'Las 128 preguntas oficiales, en inglés con referencia en español', 'Actividades de escucha, habla y comprensión', 'Hojas de estudio y flashcards imprimibles', '12 meses de acceso'] },
-            { code: 'celsus_completo', name: 'Paquete Completo', price: '$199', mxn: 'Se cobra en dólares', featured: true, features: ['Todo lo del Acceso Estándar', 'Simulacros de entrevista con retroalimentación personalizada', 'Cuaderno de trabajo en PDF', 'Certificado de finalización', 'Soporte prioritario por correo'] } ] },
+            { code: 'celsus_estandar', name: 'Acceso Estándar', price: fmtPrice(PR, 'celsus_estandar'), mxn: 'Se cobra en dólares', features: ['Curso completo con lecciones de cívica', 'Las 128 preguntas oficiales, en inglés con referencia en español', 'Actividades de escucha, habla y comprensión', 'Hojas de estudio y flashcards imprimibles', '12 meses de acceso'] },
+            { code: 'celsus_completo', name: 'Paquete Completo', price: fmtPrice(PR, 'celsus_completo'), mxn: 'Se cobra en dólares', featured: true, features: ['Todo lo del Acceso Estándar', 'Simulacros de entrevista con retroalimentación personalizada', 'Cuaderno de trabajo en PDF', 'Certificado de finalización', 'Soporte prioritario por correo'] } ] },
           ibd: { label: 'CelsGLOBAL', accent: '#00708C', accentDark: '#5FE3FF', note: '', plans: [
-            { code: 'celsglobal', name: 'Programa completo', price: '$499', mxn: 'Programa de 6 meses · Se cobra en dólares', featured: true, features: ['English for Business (CelsBSNS) completo', 'CV to Resume + Resume Review', 'Crack the U.S. Interview Code + Interview Prep', 'Finanzas Personales y Tu Camino con la Visa TN', 'CelsTV para tu inglés base'] } ] }
+            { code: 'celsglobal', name: 'Programa completo', price: fmtPrice(PR, 'celsglobal'), mxn: 'Programa de 6 meses · Se cobra en dólares', featured: true, features: ['English for Business (CelsBSNS) completo', 'CV to Resume + Resume Review', 'Crack the U.S. Interview Code + Interview Prep', 'Finanzas Personales y Tu Camino con la Visa TN', 'CelsTV para tu inglés base'] } ] }
         };
         var order = ['tv', 'bsns', 'us', 'ibd'];
         var cur = P[s.priceTab];
@@ -395,6 +397,8 @@ export default class MainBoard extends Component<Record<string, never>, any> {
 
   render() {
     const v = this.renderVals();
+    // Prices from public.products (see the page), never the board's copy.
+    const P = this.props.prices;
     return (
       <div style={{ fontFamily: "var(--font-jakarta), system-ui, sans-serif", color: "#0F0D1E", background: "#FFFFFF", minWidth: "0", overflowX: "hidden" }}>
 
@@ -792,8 +796,8 @@ export default class MainBoard extends Component<Record<string, never>, any> {
 <span style={{ fontSize: "14px", color: "#C9D3E6" }}>Acceso completo a ambos programas, guías de práctica y doble certificado. Ideal desde nivel B1.</span>
 </div>
 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
-<span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>$175 <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span></span>
-<span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras $50 USD</span>
+<span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>{fmtPrice(P, "bundle_tv_bsns")} <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span></span>
+<span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras {fmtSaving(P, "bundle_tv_bsns", ["celstv_standard", "celsbsns_standard"])} USD</span>
 <a href="/comprar/resumen?producto=bundle_tv_bsns" className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </article>
@@ -804,8 +808,8 @@ export default class MainBoard extends Component<Record<string, never>, any> {
 <span style={{ fontSize: "14px", color: "#C9D3E6" }}>Cívica y entrevista, más inglés práctico para el trabajo, las compras y el doctor.</span>
 </div>
 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
-<span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>$299 <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span> <s style={{ fontSize: "16px", color: "#8F8AA8", fontWeight: "600" }}>$348</s></span>
-<span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras $49 USD</span>
+<span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>{fmtPrice(P, "bundle_us_tvpremium")} <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span> <s style={{ fontSize: "16px", color: "#8F8AA8", fontWeight: "600" }}>{fmtSeparately(P, ["celsus_completo", "celstv_premium"])}</s></span>
+<span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras {fmtSaving(P, "bundle_us_tvpremium", ["celsus_completo", "celstv_premium"])} USD</span>
 <a href="/comprar/resumen?producto=bundle_us_tvpremium" className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </article>

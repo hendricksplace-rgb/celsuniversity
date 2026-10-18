@@ -96,3 +96,19 @@ export function LegalPage({ title, children }: { title: string; children: React.
     </div>
   );
 }
+
+/**
+ * A legal page whose final text isn't in yet (it still has [BRACKETS] to fill, or is pending legal
+ * review): only the title and how to reach us, never a draft.
+ */
+export function LegalHold({ title }: { title: string }) {
+  return (
+    <LegalPage title={title}>
+      <p>Estamos terminando este documento y lo publicaremos aquí muy pronto.</p>
+      <p>
+        Si tienes una pregunta sobre tus datos o tu compra, escríbenos a <a href="mailto:hola@celstv.com">hola@celstv.com</a> o visita el{" "}
+        <a href="/ayuda">Centro de ayuda</a>.
+      </p>
+    </LegalPage>
+  );
+}

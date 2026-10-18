@@ -1,3 +1,4 @@
+import { sitePrices } from "@/components/site/prices-server";
 import type { Metadata } from "next";
 import CelsUSBoard from "@/components/site/celsus/CelsUSBoard";
 
@@ -16,6 +17,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CelsUSPage() {
-  return <CelsUSBoard />;
+// Prices come from public.products; refreshed at most once an hour.
+export const revalidate = 3600;
+
+export default async function CelsUSPage() {
+  return <CelsUSBoard prices={await sitePrices()} />;
 }

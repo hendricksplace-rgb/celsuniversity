@@ -1,4 +1,8 @@
-import { LegalPage } from "@/components/site/SiteChrome";
+import { LegalHold, LegalPage } from "@/components/site/SiteChrome";
+
+// Not published while the text has [BRACKETS] or is waiting for legal review (Matt, 2026-10-18).
+// Flip to true once the final text from claude/celsu-website-copy.md is in.
+const PUBLISHED = false;
 
 export const metadata = {
   title: "Términos de uso · CelsU",
@@ -9,6 +13,7 @@ export const metadata = {
 
 // Short version with only what is already true of the service. The full terms come from Cowork / legal.
 export default function Terminos() {
+  if (!PUBLISHED) return <LegalHold title="Términos de uso" />;
   return (
     <LegalPage title="Términos de uso">
       <p className="rounded-xl bg-[#FFF4D6] px-4 py-3 text-sm font-semibold text-[#6B4E00]">Estamos preparando el texto completo de los términos. Mientras tanto, esto es lo esencial.</p>
