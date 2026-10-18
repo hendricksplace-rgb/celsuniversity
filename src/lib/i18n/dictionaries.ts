@@ -599,6 +599,7 @@ const es = {
     filterAll: "Todos",
   },
   footer: {
+    help: "Ayuda",
     rights: "Latin American Media. Todos los derechos reservados.",
   },
 };
@@ -1203,6 +1204,7 @@ const en: Dictionary = {
     filterAll: "All",
   },
   footer: {
+    help: "Help",
     rights: "Latin American Media. All rights reserved.",
   },
 };

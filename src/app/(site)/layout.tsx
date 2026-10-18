@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getDictionary } from "@/lib/i18n/server";
 
@@ -9,7 +10,11 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <SiteHeader />
       <main className="mx-auto min-h-[calc(100vh-8rem)] max-w-6xl px-4 py-10">{children}</main>
       <footer className="border-t border-white/10 py-6 text-center text-xs text-white/50">
-        © {new Date().getFullYear()} {t.footer.rights}
+        © {new Date().getFullYear()} {t.footer.rights} ·{" "}
+        {/* "· Aviso de Privacidad" joins this link once /privacidad is published (it waits for legal review). */}
+        <Link href="/ayuda" className="underline hover:text-white">
+          {t.footer.help}
+        </Link>
       </footer>
     </>
   );

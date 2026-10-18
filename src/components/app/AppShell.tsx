@@ -57,6 +57,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                     {t.admin.booksTitle}
                   </Link>
                 )}
+                <Link href="/ayuda" className="block rounded-xl px-3 py-2 font-bold hover:bg-[#F7F5FA]">
+                  {t.footer.help}
+                </Link>
                 <form action={setLanguage}>
                   <input type="hidden" name="lang" value={lang === "es" ? "en" : "es"} />
                   <button className="w-full rounded-xl px-3 py-2 text-left font-bold hover:bg-[#F7F5FA]">{t.nav.language}</button>
