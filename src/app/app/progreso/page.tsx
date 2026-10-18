@@ -50,7 +50,7 @@ export default async function Progreso() {
               {s.icon}
             </span>
             <b className="mt-1 block text-3xl font-extrabold">{s.value}</b>
-            <span className="text-sm font-bold text-white/90">{s.label}</span>
+            <span className="text-sm font-bold">{s.label}</span>
           </li>
         ))}
       </ul>
@@ -93,7 +93,7 @@ export default async function Progreso() {
                 key={L}
                 aria-current={i === levelIdx ? "true" : undefined}
                 className="rounded-xl py-2.5 text-center text-sm font-extrabold"
-                style={i === levelIdx ? { background: "#1B1830", color: "#fff" } : i < levelIdx ? { background: "#FFE3F0", color: "#B5007E" } : { background: "#F4F1F7", color: "#8A86A0" }}
+                style={i === levelIdx ? { background: "#1B1830", color: "#fff" } : i < levelIdx ? { background: "#FFE3F0", color: "#B5007E" } : { background: "#F4F1F7", color: "#6B6880" }}
               >
                 {L}
               </li>
@@ -115,7 +115,7 @@ export default async function Progreso() {
           {d.retakeDays > 0 ? (
             <span className="mt-4 inline-flex rounded-full bg-[#F1EDF5] px-5 py-3 text-sm font-extrabold text-[#4A4766]">{fill(p.retakeIn, { n: d.retakeDays })}</span>
           ) : (
-            <Link href="/evaluacion" className={`mt-4 inline-flex rounded-full bg-[#F5178C] px-5 py-3 text-sm font-extrabold text-white ${focus}`}>
+            <Link href="/evaluacion" className={`mt-4 inline-flex rounded-full bg-[#D6006A] px-5 py-3 text-sm font-extrabold text-white ${focus}`}>
               {p.retakeNow} →
             </Link>
           )}
@@ -178,7 +178,7 @@ export default async function Progreso() {
                   style={
                     on
                       ? { background: m.color, color: "#fff", boxShadow: `0 0 0 4px #fff, 0 0 0 6px ${m.color}` }
-                      : { background: "#F1EDF5", color: "#8A86A0", boxShadow: "0 0 0 4px #fff, 0 0 0 6px #E4DEEA" }
+                      : { background: "#F1EDF5", color: "#6B6880", boxShadow: "0 0 0 4px #fff, 0 0 0 6px #E4DEEA" }
                   }
                   aria-hidden
                 >

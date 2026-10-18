@@ -113,7 +113,7 @@ function Choice({ q, onAnswer }: { q: Extract<QuizQ, { kind: "choose" | "listen"
             void audio.current.play();
           }}
           disabled={!q.audio}
-          className="kit-focus-light mx-auto flex size-20 items-center justify-center rounded-full bg-[#F20174] text-3xl shadow-lg disabled:opacity-40"
+          className="kit-focus-light mx-auto flex size-20 items-center justify-center rounded-full bg-[#D6006A] text-3xl shadow-lg disabled:opacity-40"
           aria-label={t.hear}
         >
           🔊
@@ -215,7 +215,7 @@ function Build({ q, onAnswer }: { q: Extract<QuizQ, { kind: "build" }>; onAnswer
           type="button"
           disabled={placed.length !== q.tiles.length}
           onClick={check}
-          className="kit-focus-light w-full rounded-2xl bg-[#F20174] py-3.5 font-extrabold disabled:opacity-40"
+          className="kit-focus-light w-full rounded-2xl bg-[#D6006A] py-3.5 font-extrabold disabled:opacity-40"
         >
           {t.check}
         </button>

@@ -36,8 +36,9 @@ export default async function CuentaHome() {
   return (
     <div className="mx-auto max-w-[720px] space-y-4">
       <section className={`${card} flex items-center gap-4`}>
-        <Link href="/app/cuenta/datos" className="group relative shrink-0" aria-label={tc.changePhoto}>
-          <span className="grid size-20 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#F5178C] to-[#35C3F0] text-3xl font-extrabold text-white">
+        <Link href="/app/cuenta/datos" className="group relative shrink-0">
+          <span className="sr-only">{tc.changePhoto}</span>
+          <span aria-hidden className="grid size-20 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#F5178C] to-[#35C3F0] text-3xl font-extrabold text-white">
             {profile?.avatar_url ? (
               // eslint-disable-next-line @next/next/no-img-element -- public avatar
               <img src={profile.avatar_url} alt="" className="h-full w-full object-cover" />

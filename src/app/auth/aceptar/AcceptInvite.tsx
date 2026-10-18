@@ -73,7 +73,7 @@ export function AcceptInvite() {
         <input name="confirm" type="password" autoComplete="new-password" minLength={8} required className={`mt-1 w-full rounded-xl border border-[#E4DEEA] px-3 py-2.5 ${focus}`} />
       </label>
       {error && <p className="rounded-xl bg-[#FFE3F0] px-3 py-2 text-sm font-bold text-[#B5007E]">{error}</p>}
-      <button disabled={state === "saving"} className={`w-full rounded-full bg-[#F5178C] px-5 py-3 font-extrabold text-white disabled:opacity-60 ${focus}`}>
+      <button disabled={state === "saving"} className={`w-full rounded-full bg-[#D6006A] px-5 py-3 font-extrabold text-white disabled:opacity-60 ${focus}`}>
         {state === "saving" ? "Guardando…" : "Crear contraseña y entrar"}
       </button>
     </form>

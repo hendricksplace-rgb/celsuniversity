@@ -134,3 +134,9 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 .cu-mob{display:none}
 @media (max-width:880px){.cu-desk{display:none}.cu-mob{display:flex}}
 @media (prefers-reduced-motion: reduce){.sx,.sy1,.sy2,.st,.cu-wa,.cu-wb,.cu-marquee,.cu-glow,.cu-reveal,.cu-reveal-2,.cu-reveal-3,.cu-reveal-4,.cu-from-l,.cu-from-r,.cu-par,.cu-lam,.cu-beam,.cu-tilt,.cu-tilt-2,.cu-tilt-3,.cu-tilt-4,.cu-orb{animation:none !important}}
+
+/* Performance: sections below the hero are laid out and painted only when they come near the screen. */
+main > section ~ section ~ section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}

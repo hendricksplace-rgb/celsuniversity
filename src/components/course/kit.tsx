@@ -1,5 +1,6 @@
 // Shared pieces of the course page and episode screen: the 6 part icons (kit SVGs, used as files,
 // never redrawn), the episode tile or still, and the progress ring.
+import Image from "next/image";
 import type { Episode, Part, PartKey } from "@/lib/course-page";
 import { PART_KEYS, PART_NAME, partIcon } from "@/lib/course-page";
 
@@ -44,17 +45,22 @@ export function EpisodeArt({
   className,
   number = true,
   numberClass = "text-5xl",
+  sizes = "(max-width: 640px) 100vw, 360px",
+  priority = false,
 }: {
   episode: Pick<Episode, "n" | "artwork">;
   className?: string;
   number?: boolean;
   numberClass?: string;
+  /** Rendered width, so the optimizer sends a small file (the originals are large PNGs). */
+  sizes?: string;
+  /** The page's main image: load it first (Lighthouse LCP). */
+  priority?: boolean;
 }) {
   return (
     <div className={`relative overflow-hidden ${className ?? ""}`} style={{ background: tileFor(episode.n) }}>
       {episode.artwork ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={episode.artwork} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <Image src={episode.artwork} alt="" fill sizes={sizes} priority={priority} className="object-cover" />
       ) : (
         <>
           <span aria-hidden className="absolute -right-[12%] -top-[30%] aspect-square w-[70%] rounded-full bg-white/15" />

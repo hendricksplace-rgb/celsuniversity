@@ -46,7 +46,7 @@ export function TabBar({ items }: { items: NavItem[] }) {
               <Link
                 href={it.href}
                 aria-current={on ? "page" : undefined}
-                className={`flex flex-col items-center gap-0.5 py-2 text-[11px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F5178C] ${on ? "text-[#F5178C]" : "text-[#6B6680]"}`}
+                className={`flex flex-col items-center gap-0.5 py-2 text-[11px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F5178C] ${on ? "text-[#D6006A]" : "text-[#6B6680]"}`}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6" aria-hidden>
                   {ICONS[it.icon]}

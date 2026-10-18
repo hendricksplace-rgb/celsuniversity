@@ -46,7 +46,7 @@ function Hero({ t, data }: { t: T; data: RouteData }) {
             ))}
           </dl>
           <div className="mt-5">
-            <div className="h-2.5 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+            <div className="h-2.5 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label={fill(t.overall, { done: data.modulesDone, total: data.modulesTotal, pct })} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
               <div className="h-full rounded-full" style={{ width: `${pct}%`, background: `linear-gradient(90deg, ${K.gold}, ${K.goldLight})` }} />
             </div>
             <p className="mt-2 text-xs font-bold text-white/80">{fill(t.overall, { done: data.modulesDone, total: data.modulesTotal, pct })}</p>

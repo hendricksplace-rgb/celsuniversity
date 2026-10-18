@@ -183,12 +183,12 @@ export function BookFrame({
             type="button"
             onClick={() => go(index + 1)}
             aria-label={t.bookNext}
-            className="kit-focus grid size-12 place-items-center rounded-full bg-[#F20174] text-xl text-white shadow-lg"
+            className="kit-focus grid size-12 place-items-center rounded-full bg-[#D6006A] text-xl text-white shadow-lg"
           >
             ›
           </button>
         ) : (
-          <button type="button" onClick={() => void finish()} className="kit-focus rounded-full bg-[#F20174] px-4 py-3 text-sm font-extrabold text-white shadow-lg">
+          <button type="button" onClick={() => void finish()} className="kit-focus rounded-full bg-[#D6006A] px-4 py-3 text-sm font-extrabold text-white shadow-lg">
             {finishLabel}
           </button>
         )}

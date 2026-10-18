@@ -11,7 +11,7 @@ type Props = { searchParams: Promise<{ f?: string }> };
 
 const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 const focus = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]";
-const BOOK_COLOR: Record<string, string> = { celstv: "#F5178C", celsbsns: "#13284D", celsus: "#194876", celsglobal: "#5C7F6E" };
+const BOOK_COLOR: Record<string, string> = { celstv: "#D6006A", celsbsns: "#13284D", celsus: "#194876", celsglobal: "#5C7F6E" };
 const PROGRAM_NAME: Record<string, string> = { celstv: "CelsTV", celsbsns: "CelsBSNS", celsus: "CelsUS", celsglobal: "CelsGLOBAL" };
 
 function ago(t: T, iso: string) {
@@ -27,10 +27,10 @@ function CourseCard({ t, c }: { t: T; c: CourseStats }) {
   const next = nextLesson(c);
   const label = c.completed ? t.review : !c.started ? t.start : recent ? t.continue : t.keepGoing;
   const href = c.completed || !next ? `/app/cursos/${c.slug}` : `/app/lecciones/${next.id}`;
-  const btnInk = c.brand === "celsus" ? "#0E2A4F" : "#FFFFFF";
   const accent = c.brand === "celsus" ? "#FFD24D" : b.accent;
   // CelsBSNS cyan is too light behind white text: its buttons use the program navy.
-  const button = c.brand === "celsbsns" ? "#13284D" : accent;
+  const button = c.brand === "celsbsns" ? "#13284D" : b.fill;
+  const btnInk = c.brand === "celsbsns" ? "#FFFFFF" : b.onFill;
   return (
     <li className="flex flex-col overflow-hidden rounded-3xl border border-[#EFE6F2] bg-white shadow-sm">
       <div className="relative flex h-24 items-center px-5" style={{ background: b.bg }}>
@@ -139,7 +139,7 @@ export default async function MisCursos({ searchParams }: Props) {
       ) : (
         <div className="rounded-3xl border border-[#EFE6F2] bg-white px-6 py-10 text-center">
           <p className="font-bold text-[#4A4766]">{filter === "progress" ? m.emptyProgress : m.none}</p>
-          <Link href="/cursos" className={`mt-4 inline-flex rounded-full bg-[#F5178C] px-5 py-3 text-sm font-extrabold text-white ${focus}`}>
+          <Link href="/cursos" className={`mt-4 inline-flex rounded-full bg-[#D6006A] px-5 py-3 text-sm font-extrabold text-white ${focus}`}>
             {m.browse}
           </Link>
         </div>

@@ -29,7 +29,7 @@ export function SiteNav() {
             Iniciar sesión
           </Link>
         </div>
-        <Link href="/evaluacion" className={`rounded-full bg-[#F20174] px-4 py-2.5 text-sm font-extrabold text-white shadow-md hover:bg-[#C8005F] ${focus}`}>
+        <Link href="/evaluacion" className={`rounded-full bg-[#D6006A] px-4 py-2.5 text-sm font-extrabold text-white shadow-md hover:bg-[#B0005A] ${focus}`}>
           Evaluación gratis
         </Link>
       </nav>

@@ -65,7 +65,7 @@ export function EpisodeDownload({ t, episodeKey, moduleId, userId, pages }: { t:
             <strong className="text-[15px] font-extrabold">{t.offLoading}</strong>
             <span className="text-xs font-bold text-[#F567B1]">{state.pct}%</span>
           </div>
-          <div className="h-2 overflow-hidden rounded bg-white/10" role="progressbar" aria-valuenow={state.pct} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-2 overflow-hidden rounded bg-white/10" role="progressbar" aria-label={t.offLoading} aria-valuenow={state.pct} aria-valuemin={0} aria-valuemax={100}>
             <div className="h-full rounded bg-gradient-to-r from-[#F567B1] to-[#FFEF05] transition-[width]" style={{ width: `${state.pct}%` }} />
           </div>
         </>

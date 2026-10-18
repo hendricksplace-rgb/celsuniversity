@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { OfflineSync } from "@/components/OfflineSync";
 import { InstallProvider, captureInstallPrompt } from "@/components/install/InstallApp";
-import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import "./globals.css";
 
@@ -36,15 +35,12 @@ export const viewport: Viewport = { themeColor: "#F5178C" };
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { lang, t } = await getDictionary();
-  const {
-    data: { user },
-  } = await (await createClient()).auth.getUser();
   return (
     <html lang={lang}>
       <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
         <InstallProvider t={t.install}>
-          <OfflineSync userId={user?.id ?? null} />
+          <OfflineSync />
           {children}
         </InstallProvider>
       </body>

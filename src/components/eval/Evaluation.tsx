@@ -140,7 +140,7 @@ export function Evaluation({ t }: { t: EvalT }) {
               </span>
             ))}
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={secName} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{

@@ -27,7 +27,7 @@ function subtitle(e: Episode, t: T) {
 function Badge({ e, t }: { e: Episode; t: T }) {
   const base = "absolute right-2 top-2 rounded-full px-2.5 py-1 text-[11px] font-extrabold shadow-sm";
   if (e.state === "done") return <span className={`${base} bg-white text-[#15803D]`}>✓ {t.badgeDone}</span>;
-  if (e.state === "now") return <span className={`${base} bg-[#F20174] text-white`}>{t.badgeNow}</span>;
+  if (e.state === "now") return <span className={`${base} bg-[#D6006A] text-white`}>{t.badgeNow}</span>;
   if (e.isReview) return <span className={`${base} bg-[#FFEF05] text-[#1B1830]`}>{t.badgeReview}</span>;
   return <span className={`${base} bg-white text-[#1B1830]`}>{t.badgeNew}</span>;
 }
@@ -49,7 +49,7 @@ function Card({ e, t }: { e: Episode; t: T }) {
       }`}
     >
       <div className="relative">
-        <EpisodeArt episode={e} className="aspect-video rounded-2xl" numberClass="text-[44px]" />
+        <EpisodeArt episode={e} className="aspect-video rounded-2xl" numberClass="text-[44px]" priority={now} />
         <Badge e={e} t={t} />
       </div>
       <div className="flex flex-1 flex-col px-1.5 pb-1 pt-3">
@@ -88,7 +88,7 @@ function Row({ e, t }: { e: Episode; t: T }) {
   return (
     <li>
       <Link href={e.href} className={`kit-focus flex items-center gap-3 rounded-[18px] bg-white p-2 pr-3 ${now ? "shadow-[0_0_0_2px_#F20174]" : "shadow-[0_0_0_1px_#ECE9F2]"}`}>
-        <EpisodeArt episode={e} className="size-[70px] shrink-0 rounded-[14px]" numberClass="text-[22px]" />
+        <EpisodeArt episode={e} className="size-[70px] shrink-0 rounded-[14px]" numberClass="text-[22px]" sizes="70px" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-[15px] font-extrabold text-[#1B1830]">{title(e, t)}</p>
           <div className="mt-1.5">
@@ -192,7 +192,6 @@ export function UnitBrowser({ episodes, initialUnit, t }: { episodes: Episode[];
                     type="button"
                     onClick={() => open(u)}
                     className="kit-focus flex w-full items-center gap-3 rounded-2xl bg-white px-4 py-3 text-left shadow-[0_0_0_1px_#ECE9F2] transition hover:bg-[#F7F5FA]"
-                    aria-label={`${t.expand}: ${t.unit} ${u}`}
                   >
                     <span aria-hidden className="flex shrink-0 gap-1">
                       {[0, 1, 2, 3].map((i) => (

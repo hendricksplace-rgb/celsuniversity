@@ -50,7 +50,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
       { short: 'Entrevistas', en: 'Interview Prep & Career Goals', es: 'Entrevistas y metas profesionales', desc: 'Respuestas difíciles, negociación de salario y tu marca personal. Cierras el programa con tu proyecto final.', say: "I'm looking for a role where I can grow." }
     ];
     var TASKS = [
-      { label: 'Videos', c: '#13284D', fg: '#FFFFFF' }, { label: 'Reading', c: '#5B8DEF', fg: '#FFFFFF' }, { label: 'Writing', c: '#D9578F', fg: '#FFFFFF' },
+      { label: 'Videos', c: '#13284D', fg: '#FFFFFF' }, { label: 'Reading', c: '#3A6BD6', fg: '#FFFFFF' }, { label: 'Writing', c: '#B8336F', fg: '#FFFFFF' },
       { label: 'Research', c: '#43D6FE', fg: '#0F0D1E' }, { label: 'Video', c: '#FFC800', fg: '#0F0D1E' }, { label: 'Speaking', c: '#8FD15A', fg: '#0F0D1E' }, { label: 'Feedback', c: '#E2E6EE', fg: '#0F0D1E' }
     ];
     // English week titles come from the course itself (modules of english-for-business).
@@ -81,7 +81,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
         toggle: function () { self.setState({ playing: !self.state.playing }); },
         weeks: W.map(function (w, i) {
           var on = i === s.week, done = i < s.week;
-          return { n: i + 1, short: w.short, selected: on ? 'true' : 'false', aria: 'Semana ' + (i + 1) + ': ' + w.es, pick: function () { go(i); },
+          return { n: i + 1, short: w.short, selected: on ? 'true' : 'false', aria: ': semana ' + (i + 1) + ', ' + w.es, pick: function () { go(i); },
             dotStyle: 'width: clamp(34px, 4.6vw, 52px); height: clamp(34px, 4.6vw, 52px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: clamp(13px, 1.4vw, 17px); transition: all .3s ease; ' +
               (on ? 'background: linear-gradient(180deg, #3D7FE0, #13284D); color: #FFFFFF; transform: scale(1.15); box-shadow: 0 0 0 4px rgba(44,107,196,.25), 0 12px 24px -8px rgba(19,40,77,.6);'
                   : done ? 'background: #2C6BC4; color: #FFFFFF; box-shadow: inset 0 1px 0 rgba(255,255,255,.3);' : 'background: #FFFFFF; color: #24384F; box-shadow: inset 0 1px 0 #FFFFFF, 0 4px 10px -4px rgba(10,20,40,.3);'),
@@ -136,6 +136,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 </div>
 </>) : null}
 </header>
+<main>
 
 {/* HERO */}
 <section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #13284D 0%, #0F1F3D 55%, #0B1830 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
@@ -186,9 +187,10 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <div aria-hidden="true" style={css(v.road.fillStyle)}></div>
 <div role="tablist" aria-label="Semanas" style={{ position: "relative", display: "grid", gridTemplateColumns: "repeat(10, minmax(0, 1fr))", gap: "4px" }}>
 {(v.road.weeks ?? []).map((w: any, __i: number) => (<Fragment key={__i}>
-<button type="button" role="tab" aria-selected={w.selected} aria-label={w.aria} onClick={w.pick} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
+<button type="button" role="tab" aria-selected={w.selected} onClick={w.pick} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
 <span style={css(w.dotStyle)}>{w.n}</span>
 <span style={css(w.labelStyle)}>{w.short}</span>
+<span className="sr-only">{w.aria}</span>
 </button>
 </Fragment>))}
 </div>
@@ -354,6 +356,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 </section>
 
 {/* FOOTER */}
+</main>
 <footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>

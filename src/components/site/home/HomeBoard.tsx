@@ -2,10 +2,19 @@
 // @ts-nocheck
 "use client";
 // Generated from the approved board Main.dc.html by scripts/board-to-tsx.py, then wired by hand.
-import { Component, Fragment } from "react";
+import { Component, Fragment, memo } from "react";
 import { css } from "@/components/site/css";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
+
+// Everything below the hero only depends on the state it shows. The hero word turns every 2.6 s and
+// the intro tags light up one by one; without this the whole page re-rendered each time (Lighthouse:
+// total blocking time, and jank on phones).
+const HERO_ONLY = ["wordIdx", "tagStep", "play", "menuOpen"];
+const Keep = memo(
+  ({ children }: { deps: Record<string, unknown>; children: React.ReactNode }) => <>{children}</>,
+  (a, b) => Object.keys(b.deps).every((k) => HERO_ONLY.includes(k) || a.deps[k] === b.deps[k]) && a.prices === b.prices,
+);
 
 // Testimonials stay hidden until there are real ones (celsu-website-spec.md).
 const SHOW_TESTIMONIALS = false;
@@ -24,12 +33,18 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     this.state = { goal: 'everyday', qi: 0, answer: null, score: 0, done: false, started: false, tagStep: -1, priceTab: 'tv', jStage: 0, jPlaying: true, phase: 'speak', spoken: 0, speaking: false, level: 'B1', wordIdx: 0, menuOpen: false, play: 0, voiceName: 'del navegador' };
   }
   componentDidMount() {
+    // The board's setup (intro sequence, Ana's path, voices) waits until the page is idle, so it
+    // doesn't compete with the first paint and hydration (Lighthouse: total blocking time).
+    var self = this;
+    var idle = window.requestIdleCallback || function (f) { return setTimeout(f, 200); };
+    idle(function () { if (!self._unmounted) self._mount(); }, { timeout: 1500 });
+  }
+  _mount() {
     var self = this;
     this._t = setInterval(function () { self.setState({ wordIdx: (self.state.wordIdx + 1) % 4 }); }, 2600);
     try { this._ac = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
     var silent = !this._ac || this._ac.state !== 'running';
     this._intro();
-    setTimeout(function () { self._jSetup(); }, 300);
     this._onResize = function () { if (self._jReady) self._jDraw(self._jPos); };
     window.addEventListener('resize', this._onResize);
     try {
@@ -73,7 +88,15 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     if (this._jReady || !this._trail || !this._box) return;
     try {
       var path = this._trail, L = path.getTotalLength(), P = [[80, 250], [270, 200], [460, 215], [650, 140], [840, 118], [1010, 60]];
-      var lens = P.map(function (p) { var best = 0, bd = 1e9; for (var l = 0; l <= L; l += 2) { var q = path.getPointAtLength(l); var d = (q.x - p[0]) * (q.x - p[0]) + (q.y - p[1]) * (q.y - p[1]); if (d < bd) { bd = d; best = l; } } return best; });
+      // Nearest point on the path for each level: sample the path once (coarse), then refine around each match.
+      var pts = [];
+      for (var l = 0; l <= L; l += 8) { var q = path.getPointAtLength(l); pts.push([l, q.x, q.y]); }
+      var lens = P.map(function (p) {
+        var best = 0, bd = 1e9;
+        pts.forEach(function (s) { var d = (s[1] - p[0]) * (s[1] - p[0]) + (s[2] - p[1]) * (s[2] - p[1]); if (d < bd) { bd = d; best = s[0]; } });
+        for (var k = Math.max(0, best - 8); k <= Math.min(L, best + 8); k += 1) { var q = path.getPointAtLength(k); var d = (q.x - p[0]) * (q.x - p[0]) + (q.y - p[1]) * (q.y - p[1]); if (d < bd) { bd = d; best = k; } }
+        return best;
+      });
       this._jL = L; this._jLens = lens; this._jPos = lens[0]; this._jReady = true;
       path.style.strokeDasharray = L + ' ' + L;
       this._jDraw(lens[0]);
@@ -166,7 +189,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       }, 850);
     });
   }
-  componentWillUnmount() { clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
+  componentWillUnmount() { this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
   renderVals() {
     var PR = this.props.prices;
     var self = this;
@@ -291,7 +314,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       playB: s.play % 2 === 1,
       replay: function () { self.setState({ play: self.state.play + 1 }); },
       tags: [
-        { label: 'APRENDE', bg: '#F20174', fg: '#FFFFFF', glow: 'rgba(242,1,116,.55)' },
+        { label: 'APRENDE', bg: '#D6006A', fg: '#FFFFFF', glow: 'rgba(242,1,116,.55)' },
         { label: 'CRECE', bg: '#B3EC79', fg: '#0F0D1E', glow: 'rgba(120,200,60,.55)' },
         { label: 'CONECTA', bg: '#FFEF05', fg: '#0F0D1E', glow: 'rgba(240,200,0,.55)' }
       ].map(function (t, i) {
@@ -433,6 +456,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 </>) : null}
 </header>
+<main>
 
 {/* HERO on LAM blue */}
 <section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2BD8FF 0%, #00CCFE 45%, #00A9DC 100%)", padding: "64px 20px 88px" }}>
@@ -441,7 +465,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "24px 48px", alignItems: "center" }}>
 
 <div style={{ position: "relative", zIndex: "2", flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
-<button type="button" onClick={v.replayIntro} aria-label="Aprende, crece, conecta" style={{ alignSelf: "flex-start", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", minHeight: "48px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
+<button type="button" onClick={v.replayIntro} style={{ alignSelf: "flex-start", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", minHeight: "48px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
 {(v.tags ?? []).map((t: any, __i: number) => (<Fragment key={__i}><span className={t.cls} style={css(t.style)}>{t.label}</span></Fragment>))}
 </button>
 <h1 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(38px, 5.4vw, 66px)", lineHeight: "1.05", letterSpacing: "-1.8px", color: "#0F0D1E" }}>Formación que impulsa<br />tu <span className={v.word.cls} style={{ color: "#FFFFFF" }}>{v.word.text}</span></h1>
@@ -480,6 +504,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </button>
 </section>
 
+<Keep deps={this.state} prices={P}>
 {/* Program marquee */}
 <div aria-hidden="true" style={{ position: "relative", zIndex: "3", margin: "-34px -40px -34px", transform: "rotate(-2deg)", background: "linear-gradient(180deg, #1C1934 0%, #0F0D1E 100%)", color: "#FFFFFF", overflow: "hidden", padding: "20px 0", boxShadow: "0 24px 50px -18px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.12)" }}>
 <div className="cu-marquee" style={{ display: "flex", width: "max-content", gap: "40px", whiteSpace: "nowrap", fontWeight: "600", fontSize: "17px" }}>
@@ -895,7 +920,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 </section>
 
+</Keep>
 {/* FOOTER */}
+</main>
 <footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>

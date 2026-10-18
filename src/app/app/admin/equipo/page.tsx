@@ -64,7 +64,7 @@ export default async function Equipo({ searchParams }: Props) {
                     </option>
                   ))}
                 </select>
-                <button className={`rounded-xl bg-[#F5178C] px-3 py-2 text-sm font-extrabold text-white ${focus}`}>Guardar</button>
+                <button className={`rounded-xl bg-[#D6006A] px-3 py-2 text-sm font-extrabold text-white ${focus}`}>Guardar</button>
               </form>
             ) : (
               <span className="rounded-full bg-[#F1EDF5] px-3 py-1 text-xs font-extrabold text-[#4A4766]">{LABEL[p.role] ?? p.role}</span>

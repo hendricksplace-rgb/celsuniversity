@@ -6,6 +6,7 @@
 //   installed → nothing · Android / desktop Chrome+Edge → native prompt · iPhone → 3 Safari steps ·
 //   Instagram / Facebook / WhatsApp / TikTok browser → "open it in your browser" · desktop → QR code.
 // /app?instalar=1 (evaluation results, welcome emails) opens the sheet on arrival.
+import { DISMISS_DAYS, DISMISS_KEY } from "./keys";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import qrcode from "qrcode-generator";
@@ -24,8 +25,6 @@ declare global {
 /** Inline script for the root layout: `beforeinstallprompt` can fire before React hydrates. */
 export const captureInstallPrompt = `window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__celsuInstall=e;window.dispatchEvent(new Event("celsu-install"))});`;
 
-const DISMISS_KEY = "celsu-install-dismissed";
-const DISMISS_DAYS = 7;
 
 function detect(): Env {
   const ua = navigator.userAgent;
@@ -107,7 +106,7 @@ export function InstallButton() {
   const { env, open, t } = useInstall();
   if (!env || env === "installed") return null;
   return (
-    <button type="button" onClick={open} className="inline-flex items-center gap-1.5 rounded-full bg-[#F5178C] px-3 py-1.5 text-xs font-extrabold text-white shadow-sm transition hover:brightness-110 sm:text-sm">
+    <button type="button" onClick={open} className="inline-flex items-center gap-1.5 rounded-full bg-[#D6006A] px-3 py-1.5 text-xs font-extrabold text-white shadow-sm transition hover:brightness-110 sm:text-sm">
       <DownloadIcon />
       <span className="sm:hidden">{t.buttonShort}</span>
       <span className="hidden sm:inline">{t.button}</span>
@@ -126,29 +125,30 @@ export function InstallLink({ className, children }: { className?: string; child
   );
 }
 
-/** Inicio: big gradient card under the greeting; "Ahora no" hides it for 7 days. */
-export function InstallCard() {
+/**
+ * Inicio: big gradient card under the greeting; "Ahora no" hides it for 7 days.
+ * Rendered on the server (the dismissal is a cookie, see InstallCardSlot) so it never pushes the
+ * page down after loading; the installed app hides it with CSS (display-mode: standalone).
+ */
+export function InstallCard({ dismissed = false }: { dismissed?: boolean }) {
   const { env, open, t } = useInstall();
-  const [hidden, setHidden] = useState(true);
+  const [hidden, setHidden] = useState(dismissed);
   useEffect(() => {
+    // Dismissals from before the cookie existed.
     try {
       const at = Number(localStorage.getItem(DISMISS_KEY) ?? 0);
-      setHidden(Date.now() - at < DISMISS_DAYS * 864e5);
+      if (Date.now() - at < DISMISS_DAYS * 864e5) setHidden(true);
     } catch {
-      setHidden(false);
+      /* private mode */
     }
   }, []);
-  if (!env || env === "installed" || hidden) return null;
+  if (env === "installed" || hidden) return null;
   const dismiss = () => {
-    try {
-      localStorage.setItem(DISMISS_KEY, String(Date.now()));
-    } catch {
-      /* private mode: hide for this visit only */
-    }
+    document.cookie = `${DISMISS_KEY}=1; max-age=${DISMISS_DAYS * 86400}; path=/; samesite=lax`;
     setHidden(true);
   };
   return (
-    <section className="relative overflow-hidden rounded-3xl p-5 sm:p-6" style={{ background: "linear-gradient(135deg,#F20174 0%,#E0157F 45%,#8E2DE2 100%)" }}>
+    <section className="relative overflow-hidden rounded-3xl p-5 sm:p-6 [@media(display-mode:standalone)]:hidden" style={{ background: "linear-gradient(135deg,#F20174 0%,#E0157F 45%,#8E2DE2 100%)" }}>
       <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#FFC531]/40 blur-3xl" />
       <div className="relative flex items-start gap-3.5">
         <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white shadow-md">
@@ -202,7 +202,7 @@ function Steps({ steps, trailing, animate }: { steps: { t: string; d: string }[]
           className={`flex items-center gap-3 rounded-2xl bg-[#F7F5FA] p-3 ${animate ? "install-step" : ""}`}
           style={animate ? { animationDelay: `${i * 1.2}s` } : undefined}
         >
-          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#F5178C] text-sm font-extrabold text-white">{i + 1}</span>
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[#D6006A] text-sm font-extrabold text-white">{i + 1}</span>
           <span className="min-w-0 flex-1">
             <b className="block text-sm font-extrabold text-[#1B1830]">{s.t}</b>
             <span className="block text-xs font-semibold text-[#6B6680]">{s.d}</span>
@@ -261,7 +261,7 @@ function InstallSheet({ t, env, canPrompt, onInstall, onClose }: { t: T; env: En
         </div>
         <Steps steps={t.inappSteps} />
         {androidInApp && intentUrl && (
-          <a href={intentUrl} className="mt-4 block w-full rounded-full bg-[#F5178C] py-3.5 text-center text-base font-extrabold text-white">
+          <a href={intentUrl} className="mt-4 block w-full rounded-full bg-[#D6006A] py-3.5 text-center text-base font-extrabold text-white">
             {t.openChrome}
           </a>
         )}
@@ -320,7 +320,7 @@ function InstallSheet({ t, env, canPrompt, onInstall, onClose }: { t: T; env: En
           ))}
         </div>
         {canPrompt ? (
-          <button type="button" onClick={onInstall} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#F5178C] py-3.5 text-base font-extrabold text-white transition hover:brightness-110">
+          <button type="button" onClick={onInstall} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#D6006A] py-3.5 text-base font-extrabold text-white transition hover:brightness-110">
             <DownloadIcon className="h-5 w-5" />
             {t.installNow}
           </button>

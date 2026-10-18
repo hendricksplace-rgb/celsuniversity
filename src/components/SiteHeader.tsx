@@ -49,7 +49,7 @@ export async function SiteHeader() {
           <form action={setLanguage}>
             <input type="hidden" name="lang" value={lang === "es" ? "en" : "es"} />
             <button
-              aria-label={t.nav.languageLabel}
+              aria-label={`${lang === "es" ? "EN" : "ES"}: ${t.nav.languageLabel}`}
               className="rounded-lg border border-white/15 px-2 py-1 text-xs font-semibold uppercase hover:bg-white/10"
             >
               {lang === "es" ? "EN" : "ES"}

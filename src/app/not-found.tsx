@@ -14,7 +14,7 @@ export default function NotFound() {
           <Link href="/" className="rounded-full bg-[#0F0D1E] px-6 py-3 font-extrabold text-white hover:bg-[#2A2640]">
             Ir al inicio
           </Link>
-          <Link href="/evaluacion" className="rounded-full bg-[#F20174] px-6 py-3 font-extrabold text-white hover:bg-[#C8005F]">
+          <Link href="/evaluacion" className="rounded-full bg-[#D6006A] px-6 py-3 font-extrabold text-white hover:bg-[#B0005A]">
             Evaluación gratis
           </Link>
         </div>

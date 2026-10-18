@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export const card = "rounded-[18px] bg-white p-5 shadow-[0_0_0_1px_#EFE6F2]";
 export const primary =
-  "inline-flex items-center justify-center rounded-full bg-[#F5178C] px-6 py-3 font-extrabold text-white transition hover:bg-[#D10F75] disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]";
+  "inline-flex items-center justify-center rounded-full bg-[#D6006A] px-6 py-3 font-extrabold text-white transition hover:bg-[#B0005A] disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]";
 export const input =
   "block w-full rounded-xl border border-[#E3DDEA] bg-white px-3.5 py-3 text-[15px] outline-none focus:border-[#F5178C] focus:ring-2 focus:ring-[#F5178C]/20";
 

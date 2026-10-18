@@ -178,7 +178,7 @@ function Bar({ value, total, label }: { value: number; total: number; label: str
   return (
     <div className="space-y-1">
       <p className="text-sm">{label}</p>
-      <div className="h-2 overflow-hidden rounded-full bg-[var(--t-border)]" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+      <div className="h-2 overflow-hidden rounded-full bg-[var(--t-border)]" role="progressbar" aria-label={label} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, var(--cx-gold-dark), var(--cx-gold))" }} />
       </div>
     </div>

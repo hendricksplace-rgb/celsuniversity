@@ -52,7 +52,7 @@ export function EpisodesView({ page, t, notice }: { page: CoursePage; t: T; noti
         {resume && ep && (
           <div className="mt-6 flex flex-col gap-4 rounded-[20px] bg-white/[.07] p-3 ring-1 ring-white/10 sm:flex-row sm:items-center sm:gap-5">
             <div className="relative sm:w-[220px] sm:shrink-0">
-              <EpisodeArt episode={ep} className="aspect-video rounded-2xl" numberClass="text-[40px]" />
+              <EpisodeArt episode={ep} className="aspect-video rounded-2xl" numberClass="text-[40px]" sizes="(max-width: 640px) 100vw, 220px" priority />
               <span className="absolute left-2 top-2 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-bold text-white">▶ {resume.part.name}</span>
             </div>
             <div className="min-w-0 flex-1 space-y-1.5 sm:py-1">

@@ -45,20 +45,20 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
     var PR = this.props.prices;
     var self = this, s = this.state;
     var P = {
-      tv: { name: 'CelsTV', c: '#B76F86' },
-      bsns: { name: 'English for Business', c: '#3F8FA6' },
-      cv: { name: 'CV to Resume', c: '#B08A38' },
-      rr: { name: 'Resume Review', c: '#B08A38' },
+      tv: { name: 'CelsTV', c: '#965B6D' },
+      bsns: { name: 'English for Business', c: '#337588' },
+      cv: { name: 'CV to Resume', c: '#85682A' },
+      rr: { name: 'Resume Review', c: '#85682A' },
       crack: { name: 'Crack the U.S. Interview Code', c: '#1D3352' },
       prep: { name: 'Interview Prep', c: '#1D3352' },
-      fin: { name: 'Finanzas Personales', c: '#6F8A5F' },
+      fin: { name: 'Finanzas Personales', c: '#5D734F' },
       tn: { name: 'Tu Camino con la Visa TN', c: '#2E6F86' }
     };
     var M = [
-      { short: 'Fundamentos', color: '#3F8FA6', title: 'Tu punto de partida', desc: 'Haces tu evaluación de nivel, empiezas CelsTV para reforzar tu inglés base y ordenas tu dinero con Finanzas Personales antes del gran cambio.', items: ['tv', 'fin'], goal: 'Conoces tu nivel de inglés y tienes un presupuesto y un plan de ahorro.' },
-      { short: 'Inglés profesional', color: '#C7A24E', title: 'El inglés de tu trabajo', desc: 'Comienzas English for Business: correos, llamadas, reuniones y el vocabulario de tu industria, con práctica cada semana.', items: ['bsns', 'tv'], goal: 'Te comunicas por escrito y por teléfono con el tono profesional correcto.' },
-      { short: 'Tu resume', color: '#B76F86', title: 'De CV a resume americano', desc: 'Con CV to Resume conviertes tu CV en un resume al estilo de Estados Unidos: logros medibles, formato correcto y palabras clave. Sigues avanzando en English for Business.', items: ['cv', 'bsns'], goal: 'Tienes un resume en inglés listo para enviar.' },
-      { short: 'Revisión experta', color: '#8DA67B', title: 'Tu resume, revisado', desc: 'En Resume Review recibes retroalimentación personalizada sobre tu resume. Cierras English for Business con presentaciones y negociación.', items: ['rr', 'bsns'], goal: 'Tu resume está pulido y presentas con seguridad en inglés.' },
+      { short: 'Fundamentos', color: '#337588', title: 'Tu punto de partida', desc: 'Haces tu evaluación de nivel, empiezas CelsTV para reforzar tu inglés base y ordenas tu dinero con Finanzas Personales antes del gran cambio.', items: ['tv', 'fin'], goal: 'Conoces tu nivel de inglés y tienes un presupuesto y un plan de ahorro.' },
+      { short: 'Inglés profesional', color: '#816932', title: 'El inglés de tu trabajo', desc: 'Comienzas English for Business: correos, llamadas, reuniones y el vocabulario de tu industria, con práctica cada semana.', items: ['bsns', 'tv'], goal: 'Te comunicas por escrito y por teléfono con el tono profesional correcto.' },
+      { short: 'Tu resume', color: '#965B6D', title: 'De CV a resume americano', desc: 'Con CV to Resume conviertes tu CV en un resume al estilo de Estados Unidos: logros medibles, formato correcto y palabras clave. Sigues avanzando en English for Business.', items: ['cv', 'bsns'], goal: 'Tienes un resume en inglés listo para enviar.' },
+      { short: 'Revisión experta', color: '#617254', title: 'Tu resume, revisado', desc: 'En Resume Review recibes retroalimentación personalizada sobre tu resume. Cierras English for Business con presentaciones y negociación.', items: ['rr', 'bsns'], goal: 'Tu resume está pulido y presentas con seguridad en inglés.' },
       { short: 'La entrevista', color: '#1D3352', title: 'Entrevistas que sí ganas', desc: 'Crack the U.S. Interview Code te enseña cómo evalúan los reclutadores en Estados Unidos. Con Interview Prep lo practicas en entrevistas simuladas.', items: ['crack', 'prep'], goal: 'Respondes las preguntas clave y cuentas tu historia con confianza.' },
       { short: 'Tu camino', color: '#2E6F86', title: 'Tu camino con la Visa TN', desc: 'Entiendes qué es la Visa TN, quién califica, qué documentos se piden y cómo preparar tu proceso. Cierras el programa con tu plan de siguientes pasos.', items: ['tn'], goal: 'Tienes claro tu camino profesional hacia Estados Unidos.' }
     ];
@@ -144,6 +144,7 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </div>
 </>) : null}
 </header>
+<main>
 
 {/* HERO */}
 <section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #23395A 0%, #1D3352 45%, #14182B 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
@@ -204,7 +205,7 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 <div role="tablist" aria-label="Meses del programa" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 150px), 1fr))", gap: "10px" }}>
 {(v.months ?? []).map((m: any, __i: number) => (<Fragment key={__i}>
 <button type="button" role="tab" aria-selected={m.selected} onClick={m.pick} style={css(m.style)}>
-<span style={{ fontWeight: "800", fontSize: "12px", letterSpacing: "1.5px", opacity: ".8" }}>MES {m.n}</span>
+<span style={{ fontWeight: "800", fontSize: "12px", letterSpacing: "1.5px", opacity: ".92" }}>MES {m.n}</span>
 <span style={{ fontWeight: "800", fontSize: "17px", lineHeight: "1.2" }}>{m.short}</span>
 <span style={css(m.barStyle)}></span>
 </button>
@@ -354,6 +355,7 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </section>
 
 {/* FOOTER */}
+</main>
 <footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>

@@ -18,7 +18,7 @@ body {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-brand px-4 py-2 font-semibold text-white transition hover:bg-brand-dark;
+    @apply inline-flex items-center justify-center rounded-xl bg-[#D6006A] px-4 py-2 font-semibold text-white transition hover:bg-[#B0005A];
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center rounded-xl border border-white/20 px-4 py-2 font-semibold text-white transition hover:bg-white/10;

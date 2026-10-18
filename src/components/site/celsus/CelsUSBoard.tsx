@@ -188,7 +188,7 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
           style: off ? 'background: #FFFFFF; color: #0F0D1E; font-weight: 600; font-size: 15px; line-height: 1.45; padding: 11px 14px; border-radius: 14px 14px 14px 4px; box-shadow: 0 6px 14px -8px rgba(10,20,40,.35);'
                : tip ? 'background: #FFF6D6; color: #5A4300; font-weight: 600; font-size: 13px; line-height: 1.45; padding: 9px 12px; border-radius: 12px; border: 1px solid #F0D98A;'
                : 'background: linear-gradient(180deg, #2C6BC4, #194876); color: #FFFFFF; font-weight: 700; font-size: 15px; line-height: 1.45; padding: 11px 14px; border-radius: 14px 14px 4px 14px;',
-          hintStyle: 'font-size: 12px; color: #6B7A90; padding-left: 4px;' };
+          hintStyle: 'font-size: 12px; color: #46546A; padding-left: 4px;' };
       }),
       choices: step.choices.map(function (c, i) {
         return { text: c, style: 'text-align: left; min-height: 48px; padding: 11px 14px; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 15px; cursor: pointer; background: linear-gradient(180deg,#FFFFFF,#F4F6FA); color: #0F0D1E; border: 1px solid #CFD8E6; animation-delay: ' + (i * 150) + 'ms;',
@@ -266,6 +266,7 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
 </div>
 </>) : null}
 </header>
+<main>
 
 {/* HERO */}
 <section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #1E4A7E 0%, #153A66 50%, #0E2A4F 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
@@ -561,6 +562,7 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
 </section>
 
 {/* FOOTER */}
+</main>
 <footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>

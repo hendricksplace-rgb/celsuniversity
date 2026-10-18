@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { BRANDS, type ContinueLesson, type HomeData, type HomeProgram, type OpenAssignment } from "@/lib/home";
 import type { ThemeKey } from "@/lib/themes";
-import { InstallCard } from "@/components/install/InstallApp";
+import { InstallCardSlot } from "@/components/install/InstallCardSlot";
 import { BRAND } from "@/components/brand";
 
 type T = Dictionary["dash"];
@@ -126,7 +126,7 @@ function MyProgramCard({ t, program }: { t: T; program: HomeProgram }) {
         )}
       </div>
       {program.brand === "celsglobal" && (
-        <Link href="/app/programas/celsglobal" className="mt-3 inline-flex rounded-full px-4 py-2 text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2" style={{ background: b.accent }}>
+        <Link href="/app/programas/celsglobal" className="mt-3 inline-flex rounded-full px-4 py-2 text-sm font-extrabold focus-visible:outline focus-visible:outline-2" style={{ background: b.fill, color: b.onFill }}>
           {t.viewRoute} →
         </Link>
       )}
@@ -167,7 +167,7 @@ function ContinueCard({ t, lesson }: { t: T; lesson: ContinueLesson }) {
       </p>
       <span
         className="mt-5 inline-flex rounded-2xl px-5 py-3 text-sm font-extrabold transition group-hover:brightness-110"
-        style={{ background: b.accent, color: lesson.brand === "celsus" ? "#0E2A4F" : "#fff" }}
+        style={{ background: b.fill, color: b.onFill }}
       >
         {lesson.started ? t.go : t.start} →
       </span>
@@ -207,7 +207,7 @@ export function StudentHome({ t, levelLabel, data }: { t: T; levelLabel: string;
   return (
     <div className="space-y-8">
       <Greeting t={t} name={data.name} sub={t.subBack} level={data.level} levelLabel={levelLabel} />
-      <InstallCard />
+      <InstallCardSlot />
       <div className={data.continueLesson ? "grid gap-4 lg:grid-cols-[1.4fr_1fr]" : ""}>
         {data.continueLesson && <ContinueCard t={t} lesson={data.continueLesson} />}
         <WeekCard t={t} data={data} />
@@ -251,7 +251,7 @@ export function GuestHome({ t, levelLabel, data, locale }: { t: T; levelLabel: s
   return (
     <div className="space-y-8">
       <Greeting t={t} name={data.name} sub={t.subNew} level={data.level} levelLabel={levelLabel} />
-      <InstallCard />
+      <InstallCardSlot />
       <EvaluationCards t={t} data={data} locale={locale} />
       <section>
         <h2 className="text-xl font-extrabold text-[#1B1830]">{t.programs}</h2>

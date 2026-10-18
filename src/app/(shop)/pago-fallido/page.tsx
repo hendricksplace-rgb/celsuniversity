@@ -29,7 +29,7 @@ export default async function PagoFallido({ searchParams }: Props) {
         </ul>
       </section>
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
-        <Link href={retry} className={`rounded-full bg-[#F5178C] px-6 py-3.5 font-extrabold text-white ${focus}`}>
+        <Link href={retry} className={`rounded-full bg-[#D6006A] px-6 py-3.5 font-extrabold text-white ${focus}`}>
           Intentar de nuevo
         </Link>
         <a

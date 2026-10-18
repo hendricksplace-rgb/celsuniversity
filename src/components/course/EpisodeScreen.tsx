@@ -154,7 +154,7 @@ export function EpisodeScreen({
       {/* Hero */}
       <div className="relative h-[340px] overflow-hidden sm:h-[380px]">
         <div className="kit-kenburns absolute inset-0">
-          <EpisodeArt episode={episode} className="h-full w-full" number={!episode.artwork} numberClass="text-[120px] opacity-30" />
+          <EpisodeArt episode={episode} className="h-full w-full" sizes="(max-width: 640px) 100vw, 560px" priority number={!episode.artwork} numberClass="text-[120px] opacity-30" />
         </div>
         <div
           aria-hidden

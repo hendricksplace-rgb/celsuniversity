@@ -181,7 +181,7 @@ export function BsnsTask({
           <p className="text-[10.5px] font-extrabold uppercase tracking-[0.13em] text-[#2C6BC4]">{fill(t.taskKicker, { n: week })}</p>
           <h1 className="truncate text-[15px] font-extrabold text-[#13284D]">{name}</h1>
         </div>
-        {time && <span className="ml-auto shrink-0 rounded-md bg-[#E2ECFB] px-2 py-1 text-[11px] font-extrabold text-[#2C6BC4]">{time}</span>}
+        {time && <span className="ml-auto shrink-0 rounded-md bg-[#E2ECFB] px-2 py-1 text-[11px] font-extrabold text-[#2560B0]">{time}</span>}
       </header>
 
       <div className="space-y-3 px-4 pt-3.5">

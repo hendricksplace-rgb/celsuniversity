@@ -114,7 +114,7 @@ export function CelsBookPart({ book, lessonId, finishLabel, originalHref }: { bo
             <div aria-hidden className="h-40 w-full" style={{ background: "linear-gradient(135deg, #FFE08A, #F7B2D3)" }} />
           )}
           <div className="flex flex-1 flex-col gap-2 px-5 pb-5 pt-4">
-            <span className="self-start rounded-[7px] bg-[#F20174] px-2 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white">{book.kicker}</span>
+            <span className="self-start rounded-[7px] bg-[#D6006A] px-2 py-1 text-[11px] font-extrabold uppercase tracking-[0.14em] text-white">{book.kicker}</span>
             <h2 className="font-serif text-[40px] font-bold leading-none tracking-tight">{book.title}</h2>
             {book.subEn && <p className="text-sm leading-relaxed text-[#6B5636]">{book.subEn}</p>}
             {es && book.subEs && <p className="text-[13px] font-semibold leading-relaxed text-[#B04378]">{book.subEs}</p>}
@@ -245,10 +245,9 @@ export function CelsBookPart({ book, lessonId, finishLabel, originalHref }: { bo
           type="button"
           onClick={() => setEs((v) => !v)}
           aria-pressed={es}
-          aria-label={es ? t.bookEsHide : t.bookEsShow}
           className={`kit-focus grid h-10 min-w-10 place-items-center rounded-xl px-2 text-sm font-extrabold shadow-sm ${es ? "bg-[#2B1A05] text-white" : "bg-white text-[#2B1A05]"}`}
         >
-          ES
+          ES<span className="sr-only">: {es ? t.bookEsHide : t.bookEsShow}</span>
         </button>
       }
       note={

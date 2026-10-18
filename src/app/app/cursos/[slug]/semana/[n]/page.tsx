@@ -13,7 +13,7 @@ type Props = { params: Promise<{ slug: string; n: string }> };
 
 const CHIP: Record<TaskStatus, { bg: string; fg: string }> = {
   pending: { bg: "#EEF1F6", fg: "#5B6B86" },
-  progress: { bg: "#E2ECFB", fg: "#2C6BC4" },
+  progress: { bg: "#E2ECFB", fg: "#2560B0" },
   submitted: { bg: "#E3F1E6", fg: "#1E7A3A" },
   done: { bg: "#E3F1E6", fg: "#1E7A3A" },
   reviewed: { bg: "#FFF4D6", fg: "#8A6400" },

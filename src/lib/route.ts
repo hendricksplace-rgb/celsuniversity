@@ -8,9 +8,9 @@ export const ROUTE_PROGRAM = "international-professional-development";
 export const STAGES = [
   { slug: "english-for-business", color: "#2E6F86" },
   { slug: "from-cv-to-u-s-resume-a-step-by-step-guide", color: "#7A6DB0" },
-  { slug: "crack-the-u-s-interview-code", color: "#B58A12" },
+  { slug: "crack-the-u-s-interview-code", color: "#8D6A0B" },
   { slug: "finanzas-personales-en-estados-unidos", color: "#3A3F63" },
-  { slug: "tu-camino-con-la-visa-tn-empieza-aqui", color: "#D64553" },
+  { slug: "tu-camino-con-la-visa-tn-empieza-aqui", color: "#C23845" },
 ] as const;
 
 export type StageState = "progress" | "done" | "assigned" | "available" | "preview";

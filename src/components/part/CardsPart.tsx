@@ -132,7 +132,7 @@ function Mic({ card, t, onScore }: { card: Card; t: ReturnType<typeof usePartShe
           onClick={start}
           disabled={state === "listening"}
           aria-label={t.sayIt}
-          className={`kit-focus-light grid size-14 shrink-0 place-items-center rounded-full bg-[#F20174] text-white shadow-lg ${state === "listening" ? "kit-pulse" : ""}`}
+          className={`kit-focus-light grid size-14 shrink-0 place-items-center rounded-full bg-[#D6006A] text-white shadow-lg ${state === "listening" ? "kit-pulse" : ""}`}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden>
             <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
@@ -272,12 +272,12 @@ export function CardsPart({ cards }: { cards: Card[] }) {
             <button
               type="button"
               onClick={flip}
-              aria-label={flipped ? `${card.back}. ${t.hear}` : `${card.front}. ${t.reveal}`}
               className="kit-focus-light relative block aspect-[4/5] max-h-[440px] w-full rounded-[28px] text-left transition-transform duration-500 [transform-style:preserve-3d] motion-reduce:transition-none sm:aspect-[5/5]"
               style={{ transform: flipped ? "rotateY(180deg)" : undefined }}
             >
+              <span className="sr-only">{flipped ? t.hear : t.reveal}</span>
               {/* front */}
-              <span className="absolute inset-0 overflow-hidden rounded-[28px] shadow-2xl [backface-visibility:hidden]" style={{ background: CAT_BG[card.cat] }}>
+              <span aria-hidden={flipped} className="absolute inset-0 overflow-hidden rounded-[28px] shadow-2xl [backface-visibility:hidden]" style={{ background: CAT_BG[card.cat] }}>
                 <span
                   aria-hidden
                   className="absolute inset-0 opacity-[.12]"
@@ -303,7 +303,7 @@ export function CardsPart({ cards }: { cards: Card[] }) {
                 </span>
               </span>
               {/* back */}
-              <span className="absolute inset-0 overflow-hidden rounded-[28px] bg-[#0F2A3A] shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
+              <span aria-hidden={!flipped} className="absolute inset-0 overflow-hidden rounded-[28px] bg-[#0F2A3A] shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
                 {card.image ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={card.image} alt="" className="absolute inset-0 h-full w-full object-cover" />

@@ -26,7 +26,7 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
   renderVals() {
     var PR = this.props.prices;
     var self = this, s = this.state;
-    var STAGE = { Observa: { c: '#D9578F', fg: '#FFFFFF' }, Participa: { c: '#43D6FE', fg: '#0F0D1E' }, Domina: { c: '#B3EC79', fg: '#0F0D1E' } };
+    var STAGE = { Observa: { c: '#B8336F', fg: '#FFFFFF' }, Participa: { c: '#43D6FE', fg: '#0F0D1E' }, Domina: { c: '#B3EC79', fg: '#0F0D1E' } };
     var STEPS = [
       { name: 'CelsVideo', stage: 'Observa', desc: 'El corazón del episodio: una historia corta con personajes reales en situaciones de todos los días. Ves, escuchas y entiendes por contexto.', example: 'En "Let’s eat", los personajes piden comida en un restaurante.' },
       { name: 'CelsCards', stage: 'Participa', desc: 'Flashcards interactivas con audio para fijar el vocabulario del episodio. Volteas, escuchas y repites.', example: 'menu · order · the check · tip' },
@@ -146,6 +146,7 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 </div>
 </>) : null}
 </header>
+<main>
 
 {/* HERO */}
 <section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #CF6A96 0%, #B04378 50%, #8A2E62 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
@@ -359,6 +360,7 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 </section>
 
 {/* FOOTER */}
+</main>
 <footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>

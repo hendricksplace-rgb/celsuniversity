@@ -147,6 +147,7 @@ export function PartShell({
             <div
               className={`mt-1.5 h-1.5 overflow-hidden rounded-full ${light ? "bg-black/10" : "bg-white/15"}`}
               role="progressbar"
+              aria-label={fill(t.of, { part: partName, n: episodeN })}
               aria-valuenow={Math.round(progress * 100)}
               aria-valuemin={0}
               aria-valuemax={100}

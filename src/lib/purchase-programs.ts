@@ -4,7 +4,7 @@ export type ProgramKey = "celstv" | "celsbsns" | "celsus" | "celsglobal";
 export const PROGRAMS: Record<ProgramKey, { title: string; color: string; ink: string; bg: string; steps: string[] }> = {
   celstv: {
     title: "CelsTV",
-    color: "#F5178C",
+    color: "#D6006A",
     ink: "#FFFFFF",
     bg: "linear-gradient(150deg,#2a1240 0%,#1a1030 60%,#12101f 100%)",
     steps: ["Abre tu primer episodio: empiezas en el que va con tu nivel.", "Practica con CelsCards y gana XP cada día.", "Descarga la semana para estudiar sin internet."],
@@ -12,7 +12,7 @@ export const PROGRAMS: Record<ProgramKey, { title: string; color: string; ink: s
   celsbsns: {
     title: "CelsBSNS",
     color: "#35C3F0",
-    ink: "#FFFFFF",
+    ink: "#0F0D1E",
     bg: "linear-gradient(150deg,#13284D 0%,#0c1a33 100%)",
     steps: ["Mira la semana 1: Professional Communication.", "Haz las tareas de lectura, escritura y expresión oral.", "Cierra la semana con el quiz y tu retroalimentación."],
   },
