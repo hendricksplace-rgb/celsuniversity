@@ -35,14 +35,15 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
 | Base44 file (`media.base44.com/…`, `base44.app/api/apps/…/files/…`) or Kajabi CDN, not a video | Downloaded and uploaded to Storage, and the URL is rewritten. Each file gets a row in `media_files`. |
 | Course content (blocks, resources, questions) | Goes to the private `course-media/<course_id>/<hash>_<name>`. The URL becomes `storage://course-media/<path>`, which the app turns into a signed URL for students who have access. |
 | Catalog art (course/program covers, module artwork, launcher icons) | Goes to the public `public-assets/{covers,modules,icons}/…`. The URL becomes the public Storage URL. |
-| Video (`.mp4 .mov .m4v .webm`, Wistia, Vimeo) | **Not copied**, by rule. Listed in the report. `--download-videos <dir>` saves the Base44-hosted ones locally so they can be uploaded to Mux/Bunny or YouTube. |
+| Wistia audio (`.mp3` and other non-video files) | Copied like any other file (only videos may live outside). |
+| Video (`.mp4 .mov .m4v .webm`, Wistia video, Vimeo) | **Not copied**, by rule. Listed in the report. `--download-videos <dir>` saves the Base44-hosted ones locally so they can be uploaded to Mux/Bunny or YouTube. |
 | YouTube | Left as is (allowed). |
-| Gamma teacher guides (38) | Imported as embeds, then replaced with converted HTML by `apply-teacher-guides.sql` (step 5). |
+| Gamma teacher guides (38) | Converted to HTML `teacher_guide` blocks in Supabase after the first import. |
 | designrr.page e-books | Left as is and listed in the report. They break the self-contained rule and still need replacing (e.g. export to PDF → flipbook). |
 
 ## Run it
 
-1. Make sure `20261017225042_course_layouts` and `20261017230234_staging_teacher_guides` are applied (both are on `celsu-lam`).
+1. Make sure the migrations in `supabase/migrations/` are applied (they are on `celsu-lam`).
 2. Put these in `.env.local` (never commit them):
    ```
    NEXT_PUBLIC_SUPABASE_URL=https://pbpnhsgygwqxnkklhyuz.supabase.co
@@ -62,8 +63,7 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
    # optional: also save Base44-hosted videos for re-hosting
    npm run migrate:base44 -- --download-videos ./videos
    ```
-5. Swap the Gamma teacher-guide embeds for the converted HTML guides staged in `private.teacher_guides_staging`. Run `apply-teacher-guides.sql` in the Supabase SQL editor. **Repeat this after every re-run of step 4**, because the import restores the original embeds.
-6. Read `scripts/migrate-base44/out/report.md`. Every row of the count table should show ✅. "Legacy URLs left" should be 0, and "Failed" should be 0. If not, re-run: finished files are skipped.
+5. Read `scripts/migrate-base44/out/report.md`. Every row of the count table should show ✅. "Legacy URLs left" should be 0, and "Failed" should be 0. If not, re-run: finished files are skipped.
 
 `--from-dir <dir>` reads `<Entity>.json` exports instead of calling the Base44 API (useful for testing). `--concurrency <n>` sets parallel downloads (default 6).
 
@@ -75,4 +75,9 @@ Every URL anywhere in a record (top-level fields, HTML/Markdown bodies, nested J
 - Real run: all 9 tables match Base44 (1 / 9 / 7 / 90 / 610 / 534 / 21 / 3 / 207).
 - Files: 2,977 / 2,977 in Storage (112 MB). One flashcard mp3 failed with a network error on the first pass and was picked up by a re-run. 0 old Base44/Kajabi file links remain.
 - `apply-teacher-guides.sql`: 38 blocks are now `teacher_guide` (teacher-only HTML). No Gamma embeds remain.
-- Still external: 108 videos (80 Wistia, 26 Base44-hosted, 2 Vimeo) and 56 designrr.page e-book embeds.
+- Still external: 69 videos (41 Wistia, 26 Base44-hosted, 2 Vimeo). The 56 designrr.page e-books were converted to PDFs in Storage (`data.ebook_pdf`).
+
+**18 Oct 2026, re-run**
+
+- Re-runs are now safe for blocks changed in Supabase after the import. `teacher_guide` blocks are left untouched, and blocks with `data.ebook_pdf` keep their PDF fields.
+- Wistia `.mp3` audio (39 files) is now treated as a file to copy, not as video. All 39 failed: the session's network policy blocks `embed-ssl.wistia.com`. They will copy on the next run once that host is allowed.

@@ -30,3 +30,178 @@ body {
     @apply w-full rounded-xl border border-white/15 bg-ink/60 px-3 py-2 text-white placeholder:text-white/40 focus:border-brand focus:outline-none;
   }
 }
+
+/* ---------- Program themes: same components, different tokens ---------- */
+[data-theme] {
+  background: var(--t-bg);
+  color: var(--t-text);
+  font-family: var(--t-font);
+}
+[data-theme="celstv"] {
+  /* Playful, colorful: young learners */
+  --t-bg: #1a1128;
+  --t-surface: #2a2146;
+  --t-text: #ffffff;
+  --t-muted: #c9c3dc;
+  --t-accent: #f5178c;
+  --t-accent-ink: #ffffff;
+  --t-link: #7fd8f7;
+  --t-border: rgb(255 255 255 / 0.12);
+  --t-radius: 1.25rem;
+  --t-card-top: linear-gradient(90deg, #f5178c, #35c3f0, #ffc531, #6dc067);
+  --t-font: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --t-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --t-heading-weight: 800;
+  --t-heading-case: none;
+}
+[data-theme="celsbsns"] {
+  /* Professional navy */
+  --t-bg: #f4f6fa;
+  --t-surface: #ffffff;
+  --t-text: #0b1f3a;
+  --t-muted: #4a5b76;
+  --t-accent: #12305c;
+  --t-accent-ink: #ffffff;
+  --t-link: #1f5fc2;
+  --t-border: #d6deea;
+  --t-radius: 0.5rem;
+  --t-card-top: linear-gradient(90deg, #12305c, #12305c);
+  --t-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-heading-weight: 700;
+  --t-heading-case: none;
+}
+[data-theme="celsus"] {
+  /* Formal, low tones: citizenship */
+  --t-bg: #f3f0e8;
+  --t-surface: #fbf9f4;
+  --t-text: #22262e;
+  --t-muted: #575e6b;
+  --t-accent: #1f3a5f;
+  --t-accent-ink: #ffffff;
+  --t-link: #1f3a5f;
+  --t-border: #dcd5c6;
+  --t-radius: 0.25rem;
+  --t-card-top: linear-gradient(90deg, #7a2a2a, #7a2a2a);
+  --t-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-heading: var(--font-serif), Georgia, serif;
+  --t-heading-weight: 600;
+  --t-heading-case: none;
+}
+[data-theme="celsglobal"] {
+  /* Muted: adult professionals */
+  --t-bg: #eef0ee;
+  --t-surface: #fafaf8;
+  --t-text: #2b2f2e;
+  --t-muted: #5a625f;
+  --t-accent: #3f5e5a;
+  --t-accent-ink: #ffffff;
+  --t-link: #2f6b63;
+  --t-border: #d5d9d6;
+  --t-radius: 0.75rem;
+  --t-card-top: linear-gradient(90deg, #8a7b63, #8a7b63);
+  --t-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-heading: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --t-heading-weight: 600;
+  --t-heading-case: none;
+}
+
+.t-panel {
+  @apply rounded-[calc(var(--t-radius)*1.5)] p-5 sm:p-8;
+}
+.t-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--t-surface);
+  border: 1px solid var(--t-border);
+  border-radius: var(--t-radius);
+  padding: 1.25rem;
+}
+.t-card-accent::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--t-card-top);
+}
+.t-heading {
+  font-family: var(--t-heading);
+  font-weight: var(--t-heading-weight);
+  text-transform: var(--t-heading-case);
+}
+.t-muted {
+  color: var(--t-muted);
+}
+.t-link {
+  color: var(--t-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.t-btn {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold transition;
+  background: var(--t-accent);
+  color: var(--t-accent-ink);
+  border-radius: var(--t-radius);
+}
+.t-btn:hover {
+  filter: brightness(1.1);
+}
+.t-btn-ghost {
+  @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold transition;
+  border: 1px solid var(--t-border);
+  border-radius: var(--t-radius);
+}
+.t-btn-ghost:hover {
+  background: var(--t-border);
+}
+.t-badge {
+  @apply inline-flex items-center px-2 py-0.5 text-xs font-semibold;
+  border-radius: 999px;
+  background: var(--t-accent);
+  color: var(--t-accent-ink);
+}
+/* Converted teacher guides (HTML) */
+.t-prose h2,
+.t-prose h3,
+.t-prose h4 {
+  font-family: var(--t-heading);
+  font-weight: var(--t-heading-weight);
+  margin: 1.25em 0 0.5em;
+}
+.t-prose h2 {
+  font-size: 1.35rem;
+}
+.t-prose h3 {
+  font-size: 1.15rem;
+}
+.t-prose h4 {
+  font-size: 1rem;
+}
+.t-prose p,
+.t-prose ul,
+.t-prose ol,
+.t-prose table {
+  margin: 0.5em 0;
+}
+.t-prose ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.t-prose ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.t-prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.t-prose th,
+.t-prose td {
+  border: 1px solid var(--t-border);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+.t-prose a {
+  color: var(--t-link);
+  text-decoration: underline;
+}

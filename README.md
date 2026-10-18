@@ -47,11 +47,17 @@ src/
     (auth)/registro        sign up (/registro)
     auth/callback          email-confirmation + OAuth code exchange
     app/                   student area (/app), needs a signed-in user
+    app/cursos/[slug]      course outline (modules → lessons)
+    app/lecciones/[id]     lesson page: renders every content block
   components/SiteHeader    nav, auth state, language toggle
+  components/lesson/       one renderer per block type, styled only with theme tokens
   lib/
     supabase/              browser, server and middleware clients (@supabase/ssr)
     i18n/                  es/en dictionaries; getDictionary() on the server
     actions.ts             server actions: sign in/up/out, Google, language
+    access.ts              viewer + role, canAccessCourse() (mirrors private.has_course_access)
+    storage.ts             storage://bucket/path → short-lived signed URL, after the access check
+    themes.ts              course → program theme (celstv, celsbsns, celsus, celsglobal)
   middleware.ts            refreshes the session; guards /app
 supabase/migrations/       schema history, recreated from the live database
 scripts/migrate-base44/    one-off Base44 → Supabase data + file migration
@@ -78,7 +84,9 @@ Google sign-in also needs the Google provider turned on under Authentication →
 | 20261017194328 | security | RLS + policies on every table, storage buckets and storage policies |
 | 20261017194346 | move_helpers_to_private_schema | moves `is_admin`, `is_staff`, `has_course_access`, … to the `private` schema |
 | 20261017225042 | course_layouts | allows the `ipd_sections` and `citizenship_modules` layouts that Base44 courses use |
-| 20261017230234 | staging_teacher_guides | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML |
+| 20261017230234 | staging_teacher_guides | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML (now copied into `content_blocks`; the table can be dropped) |
+| 20261017235047 | enable_pg_net | `pg_net` extension |
+| 20261017235906 | staging_ebook_text | `public.ebook_source_text`: temporary extracted text of the designrr PDFs for the CelsBook redesign |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 
@@ -95,6 +103,32 @@ Access model in short: anyone can read published programs, courses and modules. 
 ### Offline downloads
 
 `offline_downloads` records which modules each device has saved. The client calls `rpc('renew_offline_downloads', { p_device })` when it comes online. That renews every download for 7 days and returns `allowed = false` for any module the user has lost access to, so the client can delete it.
+
+### Lesson pages and files
+
+Lesson content stores files as `storage://<bucket>/<path>`. Raw Storage URLs never appear in the database or the HTML. On each request, `src/lib/storage.ts` does the following:
+
+1. Collects every `storage://` reference in the lesson's blocks.
+2. Resolves them for the signed-in viewer:
+   - `public-assets` → public URL.
+   - `course-media` → only paths inside the lesson's `<course_id>/` folder, and only if `canAccessCourse()` passes (staff, an active enrollment in the course or its program, or an active class). Then it signs a 10-minute URL with the **viewer's own session**, so Storage RLS checks access a second time.
+   - `user-uploads` → only the viewer's own `<user_id>/` folder.
+3. Renders anything not resolved as "not available".
+
+Block types: `text` (plain text, URLs and file links made clickable), `image`, `audio`, files/PDFs, e-books (`data.ebook_pdf` and CelsBook flipbooks: open/download buttons plus an inline viewer on desktop), `teacher_guide` (sanitized HTML, staff only; RLS already hides these from students), `video` (placeholder until a host is chosen; YouTube is embedded through youtube-nocookie), and a placeholder for the interactive types (flashcard, grammar, quiz, celstv_quiz).
+
+### Program themes
+
+Course and lesson pages wrap their content in `data-theme="…"`. Components use only the tokens defined in `globals.css` (`--t-bg`, `--t-surface`, `--t-text`, `--t-muted`, `--t-accent`, `--t-link`, `--t-border`, `--t-radius`, `--t-card-top`, `--t-font`, `--t-heading`, `--t-heading-weight`). Adding a brand means adding one token block.
+
+| Theme | Courses | Look |
+| --- | --- | --- |
+| `celstv` | CelsTV | playful: dark, rainbow accent bar, Poppins, round corners |
+| `celsbsns` | English For Business | professional navy on white, Inter, tight corners |
+| `celsus` | CelsUS Para Ciudadanía | formal, low tones: parchment, serif headings, burgundy rule |
+| `celsglobal` | CV, interviews, finances, Visa TN | muted sage and warm gray, for adult professionals |
+
+The course → theme map lives in `src/lib/themes.ts`, keyed by slug. `themeForCourse()` already reads a `courses.theme` column first, so the map can move into the database later.
 
 ### TypeScript types
 

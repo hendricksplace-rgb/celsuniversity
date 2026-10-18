@@ -63,7 +63,9 @@ const B44_URL = process.env.BASE44_API_URL ?? "https://app.base44.com";
 // Base44 personal access tokens go in "Authorization: Bearer"; legacy API keys used "api_key".
 const B44_AUTH_HEADER = process.env.BASE44_AUTH_HEADER ?? "Authorization";
 
-const COPY_HOSTS = [/^media\.base44\.com$/, /^base44\.app$/, /(^|\.)kajabi-cdn\.com$/];
+const COPY_HOSTS = [/^media\.base44\.com$/, /^base44\.app$/, /(^|\.)kajabi-cdn\.com$/, /(^|\.)wistia\.(com|net)$/];
+// Files on video hosts that are not video (Wistia also serves the course audio).
+const NON_VIDEO_EXT = /\.(mp3|m4a|wav|ogg|aac|pdf|png|jpe?g|gif|webp)$/i;
 const VIDEO_EXT = /\.(mp4|mov|m4v|webm|mkv|avi)$/i;
 const VIDEO_HOSTS = /(^|\.)(wistia\.com|wistia\.net|vimeo\.com|youtube\.com|youtu\.be)$/i;
 const ALLOWED_EMBED_HOSTS = /(^|\.)(youtube\.com|youtube-nocookie\.com|youtu\.be)$/i;
@@ -179,11 +181,14 @@ function isCopyable(url: string) {
   const h = host(url);
   if (!COPY_HOSTS.some((re) => re.test(h))) return false;
   // base44.app also serves the app itself; only its file endpoints are assets.
-  return h !== "base44.app" || /\/api\/apps\/[^/]+\/files\//.test(url);
+  if (h === "base44.app") return /\/api\/apps\/[^/]+\/files\//.test(url);
+  if (/wistia\./.test(h)) return NON_VIDEO_EXT.test(pathOf(url));
+  return true;
 }
 
 const pathOf = (url: string) => new URL(url).pathname;
-const isVideo = (url: string) => VIDEO_EXT.test(pathOf(url)) || VIDEO_HOSTS.test(host(url));
+const isVideo = (url: string) =>
+  VIDEO_EXT.test(pathOf(url)) || (VIDEO_HOSTS.test(host(url)) && !NON_VIDEO_EXT.test(pathOf(url)));
 
 function storagePath(url: string, ctx: Ctx) {
   const base = decodeURIComponent(pathOf(url).split("/").pop() || "file")
@@ -499,7 +504,33 @@ async function main() {
       sort_order: num(r.order),
     });
   }
+  // Blocks changed in Supabase after the import must survive a re-run:
+  // teacher guides (Gamma → HTML) are left alone, and converted e-books keep their PDF.
+  let preserved = 0;
+  if (!DRY_RUN) {
+    const { data: post, error } = await supabase
+      .from("content_blocks")
+      .select("legacy_id, block_type, ebook_pdf:data->>ebook_pdf, ebook_source:data->>ebook_source")
+      .or("block_type.eq.teacher_guide,data->>ebook_pdf.not.is.null");
+    if (error) throw error;
+    const byId = new Map(post.map((p) => [p.legacy_id as string, p]));
+    for (let i = blockRows.length - 1; i >= 0; i--) {
+      const p = byId.get(blockRows[i].legacy_id);
+      if (!p) continue;
+      if (p.block_type === "teacher_guide") {
+        blockRows.splice(i, 1);
+        preserved++;
+      } else if (p.ebook_pdf) {
+        Object.assign(blockRows[i].data as Record<string, unknown>, {
+          ebook_pdf: p.ebook_pdf,
+          ebook_source: p.ebook_source,
+        });
+      }
+    }
+    if (preserved) report.notes.push(`${preserved} teacher_guide blocks kept as they are in Supabase.`);
+  }
   await upsert("ContentBlock", blockRows);
+  report.counts.ContentBlock.written += preserved;
 
   const resRows = [];
   for (const r of src.Resource) {

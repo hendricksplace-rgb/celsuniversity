@@ -16,7 +16,7 @@ export default async function StudentHome() {
     supabase.from("gamification").select("total_xp, current_streak").eq("user_id", user.id).maybeSingle(),
     supabase
       .from("enrollments")
-      .select("id, course:courses(id, title, accent_color), program:programs(id, title, accent_color)")
+      .select("id, course:courses(id, slug, title, accent_color), program:programs(id, title, accent_color)")
       .eq("user_id", user.id)
       .eq("status", "active"),
   ]);
@@ -66,8 +66,16 @@ export default async function StudentHome() {
               const item = pick(e.course) ?? pick(e.program);
               if (!item) return null;
               return (
-                <li key={e.id} className="card" style={{ borderTop: `4px solid ${item.accent_color ?? "#F5178C"}` }}>
-                  <h3 className="font-bold">{item.title}</h3>
+                <li key={e.id} className="card relative" style={{ borderTop: `4px solid ${item.accent_color ?? "#F5178C"}` }}>
+                  <h3 className="font-bold">
+                    {"slug" in item ? (
+                      <Link href={`/app/cursos/${item.slug}`} className="after:absolute after:inset-0">
+                        {item.title}
+                      </Link>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
                 </li>
               );
             })}

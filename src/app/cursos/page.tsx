@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 
@@ -21,8 +22,12 @@ export default async function CoursesPage() {
       ) : (
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((c) => (
-            <li key={c.id} className="card" style={{ borderTop: `4px solid ${c.accent_color ?? "#F5178C"}` }}>
-              <h2 className="text-lg font-bold">{c.title}</h2>
+            <li key={c.id} className="card relative hover:border-white/30" style={{ borderTop: `4px solid ${c.accent_color ?? "#F5178C"}` }}>
+              <h2 className="text-lg font-bold">
+                <Link href={`/app/cursos/${c.slug}`} className="after:absolute after:inset-0">
+                  {c.title}
+                </Link>
+              </h2>
               {c.description && <p className="mt-1 line-clamp-3 text-sm text-white/70">{c.description}</p>}
               <p className="mt-3 text-xs text-white/50">
                 {c.modules?.[0]?.count ?? 0} {t.courses.modules}
