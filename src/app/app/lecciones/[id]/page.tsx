@@ -8,24 +8,93 @@ import { loadLessonContent } from "@/lib/lesson-content";
 import { themeForCourse } from "@/lib/themes";
 import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
+import { InteractiveReading, InteractiveResearch, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { loadReading } from "@/lib/reading-server";
+import { loadWriting } from "@/lib/writing-server";
+import { loadResearch } from "@/lib/research-server";
+import { loadVideoTask } from "@/lib/video-task-server";
 
 type Props = { params: Promise<{ id: string }> };
 
 export default async function LessonPage({ params }: Props) {
   const { id } = await params;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=/app/lecciones/${id}`);
 
   // RLS: students only see published, non-teacher lessons.
-  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, module:modules(id, title, course:courses(id, slug, title))").eq("id", id).maybeSingle();
+  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, module:modules(id, title, course:courses(id, slug, title))").eq("id", id).maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   if (!lesson || !lessonModule || !course) notFound();
 
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
+
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content or video_task_content row replaces the old page for this lesson.
+  // Only the loader for this lesson's type runs (one database round trip).
+  const ty = access && theme === "celsbsns" ? lesson.lesson_type : null;
+  const [reading, writing, research, video] = await Promise.all([
+    ty === "reading" ? loadReading(supabase, viewer.user.id, lesson.id) : null,
+    ty === "writing" ? loadWriting(supabase, viewer.user.id, lesson.id, course.id) : null,
+    ty === "research" ? loadResearch(supabase, viewer.user.id, lesson.id) : null,
+    ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, lesson.id) : null,
+  ]);
+  if (reading || writing || research || video) {
+    const [{ data: weekLessons }, weekN, backHref] = await Promise.all([
+      supabase.from("lessons").select("id, title, has_content, lesson_type").eq("module_id", lessonModule.id).order("sort_order"),
+      weekNumber(supabase, course.id, lessonModule.id),
+      moduleHref(supabase, course, lessonModule.id),
+    ]);
+    const list = viewer.isStaff ? (weekLessons ?? []) : studentLessons(weekLessons ?? []);
+    const at = list.findIndex((l) => l.id === lesson.id);
+    const bsns = themeForCourse(course) === "celsbsns" && weekN > 0;
+    const link = (l: (typeof list)[number] | undefined) =>
+      l ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` } : null;
+    const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    if (video)
+      return <InteractiveVideo {...nav} data={video.data} lessonId={lesson.id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
+    if (research)
+      return (
+        <InteractiveResearch
+          {...nav}
+          data={research.data}
+          lessonId={lesson.id}
+          userId={viewer.user.id}
+          writingHref={link(list.find((l) => l.lesson_type === "writing"))?.href ?? null}
+          entries={research.entries}
+          reflection={research.reflection}
+          phrases={research.phrases}
+        />
+      );
+    if (writing)
+      return (
+        <InteractiveWriting
+          {...nav}
+          data={writing.data}
+          lessonId={lesson.id}
+          courseId={course.id}
+          userId={viewer.user.id}
+          sub={writing.sub}
+          capstoneSaved={writing.capstoneSaved}
+          coachName={writing.coachName}
+          reviewerName={writing.reviewerName}
+          myPhrases={writing.myPhrases}
+        />
+      );
+    return (
+      <InteractiveReading
+        {...nav}
+        data={reading!.data}
+        lessonId={lesson.id}
+        userId={viewer.user.id}
+        initialNotes={reading!.notes}
+        initialState={reading!.state}
+        completedAt={reading!.completedAt}
+      />
+    );
+  }
 
   const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: allSiblings }] = await Promise.all([
     loadLessonContent(supabase, viewer, lesson.id, course.id, access),
@@ -111,6 +180,12 @@ export default async function LessonPage({ params }: Props) {
       </nav>
     </div>
   );
+}
+
+/** The module's position among the course's weeks (1-based), or 0 when it isn't a week. */
+async function weekNumber(supabase: Awaited<ReturnType<typeof createClient>>, courseId: string, moduleId: string) {
+  const { data: weeks } = await supabase.from("modules").select("id").eq("course_id", courseId).eq("kind", "lesson_week").order("sort_order");
+  return (weeks ?? []).findIndex((m) => m.id === moduleId) + 1;
 }
 
 /** Back to the lesson's episode (CelsUS, CelsTV, CelsGLOBAL) or week (CelsBSNS); other modules go to the course. */

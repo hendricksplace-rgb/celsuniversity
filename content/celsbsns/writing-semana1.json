@@ -1,0 +1,213 @@
+{
+  "week": 1,
+  "original": {
+    "title": "Professional Self-Introduction Email",
+    "title_es": "Correo Electrónico de Auto-presentación Profesional",
+    "time": "1–2 Hours",
+    "goal": "Practice clear, confident, and professional written communication while preparing your Capstone introduction content.",
+    "goal_es": "Practicar una comunicación escrita clara, segura y profesional mientras preparas el contenido de tu introducción para el Proyecto Final.",
+    "submission": "Upload your email as a Word or PDF file. This task prepares you for both your Capstone written introduction and for real-world professional situations.",
+    "body_en": "✍️ Writing Task – Week 1\n\nTitle: Professional Self-Introduction Email\nEstimated Time: 1–2 Hours\nGoal: Practice clear, confident, and professional written communication while preparing your Capstone introduction content.\n\n📄 Assignment Overview:\n\nThis week, you'll write a formal self-introduction email as if you were joining a new company in the United States. This email will demonstrate your ability to write professionally, apply clarity and tone, and follow the expected format in U.S. business settings.\n\n🧭 Instructions:\nImagine this scenario:\nYou've just joined a company in the U.S. as part of your new job. Your supervisor has asked you to introduce yourself to your department by email.\n\nYour email should include:\n\nA greeting (use a professional tone)\n\nYour name and role\n\nA short summary of your background\n\nWhat you look forward to in this role\n\nOne personal detail (hobbies, interests)\n\nA polite closing\n\nWord Count:\n150–250 words\n\nTone & Structure:\n\nClear and respectful\n\nPositive and professional\n\nUse paragraph spacing and standard email format (no bullet points or emojis)\n\n✅ Example (Template for Guidance):\n\nSubject: Introduction – Matt Hendricks\n\nDear Team,\n\nMy name is Matt Hendricks, and I've just joined the company as a Training and Development Specialist. I've worked in operations and executive leadership for over 15 years, and I'm passionate about building strong teams that communicate clearly and deliver results.\n\nI'm excited to be part of a company that values growth, and I look forward to learning from all of you while contributing to our shared goals. Outside of work, I enjoy soccer, salsa music, and community volunteer work.\n\nPlease feel free to reach out—I'd love to connect!\n\nBest regards,\nMatt Hendricks\n\n📝 Submission:\nUpload your email as a Word or PDF file. This task prepares you for both your Capstone written introduction and for real-world professional situations.\n\n🗂️⬆️\n\nINVITE LINK: https://classroom.google.com/c/NzgzNjY5MDgwMDkx?cjc=rllut6hy\n\nCLASS CODE: rllut6hy",
+    "body_es": "✍️ Tarea de Escritura – Semana 1\n\nTítulo: Correo Electrónico de Auto-presentación Profesional\nTiempo Estimado: 1–2 Horas\nObjetivo: Practicar una comunicación escrita clara, segura y profesional mientras preparas el contenido de tu introducción para el Proyecto Final.\n\n📄 Descripción de la Tarea:\n\nEsta semana, escribirás un correo electrónico formal de auto-presentación como si te unieras a una nueva empresa en los Estados Unidos. Este correo demostrará tu habilidad para escribir de manera profesional, aplicar claridad y tono, y seguir el formato esperado en entornos empresariales de EE. UU.\n\n🧭 Instrucciones:\nImagina este escenario:\nAcabas de unirte a una empresa en los EE. UU. como parte de tu nuevo trabajo. Tu supervisor te ha pedido que te presentes a tu departamento por correo electrónico.\n\nTu correo debe incluir:\n\nUn saludo (usa un tono profesional)\n\nTu nombre y cargo\n\nUn breve resumen de tu experiencia\n\nQué esperas de este rol\n\nUn detalle personal (pasatiempos, intereses)\n\nUn cierre cortés\n\nConteo de Palabras:\n150–250 palabras\n\nTono y Estructura:\n\nClaro y respetuoso\n\nPositivo y profesional\n\nUsa espaciado entre párrafos y formato estándar de correo electrónico (sin viñetas ni emojis)\n\n✅ Ejemplo (Plantilla para Orientación):\n\nAsunto: Introduction – Matt Hendricks\n\nDear Team,\n\nMy name is Matt Hendricks, and I've just joined the company as a Training and Development Specialist. I've worked in operations and executive leadership for over 15 years, and I'm passionate about building strong teams that communicate clearly and deliver results.\n\nI'm excited to be part of a company that values growth, and I look forward to learning from all of you while contributing to our shared goals. Outside of work, I enjoy soccer, salsa music, and community volunteer work.\n\nPlease feel free to reach out—I'd love to connect!\n\nBest regards,\nMatt Hendricks\n\n📝 Entrega:\nSube tu correo como un archivo Word o PDF. Esta tarea te prepara tanto para tu introducción escrita del Proyecto Final como para situaciones profesionales del mundo real.\n\n🗂️⬆️\n\nENLACE DE INVITACIÓN: https://classroom.google.com/c/NzgzNjY5MDgwMDkx?cjc=rllut6hy\n\nCÓDIGO DE CLASE: rllut6hy"
+  },
+  "hero": {
+    "title_a": "Professional",
+    "title_b": "Self-Introduction Email",
+    "intro_es": "Escribe un correo formal para presentarte a tu nuevo equipo en EE. UU. Practicas una comunicación escrita clara, segura y profesional, y preparas el contenido de tu Capstone.",
+    "intro_en": "Write a formal email introducing yourself to your new team in the U.S. You practice clear, confident and professional writing, and prepare your Capstone content.",
+    "chips_es": [
+      "1–2 horas",
+      "150–250 palabras",
+      "Lo revisa tu coach en 48 h",
+      "Capstone · Parte 1"
+    ],
+    "chips_en": [
+      "1–2 hours",
+      "150–250 words",
+      "Reviewed by your coach in 48 h",
+      "Capstone · Part 1"
+    ]
+  },
+  "scenario": {
+    "from": "Sarah",
+    "initials": "SR",
+    "role_es": "tu supervisora",
+    "role_en": "your supervisor",
+    "quote": "Welcome aboard! Please introduce yourself to the department by email this week.",
+    "es": "Acabas de unirte a una empresa en EE. UU. y tu supervisora te pide que te presentes a tu departamento por correo.",
+    "en": "You've just joined a company in the U.S., and your supervisor has asked you to introduce yourself to your department by email."
+  },
+  "parts": [
+    {
+      "color": "#2C6BC4",
+      "en": "A greeting",
+      "es": "Un saludo",
+      "hint": {
+        "es": "Con tono profesional.",
+        "en": "Use a professional tone."
+      },
+      "example": "Dear Team,",
+      "phrases": [
+        "Dear Team,",
+        "Hello everyone,",
+        "Good morning, team,"
+      ]
+    },
+    {
+      "color": "#7A4FD6",
+      "en": "Your name and role",
+      "es": "Tu nombre y cargo",
+      "hint": {
+        "es": "Quién eres y qué puesto tienes.",
+        "en": "Who you are and your position."
+      },
+      "example": "My name is…, and I've just joined the company as…",
+      "phrases": [
+        "My name is [name], and I've just joined the company as [role].",
+        "I'm [name], the new [role] on the [department] team."
+      ]
+    },
+    {
+      "color": "#00A3C4",
+      "en": "A short summary of your background",
+      "es": "Un breve resumen de tu experiencia",
+      "hint": {
+        "es": "1 o 2 oraciones, no tu CV completo.",
+        "en": "1–2 sentences, not your whole résumé."
+      },
+      "example": "I've worked in operations for over 15 years…",
+      "phrases": [
+        "I've worked in [field] for [number] years.",
+        "Before joining, I worked at [company] as a [role].",
+        "I'm passionate about [topic]."
+      ]
+    },
+    {
+      "color": "#1F7A4D",
+      "en": "What you look forward to in this role",
+      "es": "Qué esperas de este rol",
+      "hint": {
+        "es": "Muestra entusiasmo y ganas de colaborar.",
+        "en": "Show enthusiasm and teamwork."
+      },
+      "example": "I look forward to learning from all of you…",
+      "phrases": [
+        "I look forward to learning from all of you.",
+        "I'm excited to contribute to [goal].",
+        "I'm looking forward to working together on [project]."
+      ]
+    },
+    {
+      "color": "#C98A00",
+      "en": "One personal detail",
+      "es": "Un detalle personal",
+      "hint": {
+        "es": "Un pasatiempo o interés: así la gente conecta contigo.",
+        "en": "A hobby or interest, so people can connect with you."
+      },
+      "example": "Outside of work, I enjoy soccer…",
+      "phrases": [
+        "Outside of work, I enjoy [hobby].",
+        "In my free time, I like to [activity]."
+      ]
+    },
+    {
+      "color": "#C2185B",
+      "en": "A polite closing",
+      "es": "Un cierre cortés",
+      "hint": {
+        "es": "Invita a contactarte y despídete.",
+        "en": "Invite people to reach out and sign off."
+      },
+      "example": "Please feel free to reach out… Best regards,",
+      "phrases": [
+        "Please feel free to reach out—I'd love to connect!",
+        "I look forward to meeting you all.",
+        "Best regards,",
+        "Kind regards,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_es": "Claro y respetuoso",
+      "d_es": "Oraciones cortas, idea principal primero.",
+      "t_en": "Clear and respectful",
+      "d_en": "Short sentences, main point first."
+    },
+    {
+      "icon": "star",
+      "t_es": "Positivo y profesional",
+      "d_es": "Entusiasta, sin exagerar.",
+      "t_en": "Positive and professional",
+      "d_en": "Enthusiastic, not over the top."
+    },
+    {
+      "icon": "nob",
+      "t_es": "Formato de correo",
+      "d_es": "Párrafos separados, sin viñetas ni emojis.",
+      "t_en": "Email format",
+      "d_en": "Paragraph spacing, no bullet points or emojis."
+    }
+  ],
+  "example": {
+    "subject": "Introduction – Matt Hendricks",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Dear Team,"
+        ]
+      ],
+      [
+        [
+          1,
+          "My name is Matt Hendricks, and I've just joined the company as a Training and Development Specialist."
+        ],
+        [
+          2,
+          "I've worked in operations and executive leadership for over 15 years, and I'm passionate about building strong teams that communicate clearly and deliver results."
+        ]
+      ],
+      [
+        [
+          3,
+          "I'm excited to be part of a company that values growth, and I look forward to learning from all of you while contributing to our shared goals."
+        ],
+        [
+          4,
+          "Outside of work, I enjoy soccer, salsa music, and community volunteer work."
+        ]
+      ],
+      [
+        [
+          5,
+          "Please feel free to reach out—I'd love to connect!"
+        ]
+      ],
+      [
+        [
+          5,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Matt Hendricks"
+        ]
+      ]
+    ]
+  },
+  "words": {
+    "min": 150,
+    "max": 250
+  },
+  "to_label": "Operations Team",
+  "to_initials": "OP",
+  "subject_hint": "Introduction – Ana Pérez",
+  "capstone_part": 1,
+  "capstone_title": {
+    "es": "Tu experiencia y objetivos",
+    "en": "Your background and goals"
+  }
+}

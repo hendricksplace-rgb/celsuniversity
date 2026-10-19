@@ -1,0 +1,142 @@
+{
+  "week": 1,
+  "original": {
+    "title": "Introduce Yourself Like a Pro",
+    "title_es": "Preséntate como un Profesional",
+    "time": "1 Hour",
+    "goal": "Record and submit a short professional video introduction demonstrating clarity, tone, and confidence.",
+    "goal_es": "Grabar y enviar una breve introducción profesional en video demostrando claridad, tono y confianza.",
+    "body_en": "📹 Video Submission – Week 1\n\nTitle: Introduce Yourself Like a Pro\nEstimated Time: 1 Hour\nGoal: Record and submit a short professional video introduction demonstrating clarity, tone, and confidence.\n\n🎥 Assignment Overview:\n\nYou've studied what clear, confident, and professional communication looks like—and now it's your turn.\n\nIn this task, you'll record a 2-minute video introducing yourself as if you were speaking to a future employer or team. This video will be part of your Capstone Project and will serve as your first speaking evaluation.\n\n🧭 Instructions:\nUse your written self-introduction (from the writing task) as your base.\n\nRecord yourself saying it naturally, using:\n\nA clear and calm tone\n\nProfessional body language\n\nNatural pacing and pronunciation\n\nTips for a strong video:\n\n📱 Use your phone's camera (horizontal is best)\n\n🎤 Check your mic—record in a quiet space\n\n💡 Face a light source so your face is clearly visible\n\n👔 Wear something neat (doesn't need to be formal, just clean and presentable)\n\n👁 Make eye contact with the camera, like you're talking to a real person\n\n😌 Smile once or twice—it shows confidence and friendliness\n\nLength:\nAim for 1:30 to 2:00 minutes. It's okay if you go a little over if the quality is strong.\n\n✅ Your video should include:\nA confident introduction with your name and role\n\nA short summary of your professional background\n\nYour goals or motivation for joining a U.S. company\n\nA personal detail to show who you are outside of work\n\n📝 Submission:\nUpload your video (MP4 or MOV preferred) to the course platform. If you're using your phone, transfer it via email, upload link, or directly from the CelsU mobile interface.\n\nREGISTER and USE Google Classroom: https://classroom.google.com/c/NzgzNjY5MDgwMDkx?cjc=rllut6hy\n\nYou'll receive feedback on:\n\nClarity\n\nTone\n\nBody language\n\nOverall presentation\n\nThis is your first step in becoming a confident communicator in English—and it sets the tone for everything that comes next.",
+    "body_es": "📹 Envío de Video – Semana 1\n\nTítulo: Preséntate como un Profesional\nTiempo Estimado: 1 Hora\nObjetivo: Grabar y enviar una breve introducción profesional en video demostrando claridad, tono y confianza.\n\n🎥 Descripción de la Tarea:\n\nHas estudiado cómo se ve una comunicación clara, segura y profesional—y ahora es tu turno.\n\nEn esta tarea, grabarás un video de 2 minutos presentándote como si estuvieras hablando con un futuro empleador o equipo. Este video será parte de tu Proyecto Final y servirá como tu primera evaluación de expresión oral.\n\n🧭 Instrucciones:\nUsa tu auto-presentación escrita (de la tarea de escritura) como base.\n\nGrábate diciendo esto de manera natural, usando:\n\nUn tono claro y calmado\n\nLenguaje corporal profesional\n\nRitmo y pronunciación natural\n\nConsejos para un video fuerte:\n\n📱 Usa la cámara de tu teléfono (horizontal es mejor)\n\n🎤 Revisa tu micrófono—graba en un espacio silencioso\n\n💡 Enfrenta una fuente de luz para que tu rostro sea claramente visible\n\n👔 Viste algo prolijo (no necesita ser formal, solo limpio y presentable)\n\n👁 Haz contacto visual con la cámara, como si estuvieras hablando con una persona real\n\n😌 Sonríe una o dos veces—muestra confianza y amabilidad\n\nDuración:\nApunta a 1:30 a 2:00 minutos. Está bien si te pasas un poco si la calidad es fuerte.\n\n✅ Tu video debe incluir:\nUna introducción segura con tu nombre y rol\n\nUn breve resumen de tu experiencia profesional\n\nTus metas o motivación para unirte a una empresa en EE.UU.\n\nUn detalle personal para mostrar quién eres fuera del trabajo\n\n📝 Envío:\nSube tu video (MP4 o MOV preferido) a la plataforma del curso. Si estás usando tu teléfono, transfiérelo por correo electrónico, enlace de carga, o directamente desde la interfaz móvil de CelsU.\n\nREGÍSTRATE y USA Google Classroom: https://classroom.google.com/c/NzgzNjY5MDgwMDkx?cjc=rllut6hy\n\nRecibirás retroalimentación sobre:\n\nClaridad\n\nTono\n\nLenguaje corporal\n\nPresentación general\n\nEste es tu primer paso para convertirte en un comunicador seguro en inglés—y establece el tono para todo lo que viene después."
+  },
+  "hero": {
+    "title_a": "Introduce Yourself",
+    "title_b": "Like a Pro",
+    "intro_es": "Grábate presentándote como si hablaras con un futuro empleador o con tu nuevo equipo. Usa tu correo de Writing como base y practica claridad, tono y seguridad.",
+    "intro_en": "Record yourself introducing yourself as if you were speaking to a future employer or your new team. Use your Writing email as a base and practice clarity, tone and confidence.",
+    "chips_es": [
+      "1 hora",
+      "1:30 a 2:00 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 1"
+    ],
+    "chips_en": [
+      "1 hour",
+      "1:30 to 2:00 minutes",
+      "Your video stays with you",
+      "Capstone · Part 1"
+    ],
+    "priv_b": {
+      "es": "Tu video nunca sale de tu dispositivo.",
+      "en": "Your video never leaves your device."
+    },
+    "priv_p": {
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste.",
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it."
+    }
+  },
+  "seconds": {
+    "min": 90,
+    "max": 120
+  },
+  "auto_stop_s": 150,
+  "wpm": 100,
+  "must": [
+    {
+      "color": "#7A4FD6",
+      "es": "Tu nombre y rol, con seguridad",
+      "en": "Your name and role, with confidence"
+    },
+    {
+      "color": "#00A3C4",
+      "es": "Un resumen de tu experiencia",
+      "en": "A summary of your background"
+    },
+    {
+      "color": "#1F7A4D",
+      "es": "Tus metas o por qué quieres trabajar en una empresa de EE. UU.",
+      "en": "Your goals or motivation for joining a U.S. company"
+    },
+    {
+      "color": "#C98A00",
+      "es": "Un detalle personal fuera del trabajo",
+      "en": "A personal detail outside of work"
+    }
+  ],
+  "tips": [
+    {
+      "icon": "phone",
+      "es": "Cámara en horizontal",
+      "en": "Camera horizontal",
+      "desc_es": "Usa la cámara de tu teléfono, de lado.",
+      "desc_en": "Use your phone's camera, sideways."
+    },
+    {
+      "icon": "mic",
+      "es": "Lugar silencioso",
+      "en": "A quiet space",
+      "desc_es": "Revisa tu micrófono antes de grabar.",
+      "desc_en": "Check your mic before you record."
+    },
+    {
+      "icon": "sun",
+      "es": "Luz de frente",
+      "en": "Light in front",
+      "desc_es": "Ponte frente a una ventana o lámpara.",
+      "desc_en": "Face a window or a lamp."
+    },
+    {
+      "icon": "shirt",
+      "es": "Ropa limpia y presentable",
+      "en": "Neat and presentable",
+      "desc_es": "No tiene que ser formal.",
+      "desc_en": "It doesn't need to be formal."
+    },
+    {
+      "icon": "eye",
+      "es": "Mira a la cámara",
+      "en": "Look at the camera",
+      "desc_es": "Como si hablaras con una persona real.",
+      "desc_en": "As if talking to a real person."
+    },
+    {
+      "icon": "smile",
+      "es": "Sonríe una o dos veces",
+      "en": "Smile once or twice",
+      "desc_es": "Muestra seguridad y amabilidad.",
+      "desc_en": "It shows confidence and friendliness."
+    }
+  ],
+  "delivery": {
+    "es": [
+      [
+        "Tono claro y calmado",
+        "Habla despacio; no corras."
+      ],
+      [
+        "Lenguaje corporal profesional",
+        "Espalda recta, hombros relajados."
+      ],
+      [
+        "Ritmo natural",
+        "Haz pausas entre ideas."
+      ]
+    ],
+    "en": [
+      [
+        "Clear, calm tone",
+        "Speak slowly; don't rush."
+      ],
+      [
+        "Professional body language",
+        "Back straight, shoulders relaxed."
+      ],
+      [
+        "Natural pacing",
+        "Pause between ideas."
+      ]
+    ]
+  },
+  "script_source_lesson_id": "f3138ac2-450c-4330-8b9d-b25c4c1f1d6b",
+  "capstone_part": 1
+}

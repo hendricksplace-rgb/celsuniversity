@@ -1,0 +1,36 @@
+/* Loading skeleton for the CelsBSNS interactive pages (src/app/app/cursos/[slug]/semana/[n]/tarea/[id]/loading.tsx). */
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+.pulse {
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.line {
+  display: block;
+  height: 12px;
+  max-width: 100%;
+  border-radius: 6px;
+  background: #e3eaf4;
+}
+.hero {
+  min-height: 420px;
+}
+.block {
+  margin-top: 52px;
+  min-height: 320px;
+}
+.rail {
+  min-height: 300px;
+}
+@media (max-width: 760px) {
+  .hero {
+    min-height: 560px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pulse {
+    animation: none;
+  }
+}

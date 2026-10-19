@@ -6,13 +6,18 @@ import { themeForCourse } from "@/lib/themes";
 import { loadCoursePage } from "@/lib/course-page";
 import { MEDIA_TYPES, SUBMISSION_TYPES, taskTime, weekPath } from "@/lib/bsns";
 import { BsnsTask } from "@/components/course/BsnsTask";
+import { InteractiveReading, InteractiveResearch, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { loadReading } from "@/lib/reading-server";
+import { loadWriting } from "@/lib/writing-server";
+import { loadResearch } from "@/lib/research-server";
+import { loadVideoTask } from "@/lib/video-task-server";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
 /** CelsBSNS task (spec §3, phone 4): the instructions with "Ver en español", the answer, "Entregar a mi coach". */
 export default async function BsnsTaskPage({ params }: Props) {
   const { slug, n, id } = await params;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}/semana/${n}/tarea/${id}`);
@@ -24,6 +29,62 @@ export default async function BsnsTaskPage({ params }: Props) {
   if (!page || !week || !part) notFound();
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   if (!access) redirect(`/app/cursos/${slug}`);
+
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content or video_task_content row replaces the task screen.
+  // Only the loader for this lesson's type runs (one database round trip).
+  const ty = part.type;
+  const [reading, writing, research, video] = await Promise.all([
+    ty === "reading" ? loadReading(supabase, viewer.user.id, id) : null,
+    ty === "writing" ? loadWriting(supabase, viewer.user.id, id, page.course.id) : null,
+    ty === "research" ? loadResearch(supabase, viewer.user.id, id) : null,
+    ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, id) : null,
+  ]);
+  if (reading || writing || research || video) {
+    const at = week.parts.findIndex((x) => x.id === id);
+    const link = (x: (typeof week.parts)[number] | undefined) => (x ? { title: x.title, href: x.href } : null);
+    const nav = { backHref: weekPath(slug, week.n), prev: link(week.parts[at - 1]), next: link(week.parts[at + 1]), defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    if (video)
+      return <InteractiveVideo {...nav} data={video.data} lessonId={id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
+    if (research)
+      return (
+        <InteractiveResearch
+          {...nav}
+          data={research.data}
+          lessonId={id}
+          userId={viewer.user.id}
+          writingHref={week.parts.find((x) => x.type === "writing")?.href ?? null}
+          entries={research.entries}
+          reflection={research.reflection}
+          phrases={research.phrases}
+        />
+      );
+    if (writing)
+      return (
+        <InteractiveWriting
+          {...nav}
+          data={writing.data}
+          lessonId={id}
+          courseId={page.course.id}
+          userId={viewer.user.id}
+          sub={writing.sub}
+          capstoneSaved={writing.capstoneSaved}
+          coachName={writing.coachName}
+          reviewerName={writing.reviewerName}
+          myPhrases={writing.myPhrases}
+        />
+      );
+    return (
+      <InteractiveReading
+        {...nav}
+        data={reading!.data}
+        lessonId={id}
+        userId={viewer.user.id}
+        initialNotes={reading!.notes}
+        initialState={reading!.state}
+        completedAt={reading!.completedAt}
+      />
+    );
+  }
 
   const kind = part.type === "feedback" ? "feedback" : part.type && SUBMISSION_TYPES.has(part.type) ? "submission" : "read";
   const [{ data: blocks }, { data: sub }, { data: weekSubs }] = await Promise.all([

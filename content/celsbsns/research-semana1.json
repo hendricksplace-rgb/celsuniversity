@@ -1,0 +1,235 @@
+{
+  "week": 1,
+  "original": {
+    "title": "How Do U.S. Professionals Introduce Themselves?",
+    "title_es": "¿Cómo se Presentan los Profesionales en EE. UU.?",
+    "time": "1–1.5 Hours",
+    "goal": "Learn how professionals in the U.S. communicate their experience and personality when introducing themselves in writing or video.",
+    "goal_es": "Aprender cómo los profesionales en EE. UU. comunican su experiencia y personalidad al presentarse por escrito o en video.",
+    "body_en": "🧠 Research Task – Week 1\n\nTitle: How Do U.S. Professionals Introduce Themselves?\nEstimated Time: 1–1.5 Hours\nGoal: Learn how professionals in the U.S. communicate their experience and personality when introducing themselves in writing or video.\n\n📄 Assignment Overview:\n\nYou've already written your own self-introduction. Now it's time to explore how professionals in the U.S. do the same. This research task helps you observe real-world examples, identify patterns, and improve your own presentation style.\n\n🔎 Instructions:\nFind Two (2) Real Examples of U.S.-based professionals introducing themselves. You can look for:\n\nLinkedIn \"About\" sections\n\nYouTube videos of professional intros (job interview tips, company intros)\n\nEmployee bios on company websites\n\nPersonal statements on portfolio or consulting websites\n\nFor each example, write a short analysis (5–7 sentences) that includes:\n\nThe person's job or field\n\nWhat they chose to share about themselves\n\nWhat tone or language they used (formal, personal, clear, casual?)\n\nOne phrase or structure you could borrow for your own Capstone intro\n\nWhat you liked or would improve\n\nExtra Tip: If you're using LinkedIn, focus on professionals in your field. This will help you get used to the vocabulary and tone for your own career goals.\n\n📝 Submission:\nSubmit a one-page document with your two examples and your written analysis of each. Use complete sentences and organize clearly.\nThis task builds your real-world research skills, improves your awareness of tone and structure, and helps you refine your Capstone introduction.\n\n🗂️⬆️ https://classroom.google.com/w/Nzc5NjA0Nzk0NjQ2/tc/Nzc5NjA0NzczNTM0",
+    "body_es": "🧠 Tarea de Investigación – Semana 1\n\nTítulo: ¿Cómo se Presentan los Profesionales en EE. UU.?\nTiempo Estimado: 1–1.5 Horas\nObjetivo: Aprender cómo los profesionales en EE. UU. comunican su experiencia y personalidad al presentarse por escrito o en video.\n\n📄 Descripción de la Tarea:\n\nYa has escrito tu propia auto-presentación. Ahora es momento de explorar cómo lo hacen los profesionales en EE. UU. Esta tarea de investigación te ayuda a observar ejemplos del mundo real, identificar patrones y mejorar tu propio estilo de presentación.\n\n🔎 Instrucciones:\nEncuentra Dos (2) Ejemplos Reales de profesionales con base en EE. UU. presentándose. Puedes buscar en:\n\nSecciones \"About\" de LinkedIn\n\nVideos de YouTube de presentaciones profesionales (consejos para entrevistas de trabajo, presentaciones de empresas)\n\nBiografías de empleados en sitios web de empresas\n\nDeclaraciones personales en sitios web de portafolios o consultoría\n\nPara cada ejemplo, escribe un breve análisis (5–7 oraciones) que incluya:\n\nEl trabajo o campo de la persona\n\nLo que eligieron compartir sobre sí mismos\n\nQué tono o lenguaje usaron (¿formal, personal, claro, casual?)\n\nUna frase o estructura que podrías tomar prestada para tu propia introducción de Capstone\n\nLo que te gustó o mejorarías\n\nConsejo Extra: Si estás usando LinkedIn, concéntrate en profesionales de tu campo. Esto te ayudará a familiarizarte con el vocabulario y el tono para tus propios objetivos profesionales.\n\n📝 Entrega:\nEntrega un documento de una página con tus dos ejemplos y tu análisis escrito de cada uno. Usa oraciones completas y organiza claramente.\nEsta tarea desarrolla tus habilidades de investigación en el mundo real, mejora tu conciencia sobre el tono y la estructura, y te ayuda a refinar tu introducción de Capstone.\n\n🗂️⬆️ https://classroom.google.com/w/Nzc5NjA0Nzk0NjQ2/tc/Nzc5NjA0NzczNTM0"
+  },
+  "hero": {
+    "title_a": "How Do U.S. Professionals",
+    "title_b": "Introduce Themselves?",
+    "intro_es": "Aprende cómo los profesionales en EE. UU. comunican su experiencia y su personalidad cuando se presentan por escrito o en video. Encuentra 2 ejemplos reales, analízalos y quédate con las frases que te sirvan.",
+    "intro_en": "Learn how professionals in the U.S. communicate their experience and personality when they introduce themselves in writing or on video. Find 2 real examples, analyze them, and keep the phrases that work for you.",
+    "chips_es": [
+      "1–1.5 horas",
+      "2 ejemplos reales",
+      "5–7 oraciones cada uno",
+      "Mis frases"
+    ],
+    "chips_en": [
+      "1–1.5 hours",
+      "2 real examples",
+      "5–7 sentences each",
+      "My phrases"
+    ],
+    "link_b": {
+      "es": "Ya escribiste tu presentación.",
+      "en": "You've already written your own introduction."
+    },
+    "link_p": {
+      "es": "Ahora mira cómo lo hacen otros profesionales y encuentra ideas para mejorarla.",
+      "en": "Now see how other professionals do it and find ideas to improve yours."
+    }
+  },
+  "min_examples": 2,
+  "sentences": {
+    "min": 5,
+    "max": 7
+  },
+  "sources": [
+    {
+      "key": "linkedin",
+      "label_es": "LinkedIn: sección “About”",
+      "desc_es": "Cómo se describen en su perfil.",
+      "label_en": "LinkedIn: “About” section",
+      "desc_en": "How they describe themselves on their profile.",
+      "search_template": "https://www.linkedin.com/search/results/people/?keywords={q}",
+      "query_template": "{field}",
+      "color": "#0A66C2",
+      "mark": "in"
+    },
+    {
+      "key": "youtube",
+      "label_es": "YouTube: presentaciones",
+      "desc_es": "Consejos de entrevista y presentaciones de empresas.",
+      "label_en": "YouTube: introductions",
+      "desc_en": "Job interview tips and company intros.",
+      "search_template": "https://www.youtube.com/results?search_query={q}",
+      "query_template": "{field} self introduction",
+      "color": "#D32F2F",
+      "mark": "▶"
+    },
+    {
+      "key": "bios",
+      "label_es": "Bios de empleados",
+      "desc_es": "La página “Our team” de empresas de EE. UU.",
+      "label_en": "Employee bios",
+      "desc_en": "The “Our team” page of U.S. companies.",
+      "search_template": "https://www.google.com/search?q={q}",
+      "query_template": "\"our team\" {field} USA",
+      "color": "#1F7A4D",
+      "mark": "B"
+    },
+    {
+      "key": "portfolio",
+      "label_es": "Portafolios y consultores",
+      "desc_es": "La sección “About me” de sitios personales.",
+      "label_en": "Portfolios and consultants",
+      "desc_en": "The “About me” section of personal websites.",
+      "search_template": "https://www.google.com/search?q={q}",
+      "query_template": "\"about me\" {field} consultant",
+      "color": "#7A4FD6",
+      "mark": "W"
+    }
+  ],
+  "default_field": "professional",
+  "tip": {
+    "es": "Si usas LinkedIn, concéntrate en profesionales de tu campo. Elige perfiles de personas que trabajan en EE. UU.",
+    "en": "If you're using LinkedIn, focus on professionals in your field. Choose profiles of people who work in the U.S."
+  },
+  "lenses": [
+    {
+      "color": "#2C6BC4",
+      "es": "Su trabajo o campo",
+      "en": "Their job or field"
+    },
+    {
+      "color": "#7A4FD6",
+      "es": "Qué eligió compartir",
+      "en": "What they chose to share"
+    },
+    {
+      "color": "#00A3C4",
+      "es": "Tono y lenguaje",
+      "en": "Tone and language"
+    },
+    {
+      "color": "#C98A00",
+      "es": "Una frase para tu Capstone",
+      "en": "A phrase for your Capstone"
+    },
+    {
+      "color": "#1F7A4D",
+      "es": "Lo que te gustó o mejorarías",
+      "en": "What you liked or would improve"
+    }
+  ],
+  "types": [
+    {
+      "key": "in",
+      "es": "LinkedIn",
+      "en": "LinkedIn"
+    },
+    {
+      "key": "yt",
+      "es": "YouTube",
+      "en": "YouTube"
+    },
+    {
+      "key": "bio",
+      "es": "Bio de empresa",
+      "en": "Company bio"
+    },
+    {
+      "key": "web",
+      "es": "Portafolio / web",
+      "en": "Portfolio / website"
+    }
+  ],
+  "share_options": {
+    "es": [
+      "Experiencia",
+      "Logros con números",
+      "A quién ayuda",
+      "Valores",
+      "Educación",
+      "Metas",
+      "Pasatiempos"
+    ],
+    "en": [
+      "Experience",
+      "Results with numbers",
+      "Who they help",
+      "Values",
+      "Education",
+      "Goals",
+      "Hobbies"
+    ]
+  },
+  "tone_options": {
+    "es": [
+      "Formal",
+      "Personal",
+      "Claro",
+      "Casual",
+      "Seguro"
+    ],
+    "en": [
+      "Formal",
+      "Personal",
+      "Clear",
+      "Casual",
+      "Confident"
+    ]
+  },
+  "questions": {
+    "es": [
+      "¿Cuál es su trabajo o campo?",
+      "¿Qué eligió compartir? (toca todo lo que aplique)",
+      "¿Qué tono usa? (toca uno o más)",
+      "Una frase o estructura que podrías usar",
+      "¿Qué te gustó o qué mejorarías?"
+    ],
+    "en": [
+      "What is their job or field?",
+      "What did they choose to share? (tap all that apply)",
+      "What tone do they use? (tap one or more)",
+      "One phrase or structure you could borrow",
+      "What did you like, or what would you improve?"
+    ]
+  },
+  "model": {
+    "name": "Jordan Lee",
+    "initials": "JL",
+    "role": "Supply Chain Manager · Dallas, TX",
+    "about": "I help growing companies move products faster and smarter. Over the past 8 years, I've led distribution teams in Texas and Mexico, and last year my team cut delivery times by 20%. I believe great logistics starts with clear communication. Outside of work, you'll find me coaching my daughter's soccer team. Let's connect!",
+    "answers": {
+      "es": [
+        "Supply chain: gerente de operaciones en una empresa de distribución.",
+        "Su experiencia (8 años), un resultado con números (−20 % en tiempos de entrega) y un detalle personal.",
+        "Claro, seguro y amigable. Usa “I” y oraciones cortas.",
+        "“I help growing companies move products faster and smarter.”",
+        "Me gustó que empieza con a quién ayuda. Mejoraría: mencionar en qué ciudad o región trabaja."
+      ],
+      "en": [
+        "Supply chain: operations manager at a distribution company.",
+        "Their experience (8 years), a result with numbers (20% faster deliveries) and a personal detail.",
+        "Clear, confident and friendly. Uses “I” and short sentences.",
+        "“I help growing companies move products faster and smarter.”",
+        "I liked that it starts with who they help. I'd improve: say which city or region they work in."
+      ]
+    }
+  },
+  "patterns": {
+    "es": [
+      "Empiezan con su rol o con a quién ayudan",
+      "Usan números o resultados concretos",
+      "Hablan en primera persona (I…)",
+      "Incluyen un toque personal",
+      "Usan oraciones cortas y claras",
+      "Terminan invitando a conectar"
+    ],
+    "en": [
+      "They start with their role or who they help",
+      "They use numbers or concrete results",
+      "They speak in first person (I…)",
+      "They add a personal touch",
+      "They use short, clear sentences",
+      "They end by inviting people to connect"
+    ]
+  }
+}
