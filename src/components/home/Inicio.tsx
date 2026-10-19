@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { BandItem, ContinueLesson, HomeData, HomeProgram } from "@/lib/home";
 import type { ThemeKey } from "@/lib/themes";
+import { Gauge, MEDAL_ICON } from "./Gauge";
 import s from "./inicio.module.css";
 
 type T = Dictionary["dash"];
@@ -325,55 +326,6 @@ export function Programs({ t, programs, before }: { t: T; programs: HomeProgram[
 }
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const MEDAL_ICON: Record<string, string> = {
-  first_episode: "🎬",
-  streak_3: "🔥",
-  streak_7: "🔥",
-  streak_30: "🔥",
-  evaluation_done: "🎯",
-  polyglot: "🗣️",
-  reader: "📘",
-  first_celscast: "🎧",
-  unit_1: "🏁",
-  level_up: "📈",
-  citizen_ready: "🇺🇸",
-  unstoppable: "🏆",
-};
-
-function Gauge({ className, small }: { className?: string; small?: boolean }) {
-  const id = small ? "gauge-s" : "gauge-b";
-  return small ? (
-    <svg viewBox="0 0 64 64" aria-hidden className={className}>
-      <defs>
-        <linearGradient id={id} x1="0" x2="1">
-          <stop offset="0" stopColor="#FFE600" />
-          <stop offset=".55" stopColor="#FFB020" />
-          <stop offset="1" stopColor="#00CCFE" />
-        </linearGradient>
-      </defs>
-      <path d="M12 42 A20 20 0 0 1 52 42" fill="none" stroke={`url(#${id})`} strokeWidth="6" strokeLinecap="round" />
-      <line x1="32" y1="42" x2="44" y2="28" stroke="#fff" strokeWidth="3.5" strokeLinecap="round" />
-      <circle cx="32" cy="42" r="4.5" fill="#fff" />
-      <text x="32" y="56" textAnchor="middle" fontSize="8" fontWeight="800" fill="#fff" letterSpacing="1">
-        A1–C2
-      </text>
-    </svg>
-  ) : (
-    <svg viewBox="0 0 200 200" aria-hidden className={className}>
-      <defs>
-        <linearGradient id={id} x1="0" x2="1">
-          <stop offset="0" stopColor="#FFE600" />
-          <stop offset=".5" stopColor="#FFB020" />
-          <stop offset="1" stopColor="#00CCFE" />
-        </linearGradient>
-      </defs>
-      <path d="M30 130 A70 70 0 0 1 170 130" fill="none" stroke={`url(#${id})`} strokeWidth="18" strokeLinecap="round" />
-      <line x1="100" y1="130" x2="146" y2="82" stroke="#fff" strokeWidth="8" strokeLinecap="round" />
-      <circle cx="100" cy="130" r="12" fill="#fff" />
-    </svg>
-  );
-}
-
 /** "Sigue creciendo · Tu siguiente paso": the wave, the route (desktop), the evaluation and the medals. */
 export function Grow({ t, data }: { t: T; data: HomeData }) {
   const level = data.evaluationLevel;

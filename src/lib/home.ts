@@ -74,6 +74,43 @@ export type BandItem =
   | { kind: "medal"; name: string }
   | { kind: "fresh"; part: string; episode: string };
 
+type BadgeRow = { code: string; name: string; requirement: string; rule: unknown };
+const ruleOf = (r: unknown) => (r && typeof r === "object" ? (r as { type?: string; min?: number }) : {});
+
+/**
+ * The medal to chase next (shared by Inicio and Progreso): the first unearned one whose progress can be
+ * measured (a streak or total XP), else the first unearned one.
+ */
+export function nextMedalOf<B extends BadgeRow>(catalog: B[], owned: Record<string, unknown>, streak: number, totalXp: number): { badge: B; next: NextMedal } | null {
+  const unearned = catalog.filter((b) => !owned[b.code]);
+  const nextB = unearned.find((b) => ["streak", "total_xp"].includes(ruleOf(b.rule).type ?? "")) ?? unearned[0] ?? null;
+  if (!nextB) return null;
+  const r = ruleOf(nextB.rule);
+  const unit = r.type === "streak" ? "days" : r.type === "total_xp" ? "xp" : null;
+  const have = unit === "days" ? streak : unit === "xp" ? totalXp : 0;
+  return { badge: nextB, next: { name: nextB.name, requirement: nextB.requirement, unit, have: Math.min(have, r.min ?? 0), min: r.min ?? 0 } };
+}
+
+/** The streak as it stands today: it only counts if the last study day was today or yesterday (Mexico City). */
+export function liveStreak(game: { current_streak: number | null; last_activity_date: string | null } | null) {
+  const last = game?.last_activity_date ?? null;
+  return last === ymd(new Date()) || last === ymd(new Date(Date.now() - 864e5)) ? (game?.current_streak ?? 0) : 0;
+}
+
+/** This week's XP from `gamification` (zero when the weekly counter belongs to an earlier week). */
+export function liveWeeklyXp(game: { weekly_xp: number | null; weekly_reset_date: string | null } | null) {
+  // weekStart() already holds Mexico City wall-clock fields, so format them as they are.
+  const ws = weekStart();
+  const monday = `${ws.getFullYear()}-${String(ws.getMonth() + 1).padStart(2, "0")}-${String(ws.getDate()).padStart(2, "0")}`;
+  return game?.weekly_reset_date === monday ? (game?.weekly_xp ?? 0) : 0;
+}
+
+/** The weekly XP goal: the `weekly_xp_goal` setting, else DEFAULT_WEEKLY_GOAL. */
+export function weeklyGoalOf(value: unknown) {
+  const n = Number(value);
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : DEFAULT_WEEKLY_GOAL;
+}
+
 function focusOf(courses: CourseStats[]) {
   const c = courses.filter((x) => x.last).sort((a, b) => (a.last!.at < b.last!.at ? 1 : -1))[0] ?? courses[0];
   if (!c) return null;
@@ -191,38 +228,18 @@ export async function loadHome(supabase: Client, userId: string) {
   const today = todayIndex();
 
   // Streak and weekly XP are only current if the last activity was today/yesterday and the reset is this week's.
-  const todayYmd = ymd(new Date());
-  const yesterdayYmd = ymd(new Date(Date.now() - 864e5));
-  const last = game?.last_activity_date ?? null;
-  const doneToday = last === todayYmd || week[today];
-  const streak = last === todayYmd || last === yesterdayYmd ? (game?.current_streak ?? 0) : 0;
-  // weekStart() already holds Mexico City wall-clock fields, so format them as they are.
-  const ws = weekStart();
-  const monday = `${ws.getFullYear()}-${String(ws.getMonth() + 1).padStart(2, "0")}-${String(ws.getDate()).padStart(2, "0")}`;
-  const weeklyXp = game?.weekly_reset_date === monday ? (game?.weekly_xp ?? 0) : 0;
-  const goalSetting = Number(setting("weekly_xp_goal"));
-  const goal = Number.isFinite(goalSetting) && goalSetting > 0 ? Math.round(goalSetting) : DEFAULT_WEEKLY_GOAL;
+  const doneToday = game?.last_activity_date === ymd(new Date()) || week[today];
+  const streak = liveStreak(game);
+  const weeklyXp = liveWeeklyXp(game);
+  const goal = weeklyGoalOf(setting("weekly_xp_goal"));
 
   // Medals: the catalog (public.badges) and what the student has earned (gamification.badges).
   const owned = game?.badges && typeof game.badges === "object" && !Array.isArray(game.badges) ? (game.badges as Record<string, { at?: string }>) : {};
   const medalsList = catalog ?? [];
-  const rule = (r: unknown) => (r && typeof r === "object" ? (r as { type?: string; min?: number }) : {});
-  const measurable = (r: unknown) => ["streak", "total_xp"].includes(rule(r).type ?? "");
   const unearned = medalsList.filter((b) => !owned[b.code]);
-  const nextB = unearned.find((b) => measurable(b.rule)) ?? unearned[0] ?? null;
-  let nextMedal: NextMedal | null = null;
-  if (nextB) {
-    const r = rule(nextB.rule);
-    const unit = r.type === "streak" ? "days" : r.type === "total_xp" ? "xp" : null;
-    const have = unit === "days" ? streak : unit === "xp" ? (game?.total_xp ?? 0) : 0;
-    nextMedal = {
-      name: nextB.name,
-      requirement: nextB.requirement,
-      unit,
-      have: Math.min(have, r.min ?? 0),
-      min: r.min ?? 0,
-    };
-  }
+  const nm = nextMedalOf(medalsList, owned, streak, game?.total_xp ?? 0);
+  const nextB = nm?.badge ?? null;
+  const nextMedal: NextMedal | null = nm?.next ?? null;
   const earnedList = medalsList.filter((b) => owned[b.code]);
   const afterNext = unearned.filter((b) => b !== nextB);
   const row: Medal[] = [
