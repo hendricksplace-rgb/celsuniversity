@@ -1,4 +1,5 @@
 import { studentLessons } from "@/lib/course-page";
+import { dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -32,6 +33,8 @@ export default async function LessonPage({ params }: Props) {
   if (!lesson || !lessonModule || !course) notFound();
 
   const theme = themeForCourse(course);
+  // CelsBSNS: "Course Dictionary" (and the old "Course Dictionary (2)" note) open the Dictionary page.
+  if (theme === "celsbsns" && course.slug && isDictionaryLesson(lesson.id)) redirect(dictionaryPath(course.slug));
   const access = await canAccessCourse(supabase, viewer, course.id);
 
   // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content, speaking_content or feedback_content row replaces the old page for this lesson.
