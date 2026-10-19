@@ -337,26 +337,38 @@ export type Database = {
       classes: {
         Row: {
           created_at: string
+          duration_min: number | null
           id: string
           legacy_id: string | null
+          meeting_url: string | null
           name: string
+          next_session_at: string | null
           organization_id: string
+          schedule_label: string | null
           status: string
         }
         Insert: {
           created_at?: string
+          duration_min?: number | null
           id?: string
           legacy_id?: string | null
+          meeting_url?: string | null
           name: string
+          next_session_at?: string | null
           organization_id: string
+          schedule_label?: string | null
           status?: string
         }
         Update: {
           created_at?: string
+          duration_min?: number | null
           id?: string
           legacy_id?: string | null
+          meeting_url?: string | null
           name?: string
+          next_session_at?: string | null
           organization_id?: string
+          schedule_label?: string | null
           status?: string
         }
         Relationships: [
