@@ -72,7 +72,9 @@ async function celsusDetails(
   // The week's questions: the English deck with the matching Spanish card (the Tarjetas' track A deck).
   const deckByTrack = tracksFromDecks(decks.en, decks.es);
   // The 2025 questions (with their USCIS number) first, then any older cards.
-  const all = deckByTrack.A.map((c) => ({ en: c.q, es: c.es?.q ?? "", no: c.no }));
+  // Track C: only their starred (65/20) questions.
+  const starred = new Set(deckByTrack.C.map((c) => c.key));
+  const all = deckByTrack.A.filter((c) => track !== "C" || starred.has(c.key)).map((c) => ({ en: c.q, es: c.es?.q ?? "", no: c.no }));
   const questions = [...all.filter((q) => q.no), ...all.filter((q) => !q.no)];
   const quizCount = Array.isArray(ebook?.quiz) ? ebook.quiz.length : 0;
   const myDeck = track ? deckByTrack[track] : deckByTrack.A;
