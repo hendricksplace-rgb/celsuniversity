@@ -76,9 +76,10 @@ export const countWords = (t: string) => (t.trim().match(/[A-Za-zÀ-ÿ0-9’'\-�
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/u;
 const BULLET = /^\s*([-*•]|\d+[.)])\s/m;
 
-/** The week asks for an email in paragraphs (week 1's "Email format" rule): only then do the paragraph and
- *  no-bullets checks apply. Week 4 (a resume, bullets expected) and weeks whose rules don't mention the format skip them. */
-export const emailFormatOf = (data: Pick<WritingData, "rules">) => data.rules.some((r) => /email format|paragraph|bullet/i.test(`${r.t_en} ${r.d_en}`));
+/** The week asks for an email in paragraphs (its format rule, the "nob" one, is week 1's "Email format" or says
+ *  "paragraph" / "no bullet"): only then do the paragraph and no-bullets checks apply. Week 4 (a resume, bullets expected) and weeks whose rules don't mention the format skip them. */
+export const emailFormatOf = (data: Pick<WritingData, "rules">) =>
+  data.rules.some((r) => r.icon === "nob" && /email format|paragraph|no bullet/i.test(`${r.t_en} ${r.d_en}`));
 
 /** The automatic format checks (no AI): subject, word range, and, for email-format weeks, 3+ paragraphs (advice
  *  only) and no bullets. Emojis are never allowed. */

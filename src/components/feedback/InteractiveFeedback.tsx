@@ -90,6 +90,9 @@ const UI = {
     donePn: (n: number) => `Avanzaste en tu Capstone y practicaste las 4 habilidades. Tu meta para la semana ${n}:`,
     donePf: "Practicaste las 4 habilidades durante 10 semanas. Lo que sigue: tu entrevista en vivo y tu certificado. Tu meta:",
     closeCta: "Ir a mi Capstone",
+    capMissing: (n: number) => `Para cerrar tu semana, completa la Parte ${n} de tu Capstone.`,
+    capOk: (n: number) => `Capstone · Parte ${n} completa`,
+    capGo: (n: number) => `Completar la Parte ${n}`,
     goNext: (n: number) => `Ir a la Semana ${n}`,
     seeCap: "Ver mi Capstone",
     wk: "SEM",
@@ -97,6 +100,7 @@ const UI = {
     rail: "TU AVANCE",
     privH: "SOLO PARA TI",
     privP: "Tus respuestas son privadas. Te las mostraremos otra vez en la Semana 10 para que compares.",
+    privP10: "Tus respuestas son privadas. Solo tú las ves.",
     week: (n: number) => `Semana ${n}`,
     close: "Cierre del curso",
     err: "No se pudo guardar. Revisa tu conexión.",
@@ -158,6 +162,9 @@ const UI = {
     donePn: (n: number) => `You moved your Capstone forward and practiced all 4 skills. Your goal for Week ${n}:`,
     donePf: "You practiced all 4 skills for 10 weeks. What's next: your live interview and your certificate. Your goal:",
     closeCta: "Go to my Capstone",
+    capMissing: (n: number) => `To close your week, complete Part ${n} of your Capstone.`,
+    capOk: (n: number) => `Capstone · Part ${n} complete`,
+    capGo: (n: number) => `Complete Part ${n}`,
     goNext: (n: number) => `Go to Week ${n}`,
     seeCap: "See my Capstone",
     wk: "WK",
@@ -165,6 +172,7 @@ const UI = {
     rail: "YOUR PROGRESS",
     privH: "JUST FOR YOU",
     privP: "Your answers are private. We'll show them to you again in Week 10 so you can compare.",
+    privP10: "Your answers are private. Only you can see them.",
     week: (n: number) => `Week ${n}`,
     close: "Course close",
     err: "Couldn't save. Check your connection.",
@@ -257,7 +265,8 @@ export function InteractiveFeedback(p: Props) {
   };
 
   const evDone = ev.every((x) => x !== null);
-  const canClose = evDone && goal.trim().length > 2;
+  const capDone = N.capstone.done;
+  const canClose = evDone && goal.trim().length > 2 && capDone;
   const [closing, setClosing] = useState(false);
   const doneRef = useRef<HTMLDivElement>(null);
   const close = async () => {
@@ -679,12 +688,26 @@ export function InteractiveFeedback(p: Props) {
                         </ol>
                       )}
                     </div>
+                    <div className={s.capLine} data-ok={capDone || undefined}>
+                      <span className={s.capI}>
+                        <Icon name={capDone ? "check" : "trophy"} size={18} />
+                      </span>
+                      <p>{capDone ? t.capOk(N.capstone.part) : t.capMissing(N.capstone.part)}</p>
+                      {!capDone && (
+                        <Link href={`${p.capstoneHref}#p${N.capstone.part}`} className={s.btnO}>
+                          <Icon name="trophy" size={17} />
+                          {t.capGo(N.capstone.part)}
+                        </Link>
+                      )}
+                    </div>
                     <div className={s.finish}>
                       <button type="button" className={s.btnP} disabled={!canClose || closing} onClick={() => void close()}>
                         <Icon name="flag" size={18} />
                         {closing ? t.finishing : t.finish(data.week)}
                       </button>
-                      <p aria-live="polite">{canClose ? t.finOk : t.finN(data.statements.length, final ? null : nextN)}</p>
+                      <p aria-live="polite">
+                        {canClose ? t.finOk : evDone && goal.trim().length > 2 ? t.capMissing(N.capstone.part) : t.finN(data.statements.length, final ? null : nextN)}
+                      </p>
                     </div>
                   </>
                 )}
@@ -705,7 +728,7 @@ export function InteractiveFeedback(p: Props) {
               <RailSteps steps={t.steps} current={current} done={(i) => seen[i]} onGo={(i) => goTo(IDS[i])} />
             </RailCard>
             <RailCard title={t.privH}>
-              <p className={s.privP}>{t.privP}</p>
+              <p className={s.privP}>{data.week >= 10 ? t.privP10 : t.privP}</p>
             </RailCard>
           </>
         }

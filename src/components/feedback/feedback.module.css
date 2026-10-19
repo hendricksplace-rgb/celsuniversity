@@ -932,3 +932,43 @@ label.lab {
   margin: 18px 0 4px;
   text-align: left;
 }
+/* This week's Capstone part: the week closes only once it's complete. */
+.capLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid #f5e2ae;
+  background: linear-gradient(120deg, #fff8e6, #fff);
+}
+.capLine p {
+  flex: 1 1 220px;
+  margin: 0 !important;
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #4a3a10;
+}
+.capLine[data-ok] {
+  border-color: #bfe3cb;
+  background: #f0f9f3;
+}
+.capLine[data-ok] p {
+  color: #1e5a33;
+}
+.capI {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: #7d5b00;
+}
+.capLine[data-ok] .capI {
+  color: #1e7a3a;
+}

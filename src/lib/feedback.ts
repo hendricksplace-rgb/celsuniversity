@@ -64,6 +64,8 @@ export type WeekNumbers = {
   speaking: { done: boolean; tries: number; quote: string | null; href: string | null; situations: number };
   commitment: { name: string | null; signedAt: string | null; href: string | null };
   vocabUsed: number;
+  /** This week's Capstone part (part N = week N): the week can't be closed until it's complete. */
+  capstone: { part: number; done: boolean };
   /** Week 10: the week-1 self-check to compare with. Self-evaluations are compared only when both weeks have the
    *  same number of statements; otherwise only the confidence score. */
   week1: { confidence: number | null; yes: number | null; of: number } | null;

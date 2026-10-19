@@ -28,7 +28,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
   const speaking = find("speaking");
   const none = Promise.resolve({ data: null });
 
-  const [{ data: row }, { data: refl }, notes, rprog, sub, phrases, rrefl, proof, sprog, sbest, commit, rc, vc, wc, resc, sc, w1] = await Promise.all([
+  const [{ data: row }, { data: refl }, notes, rprog, sub, phrases, rrefl, proof, sprog, sbest, commit, rc, vc, wc, resc, sc, w1, cap] = await Promise.all([
     supabase.from("feedback_content").select("data").eq("lesson_id", lessonId).maybeSingle(),
     supabase.from("weekly_reflections").select("self_eval, answers, confidence, next_goal, focus, completed_at").eq("user_id", userId).eq("course_id", courseId).eq("week", week).maybeSingle(),
     reading ? supabase.from("reading_notes").select("body").eq("user_id", userId).eq("lesson_id", reading.id) : none,
@@ -49,6 +49,8 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
     week >= 10
       ? supabase.from("weekly_reflections").select("self_eval, confidence").eq("user_id", userId).eq("course_id", courseId).eq("week", 1).maybeSingle()
       : none,
+    // Matt (Capstone brief): a week closes only once its Capstone part (part N = week N) is complete.
+    supabase.from("capstone_parts").select("completed_at").eq("user_id", userId).eq("course_id", courseId).eq("part", week).maybeSingle(),
   ]);
   if (!row?.data) return null;
   const data = row.data as unknown as FeedbackData;
@@ -96,6 +98,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
     commitment: { name: c?.signed_name ?? null, signedAt: c?.signed_at ?? null, href: syllabus?.href ?? null },
     vocabUsed: vocabCount(usedText, vocab),
     week1: null,
+    capstone: { part: week, done: !!(cap.data as { completed_at?: string | null } | null)?.completed_at },
   };
   const r = refl as { self_eval?: number[]; answers?: string[]; confidence?: number | null; next_goal?: string | null; focus?: string[]; completed_at?: string | null } | null;
   const n = data.statements.length;

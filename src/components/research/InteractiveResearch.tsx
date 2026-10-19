@@ -473,9 +473,7 @@ export function InteractiveResearch(p: Props) {
                         </button>
                       ))}
                     </p>
-                  ) : (
-                    <p>{data.tip[lang]}</p>
-                  )}
+                  ) : null}
                 </div>
                 <ul className={s.srcs}>
                   {data.sources.map((src) => {

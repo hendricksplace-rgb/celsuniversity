@@ -69,7 +69,7 @@ const UI = {
     short: "Muy corto",
     long: "Un poco largo",
     words: (n: number) => `${n} ${n === 1 ? "palabra" : "palabras"}`,
-    vocab: (n: number, _w: number) => `${n} ${n === 1 ? "palabra" : "palabras"} de la semana`,
+    vocab: (n: number, w: number) => `${n} ${n === 1 ? "palabra" : "palabras"} de la Semana ${w}`,
     selfH: (n: number) => `¿DIJISTE LOS ${n} PUNTOS?`,
     best: "Guardar como mi mejor intento",
     bestOn: "Mi mejor intento",
