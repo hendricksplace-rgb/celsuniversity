@@ -52,7 +52,9 @@ for (const c of CASES) {
     const holder = page.locator("#billingName");
     if (await holder.count()) await holder.fill("Comprador E2E");
     await page.locator(".SubmitButton, button[type=submit]").first().click();
-    await page.waitForURL(/\/bienvenida/, { timeout: 120_000 });
+    // Stripe returns to SITE_URL (nuevo.celstv.com); when the test runs against another host (a local build),
+    // that page may not load, so only the redirect itself is awaited.
+    await page.waitForURL(/\/bienvenida\?session_id=cs_test_/, { timeout: 120_000, waitUntil: "commit" });
 
     // Order paid, one payment of the right amount, one enrollment per program with its own expires_at.
     const order = await expect
