@@ -6,9 +6,10 @@
     transform: translateX(100%);
   }
 }
+/* Bars fill with a compositor-only scale (no layout per frame). */
 @keyframes fill {
   from {
-    width: 0;
+    transform: scaleX(0);
   }
 }
 @keyframes grow {
@@ -264,6 +265,14 @@ main:has(> .page) {
 .sec {
   padding: 10px 56px;
 }
+/* Below the fold: skip rendering until it comes near the screen. */
+.lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+  /* Its paint is clipped to its box: room for the cards' shadows, without moving what follows. */
+  padding-bottom: 80px !important;
+  margin-bottom: -70px;
+}
 .eyebrow {
   font-size: 12px;
   font-weight: 800;
@@ -383,6 +392,7 @@ main:has(> .page) {
 .pct {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
 }
 .pct b {
@@ -412,6 +422,7 @@ main:has(> .page) {
   background: var(--ink);
   color: #fff;
   box-shadow: 0 8px 18px rgba(20, 17, 43, 0.25);
+  white-space: nowrap;
 }
 .nxt i {
   width: 8px;
@@ -420,21 +431,26 @@ main:has(> .page) {
   background: var(--yellow);
   box-shadow: 0 0 0 4px rgba(255, 230, 0, 0.25);
 }
-.roadWide,
-.roadTall {
+.road {
+  aspect-ratio: var(--arw);
+  margin-top: 6px;
+}
+.roadSvg {
   display: block;
   width: 100%;
   height: auto;
-  margin-top: 6px;
   overflow: visible;
   font-family: inherit;
 }
-.roadTall {
-  display: none;
-}
-.roadWide text,
-.roadTall text {
+.roadSvg text {
   font-family: inherit;
+}
+.lbl,
+.lbl2 {
+  paint-order: stroke;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 3px;
+  stroke-linejoin: round;
 }
 .lbl {
   font-size: 13px;
@@ -685,6 +701,7 @@ main:has(> .page) {
   overflow: hidden;
 }
 .skM i {
+  transform-origin: left;
   display: block;
   height: 100%;
   border-radius: 6px;
@@ -863,6 +880,7 @@ main:has(> .page) {
   overflow: hidden;
 }
 .pbM i {
+  transform-origin: left;
   position: relative;
   display: block;
   height: 100%;
@@ -1024,6 +1042,7 @@ main:has(> .page) {
   overflow: hidden;
 }
 .mprogM i {
+  transform-origin: left;
   display: block;
   height: 100%;
   border-radius: 8px;
@@ -1211,11 +1230,8 @@ main:has(> .page) {
   .pct b {
     font-size: 26px;
   }
-  .roadWide {
-    display: none;
-  }
-  .roadTall {
-    display: block;
+  .road {
+    aspect-ratio: var(--art);
   }
   .duo {
     grid-template-columns: 1fr;

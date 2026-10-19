@@ -506,7 +506,7 @@ export function Progreso({ t, d, lang }: { t: T; d: ProgressData; lang: "es" | "
         </div>
       </section>
 
-      <section className={s.sec} aria-labelledby="pg-week">
+      <section className={`${s.sec} ${s.lazy}`} aria-labelledby="pg-week">
         <div className={s.wrap}>
           <Trail icon="⚡" color="#21C7A8" stops={["#21C7A8", "#FFB020"]} />
           <div className={`${s.eyebrow} ${s.eyeTeal}`}>{t.weekEyebrow}</div>
@@ -521,7 +521,7 @@ export function Progreso({ t, d, lang }: { t: T; d: ProgressData; lang: "es" | "
       </section>
 
       {d.programs.length > 0 && (
-        <section className={s.sec} aria-label={t.progEyebrow}>
+        <section className={`${s.sec} ${s.lazy}`} aria-label={t.progEyebrow}>
           <div className={s.wrap}>
             <Trail icon="🎓" color="#7B61FF" stops={["#7B61FF", "#E8137B"]} />
             <div className={`${s.eyebrow} ${s.eyeViolet}`}>{t.progEyebrow}</div>

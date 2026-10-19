@@ -295,7 +295,7 @@ export async function loadProgress(supabase: Client, userId: string) {
     const gIds = new Set(globalCourses.map((c) => c.id));
     const starts = live.filter((e) => pick(e.program)?.slug === ROUTE_PROGRAM || (e.course_id && gIds.has(e.course_id))).map((e) => new Date(e.starts_at ?? e.created_at).getTime());
     const month = starts.length ? Math.min(6, Math.max(1, Math.floor((Date.now() - Math.min(...starts)) / (30.44 * 864e5)) + 1)) : 1;
-    const included = hasIpd ? [...(tools ? GLOBAL_TOOLS : []), ...pkgCourses.filter((c) => GLOBAL_INCLUDED[c.slug]).map((c) => GLOBAL_INCLUDED[c.slug])] : [];
+    const included = hasIpd ? [...(tools ? GLOBAL_TOOLS : []), ...Object.keys(GLOBAL_INCLUDED).filter((slug) => pkgCourses.some((c) => c.slug === slug)).map((slug) => GLOBAL_INCLUDED[slug])] : [];
     if (route.length) programs.push(globalView(route, month, included));
   }
 
