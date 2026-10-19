@@ -31,13 +31,13 @@ const BSNS_GROUPS = [
  */
 const HIDDEN_ROUTE = "tu-camino-con-la-visa-tn-empieza-aqui";
 const ROUTE = ROUTE_CARDS.filter((slug) => slug !== HIDDEN_ROUTE);
-/** Package courses shown as "included" chips on the CelsGLOBAL card, by course slug. */
+/** Package courses shown as "included" chips on the CelsGLOBAL card, by course slug (after the AI tools). */
 const GLOBAL_INCLUDED: Record<string, string> = {
-  "resume-review": "Resume Review",
-  "interview-prep": "Interview Prep",
   "english-for-business": "English For Business",
   "celstv-english-for-our-generation": "CelsTV",
 };
+/** The AI tools that come with CelsGLOBAL (shown when can_use_ai_tools, as on Mis cursos). */
+const GLOBAL_TOOLS = ["Resume Review", "Interview Prep"];
 
 /**
  * A program's road: `units` done out of `total`, and the unit count at which each stop is reached
@@ -192,7 +192,7 @@ function globalView(route: CourseStats[], month: number, included: string[]): Pr
 }
 
 export async function loadProgress(supabase: Client, userId: string) {
-  const [{ data: profile }, { data: game }, { data: week }, { data: history }, access, { data: attempts }, { data: settings }, { data: enrollments }, { data: ipd }, { data: catalog }] =
+  const [{ data: profile }, { data: game }, { data: week }, { data: history }, access, { data: attempts }, { data: settings }, { data: enrollments }, { data: ipd }, { data: catalog }, { data: tools }] =
     await Promise.all([
       supabase.from("profiles").select("evaluation_level, evaluation_date, evaluation_skills").eq("id", userId).maybeSingle(),
       supabase.from("gamification").select("current_streak, longest_streak, last_activity_date, total_xp, weekly_xp, weekly_reset_date, badges").eq("user_id", userId).maybeSingle(),
@@ -212,6 +212,7 @@ export async function loadProgress(supabase: Client, userId: string) {
       // Medals: the catalog (public.badges); what the student earned is gamification.badges (awarded by
       // private.award_badges; the shell's BadgeWatcher celebrates new ones).
       supabase.from("badges").select("code, name, requirement, rule").eq("active", true).order("sort_order"),
+      supabase.rpc("can_use_ai_tools"),
     ]);
   const [stats, { data: prefs }] = await Promise.all([
     courseStats(supabase, userId, access.ids),
@@ -294,7 +295,7 @@ export async function loadProgress(supabase: Client, userId: string) {
     const gIds = new Set(globalCourses.map((c) => c.id));
     const starts = live.filter((e) => pick(e.program)?.slug === ROUTE_PROGRAM || (e.course_id && gIds.has(e.course_id))).map((e) => new Date(e.starts_at ?? e.created_at).getTime());
     const month = starts.length ? Math.min(6, Math.max(1, Math.floor((Date.now() - Math.min(...starts)) / (30.44 * 864e5)) + 1)) : 1;
-    const included = hasIpd ? pkgCourses.filter((c) => GLOBAL_INCLUDED[c.slug]).map((c) => GLOBAL_INCLUDED[c.slug]) : [];
+    const included = hasIpd ? [...(tools ? GLOBAL_TOOLS : []), ...pkgCourses.filter((c) => GLOBAL_INCLUDED[c.slug]).map((c) => GLOBAL_INCLUDED[c.slug])] : [];
     if (route.length) programs.push(globalView(route, month, included));
   }
 
