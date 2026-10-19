@@ -110,6 +110,7 @@ export function weeklyGoalOf(value: unknown) {
   const n = Number(value);
   return Number.isFinite(n) && n > 0 ? Math.round(n) : DEFAULT_WEEKLY_GOAL;
 }
+const TN_COURSE = "tu-camino-con-la-visa-tn-empieza-aqui";
 
 function focusOf(courses: CourseStats[]) {
   const c = courses.filter((x) => x.last).sort((a, b) => (a.last!.at < b.last!.at ? 1 : -1))[0] ?? courses[0];
@@ -161,8 +162,9 @@ export async function loadHome(supabase: Client, userId: string) {
   const global = (enrollments ?? []).filter((e) => (e.course_id && globalIds.has(e.course_id)) || (pick(e.program)?.program_courses ?? []).some((pc) => globalIds.has(pc.course_id))).map(since);
   const month = global.length ? Math.min(6, Math.max(1, Math.floor((Date.now() - Math.min(...global)) / (30.44 * 864e5)) + 1)) : null;
 
+  // Tu Camino TN is in the CelsGLOBAL package (Mis cursos shows it as MES 1) but stays off Inicio for now (Matt, 2026-10-19).
   const programs: HomeProgram[] = BRANDS.map((brand) => {
-    const mine = all.filter((c) => c.brand === brand);
+    const mine = all.filter((c) => c.brand === brand && c.slug !== TN_COURSE);
     const list = mine.map((c) => ({
       id: c.id,
       slug: c.slug,

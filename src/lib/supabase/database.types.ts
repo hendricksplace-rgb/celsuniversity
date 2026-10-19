@@ -337,26 +337,38 @@ export type Database = {
       classes: {
         Row: {
           created_at: string
+          duration_min: number | null
           id: string
           legacy_id: string | null
+          meeting_url: string | null
           name: string
+          next_session_at: string | null
           organization_id: string
+          schedule_label: string | null
           status: string
         }
         Insert: {
           created_at?: string
+          duration_min?: number | null
           id?: string
           legacy_id?: string | null
+          meeting_url?: string | null
           name: string
+          next_session_at?: string | null
           organization_id: string
+          schedule_label?: string | null
           status?: string
         }
         Update: {
           created_at?: string
+          duration_min?: number | null
           id?: string
           legacy_id?: string | null
+          meeting_url?: string | null
           name?: string
+          next_session_at?: string | null
           organization_id?: string
+          schedule_label?: string | null
           status?: string
         }
         Relationships: [
@@ -2165,6 +2177,10 @@ export type Database = {
     Functions: {
       admin_duplicate_module: { Args: { p_module: string }; Returns: string }
       can_use_ai_tools: { Args: never; Returns: boolean }
+      my_class_people: {
+        Args: never
+        Returns: { class_id: string | null; user_id: string; member_role: string; display_name: string | null }[]
+      }
       log_client_error: {
         Args: { p_kind?: string; p_message: string; p_route: string; p_session_id: string; p_stack?: string; p_user_agent?: string }
         Returns: boolean
