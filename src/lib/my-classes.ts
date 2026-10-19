@@ -2,7 +2,6 @@
 // not yet), the next live session, the class tasks with their due chips, the class card (teacher, classmates,
 // courses) and the coach's latest comments; for students without a class, the "Mientras tanto" tiles.
 import type { Client } from "@/lib/supabase/types";
-import { adminClient } from "@/lib/supabase/admin";
 import { accessibleCourses, courseStats, nextLesson, resumeCourse, type CourseStats } from "@/lib/learning";
 import { taskTime } from "@/lib/bsns";
 import { themeForCourse, type ThemeKey } from "@/lib/themes";
@@ -111,22 +110,13 @@ export async function loadMyClass(supabase: Client, userId: string) {
       .limit(2),
   ]);
 
-  // Names in the class: class_members and profiles RLS only show a student their own row, so these come from the
-  // server-only client, scoped to the classes the student's own RLS read returned. Without it, names are left out.
-  const admin = adminClient();
-  const db = admin ?? supabase;
+  // Names in the class: class_members and profiles RLS only show a student their own row, so the names come from
+  // my_class_people() (security definer, scoped to the caller's own classes and reviews).
   // Course progress for the tasks loads alongside the names.
   const statsP = courseStats(supabase, userId, [...new Set((rows ?? []).map((r) => r.course_id))]);
-  const { data: members } = await db.from("class_members").select("class_id, user_id, member_role").in("class_id", classIds);
-  const peopleIds = new Set<string>((members ?? []).map((m) => m.user_id));
-  for (const r of rows ?? []) if (r.created_by) peopleIds.add(r.created_by);
-  for (const s of subs ?? []) if (s.reviewed_by) peopleIds.add(s.reviewed_by);
-  const { data: profiles } = peopleIds.size
-    ? await db
-        .from("profiles")
-        .select("id, display_name")
-        .in("id", [...peopleIds])
-    : { data: [] };
+  const { data: people } = await supabase.rpc("my_class_people");
+  const members = (people ?? []).filter((m) => m.class_id && (m.member_role === "student" || m.member_role === "teacher")).map((m) => ({ class_id: m.class_id!, user_id: m.user_id, member_role: m.member_role }));
+  const profiles = (people ?? []).map((p) => ({ id: p.user_id, display_name: p.display_name }));
   const nameOf = new Map((profiles ?? []).map((p) => [p.id, p.display_name?.trim() || null]));
   const person = (id: string): Person => ({
     id,
@@ -145,7 +135,7 @@ export async function loadMyClass(supabase: Client, userId: string) {
       name: c.name,
       schedule: c.schedule_label?.trim() || null,
       teacher,
-      mates: !admin ? null : ms.filter((m) => m.member_role === "student" && m.user_id !== userId).map((m) => person(m.user_id)),
+      mates: ms.filter((m) => m.member_role === "student" && m.user_id !== userId).map((m) => person(m.user_id)),
       courses: (c.class_courses ?? [])
         .map((cc) => pick(cc.course))
         .filter((x): x is NonNullable<typeof x> => !!x)
