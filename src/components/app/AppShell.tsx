@@ -18,14 +18,21 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   const viewer = await getViewer(supabase);
   if (!viewer) redirect("/entrar?next=/app");
 
-  // Teachers see "Mis clases" when they teach a class; staff always do.
-  const [{ count }, { data: me }, { data: prefRow }] = await Promise.all([
-    supabase.from("class_members").select("class_id", { count: "exact", head: true }).eq("user_id", viewer.user.id).eq("member_role", "teacher"),
+  // "Mis clases": staff always; anyone in a class (teacher or student); and every student who has bought at least
+  // one course or program (an active enrollment), Matt 2026-10-19.
+  const [{ count }, { count: owned }, { data: me }, { data: prefRow }] = await Promise.all([
+    supabase.from("class_members").select("class_id", { count: "exact", head: true }).eq("user_id", viewer.user.id),
+    supabase
+      .from("enrollments")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", viewer.user.id)
+      .eq("status", "active")
+      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`),
     supabase.from("profiles").select("avatar_url").eq("id", viewer.user.id).maybeSingle(),
     supabase.from("user_preferences").select("sound_effects, show_spanish, autoplay_audio, text_size").eq("user_id", viewer.user.id).maybeSingle(),
   ]);
   const prefs = withDefaults(prefRow);
-  const teaches = viewer.isStaff || (count ?? 0) > 0;
+  const teaches = viewer.isStaff || (count ?? 0) > 0 || (owned ?? 0) > 0;
   const items: NavItem[] = [
     { href: "/app", label: t.shell.home, icon: "home" },
     { href: "/app/cursos", label: t.shell.courses, icon: "courses" },
