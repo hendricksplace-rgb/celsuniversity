@@ -153,104 +153,36 @@ function MyProgramCard({ t, program }: { t: T; program: HomeProgram }) {
   );
 }
 
-function ContinueCard({ t, lesson }: { t: T; lesson: ContinueLesson }) {
-  const b = BRAND[lesson.brand];
+export function StudentHome({ t, data }: { t: T; data: HomeData }) {
   return (
-    <Link href={`/app/lecciones/${lesson.lessonId}`} className="group relative block overflow-hidden rounded-3xl p-5 sm:p-6" style={{ background: b.bg, color: b.ink }}>
-      <div className="absolute inset-x-0 top-0 h-1.5" style={{ background: b.bar }} />
-      <p className="text-[11px] font-extrabold uppercase tracking-wider" style={{ color: b.accent }}>
-        {lesson.started ? t.continue : t.startHere}
-      </p>
-      <h2 className="mt-2 text-2xl font-extrabold leading-tight">{lesson.lessonTitle}</h2>
-      <p className="mt-1 text-sm font-semibold" style={{ color: b.muted }}>
-        {lesson.courseTitle}
-      </p>
-      <span
-        className="mt-5 inline-flex rounded-2xl px-5 py-3 text-sm font-extrabold transition group-hover:brightness-110"
-        style={{ background: b.fill, color: b.onFill }}
-      >
-        {lesson.started ? t.go : t.start} →
-      </span>
-    </Link>
-  );
-}
-
-function WeekCard({ t, data }: { t: T; data: HomeData }) {
-  return (
-    <div className="flex flex-col justify-between rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm sm:p-6">
-      <h2 className="text-base font-extrabold text-[#1B1830]">{t.week}</h2>
-      <ol className="mt-4 grid grid-cols-7 gap-1.5">
-        {t.weekDays.map((d, i) => (
-          <li key={i} className="flex flex-col items-center gap-1.5">
-            <span
-              className={`grid h-9 w-9 place-items-center rounded-full text-sm font-extrabold ${i === data.today ? "ring-2 ring-[#F5178C]" : ""}`}
-              style={{ background: data.week[i] ? "#6DC067" : "#F1EDF5", color: data.week[i] ? "#0d2210" : "#8A86A0" }}
-            >
-              {data.week[i] ? "✓" : ""}
-            </span>
-            <span className="text-[11px] font-bold text-[#6B6680]">{d}</span>
-          </li>
-        ))}
-      </ol>
-      <div className="mt-4 flex flex-wrap gap-2 text-sm font-extrabold">
-        <span className="rounded-full bg-[#FFE3F0] px-3 py-1.5 text-[#B5007E]">🔥 {data.streak === 1 ? t.streakDay : fill(t.streakDays, { n: data.streak })}</span>
-        <span className="rounded-full bg-[#FFF3D6] px-3 py-1.5 text-[#7A5600]">⚡ {fill(t.weeklyXp, { n: data.weeklyXp })}</span>
-      </div>
-    </div>
-  );
-}
-
-export function StudentHome({ t, levelLabel, data }: { t: T; levelLabel: string; data: HomeData }) {
-  const mine = new Set(data.programs.map((p) => p.brand));
-  const others = BRANDS.filter((b) => !mine.has(b));
-  const canEvaluate = !data.evaluationDate || new Date(data.evaluationDate).getTime() + 30 * 864e5 <= Date.now();
-  return (
-    <div className="space-y-8">
-      <Greeting t={t} name={data.name} sub={t.subBack} level={data.level} levelLabel={levelLabel} />
-      <InstallCardSlot />
-      <div className={data.continueLesson ? "grid gap-4 lg:grid-cols-[1.4fr_1fr]" : ""}>
-        {data.continueLesson && <ContinueCard t={t} lesson={data.continueLesson} />}
-        <WeekCard t={t} data={data} />
-      </div>
-      {data.assignments.length > 0 && <Assignments t={t} items={data.assignments} />}
-      <section>
-        <h2 className="text-xl font-extrabold text-[#1B1830]">{t.myPrograms}</h2>
-        <div className="mt-3 grid gap-4 md:grid-cols-2">
-          {data.programs.map((p) => (
-            <MyProgramCard key={p.brand} t={t} program={p} />
-          ))}
-        </div>
-      </section>
-      {(canEvaluate || others.length > 0) && (
-        <section>
-          <h2 className="text-xl font-extrabold text-[#1B1830]">{t.grow}</h2>
-          <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {canEvaluate && <EvaluationMini t={t} again={!!data.evaluationDate} />}
-            {others.map((b) => (
-              <ProgramCard key={b} t={t} brand={b} compact />
-            ))}
+    <Page>
+      <StudentHero t={t} data={data} />
+      <Band t={t} items={data.band} />
+      <Programs
+        t={t}
+        programs={data.programs}
+        before={
+          <div className="mb-10 space-y-4 empty:hidden">
+            <InstallCardSlot />
+            {data.assignments.length > 0 && <Assignments t={t} items={data.assignments} />}
           </div>
-        </section>
-      )}
-    </div>
-  );
-}
-
-/** The English evaluation as a small card inside "Sigue creciendo". */
-function EvaluationMini({ t, again }: { t: T; again: boolean }) {
-  return (
-    <Link href="/evaluacion" className="group flex flex-col rounded-3xl p-5 sm:p-6" style={{ background: "linear-gradient(140deg,#F5178C 0%,#B5007E 55%,#13284D 100%)" }}>
-      <span className="text-3xl">🎯</span>
-      <h3 className="mt-2 text-lg font-extrabold text-white">{t.english}</h3>
-      <span className="mt-auto pt-4 text-sm font-extrabold text-[#FFEF05]">{again ? t.englishAgain : t.englishCta} →</span>
-    </Link>
+        }
+      />
+      <Grow t={t} data={data} />
+    </Page>
   );
 }
 
 export function GuestHome({ t, levelLabel, data, locale }: { t: T; levelLabel: string; data: HomeData; locale: string }) {
   return (
-    <div className="space-y-8">
-      <Greeting t={t} name={data.name} sub={t.subNew} level={data.level} levelLabel={levelLabel} />
+    <Page>
+      <Hero t={t} name={data.name} sub={t.subNew} />
+      <div className="mt-8 space-y-8">
+      {data.level && (
+        <span className="inline-block rounded-full bg-[#FFE3F0] px-3.5 py-1.5 text-sm font-extrabold text-[#B5007E]">
+          {levelLabel} {data.level}
+        </span>
+      )}
       <InstallCardSlot />
       <EvaluationCards t={t} data={data} locale={locale} />
       <section>
@@ -261,7 +193,8 @@ export function GuestHome({ t, levelLabel, data, locale }: { t: T; levelLabel: s
           ))}
         </div>
       </section>
-    </div>
+      </div>
+    </Page>
   );
 }
 
