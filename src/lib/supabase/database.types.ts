@@ -1745,6 +1745,9 @@ export type Database = {
       profiles: {
         Row: {
           avatar_url: string | null
+          civics_representative: string | null
+          civics_senator: string | null
+          civics_track: string | null
           created_at: string
           display_name: string | null
           email: string | null
@@ -1761,6 +1764,9 @@ export type Database = {
         }
         Insert: {
           avatar_url?: string | null
+          civics_representative?: string | null
+          civics_senator?: string | null
+          civics_track?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
@@ -1777,6 +1783,9 @@ export type Database = {
         }
         Update: {
           avatar_url?: string | null
+          civics_representative?: string | null
+          civics_senator?: string | null
+          civics_track?: string | null
           created_at?: string
           display_name?: string | null
           email?: string | null
