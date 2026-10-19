@@ -1,0 +1,526 @@
+[
+  {
+    "part": 2,
+    "week": 2,
+    "title_es": "Valores y experiencias en el trabajo",
+    "title_en": "Workplace values and experiences",
+    "preview_es": [
+      "Tus 3 valores de trabajo más importantes",
+      "Una experiencia en el trabajo que te enseñó algo",
+      "Cómo te adaptas a un nuevo ambiente de trabajo"
+    ],
+    "preview_en": [
+      "Your 3 most important work values",
+      "A work experience that taught you something",
+      "How you adapt to a new work environment"
+    ],
+    "fields": [
+      {
+        "k": "values",
+        "label_es": "Tus 3 valores de trabajo más importantes",
+        "label_en": "Your 3 most important work values",
+        "hint_es": "Por ejemplo: respect, reliability, teamwork. Tus notas de Research pueden ayudarte.",
+        "hint_en": "For example: respect, reliability, teamwork. Your Research notes can help.",
+        "type": "input",
+        "min": 15,
+        "fill_from": "research"
+      },
+      {
+        "k": "experience",
+        "label_es": "Una experiencia en el trabajo que te enseñó algo",
+        "label_en": "A work experience that taught you something",
+        "hint_es": "Un reto o conflicto en el trabajo: qué pasó, qué hiciste para resolverlo y qué aprendiste. 3–5 oraciones en inglés.",
+        "hint_en": "A challenge or conflict at work: what happened, what you did to resolve it, and what you learned. 3–5 sentences in English.",
+        "type": "textarea",
+        "min": 150,
+        "fill_from": null
+      },
+      {
+        "k": "adapt",
+        "label_es": "Cómo te adaptas a un nuevo ambiente de trabajo",
+        "label_en": "How you adapt to a new work environment",
+        "hint_es": "¿Qué haces en tus primeras semanas? Observar, preguntar, ajustar tu tono, ser puntual… 2–4 oraciones en inglés.",
+        "hint_en": "What do you do in your first weeks? Observe, ask, adjust your tone, be on time… 2–4 sentences in English.",
+        "type": "textarea",
+        "min": 100,
+        "fill_from": null
+      },
+      {
+        "k": "culture_fit",
+        "label_es": "Por qué encajarías en la cultura de una empresa de EE. UU.",
+        "label_en": "Why you would fit into a U.S. company's culture",
+        "hint_es": "Tu respuesta a “How do you fit into our culture?”. Puedes partir del guion de tu Video.",
+        "hint_en": "Your answer to “How do you fit into our culture?”. You can start from your Video script.",
+        "type": "textarea",
+        "min": 80,
+        "fill_from": "video"
+      }
+    ]
+  },
+  {
+    "part": 3,
+    "week": 3,
+    "title_es": "Tus rasgos de liderazgo",
+    "title_en": "Your leadership traits",
+    "preview_es": [
+      "3 rasgos de liderazgo que tienes o quieres desarrollar",
+      "Una vez que guiaste a otros (o te gustaría hacerlo)",
+      "Tu estilo de liderazgo en una frase"
+    ],
+    "preview_en": [
+      "3 leadership traits you have or want to build",
+      "A time you led others (or would like to)",
+      "Your leadership style in one sentence"
+    ],
+    "fields": [
+      {
+        "k": "traits",
+        "label_es": "3 rasgos de liderazgo que tienes o quieres desarrollar",
+        "label_en": "3 leadership traits you have or want to build",
+        "hint_es": "En inglés, separados por comas. Por ejemplo: clear communicator, calm under pressure, good at developing people.",
+        "hint_en": "In English, separated by commas. For example: clear communicator, calm under pressure, good at developing people.",
+        "type": "input",
+        "min": 20,
+        "fill_from": null
+      },
+      {
+        "k": "story",
+        "label_es": "Una vez que guiaste a otros (o te gustaría hacerlo)",
+        "label_en": "A time you led others (or would like to)",
+        "hint_es": "3–5 oraciones en inglés: la situación, qué hiciste como gerente (tareas, fechas) y como líder (motivación), y el resultado.",
+        "hint_en": "3–5 sentences in English: the situation, what you did as a manager (tasks, deadlines) and as a leader (motivation), and the result.",
+        "type": "textarea",
+        "min": 150,
+        "fill_from": null
+      },
+      {
+        "k": "style",
+        "label_es": "Tu estilo de liderazgo en una frase",
+        "label_en": "Your leadership style in one sentence",
+        "hint_es": "Por ejemplo: “I give my team a clear plan and remind them why the work matters.”",
+        "hint_en": "For example: “I give my team a clear plan and remind them why the work matters.”",
+        "type": "input",
+        "min": 40,
+        "fill_from": null
+      },
+      {
+        "k": "leader_msg",
+        "label_es": "Tu mensaje al equipo como líder",
+        "label_en": "Your message to the team as a leader",
+        "hint_es": "Tu correo del líder de Writing ya está aquí. Mejóralo si quieres.",
+        "hint_en": "Your Leader email from Writing is already here. Improve it if you want.",
+        "type": "textarea",
+        "min": 120,
+        "fill_from": "writing"
+      }
+    ]
+  },
+  {
+    "part": 4,
+    "week": 4,
+    "title_es": "Tu historial laboral en forma de currículum",
+    "title_en": "Your work history in resume form",
+    "preview_es": [
+      "Tus últimos puestos: cargo, empresa, fechas",
+      "2 logros por puesto, con números si puedes",
+      "Tu educación y certificaciones"
+    ],
+    "preview_en": [
+      "Your recent jobs: title, company, dates",
+      "2 achievements per job, with numbers if you can",
+      "Your education and certifications"
+    ],
+    "fields": [
+      {
+        "k": "jobs",
+        "label_es": "Tus últimos puestos",
+        "label_en": "Your recent jobs",
+        "hint_es": "Uno por línea, el más reciente primero: cargo | empresa | ciudad | fechas. Puedes tomarlo de tu currículum de Writing.",
+        "hint_en": "One per line, most recent first: title | company | city | dates. You can take it from your Writing resume.",
+        "type": "textarea",
+        "min": 60,
+        "fill_from": "writing"
+      },
+      {
+        "k": "achievements",
+        "label_es": "2 logros por puesto",
+        "label_en": "2 achievements per job",
+        "hint_es": "En inglés, con viñetas: verbo de acción + resultado, con números si puedes.",
+        "hint_en": "In English, as bullets: action verb + result, with numbers if you can.",
+        "type": "textarea",
+        "min": 120,
+        "fill_from": "writing"
+      },
+      {
+        "k": "education",
+        "label_es": "Educación y certificaciones",
+        "label_en": "Education and certifications",
+        "hint_es": "Título, escuela, ciudad y año. Agrega certificaciones si las tienes.",
+        "hint_en": "Degree, school, city and year. Add certifications if you have them.",
+        "type": "textarea",
+        "min": 30,
+        "fill_from": "writing"
+      },
+      {
+        "k": "pitch",
+        "label_es": "Tu pitch profesional de 1 minuto",
+        "label_en": "Your 1-minute career pitch",
+        "hint_es": "Tu mejor intento de Speaking (feria de empleo) ya está aquí. Mejóralo si quieres.",
+        "hint_en": "Your best Speaking try (career fair) is already here. Improve it if you want.",
+        "type": "textarea",
+        "min": 80,
+        "fill_from": "speaking"
+      }
+    ]
+  },
+  {
+    "part": 5,
+    "week": 5,
+    "title_es": "¿Dónde encajas? Rol ideal y habilidades",
+    "title_en": "Where do you fit? Ideal role and skills",
+    "preview_es": [
+      "Tu rol y departamento ideal",
+      "Tus 5 habilidades principales",
+      "Dónde estarías en el organigrama de una empresa"
+    ],
+    "preview_en": [
+      "Your ideal role and department",
+      "Your top 5 skills",
+      "Where you'd be on a company's org chart"
+    ],
+    "fields": [
+      {
+        "k": "role",
+        "label_es": "Tu rol y departamento ideal",
+        "label_en": "Your ideal role and department",
+        "hint_es": "El puesto y el departamento, en inglés. Ej.: Logistics Coordinator · Operations",
+        "hint_en": "The job title and department. E.g. Logistics Coordinator · Operations",
+        "type": "input",
+        "min": 10,
+        "fill_from": null
+      },
+      {
+        "k": "skills",
+        "label_es": "Tus 5 habilidades principales",
+        "label_en": "Your top 5 skills",
+        "hint_es": "Cinco habilidades en inglés, separadas por comas, que encajen con ese rol.",
+        "hint_en": "Five skills, separated by commas, that fit that role.",
+        "type": "textarea",
+        "min": 40,
+        "fill_from": null
+      },
+      {
+        "k": "orgplace",
+        "label_es": "Dónde estarías en el organigrama",
+        "label_en": "Where you'd be on the org chart",
+        "hint_es": "2–3 oraciones en inglés: el tipo de estructura, a quién le reportarías y si tendrías personas a tu cargo. Usa tu Research y tu video como base.",
+        "hint_en": "2–3 sentences: the type of structure, who you would report to, and whether you'd have direct reports. Use your Research and your video as a base.",
+        "type": "textarea",
+        "min": 100,
+        "fill_from": null
+      },
+      {
+        "k": "connect",
+        "label_es": "Cómo se conecta tu rol con otros departamentos",
+        "label_en": "How your role connects with other departments",
+        "hint_es": "Tu mejor intento de Speaking (actividad 2) ya está aquí. Mejóralo si quieres.",
+        "hint_en": "Your best Speaking try (Activity 2) is already here. Improve it if you want.",
+        "type": "textarea",
+        "min": 80,
+        "fill_from": "speaking"
+      }
+    ]
+  },
+  {
+    "part": 6,
+    "week": 6,
+    "title_es": "Valores y profesionalismo",
+    "title_en": "Values and professionalism",
+    "preview_es": [
+      "Tu declaración de ética profesional",
+      "Una decisión difícil que tomaste y por qué"
+    ],
+    "preview_en": [
+      "Your professional ethics statement",
+      "A difficult decision you made and why"
+    ],
+    "fields": [
+      {
+        "k": "values",
+        "label_es": "Mis 3 valores profesionales",
+        "label_en": "My 3 professional values",
+        "hint_es": "En inglés, separados por comas. Ej.: Honesty, accountability, respect",
+        "hint_en": "Separated by commas. E.g.: Honesty, accountability, respect",
+        "type": "input",
+        "min": 15,
+        "fill_from": null
+      },
+      {
+        "k": "ethics_statement",
+        "label_es": "Mi declaración de ética profesional",
+        "label_en": "My professional ethics statement",
+        "hint_es": "Una o dos oraciones en inglés. Ej.: \"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\" (Puedes usar la que escribiste en Feedback y Progreso.)",
+        "hint_en": "One or two sentences. E.g.: \"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\" (You can use the one you wrote in Feedback & Progress.)",
+        "type": "textarea",
+        "min": 60,
+        "fill_from": null
+      },
+      {
+        "k": "difficult_decision",
+        "label_es": "Una decisión difícil que tomaste y por qué",
+        "label_en": "A difficult decision you made and why",
+        "hint_es": "En inglés: la situación, lo que decidiste, por qué y el resultado. Puedes usar el ejemplo de tu video.",
+        "hint_en": "The situation, what you decided, why, and the result. You can use the example from your video.",
+        "type": "textarea",
+        "min": 200,
+        "fill_from": null
+      },
+      {
+        "k": "accountability_email",
+        "label_es": "Cómo manejo un error (mi correo)",
+        "label_en": "How I handle a mistake (my email)",
+        "hint_es": "Se llena con tu correo de Writing de esta semana. Puedes editarlo.",
+        "hint_en": "Filled in from this week's Writing email. You can edit it.",
+        "type": "textarea",
+        "min": 120,
+        "fill_from": "writing"
+      }
+    ]
+  },
+  {
+    "part": 7,
+    "week": 7,
+    "title_es": "Tu comprensión de las finanzas básicas",
+    "title_en": "Your understanding of basic finance",
+    "preview_es": [
+      "Explica con tus palabras un presupuesto y una factura",
+      "Tu presupuesto para tus primeros 3 meses en EE. UU."
+    ],
+    "preview_en": [
+      "Explain a budget and an invoice in your own words",
+      "Your budget for your first 3 months in the U.S."
+    ],
+    "fields": [
+      {
+        "k": "budget_invoice",
+        "type": "textarea",
+        "min": 120,
+        "fill_from": "video",
+        "label_es": "Un presupuesto y una factura, con tus palabras",
+        "label_en": "A budget and an invoice, in your own words",
+        "hint_es": "En inglés: qué es cada uno y un ejemplo sencillo de tu trabajo. Puedes partir de lo que dijiste en tu video.",
+        "hint_en": "What each one is and a simple example from your work. You can start from what you said in your video."
+      },
+      {
+        "k": "roi_example",
+        "type": "textarea",
+        "min": 100,
+        "fill_from": "writing",
+        "label_es": "Cómo conectas tu trabajo con resultados financieros",
+        "label_en": "How you connect your work to financial results",
+        "hint_es": "En inglés: un resultado con números (costo, ventas o ahorro, y el ROI). Puedes partir de tu correo de Writing.",
+        "hint_en": "One result with numbers (cost, sales or savings, and the ROI). You can start from your Writing email."
+      },
+      {
+        "k": "budget_3_months",
+        "type": "textarea",
+        "min": 150,
+        "fill_from": null,
+        "label_es": "Tu presupuesto para tus primeros 3 meses en EE. UU.",
+        "label_en": "Your budget for your first 3 months in the U.S.",
+        "hint_es": "En inglés: ingresos esperados y gastos mensuales (renta, transporte, comida, teléfono, seguro, ahorro). Di si quedas por encima o por debajo.",
+        "hint_en": "Expected income and monthly expenses (rent, transportation, food, phone, insurance, savings). Say if you end up over or under budget."
+      },
+      {
+        "k": "finance_commitment",
+        "type": "input",
+        "min": 40,
+        "fill_from": null,
+        "label_es": "Tu compromiso financiero",
+        "label_en": "Your financial commitment",
+        "hint_es": "Una oración en inglés, por ejemplo: “I will calculate ROI on one project this month.”",
+        "hint_en": "One sentence, for example: “I will calculate ROI on one project this month.”"
+      }
+    ]
+  },
+  {
+    "part": 8,
+    "week": 8,
+    "title_es": "Cómo te representas profesionalmente",
+    "title_en": "How you represent yourself professionally",
+    "preview_es": [
+      "Tu frase de marca personal (titular de LinkedIn)",
+      "3 palabras que quieres que la gente asocie contigo"
+    ],
+    "preview_en": [
+      "Your personal brand line (LinkedIn headline)",
+      "3 words you want people to associate with you"
+    ],
+    "fields": [
+      {
+        "k": "headline",
+        "label_es": "Tu frase de marca personal (titular de LinkedIn)",
+        "label_en": "Your personal brand line (LinkedIn headline)",
+        "hint_es": "En inglés, una línea: tu rol + a quién ayudas + tu valor. Ej.: “Logistics Coordinator | Helping teams deliver on time, every time”.",
+        "hint_en": "In English, one line: your role + who you help + your value. E.g. “Logistics Coordinator | Helping teams deliver on time, every time”.",
+        "type": "input",
+        "min": 25,
+        "fill_from": null
+      },
+      {
+        "k": "words",
+        "label_es": "3 palabras que quieres que la gente asocie contigo",
+        "label_en": "3 words you want people to associate with you",
+        "hint_es": "En inglés, separadas por comas. Ej.: reliable, clear, creative.",
+        "hint_en": "In English, separated by commas. E.g. reliable, clear, creative.",
+        "type": "input",
+        "min": 12,
+        "fill_from": null
+      },
+      {
+        "k": "statement",
+        "label_es": "Tu marca personal de comunicación",
+        "label_en": "Your personal communication brand",
+        "hint_es": "1–2 oraciones en inglés sobre cómo te comunicas con colegas y clientes. Puedes usar tu nota de acción de Feedback.",
+        "hint_en": "1–2 sentences in English about how you communicate with colleagues and clients. You can use your Feedback action note.",
+        "type": "textarea",
+        "min": 80,
+        "fill_from": null
+      },
+      {
+        "k": "pitch",
+        "label_es": "Tu propuesta de valor en 30 segundos",
+        "label_en": "Your 30-second value pitch",
+        "hint_es": "Tu mejor intento del elevator pitch de Speaking ya está aquí. Cámbialo para hablar de ti y de tu valor profesional.",
+        "hint_en": "Your best elevator pitch try from Speaking is already here. Adapt it to talk about you and your professional value.",
+        "type": "textarea",
+        "min": 100,
+        "fill_from": "speaking"
+      }
+    ]
+  },
+  {
+    "part": 9,
+    "week": 9,
+    "title_es": "Tu estilo personal de organización",
+    "title_en": "Your personal organization style",
+    "preview_es": [
+      "Las herramientas que usas para organizarte",
+      "Cómo planearías un proyecto de 2 semanas"
+    ],
+    "preview_en": [
+      "The tools you use to stay organized",
+      "How you would plan a 2-week project"
+    ],
+    "fields": [
+      {
+        "k": "tools",
+        "type": "textarea",
+        "min": 80,
+        "fill_from": "research",
+        "label_es": "Las herramientas que usas para organizarte",
+        "label_en": "The tools you use to stay organized",
+        "hint_es": "Nombra 1 o 2 herramientas (por ejemplo, Trello, Asana, un calendario o una libreta) y para qué usas cada una. Escríbelo en inglés.",
+        "hint_en": "Name 1 or 2 tools (for example, Trello, Asana, a calendar or a notebook) and what you use each one for."
+      },
+      {
+        "k": "habit",
+        "type": "input",
+        "min": 30,
+        "fill_from": null,
+        "label_es": "Tu hábito de productividad",
+        "label_en": "Your productivity habit",
+        "hint_es": "Una oración en inglés. Ejemplo: “I plan my top three tasks each morning before starting work.”",
+        "hint_en": "One sentence. Example: “I plan my top three tasks each morning before starting work.”"
+      },
+      {
+        "k": "plan",
+        "type": "textarea",
+        "min": 200,
+        "fill_from": "writing",
+        "label_es": "Cómo planearías un proyecto de 2 semanas",
+        "label_en": "How you would plan a 2-week project",
+        "hint_es": "Incluye el alcance, al menos 3 hitos con fecha, los recursos y los entregables. Puedes partir de tu plan de mudanza de Writing.",
+        "hint_en": "Include the scope, at least 3 milestones with dates, the resources and the deliverables. You can start from your office-move plan in Writing."
+      },
+      {
+        "k": "stage",
+        "type": "textarea",
+        "min": 60,
+        "fill_from": "video",
+        "label_es": "La etapa del proyecto que más disfrutas y por qué",
+        "label_en": "The project stage you enjoy most, and why",
+        "hint_es": "Inicio, planificación, ejecución, monitoreo o cierre. Una o dos oraciones en inglés, como al final de tu video.",
+        "hint_en": "Initiation, planning, execution, monitoring or closing. One or two sentences, like the end of your video."
+      }
+    ]
+  },
+  {
+    "part": 10,
+    "week": 10,
+    "title_es": "Crecimiento profesional y currículum final",
+    "title_en": "Career growth and final resume",
+    "preview_es": [
+      "Tus metas a 1, 3 y 5 años",
+      "Tu currículum final (sube tu PDF)",
+      "Lista para tu entrevista simulada en vivo"
+    ],
+    "preview_en": [
+      "Your 1, 3 and 5-year goals",
+      "Your final resume (upload your PDF)",
+      "Ready for your live mock interview"
+    ],
+    "fields": [
+      {
+        "k": "goals",
+        "label_es": "Tus metas a 1, 3 y 5 años",
+        "label_en": "Your 1, 3 and 5-year goals",
+        "hint_es": "En inglés. Una meta para cada plazo y cómo conecta con la empresa. Puedes partir de tu declaración de Writing.",
+        "hint_en": "In English. One goal for each time frame and how it connects to the company. You can start from your Writing statement.",
+        "type": "textarea",
+        "min": 150,
+        "fill_from": "writing"
+      },
+      {
+        "k": "star",
+        "label_es": "Tu mejor historia STAR",
+        "label_en": "Your best STAR story",
+        "hint_es": "Situación, tarea, acción y resultado, en inglés. Tu guion de la simulación en video ya está aquí. Mejóralo si quieres.",
+        "hint_en": "Situation, task, action and result, in English. Your video simulation script is already here. Improve it if you want.",
+        "type": "textarea",
+        "min": 200,
+        "fill_from": "video"
+      },
+      {
+        "k": "about",
+        "label_es": "Tu respuesta a “Tell me about yourself”",
+        "label_en": "Your answer to “Tell me about yourself”",
+        "hint_es": "Tu mejor intento de Speaking (90 segundos) ya está aquí. Es la primera respuesta de tu entrevista en vivo.",
+        "hint_en": "Your best Speaking try (90 seconds) is already here. It's the first answer in your live interview.",
+        "type": "textarea",
+        "min": 150,
+        "fill_from": "speaking"
+      },
+      {
+        "k": "targets",
+        "label_es": "Tu puesto meta y 2 empresas que admiras",
+        "label_en": "Your target role and 2 companies you admire",
+        "hint_es": "De tu investigación de esta semana. Ej.: Operations Manager · Empresa A, Empresa B.",
+        "hint_en": "From this week's Research. E.g.: Operations Manager · Company A, Company B.",
+        "type": "input",
+        "min": 20,
+        "fill_from": "research"
+      },
+      {
+        "k": "resume",
+        "label_es": "Tu currículum final (PDF)",
+        "label_en": "Your final resume (PDF)",
+        "hint_es": "Tu versión final, al estilo de EE. UU., en inglés, de 1 a 2 páginas. Parte de tu borrador de la Semana 4.",
+        "hint_en": "Your final U.S.-style resume in English, 1–2 pages. Build it from your Week 4 draft.",
+        "type": "file",
+        "min": 0,
+        "fill_from": null
+      }
+    ]
+  }
+]

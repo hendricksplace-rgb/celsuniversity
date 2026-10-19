@@ -1,0 +1,223 @@
+{
+  "hero": {
+    "title_a": "Outlining a",
+    "title_b": "Mini-Project Plan",
+    "chips_en": [
+      "1–2 hours",
+      "150–200 words",
+      "Saved to your week",
+      "Capstone · Part 9"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "150–200 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 9"
+    ],
+    "intro_en": "Write a short project plan for a small office move and send it to your manager. You practice writing clearly about scope, milestones, resources and deliverables, and you prepare your Capstone content: how you would manage a 2-week project.",
+    "intro_es": "Escribe un plan de proyecto breve para una pequeña mudanza de oficina y envíaselo a tu jefa. Practicas escribir con claridad sobre alcance, hitos, recursos y entregables, y preparas el contenido de tu Capstone: cómo manejarías un proyecto de 2 semanas."
+  },
+  "week": 9,
+  "parts": [
+    {
+      "en": "The goal",
+      "es": "El objetivo",
+      "hint": {
+        "en": "One sentence: what the project is and when it ends.",
+        "es": "Una oración: qué es el proyecto y cuándo termina."
+      },
+      "color": "#2C6BC4",
+      "example": "Here is my plan for moving our team to the 3rd floor by Friday, May 30.",
+      "phrases": [
+        "Here is my plan for [project] by [date].",
+        "The goal of this project is to [result] by [date].",
+        "As requested, here is a short plan for [project]."
+      ]
+    },
+    {
+      "en": "The scope",
+      "es": "El alcance",
+      "hint": {
+        "en": "What's included, and what's not.",
+        "es": "Qué está incluido y qué no."
+      },
+      "color": "#7A4FD6",
+      "example": "The scope includes… It does not include…",
+      "phrases": [
+        "The scope includes [tasks].",
+        "It does not include [tasks].",
+        "[Task] is out of scope for this project."
+      ]
+    },
+    {
+      "en": "A timeline with at least 3 milestones",
+      "es": "Un cronograma con al menos 3 hitos",
+      "hint": {
+        "en": "Each milestone with a date.",
+        "es": "Cada hito con su fecha."
+      },
+      "color": "#00A3C4",
+      "example": "Milestone 1 (May 20): … Milestone 2 (May 27): …",
+      "phrases": [
+        "Milestone 1 ([date]): [what is done].",
+        "By [date], we will [result].",
+        "The final milestone is [result] on [date]."
+      ]
+    },
+    {
+      "en": "The resources needed",
+      "es": "Los recursos necesarios",
+      "hint": {
+        "en": "People, budget and tools.",
+        "es": "Personas, presupuesto y herramientas."
+      },
+      "color": "#1F7A4D",
+      "example": "I will need two people from IT, a budget of $1,500 and…",
+      "phrases": [
+        "I will need [people] from [team].",
+        "The estimated budget is [amount] for [items].",
+        "We will track tasks in [tool]."
+      ]
+    },
+    {
+      "en": "The deliverables",
+      "es": "Los entregables",
+      "hint": {
+        "en": "What will exist at the end.",
+        "es": "Qué va a existir al final."
+      },
+      "color": "#C98A00",
+      "example": "At the end, we will deliver… and a short report.",
+      "phrases": [
+        "At the end, we will deliver [results].",
+        "The final deliverables are [list].",
+        "I will also share a short report on [topic]."
+      ]
+    },
+    {
+      "en": "A polite closing",
+      "es": "Un cierre cortés",
+      "hint": {
+        "en": "Invite questions and sign off.",
+        "es": "Invita a hacer preguntas y despídete."
+      },
+      "color": "#C2185B",
+      "example": "Please let me know if you'd like to change anything. Best regards,",
+      "phrases": [
+        "Please let me know if you'd like to change anything.",
+        "I'm happy to walk you through the plan.",
+        "Best regards,",
+        "Kind regards,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Clear and specific",
+      "t_es": "Claro y específico",
+      "d_en": "Dates, numbers and names, not “soon” or “some people”.",
+      "d_es": "Fechas, números y nombres, no “pronto” ni “algunas personas”."
+    },
+    {
+      "icon": "star",
+      "t_en": "Short and organized",
+      "t_es": "Breve y ordenado",
+      "d_en": "One idea per paragraph: goal, scope, timeline, resources, deliverables.",
+      "d_es": "Una idea por párrafo: objetivo, alcance, cronograma, recursos, entregables."
+    },
+    {
+      "icon": "nob",
+      "t_en": "Email format",
+      "t_es": "Formato de correo",
+      "d_en": "Paragraph spacing, no bullet points or emojis.",
+      "d_es": "Párrafos separados, sin viñetas ni emojis."
+    }
+  ],
+  "words": {
+    "max": 200,
+    "min": 150
+  },
+  "example": {
+    "subject": "Project Plan – Office Move to the 3rd Floor",
+    "paragraphs": [
+      [
+        [
+          null,
+          "Hi Diane,"
+        ]
+      ],
+      [
+        [
+          0,
+          "Here is my plan for moving our team to the 3rd floor by Friday, May 30."
+        ],
+        [
+          1,
+          "The scope includes packing and moving 12 desks, setting up computers and phones, and updating the seating chart. It does not include buying new furniture or moving the printers, which Facilities will handle."
+        ]
+      ],
+      [
+        [
+          2,
+          "Milestone 1 (May 20): everyone has packed their personal items and labeled their boxes. Milestone 2 (May 27): the movers deliver all desks and boxes to the new space. Milestone 3 (May 29): IT confirms that every computer and phone works."
+        ]
+      ],
+      [
+        [
+          3,
+          "I will need two people from IT for one day, a budget of about $1,500 for the moving company, and our shared task board to track progress."
+        ]
+      ],
+      [
+        [
+          4,
+          "At the end, we will deliver a fully working new office, an updated seating chart, and a short report with lessons learned."
+        ]
+      ],
+      [
+        [
+          5,
+          "Please let me know if you'd like to change anything."
+        ]
+      ],
+      [
+        [
+          5,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Ana Pérez"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Clear writing about scope and deliverables shows managers you can think like a project manager—even if it's not your title.",
+    "time": "1–2 hours",
+    "title": "Outlining a Mini-Project Plan",
+    "body_en": "✍️ Writing Task\n\nTitle: Outlining a Mini-Project Plan\nTime: 1–2 hours\n\nScenario:\nYou've been asked to coordinate a small office move.\n\nYour Task: Write a short project plan (150–200 words) that includes:\n\nThe scope (what's included, what's not).\n\nA timeline with at least 3 milestones.\n\nThe resources needed (people, budget, tools).\n\nThe deliverables expected at the end.\n\nWhy This Matters:\nClear writing about scope and deliverables shows managers you can think like a project manager—even if it's not your title.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Esbozando un Plan de Mini-Proyecto\nTiempo: 1–2 horas\n\nEscenario:\nTe han pedido coordinar una pequeña mudanza de oficina.\n\nTu Tarea: Escribe un breve plan de proyecto (150–200 palabras) que incluya:\n\nEl alcance (qué está incluido, qué no).\n\nUn cronograma con al menos 3 hitos.\n\nLos recursos necesarios (personas, presupuesto, herramientas).\n\nLos entregables esperados al final.\n\nPor Qué Esto Importa:\nEscribir claramente sobre el alcance y los entregables muestra a los gerentes que puedes pensar como un gerente de proyecto, incluso si no es tu título.",
+    "goal_es": "Escribir claramente sobre el alcance y los entregables muestra a los gerentes que puedes pensar como un gerente de proyecto, incluso si no es tu título.",
+    "title_es": "Esbozando un Plan de Mini-Proyecto",
+    "submission": "Write a short project plan (150–200 words) that includes: the scope (what's included, what's not); a timeline with at least 3 milestones; the resources needed (people, budget, tools); the deliverables expected at the end."
+  },
+  "scenario": {
+    "en": "You've been asked to coordinate a small office move. Your team moves to a new floor in two weeks, and your manager wants a short project plan.",
+    "es": "Te han pedido coordinar una pequeña mudanza de oficina. Tu equipo se cambia a otro piso en dos semanas y tu jefa quiere un plan de proyecto breve.",
+    "from": "Diane",
+    "quote": "We're moving to the 3rd floor at the end of the month. Could you coordinate the move and send me a short plan by Friday?",
+    "role_en": "your manager",
+    "role_es": "tu jefa",
+    "initials": "DM"
+  },
+  "to_label": "Diane Miller · Office Manager",
+  "to_initials": "DM",
+  "subject_hint": "Project Plan – Office Move",
+  "capstone_part": 9,
+  "capstone_title": {
+    "en": "Your personal organization style",
+    "es": "Tu estilo personal de organización"
+  }
+}

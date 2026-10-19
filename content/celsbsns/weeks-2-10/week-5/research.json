@@ -1,0 +1,243 @@
+{
+  "tip": {
+    "en": "Big companies rarely publish a full org chart. Look for clues: words like “teams,” “divisions,” “business units” or “segments” on their Careers and About Us pages.",
+    "es": "Las empresas grandes casi nunca publican su organigrama completo. Busca pistas: palabras como “teams”, “divisions”, “business units” o “segments” en sus páginas de Careers y About Us."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already written your email about reporting lines.",
+      "es": "Ya escribiste tu correo sobre las líneas de reporte."
+    },
+    "link_p": {
+      "en": "Now see how real U.S. companies organize their teams and departments.",
+      "es": "Ahora mira cómo organizan sus equipos y departamentos empresas reales de EE. UU."
+    },
+    "title_a": "Comparing",
+    "title_b": "Organizational Structures",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 U.S. companies",
+      "5–7 sentences each",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 empresas de EE. UU.",
+      "5–7 oraciones cada una",
+      "Mis frases"
+    ],
+    "intro_en": "Choose two U.S. companies, for example Amazon, Microsoft, Starbucks or a company in your field. Look at how they describe their teams and roles, decide which structure they use, and think about what that means for the people who work there.",
+    "intro_es": "Elige dos empresas de EE. UU., por ejemplo Amazon, Microsoft, Starbucks o una empresa de tu campo. Mira cómo describen sus equipos y roles, decide qué estructura usan y piensa qué significa eso para la gente que trabaja ahí."
+  },
+  "week": 5,
+  "model": {
+    "name": "Brightway Foods",
+    "role": "Grocery retail · Austin, TX",
+    "about": "At Brightway Foods, our stores are organized into three regions: Central Texas, North Texas and Houston. Each region has its own vice president and store teams. Our headquarters teams (Merchandising, Supply Chain, Marketing, Finance and People) support every store. New ideas are often tested by small cross-functional teams before they reach all our stores. Join us and grow with a team that feeds Texas!",
+    "answers": {
+      "en": [
+        "Brightway Foods, a grocery store chain in Texas.",
+        "Merchandising, Supply Chain, Marketing, Finance and People (HR).",
+        "A mix: divisional by region for the stores, functional at headquarters.",
+        "“Our headquarters teams support every store.”",
+        "Example 1: stores are grouped into 3 regions, each with a VP. Example 2: small cross-functional teams test new ideas. For employees: store staff report up through their region, and headquarters staff become experts in one function."
+      ],
+      "es": [
+        "Brightway Foods, una cadena de supermercados en Texas.",
+        "Merchandising, Supply Chain, Marketing, Finance y People (Recursos Humanos).",
+        "Mixta: divisional por región para las tiendas y funcional en las oficinas centrales.",
+        "“Our headquarters teams support every store.”",
+        "Ejemplo 1: las tiendas se agrupan en 3 regiones, cada una con un vicepresidente. Ejemplo 2: equipos interfuncionales pequeños prueban ideas nuevas. Para los empleados: el personal de tienda reporta a través de su región, y el de oficinas centrales se especializa en una función."
+      ]
+    },
+    "initials": "BF"
+  },
+  "types": [
+    {
+      "en": "About Us page",
+      "es": "Página About Us",
+      "key": "about"
+    },
+    {
+      "en": "Careers page",
+      "es": "Página de Careers",
+      "key": "careers"
+    },
+    {
+      "en": "LinkedIn company page",
+      "es": "Página de empresa en LinkedIn",
+      "key": "in"
+    },
+    {
+      "en": "Annual report",
+      "es": "Informe anual",
+      "key": "report"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "The company and its industry",
+      "es": "La empresa y su industria",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Departments they highlight",
+      "es": "Departamentos que destacan",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Type of structure",
+      "es": "Tipo de estructura",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A phrase or job title for your Capstone",
+      "es": "Una frase o puesto para tu Capstone",
+      "color": "#C98A00"
+    },
+    {
+      "en": "How teams are organized and what it means for employees",
+      "es": "Cómo se organizan los equipos y qué significa para los empleados",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "about",
+      "mark": "A",
+      "color": "#2C6BC4",
+      "desc_en": "How the company describes itself and its leadership.",
+      "desc_es": "Cómo se describe la empresa y quiénes la dirigen.",
+      "label_en": "“About Us” page",
+      "label_es": "Página “About Us”",
+      "query_template": "{field} about us leadership team",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "careers",
+      "mark": "C",
+      "color": "#1F7A4D",
+      "desc_en": "The teams and departments they hire for.",
+      "desc_es": "Los equipos y departamentos para los que contratan.",
+      "label_en": "“Careers” page: teams",
+      "label_es": "Página “Careers”: equipos",
+      "query_template": "{field} careers teams",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "Company page: size, locations and the people who work there.",
+      "desc_es": "Página de la empresa: tamaño, ubicaciones y quién trabaja ahí.",
+      "label_en": "LinkedIn: company page",
+      "label_es": "LinkedIn: página de empresa",
+      "query_template": "{field}",
+      "search_template": "https://www.linkedin.com/search/results/companies/?keywords={q}"
+    },
+    {
+      "key": "report",
+      "mark": "R",
+      "color": "#7A4FD6",
+      "desc_en": "Public companies explain their segments or divisions here.",
+      "desc_es": "Las empresas públicas explican aquí sus segmentos o divisiones.",
+      "label_en": "Annual report: segments",
+      "label_es": "Informe anual: segmentos",
+      "query_template": "{field} annual report business segments",
+      "search_template": "https://www.google.com/search?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "By studying real U.S. companies, you'll see how structure affects communication and career paths. This helps you adapt faster when you join your own workplace.",
+    "time": "1–1.5 hours",
+    "title": "Comparing Organizational Structures",
+    "body_en": "🧠 Research Task\n\nTitle: Comparing Organizational Structures\nTime: 1–1.5 hours\n\nTask:\n\nChoose two U.S. companies (for example, Amazon, Microsoft, Starbucks, or a company in your field).\n\nResearch online how they describe their organizational structure or roles. Look at their \"About Us\" or \"Careers\" pages.\n\nWrite down two examples for each:\n\nHow their teams are organized.\n\nWhich departments they highlight.\n\nCompare:\n\nDo they use functional, flat, matrix, or divisional structures?\n\nWhat does that mean for employees working there?\n\nWhy This Matters:\nBy studying real U.S. companies, you'll see how structure affects communication and career paths. This helps you adapt faster when you join your own workplace.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Comparación de Estructuras Organizacionales\nTiempo: 1–1.5 horas\n\nTarea:\n\nElige dos empresas estadounidenses (por ejemplo, Amazon, Microsoft, Starbucks, o una empresa de tu campo).\n\nInvestiga en línea cómo describen su estructura organizacional o roles. Mira sus páginas de \"About Us\" (Acerca de Nosotros) o \"Careers\" (Carreras).\n\nEscribe dos ejemplos para cada una:\n\nCómo están organizados sus equipos.\n\nQué departamentos destacan.\n\nCompara:\n\n¿Usan estructuras funcionales, planas, matriciales o divisionales?\n\n¿Qué significa eso para los empleados que trabajan allí?\n\nPor qué Esto Importa:\nAl estudiar empresas reales de EE. UU., verás cómo la estructura afecta la comunicación y las trayectorias profesionales. Esto te ayudará a adaptarte más rápido cuando te unas a tu propio lugar de trabajo.",
+    "goal_es": "Al estudiar empresas reales de EE. UU., verás cómo la estructura afecta la comunicación y las trayectorias profesionales. Esto te ayudará a adaptarte más rápido cuando te unas a tu propio lugar de trabajo.",
+    "title_es": "Comparación de Estructuras Organizacionales"
+  },
+  "patterns": {
+    "en": [
+      "Both companies group some teams by function (Marketing, Finance…)",
+      "At least one company has divisions by product, brand or region",
+      "They talk about small or cross-functional teams",
+      "They describe clear levels or career paths",
+      "The structure changes who employees talk to every day",
+      "I know which structure I'd prefer to work in"
+    ],
+    "es": [
+      "Las dos agrupan algunos equipos por función (Marketing, Finanzas…)",
+      "Al menos una tiene divisiones por producto, marca o región",
+      "Hablan de equipos pequeños o interfuncionales",
+      "Describen niveles o trayectorias profesionales claras",
+      "La estructura cambia con quién habla la gente cada día",
+      "Sé en qué estructura preferiría trabajar"
+    ]
+  },
+  "questions": {
+    "en": [
+      "Which company is it, and what industry?",
+      "Which departments do they highlight? (tap all that apply)",
+      "What structure do they use? (tap one or more)",
+      "One phrase, team name or job title you could use",
+      "How are their teams organized (2 examples), and what does it mean for employees?"
+    ],
+    "es": [
+      "¿Qué empresa es y de qué industria?",
+      "¿Qué departamentos destacan? (toca todo lo que aplique)",
+      "¿Qué estructura usan? (toca una o más)",
+      "Una frase, nombre de equipo o puesto que podrías usar",
+      "¿Cómo organizan sus equipos (2 ejemplos) y qué significa eso para los empleados?"
+    ]
+  },
+  "sentences": {
+    "max": 7,
+    "min": 5
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Functional",
+      "Divisional",
+      "Matrix",
+      "Flat",
+      "Team-based",
+      "A mix"
+    ],
+    "es": [
+      "Funcional",
+      "Divisional",
+      "Matricial",
+      "Plana",
+      "Por equipos",
+      "Mixta"
+    ]
+  },
+  "default_field": "Starbucks",
+  "field_label": {
+    "en": "Company name",
+    "es": "Nombre de la empresa"
+  },
+  "share_options": {
+    "en": [
+      "Marketing",
+      "Sales",
+      "Finance",
+      "Operations",
+      "Human Resources",
+      "Technology / Engineering",
+      "Customer Service",
+      "Legal"
+    ],
+    "es": [
+      "Marketing",
+      "Ventas",
+      "Finanzas",
+      "Operaciones",
+      "Recursos Humanos",
+      "Tecnología / Ingeniería",
+      "Servicio al cliente",
+      "Legal"
+    ]
+  }
+}

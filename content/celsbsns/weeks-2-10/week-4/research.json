@@ -1,0 +1,235 @@
+{
+  "tip": {
+    "en": "Search for jobs in the U.S. city where you'd like to work. Save the key words that appear in both ads: those are the ones to use in your resume.",
+    "es": "Busca empleos en la ciudad de EE. UU. donde te gustaría trabajar. Guarda las palabras clave que aparecen en los dos anuncios: esas son las que debes usar en tu currículum."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already started your U.S.-style resume.",
+      "es": "Ya empezaste tu currículum al estilo de EE. UU."
+    },
+    "link_p": {
+      "en": "Now read real job ads in your field and find the words and requirements that repeat.",
+      "es": "Ahora lee anuncios de empleo reales de tu campo y encuentra las palabras y los requisitos que se repiten."
+    },
+    "title_a": "What Do U.S. Job Ads",
+    "title_b": "Really Ask For?",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 real job ads",
+      "5–7 sentences each",
+      "My key words"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 anuncios reales",
+      "5–7 oraciones cada uno",
+      "Mis palabras clave"
+    ],
+    "intro_en": "Learn to read job ads the way recruiters write them. Find 2 real U.S. job ads in your field, analyze them, and keep the key words that will make your resume stronger.",
+    "intro_es": "Aprende a leer los anuncios de empleo como los escriben los reclutadores. Encuentra 2 anuncios reales de EE. UU. en tu campo, analízalos y quédate con las palabras clave que harán más fuerte tu currículum."
+  },
+  "week": 4,
+  "model": {
+    "name": "Mesa Logistics",
+    "role": "Job ad · Bilingual Operations Coordinator · San Antonio, TX",
+    "about": "We're looking for a Bilingual Operations Coordinator to join our growing team. You will track shipments, coordinate with drivers and suppliers in English and Spanish, and prepare weekly performance reports. Requirements: 2+ years in logistics or operations, strong Excel skills, fluent English and Spanish. We offer health and dental insurance, a 401(k) with company match, and paid time off. Apply today!",
+    "answers": {
+      "en": [
+        "Operations Coordinator in logistics, at a distribution company in Texas.",
+        "2+ years of experience, Excel skills, English and Spanish. It also lists benefits: insurance, a 401(k) and paid time off.",
+        "Clear, friendly and energetic (“join our growing team,” “Apply today!”).",
+        "“Coordinate with drivers and suppliers in English and Spanish.”",
+        "I match the experience and the languages. I need to show my Excel skills with an example on my resume."
+      ],
+      "es": [
+        "Coordinador de operaciones en logística, en una empresa de distribución en Texas.",
+        "Más de 2 años de experiencia, Excel, inglés y español. También menciona prestaciones: seguro, 401(k) y días pagados.",
+        "Claro, amigable y con energía (“join our growing team”, “Apply today!”).",
+        "“Coordinate with drivers and suppliers in English and Spanish.”",
+        "Cumplo con la experiencia y los idiomas. Me falta mostrar mi nivel de Excel con un ejemplo en mi currículum."
+      ]
+    },
+    "initials": "ML"
+  },
+  "types": [
+    {
+      "key": "in",
+      "en": "LinkedIn Jobs",
+      "es": "LinkedIn Empleos"
+    },
+    {
+      "key": "ind",
+      "en": "Indeed",
+      "es": "Indeed"
+    },
+    {
+      "key": "gov",
+      "en": "USAJOBS (government)",
+      "es": "USAJOBS (gobierno)"
+    },
+    {
+      "key": "web",
+      "en": "Company careers page",
+      "es": "Página de empleos de la empresa"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "Job title and field",
+      "es": "Puesto y campo",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "What the ad asks for",
+      "es": "Qué pide el anuncio",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Tone and language",
+      "es": "Tono y lenguaje",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A key word for your resume",
+      "es": "Una palabra clave para tu currículum",
+      "color": "#C98A00"
+    },
+    {
+      "en": "Do you match? What's missing?",
+      "es": "¿Cumples? ¿Qué te falta?",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "Job ads from U.S. companies of every size.",
+      "desc_es": "Anuncios de empresas de EE. UU. de todos los tamaños.",
+      "label_en": "LinkedIn Jobs",
+      "label_es": "LinkedIn Empleos",
+      "query_template": "{field}",
+      "search_template": "https://www.linkedin.com/jobs/search/?keywords={q}"
+    },
+    {
+      "key": "indeed",
+      "mark": "i",
+      "color": "#2164F3",
+      "desc_en": "One of the largest job boards in the U.S.",
+      "desc_es": "Una de las bolsas de trabajo más grandes de EE. UU.",
+      "label_en": "Indeed",
+      "label_es": "Indeed",
+      "query_template": "{field} bilingual",
+      "search_template": "https://www.indeed.com/jobs?q={q}"
+    },
+    {
+      "key": "usajobs",
+      "mark": "US",
+      "color": "#112E51",
+      "desc_en": "Official job ads from the U.S. federal government.",
+      "desc_es": "Anuncios oficiales del gobierno federal de EE. UU.",
+      "label_en": "USAJOBS",
+      "label_es": "USAJOBS",
+      "query_template": "{field}",
+      "search_template": "https://www.usajobs.gov/Search/Results?k={q}"
+    },
+    {
+      "key": "careers",
+      "mark": "C",
+      "color": "#1F7A4D",
+      "desc_en": "The “Careers” page of U.S. companies you admire.",
+      "desc_es": "La página “Careers” de empresas de EE. UU. que admiras.",
+      "label_en": "Company careers pages",
+      "label_es": "Páginas de empleo de empresas",
+      "query_template": "\"careers\" {field} job USA",
+      "search_template": "https://www.google.com/search?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "Learn to read real U.S. job ads and find the requirements and key words to use in your resume.",
+    "time": "1–1.5 Hours",
+    "title": "What Do U.S. Job Ads Really Ask For?",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. The original Kajabi lesson was empty: \"Content pending — this lesson was empty in the original Kajabi course.\"]\n\n🧠 Research Task – Week 4\n\nTitle: What Do U.S. Job Ads Really Ask For?\nEstimated Time: 1–1.5 Hours\nGoal: Learn to read real U.S. job ads and find the requirements and key words to use in your resume.\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nInstructions (CelsU, based on the Week 4 reading line “Sample resumes and job ads”):\nFind two (2) real job ads in your field in the U.S. For each one, write a short analysis (5–7 sentences): the job title and field, what the ad asks for, its tone, one key word or phrase you could use in your resume, and whether you match the job and what is missing.",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. La lección original de Kajabi estaba vacía: \"Contenido pendiente: esta lección estaba vacía en el curso original de Kajabi.\"]\n\n🧠 Tarea de Investigación – Semana 4\n\nTítulo: ¿Qué piden realmente los anuncios de empleo en EE. UU.?\nTiempo Estimado: 1–1.5 Horas\nObjetivo: Aprender a leer anuncios de empleo reales de EE. UU. y encontrar los requisitos y las palabras clave para tu currículum.\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nInstrucciones (CelsU, basadas en la línea de lectura de la Semana 4 “Ejemplos de currículums y anuncios de empleo”):\nEncuentra dos (2) anuncios de empleo reales de tu campo en EE. UU. Para cada uno, escribe un breve análisis (5–7 oraciones): el puesto y el campo, qué pide el anuncio, su tono, una palabra o frase clave que podrías usar en tu currículum, y si cumples con el puesto y qué te falta.",
+    "goal_es": "Aprender a leer anuncios de empleo reales de EE. UU. y encontrar los requisitos y las palabras clave para tu currículum.",
+    "title_es": "¿Qué piden realmente los anuncios de empleo en EE. UU.?"
+  },
+  "patterns": {
+    "en": [
+      "They start with the job title and location",
+      "They separate responsibilities from requirements",
+      "They describe the work with action verbs",
+      "They ask for a number of years of experience",
+      "Many list benefits, not only pay",
+      "They end with a call to apply"
+    ],
+    "es": [
+      "Empiezan con el puesto y la ubicación",
+      "Separan las responsabilidades de los requisitos",
+      "Describen el trabajo con verbos de acción",
+      "Piden cierto número de años de experiencia",
+      "Muchos mencionan prestaciones, no solo el sueldo",
+      "Terminan invitando a postularte"
+    ]
+  },
+  "questions": {
+    "en": [
+      "What is the job title, and what field is it in?",
+      "What does the ad ask for? (tap all that apply)",
+      "What tone does the ad use? (tap one or more)",
+      "One key word or phrase you could use in your resume",
+      "Do you match this job? What would you need to add or improve?"
+    ],
+    "es": [
+      "¿Cuál es el puesto y de qué campo es?",
+      "¿Qué pide el anuncio? (toca todo lo que aplique)",
+      "¿Qué tono usa el anuncio? (toca uno o más)",
+      "Una palabra o frase clave que podrías usar en tu currículum",
+      "¿Cumples con este puesto? ¿Qué necesitarías agregar o mejorar?"
+    ]
+  },
+  "sentences": {
+    "min": 5,
+    "max": 7
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Formal",
+      "Friendly",
+      "Clear",
+      "Detailed",
+      "Energetic"
+    ],
+    "es": [
+      "Formal",
+      "Amigable",
+      "Claro",
+      "Detallado",
+      "Con energía"
+    ]
+  },
+  "default_field": "customer service",
+  "share_options": {
+    "en": [
+      "Years of experience",
+      "Education",
+      "Key skills",
+      "Languages",
+      "Pay range",
+      "Benefits",
+      "Schedule or remote work"
+    ],
+    "es": [
+      "Años de experiencia",
+      "Educación",
+      "Habilidades clave",
+      "Idiomas",
+      "Rango de sueldo",
+      "Prestaciones",
+      "Horario o trabajo remoto"
+    ]
+  }
+}

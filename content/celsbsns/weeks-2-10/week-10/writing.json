@@ -1,0 +1,199 @@
+{
+  "hero": {
+    "title_a": "Career Goals",
+    "title_b": "Statement",
+    "chips_en": [
+      "1–2 hours",
+      "150–200 words",
+      "Saved in your week",
+      "Capstone · Part 10"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "150–200 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 10"
+    ],
+    "intro_en": "In an interview you're asked: “Where do you see yourself in 5 years?” Write a clear career goals statement that shows ambition, initiative and a real connection to the company. It becomes part of your final Capstone.",
+    "intro_es": "En una entrevista te preguntan: “Where do you see yourself in 5 years?” Escribe una declaración de objetivos profesionales clara que muestre ambición, iniciativa y una conexión real con la empresa. Se convierte en parte de tu Capstone final."
+  },
+  "week": 10,
+  "parts": [
+    {
+      "en": "Where you are today",
+      "es": "Dónde estás hoy",
+      "hint": {
+        "en": "Your current role or field, in one sentence.",
+        "es": "Tu puesto o campo actual, en una oración."
+      },
+      "color": "#2C6BC4",
+      "example": "Today, I'm a logistics coordinator with six years of experience…",
+      "phrases": [
+        "Today, I'm a [role] with [number] years of experience in [field].",
+        "I'm currently working as a [role], focused on [area]."
+      ]
+    },
+    {
+      "en": "Your professional objective",
+      "es": "Tu objetivo profesional",
+      "hint": {
+        "en": "Where you see yourself in 5 years: specific and realistic.",
+        "es": "Dónde te ves en 5 años: concreto y realista."
+      },
+      "color": "#7A4FD6",
+      "example": "In five years, I see myself leading a regional operations team…",
+      "phrases": [
+        "In five years, I see myself [goal].",
+        "My long-term goal is to become a [role] who [impact].",
+        "I'd like to grow into a role where I can [responsibility]."
+      ]
+    },
+    {
+      "en": "How you plan to grow in the U.S. workplace",
+      "es": "Cómo planeas crecer en el trabajo en EE. UU.",
+      "hint": {
+        "en": "Skills, certifications, English, mentors: your concrete steps.",
+        "es": "Habilidades, certificaciones, inglés, mentores: tus pasos concretos."
+      },
+      "color": "#00A3C4",
+      "example": "To get there, I plan to earn a supply chain certification…",
+      "phrases": [
+        "To get there, I plan to [step].",
+        "In my first year, I want to [learn / earn / improve] [skill].",
+        "I'm already working on [skill] by [action]."
+      ]
+    },
+    {
+      "en": "The connection to the company's future",
+      "es": "La conexión con el futuro de la empresa",
+      "hint": {
+        "en": "Show how your growth helps the company grow.",
+        "es": "Muestra cómo tu crecimiento ayuda a que la empresa crezca."
+      },
+      "color": "#1F7A4D",
+      "example": "As your company expands into new markets, I want to help…",
+      "phrases": [
+        "As [company] grows in [area], I want to help [result].",
+        "My goals match your plans to [company goal].",
+        "I see this role as a place to build a long-term career, not just a job."
+      ]
+    },
+    {
+      "en": "A confident closing",
+      "es": "Un cierre seguro",
+      "hint": {
+        "en": "One sentence that sums up your commitment.",
+        "es": "Una oración que resuma tu compromiso."
+      },
+      "color": "#C98A00",
+      "example": "I'm ready to grow with your team and contribute from day one.",
+      "phrases": [
+        "I'm ready to grow with your team and contribute from day one.",
+        "I'm excited about building my future here."
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Specific and realistic",
+      "t_es": "Concreto y realista",
+      "d_en": "Real goals and real steps, not dreams without a plan.",
+      "d_es": "Metas y pasos reales, no sueños sin plan."
+    },
+    {
+      "icon": "star",
+      "t_en": "Ambitious but loyal",
+      "t_es": "Ambicioso pero leal",
+      "d_en": "Show you want to grow here; never call the job a stepping stone.",
+      "d_es": "Muestra que quieres crecer aquí; nunca llames al trabajo un “trampolín”."
+    },
+    {
+      "icon": "nob",
+      "t_en": "Paragraph form",
+      "t_es": "En párrafos",
+      "d_en": "First person, short paragraphs, no bullet points or emojis.",
+      "d_es": "En primera persona, párrafos cortos, sin viñetas ni emojis."
+    }
+  ],
+  "words": {
+    "max": 200,
+    "min": 150
+  },
+  "example": {
+    "subject": "Career Goals Statement – Ana Pérez",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Today, I'm a logistics coordinator with six years of experience managing shipments between Mexico and the United States."
+        ],
+        [
+          1,
+          "In five years, I see myself leading a regional operations team and helping a growing company deliver faster and more reliably."
+        ]
+      ],
+      [
+        [
+          2,
+          "To get there, I plan to earn a supply chain certification in my first two years and keep improving my business English, especially in presentations and negotiations."
+        ],
+        [
+          2,
+          "I also want to find a mentor inside the company and learn how decisions are made across departments."
+        ]
+      ],
+      [
+        [
+          3,
+          "I know your company is expanding its cross-border services, and that is exactly where my experience can add value."
+        ],
+        [
+          3,
+          "As your operations grow, I want to help build processes that are clear, efficient and easy for new team members to learn."
+        ],
+        [
+          3,
+          "For me, this role is a place to build a long-term career, not just a job."
+        ]
+      ],
+      [
+        [
+          4,
+          "I'm ready to grow with your team and contribute from day one."
+        ],
+        [
+          null,
+          "Ana Pérez"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Clear goals show ambition, initiative, and alignment with employer expectations.",
+    "time": "1–2 hours",
+    "title": "Career Goals Statement",
+    "body_en": "✍️ Writing Task\n\nTitle: Career Goals Statement\nTime: 1–2 hours\n\nScenario:\nYou're asked in an interview: \"Where do you see yourself in 5 years?\"\n\nYour Task: Write a career goals statement (150–200 words) that:\n\nDescribes your professional objectives.\n\nExplains how you plan to grow in the U.S. workplace.\n\nConnects your goals to the company's future.\n\nWhy This Matters:\nClear goals show ambition, initiative, and alignment with employer expectations.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Declaración de Objetivos Profesionales\nTiempo: 1–2 horas\n\nEscenario:\nTe preguntan en una entrevista: \"¿Dónde te ves en 5 años?\"\n\nTu Tarea: Escribe una declaración de objetivos profesionales (150–200 palabras) que:\n\nDescriba tus objetivos profesionales.\n\nExplique cómo planeas crecer en el entorno laboral de EE.UU.\n\nConecte tus metas con el futuro de la empresa.\n\nPor Qué Esto Importa:\nTener objetivos claros demuestra ambición, iniciativa y alineación con las expectativas del empleador.",
+    "goal_es": "Tener objetivos claros demuestra ambición, iniciativa y alineación con las expectativas del empleador.",
+    "title_es": "Declaración de Objetivos Profesionales",
+    "submission": ""
+  },
+  "scenario": {
+    "en": "You're in a job interview with a U.S. company, and the hiring manager asks you about your future.",
+    "es": "Estás en una entrevista de trabajo con una empresa de EE. UU. y la gerente de contratación te pregunta por tu futuro.",
+    "from": "Rachel",
+    "quote": "Where do you see yourself in 5 years?",
+    "role_en": "the hiring manager",
+    "role_es": "la gerente de contratación",
+    "initials": "RM"
+  },
+  "to_label": "Hiring Manager",
+  "to_initials": "HM",
+  "subject_hint": "Career Goals Statement – Ana Pérez",
+  "capstone_part": 10,
+  "capstone_title": {
+    "en": "Career growth and final resume",
+    "es": "Crecimiento profesional y currículum final"
+  }
+}

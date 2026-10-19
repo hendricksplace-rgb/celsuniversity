@@ -1,0 +1,174 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 6",
+      "es": "Tu semana 6"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Protecting your reputation through ethics. See everything you did this week, check how you feel, and write your personal ethics statement.",
+    "intro_es": "Protege tu reputación a través de la ética. Mira todo lo que hiciste esta semana, evalúa cómo te sientes y escribe tu declaración personal de ética."
+  },
+  "next": {
+    "week": 7,
+    "title": "Finance for Non-Finance Professionals",
+    "bullets": {
+      "en": [
+        "Budgets, invoices and basic financial terms",
+        "How to read a budget",
+        "A monthly budget for your first 3 months in the U.S."
+      ],
+      "es": [
+        "Presupuestos, facturas y términos financieros básicos",
+        "Cómo leer un presupuesto",
+        "Un presupuesto mensual para tus primeros 3 meses en EE. UU."
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 7: your understanding of basic finance",
+      "es": "Capstone · Parte 7: tu comprensión de las finanzas básicas"
+    }
+  },
+  "week": 6,
+  "original": {
+    "goal": "Protecting your reputation through ethics: check your progress, reflect on how you handle ethical scenarios, and write a personal ethics statement.",
+    "goal_es": "Proteger tu reputación a través de la ética: revisa tu avance, reflexiona sobre cómo manejas los escenarios éticos y escribe una declaración personal de ética.",
+    "time": "1 hour",
+    "title": "Protecting Your Reputation Through Ethics",
+    "title_es": "Protegiendo Tu Reputación a Través de la Ética",
+    "body_en": "📈 Feedback & Progress\n\nTitle: Protecting Your Reputation Through Ethics\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can explain the difference between ethics and professional conduct.\n\nI understand the risks of unethical behavior for myself and my company.\n\nI practiced handling at least two workplace ethical dilemmas.\n\nI know how to use company policies and codes of conduct as a guide.\n\nI can explain why ethics protects trust and career growth.\n\nStep 2 – Reflection Questions\n\nWhat did you learn about yourself in handling ethical scenarios?\n\nHow will you apply professional conduct in your daily work?\n\nWhat's one ethical \"red flag\" you will watch out for in the workplace?\n\nStep 3 – Action Note\nWrite a personal ethics statement in one or two sentences. Example:\n\n\"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTítulo: Protegiendo Tu Reputación a Través de la Ética\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo explicar la diferencia entre ética y conducta profesional.\n\nEntiendo los riesgos del comportamiento poco ético para mí y mi empresa.\n\nHe practicado cómo manejar al menos dos dilemas éticos en el lugar de trabajo.\n\nSé cómo usar las políticas de la empresa y los códigos de conducta como guía.\n\nPuedo explicar por qué la ética protege la confianza y el crecimiento profesional.\n\nPaso 2 – Preguntas de Reflexión\n\n¿Qué aprendiste sobre ti mismo al manejar escenarios éticos?\n\n¿Cómo aplicarás la conducta profesional en tu trabajo diario?\n\n¿Cuál es una \"bandera roja\" ética que vigilarás en el lugar de trabajo?\n\nPaso 3 – Nota de Acción\nEscribe una declaración personal de ética en una o dos oraciones. Ejemplo:\n\n\"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\" (Seré transparente en mi trabajo, respetaré la confidencialidad y asumiré la responsabilidad de los errores)."
+  },
+  "questions": [
+    {
+      "en": "What did you learn about yourself in handling ethical scenarios?",
+      "es": "¿Qué aprendiste sobre ti mismo al manejar escenarios éticos?"
+    },
+    {
+      "en": "How will you apply professional conduct in your daily work?",
+      "es": "¿Cómo aplicarás la conducta profesional en tu trabajo diario?"
+    },
+    {
+      "en": "What's one ethical “red flag” you will watch out for in the workplace?",
+      "es": "¿Cuál es una “bandera roja” ética que vigilarás en el lugar de trabajo?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can explain the difference between ethics and professional conduct",
+      "es": "Puedo explicar la diferencia entre ética y conducta profesional",
+      "auto": null
+    },
+    {
+      "en": "I understand the risks of unethical behavior for myself and my company",
+      "es": "Entiendo los riesgos del comportamiento poco ético para mí y mi empresa",
+      "auto": null
+    },
+    {
+      "en": "I practiced handling at least two workplace ethical dilemmas",
+      "es": "Practiqué cómo manejar al menos dos dilemas éticos en el trabajo",
+      "auto": "speaking"
+    },
+    {
+      "en": "I know how to use company policies and codes of conduct as a guide",
+      "es": "Sé cómo usar las políticas de la empresa y los códigos de conducta como guía",
+      "auto": "research"
+    },
+    {
+      "en": "I can explain why ethics protects trust and career growth",
+      "es": "Puedo explicar por qué la ética protege la confianza y el crecimiento profesional",
+      "auto": null
+    }
+  ],
+  "action_note": {
+    "title": {
+      "en": "My personal ethics statement",
+      "es": "Mi declaración personal de ética"
+    },
+    "prompt": {
+      "en": "Write a personal ethics statement in one or two sentences, in English.",
+      "es": "Escribe una declaración personal de ética en una o dos oraciones, en inglés."
+    },
+    "example": "I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.",
+    "example_es": "Seré transparente en mi trabajo, respetaré la confidencialidad y asumiré la responsabilidad de los errores.",
+    "capstone_part": 6,
+    "min_chars": 60
+  },
+  "ai_practice": {
+    "tip": {
+      "en": "If it understands you the first time and says you sound confident, you're on track! If not, slow down and try again.",
+      "es": "Si te entiende a la primera y te dice que suenas seguro, ¡vas bien! Si no, baja la velocidad y vuelve a intentarlo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Say your ethical example (from your Video) or your ethics statement.",
+        "Notice: did it understand you the first time? Did it ask you to repeat anything?",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Di tu ejemplo ético (el de tu Video) o tu declaración de ética.",
+        "Fíjate: ¿te entendió a la primera? ¿Te pidió repetir algo?",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Did I sound professional and confident? How can I improve my clarity?",
+      "Can you play HR? I'll report a problem, and you tell me if I sounded clear and objective.",
+      "Let's practice. I'll speak, and you give me feedback on my tone, grammar, and vocabulary."
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "Pronunciation",
+      "Vocabulary",
+      "Writing",
+      "Grammar",
+      "Confidence speaking",
+      "Listening"
+    ],
+    "es": [
+      "Pronunciación",
+      "Vocabulario",
+      "Escritura",
+      "Gramática",
+      "Seguridad al hablar",
+      "Escuchar y entender"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "Read my company's code of conduct",
+      "Use 5 ethics words in my tasks",
+      "Practice saying “I need to check our policy first”",
+      "Finish my Capstone Part 6 before Friday"
+    ],
+    "es": [
+      "Leer el código de conducta de mi empresa",
+      "Usar 5 palabras de ética en mis tareas",
+      "Practicar decir “I need to check our policy first”",
+      "Terminar la Parte 6 de mi Capstone antes del viernes"
+    ]
+  }
+}

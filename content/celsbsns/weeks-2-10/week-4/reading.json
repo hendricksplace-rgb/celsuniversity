@@ -1,0 +1,574 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Resumes",
+        "t_es": "Currículums",
+        "d_en": "What U.S. recruiters look for in a few seconds.",
+        "d_es": "Qué buscan los reclutadores de EE. UU. en pocos segundos."
+      },
+      {
+        "t_en": "Job ads",
+        "t_es": "Anuncios de empleo",
+        "d_en": "How to read a job ad and match your resume to it.",
+        "d_es": "Cómo leer un anuncio de empleo y adaptar tu currículum a él."
+      },
+      {
+        "t_en": "Benefits & onboarding",
+        "t_es": "Prestaciones e incorporación",
+        "d_en": "What happens after the offer: benefits and your first days.",
+        "d_es": "Qué pasa después de la oferta: prestaciones y tus primeros días."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 case studies",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 casos de estudio",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover how hiring works in the U.S.: how recruiters read resumes and job ads, what a U.S.-style resume looks like, and what happens after you get the offer. You read a short article, watch a video, and work through three real hiring cases.",
+    "intro_es": "En esta lectura descubres cómo funciona la contratación en EE. UU.: cómo leen los reclutadores los currículums y los anuncios de empleo, cómo es un currículum al estilo de EE. UU. y qué pasa cuando recibes la oferta. Lees un artículo corto, ves un video y analizas tres casos reales de contratación."
+  },
+  "week": 4,
+  "video": {
+    "slug": "regina_hartley_why_the_best_hire_might_not_have_the_perfect_resume",
+    "event": "TED@UPS",
+    "extra": {
+      "slug": "larry_smith_why_you_will_fail_to_have_a_great_career",
+      "event": "TEDx",
+      "title": "Why you will fail to have a great career",
+      "source": 8,
+      "minutes": 15,
+      "speaker": "Larry Smith",
+      "provider": "ted"
+    },
+    "title": "Why the best hire might not have the perfect resume",
+    "source": 7,
+    "minutes": 10,
+    "speaker": "Regina Hartley",
+    "intro_en": "Watch the full talk inside the app. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "Why does Regina Hartley give a chance to candidates whose resumes are not perfect?",
+      "Which challenge in your own career shows that you can keep going when things get hard?"
+    ],
+    "prompts_es": [
+      "¿Por qué Regina Hartley le da una oportunidad a candidatos cuyo currículum no es perfecto?",
+      "¿Qué reto de tu propia carrera demuestra que puedes seguir adelante cuando las cosas se ponen difíciles?"
+    ]
+  },
+  "vocab": {
+    "job posting": {
+      "d": "A public ad that describes an open job, its requirements and, often, its pay and benefits.",
+      "es": "anuncio o vacante de empleo",
+      "ex": "I found the job posting on the company's careers page."
+    },
+    "qualifications": {
+      "d": "The skills, experience or education you need for a job.",
+      "es": "requisitos, calificaciones",
+      "ex": "She has all the qualifications listed in the ad."
+    },
+    "reverse chronological": {
+      "d": "Ordered from the most recent to the oldest.",
+      "es": "en orden cronológico inverso (de lo más reciente a lo más antiguo)",
+      "ex": "List your jobs in reverse chronological order."
+    },
+    "action verb": {
+      "d": "A strong verb that shows what you did, like 'led', 'built' or 'reduced'.",
+      "es": "verbo de acción",
+      "ex": "Start every bullet with an action verb."
+    },
+    "applicant tracking systems": {
+      "d": "Software that companies use to collect, sort and search the resumes they receive.",
+      "es": "sistemas de seguimiento de candidatos (ATS)",
+      "ex": "Many applicant tracking systems search resumes for key words from the ad."
+    },
+    "benefits package": {
+      "d": "Everything an employer offers besides salary, such as health insurance, paid time off and a retirement plan.",
+      "es": "paquete de prestaciones",
+      "ex": "The benefits package includes dental insurance and a 401(k)."
+    },
+    "onboarding": {
+      "d": "The process of welcoming and preparing a new employee: paperwork, training and introductions.",
+      "es": "incorporación (proceso de bienvenida de un nuevo empleado)",
+      "ex": "Onboarding takes about two weeks at our company."
+    },
+    "new hire": {
+      "d": "A person who has just joined a company.",
+      "es": "empleado de nuevo ingreso",
+      "ex": "Every new hire meets with HR on the first day."
+    }
+  },
+  "warmup": {
+    "q_en": "When you apply for a job, your CV usually…",
+    "q_es": "Cuando solicitas un empleo, tu CV normalmente…",
+    "poll_en": [
+      "Includes my photo, my age and my marital status, and lists all my duties.",
+      "Is clear, but it describes what I was responsible for, not my results.",
+      "Starts with my most recent job and shows results with numbers."
+    ],
+    "poll_es": [
+      "Incluye mi foto, mi edad y mi estado civil, y enumera todas mis funciones.",
+      "Es claro, pero describe de qué era responsable, no mis resultados.",
+      "Empieza con mi trabajo más reciente y muestra resultados con números."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: what does your CV look like today?",
+    "title_es": "Antes de leer: ¿cómo es tu CV hoy?",
+    "note_q_en": "What do you already know about how companies hire people in the U.S.?",
+    "note_q_es": "¿Qué sabes ya sobre cómo contratan personal las empresas en EE. UU.?",
+    "feedback_en": [
+      "This is very common in Latin America. In the U.S., a resume leaves out personal details and focuses on results. Today you'll see why.",
+      "You're halfway there. The next step is turning each duty into an achievement. The article shows you how.",
+      "Great starting point! That's the U.S. format. This reading helps you make it even stronger and match it to a job ad."
+    ],
+    "feedback_es": [
+      "Es muy común en América Latina. En EE. UU., el currículum deja fuera los datos personales y se enfoca en resultados. Hoy vas a ver por qué.",
+      "Vas a la mitad del camino. El siguiente paso es convertir cada función en un logro. En el artículo verás cómo.",
+      "¡Excelente punto de partida! Ese es el formato de EE. UU. Esta lectura te ayuda a hacerlo aún más fuerte y a adaptarlo a un anuncio de empleo."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "HR Dive, November 8, 2018 (reports the Ladders 2018 Eye-Tracking Study)",
+      "url": "https://www.hrdive.com/news/eye-tracking-study-shows-recruiters-look-at-resumes-for-7-seconds/541582",
+      "who": "Riia O'Donnell",
+      "what": "“Eye tracking study shows recruiters look at resumes for 7 seconds”"
+    },
+    {
+      "id": 2,
+      "pub": "Harvard FAS Mignone Center for Career Success, 2025",
+      "url": "https://careerservices.fas.harvard.edu/resources/hes-create-impactful-resumes-and-cover-letters/",
+      "who": "Harvard University",
+      "what": "“HES: Create Impactful Resumes and Cover Letters”"
+    },
+    {
+      "id": 3,
+      "pub": "EEOC.gov",
+      "url": "https://www.eeoc.gov/prohibited-employment-policiespractices",
+      "who": "U.S. Equal Employment Opportunity Commission",
+      "what": "“Prohibited Employment Policies/Practices”"
+    },
+    {
+      "id": 4,
+      "pub": "BLS News Release, September 12, 2025",
+      "url": "https://www.bls.gov/news.release/archives/ecec_09122025.htm",
+      "who": "U.S. Bureau of Labor Statistics",
+      "what": "“Employer Costs for Employee Compensation — June 2025”"
+    },
+    {
+      "id": 5,
+      "pub": "USCIS.gov · I-9 Central",
+      "url": "https://www.uscis.gov/i-9-central/completing-form-i-9",
+      "who": "U.S. Citizenship and Immigration Services",
+      "what": "“Completing Form I-9”"
+    },
+    {
+      "id": 6,
+      "pub": "Gallup, May 16, 2018",
+      "url": "https://www.gallup.com/workplace/235121/why-onboarding-experience-key-retention.aspx",
+      "who": "Gallup",
+      "what": "“Why the Onboarding Experience Is Key for Retention”"
+    },
+    {
+      "id": 7,
+      "pub": "TED@UPS, 2015 · TED.com",
+      "url": "https://www.ted.com/talks/regina_hartley_why_the_best_hire_might_not_have_the_perfect_resume",
+      "who": "Regina Hartley",
+      "what": "“Why the best hire might not have the perfect resume”"
+    },
+    {
+      "id": 8,
+      "pub": "TEDxUW, 2011 · TED.com",
+      "url": "https://www.ted.com/talks/larry_smith_why_you_will_fail_to_have_a_great_career",
+      "who": "Larry Smith",
+      "what": "“Why you will fail to have a great career”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "About 7 seconds",
+            "About 2 minutes",
+            "About 10 minutes"
+          ],
+          "es": [
+            "Unos 7 segundos",
+            "Unos 2 minutos",
+            "Unos 10 minutos"
+          ]
+        },
+        "q": {
+          "en": "In the 2018 Ladders study, a recruiter's first look at a resume lasted…",
+          "es": "En el estudio de Ladders de 2018, la primera mirada de un reclutador a un currículum duró…"
+        },
+        "why": {
+          "en": "Right: about 7.4 seconds. That's why a clear layout and short bullets matter so much.",
+          "es": "Así es: unos 7.4 segundos. Por eso importan tanto un diseño claro y viñetas cortas."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "Achievements with numbers",
+            "Your photo and your age",
+            "Your most recent job"
+          ],
+          "es": [
+            "Logros con números",
+            "Tu foto y tu edad",
+            "Tu trabajo más reciente"
+          ]
+        },
+        "q": {
+          "en": "Which of these should you leave OUT of a U.S. resume?",
+          "es": "¿Qué debes dejar FUERA de un currículum de EE. UU.?"
+        },
+        "why": {
+          "en": "Exactly: U.S. resumes leave out a photo, age and other personal details.",
+          "es": "Exacto: los currículums de EE. UU. no incluyen foto, edad ni otros datos personales."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "Adds more adjectives about himself",
+            "Starts each line with an action verb and a result",
+            "Writes one long paragraph"
+          ],
+          "es": [
+            "Agrega más adjetivos sobre sí mismo",
+            "Empieza cada línea con un verbo de acción y un resultado",
+            "Escribe un solo párrafo largo"
+          ]
+        },
+        "q": {
+          "en": "In Case 1, Luis's resume improves the most when he…",
+          "es": "En el caso 1, el currículum de Luis mejora más cuando…"
+        },
+        "why": {
+          "en": "Yes: an action verb plus a result shows what he achieved, not only what he was supposed to do.",
+          "es": "Sí: un verbo de acción más un resultado muestra lo que logró, no solo lo que le tocaba hacer."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: one thing I will change in my resume is…",
+      "es": "Mi conclusión: una cosa que voy a cambiar en mi currículum es…"
+    }
+  },
+  "cases_intro": {
+    "en": "Read each case, do the activity and, if you like, write down your ideas. The resumes and ads are in English, as you would see them in a real job search.",
+    "es": "Lee cada caso, haz la actividad y, si quieres, apunta tus ideas. Los currículums y anuncios están en inglés, como los verías en una búsqueda de empleo real."
+  },
+  "article": {
+    "dek": "How recruiters read resumes and job ads, what a U.S.-style resume leaves out, and what happens after you get the offer.",
+    "title": "Seven Seconds to Make It Count: Resumes, Job Ads and Your First Days in a U.S. Job",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "In the United States, hiring usually follows the same path: a company publishes a [[job posting]], collects resumes, screens them, interviews a short list of candidates, makes an offer and welcomes the new person. The first filter is fast. In a 2018 eye-tracking study by the job site Ladders, recruiters spent about 7.4 seconds on their first look at a resume. Resumes with a simple layout, clear headings and short bullet points did best; crowded pages with long sentences did worst.{1}",
+        "es": "En Estados Unidos, la contratación casi siempre sigue el mismo camino: una empresa publica una vacante, recibe currículums, los filtra, entrevista a una lista corta de candidatos, hace una oferta y da la bienvenida a la nueva persona. El primer filtro es rápido. En un estudio de seguimiento ocular de 2018 del sitio de empleo Ladders, los reclutadores dedicaron unos 7.4 segundos a la primera mirada de un currículum. Los currículums con un diseño sencillo, encabezados claros y viñetas cortas funcionaron mejor; las páginas saturadas y con oraciones largas, peor."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "A U.S. resume is not a Latin American CV",
+        "en": "Career advisers at Harvard recommend listing your experience in [[reverse chronological]] order, starting each line with an [[action verb]], adding numbers when you can, and avoiding personal pronouns like “I.” They also say to leave out a photo, your age and your gender.{2} This is not only a question of style. The EEOC, the federal agency that enforces U.S. anti-discrimination laws, advises employers not to ask for an applicant's photograph, and warns that a job ad should not discourage people because of traits such as age or sex.{3}",
+        "es": "Los asesores de carrera de Harvard recomiendan poner tu experiencia en orden cronológico inverso, empezar cada línea con un verbo de acción, agregar números cuando puedas y evitar pronombres personales como “I”. También aconsejan no incluir foto, edad ni género. No es solo una cuestión de estilo. La EEOC, la agencia federal que aplica las leyes contra la discriminación en EE. UU., recomienda a los empleadores no pedir la fotografía de un candidato y advierte que un anuncio de empleo no debe desanimar a nadie por rasgos como la edad o el sexo."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "en": "In much of Latin America, it is common for a CV to include a photo, a date of birth, marital status and a long list of duties. In a U.S. office, that extra information can make your resume look out of place, and a list of duties only tells the reader what you were supposed to do, not what you achieved. The good news: your experience is already valuable. You just need to present it the way U.S. recruiters expect to read it.",
+        "es": "En gran parte de América Latina es común que un CV incluya foto, fecha de nacimiento, estado civil y una larga lista de funciones. En una oficina de EE. UU., esa información extra puede hacer que tu currículum se vea fuera de lugar, y una lista de funciones solo le dice al lector lo que te tocaba hacer, no lo que lograste. La buena noticia: tu experiencia ya es valiosa. Solo necesitas presentarla como los reclutadores de EE. UU. esperan leerla."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Look at your current CV. Does it include a photo, your age or your marital status? Does each job show a result, or only a list of duties?",
+        "q_es": "Mira tu CV actual. ¿Incluye foto, tu edad o tu estado civil? ¿Cada trabajo muestra un resultado o solo una lista de funciones?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of strong job seekers",
+        "items": [
+          {
+            "h": "1 · Read the job ad like a checklist",
+            "icon": "target",
+            "en": "A job ad tells you exactly what the employer wants: the responsibilities, the required [[qualifications]] and often the pay and benefits. Many employers use [[applicant tracking systems]] to sort resumes, so Harvard's advisers suggest writing for both human readers and these systems.{2} Use the same key words as the ad when they truly describe your experience.",
+            "es": "Un anuncio de empleo te dice exactamente qué quiere el empleador: las responsabilidades, los requisitos y muchas veces el sueldo y las prestaciones. Muchos empleadores usan sistemas de seguimiento de candidatos (ATS) para ordenar los currículums, por eso los asesores de Harvard sugieren escribir tanto para lectores humanos como para estos sistemas. Usa las mismas palabras clave del anuncio cuando de verdad describan tu experiencia."
+          },
+          {
+            "h": "2 · Show achievements, not duties",
+            "icon": "mega",
+            "en": "Each bullet answers three questions: what did you do, how did you do it, and what was the result? Compare “Responsible for customer calls” with “Resolved 40+ customer calls a day in English and Spanish.” The second line shows impact, and a recruiter can see it in seconds.",
+            "es": "Cada viñeta responde tres preguntas: qué hiciste, cómo lo hiciste y cuál fue el resultado. Compara “Responsible for customer calls” con “Resolved 40+ customer calls a day in English and Spanish”. La segunda línea muestra impacto, y un reclutador lo ve en segundos."
+          },
+          {
+            "h": "3 · Understand the whole offer and your first days",
+            "icon": "shield",
+            "en": "A U.S. job offer is more than a salary. Health insurance, paid leave and retirement plans are part of the [[benefits package]]: in June 2025, benefits were 29.8% of what private employers spent on compensation.{4} Then [[onboarding]] begins. Every [[new hire]] completes Form I-9, which verifies identity and authorization to work.{5} Ask questions: Gallup found that only 12% of employees strongly agree that their organization does a great job onboarding new employees.{6}",
+            "es": "Una oferta de trabajo en EE. UU. es más que un sueldo. El seguro médico, los días pagados y los planes de retiro forman parte del paquete de prestaciones: en junio de 2025, las prestaciones fueron el 29.8 % de lo que los empleadores privados gastaron en compensación. Después empieza la incorporación (onboarding). Toda persona de nuevo ingreso llena el Formulario I-9, que verifica su identidad y su autorización para trabajar. Haz preguntas: Gallup encontró que solo el 12 % de los empleados está totalmente de acuerdo en que su organización hace un gran trabajo al incorporar a los nuevos empleados."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same work experience",
+        "h_es": "Antes y después: la misma experiencia laboral",
+        "intro_en": "Tap “After” to see how the same job changes when you write it in U.S. resume style.",
+        "intro_es": "Toca “Después” para ver cómo cambia el mismo trabajo cuando lo escribes al estilo de un currículum de EE. UU.",
+        "before": {
+          "to": "Recruiter",
+          "subject": "Experience",
+          "body": [
+            "Customer Service Agent, Grupo Norte. ",
+            {
+              "m": 1,
+              "t": "I was responsible for answering the phone and helping the customers"
+            },
+            ", and ",
+            {
+              "m": 2,
+              "t": "I am a very hardworking and responsible person"
+            },
+            ". ",
+            {
+              "m": 3,
+              "t": "Age: 34. Married. Photo attached."
+            }
+          ],
+          "marks": [
+            {
+              "en": "It lists duties, not results.",
+              "es": "Enumera funciones, no resultados."
+            },
+            {
+              "en": "It uses “I” and opinions about yourself instead of facts.",
+              "es": "Usa “I” y opiniones sobre ti en lugar de hechos."
+            },
+            {
+              "en": "Personal details a U.S. resume leaves out.",
+              "es": "Datos personales que un currículum de EE. UU. no incluye."
+            }
+          ]
+        },
+        "after": {
+          "to": "Recruiter",
+          "subject": "Experience",
+          "body": [
+            "Customer Service Agent | Grupo Norte | Monterrey, MX | 2020–2024\n",
+            {
+              "m": 1,
+              "t": "• Resolved 40+ customer calls a day in English and Spanish"
+            },
+            "\n",
+            {
+              "m": 2,
+              "t": "• Raised customer satisfaction scores from 82% to 95% in one year"
+            },
+            "\n",
+            {
+              "m": 3,
+              "t": "• Trained 6 new agents on the company's CRM system"
+            }
+          ],
+          "marks": [
+            {
+              "en": "An action verb first, and a skill employers want: bilingual service.",
+              "es": "Primero un verbo de acción y una habilidad que buscan los empleadores: atención bilingüe."
+            },
+            {
+              "en": "Numbers show the result in seconds.",
+              "es": "Los números muestran el resultado en segundos."
+            },
+            {
+              "en": "It shows leadership, with no personal details.",
+              "es": "Muestra liderazgo, sin datos personales."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need a perfect career to write a strong resume. You need a clear format, real achievements and the confidence to talk about them. In the three cases below, you will fix a resume, read a job ad the way a recruiter does, and handle your first day with HR.",
+        "es": "No necesitas una carrera perfecta para escribir un currículum fuerte. Necesitas un formato claro, logros reales y la seguridad para hablar de ellos. En los tres casos que siguen vas a corregir un currículum, leer un anuncio de empleo como lo hace un reclutador y manejar tu primer día con Recursos Humanos."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on Ladders/HR Dive, Harvard, the EEOC, BLS, USCIS and Gallup",
+    "based_es": "Basado en Ladders/HR Dive, Harvard, la EEOC, el BLS, USCIS y Gallup",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "1 Hour",
+    "type": "Article + Case Studies (built from the syllabus)",
+    "title": "Sample Resumes and Job Ads",
+    "title_es": "Ejemplos de currículums y anuncios de empleo",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. The original Kajabi lesson was empty: \"Content pending — this lesson was empty in the original Kajabi course.\"]\n\n📖 Reading Assignment – Week 4\n\nTitle: Sample Resumes and Job Ads\nEstimated Time: 1 Hour\nType: Article + Case Studies\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nSummary:\nThis reading explains how hiring works in the U.S.: how recruiters read resumes and job ads, what a U.S.-style resume includes and leaves out, and what happens after the offer (benefits and onboarding).",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. La lección original de Kajabi estaba vacía: \"Contenido pendiente: esta lección estaba vacía en el curso original de Kajabi.\"]\n\n📖 Tarea de Lectura – Semana 4\n\nTítulo: Ejemplos de currículums y anuncios de empleo\nTiempo Estimado: 1 Hora\nTipo: Artículo + Estudios de caso\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nResumen:\nEsta lectura explica cómo funciona la contratación en EE. UU.: cómo leen los reclutadores los currículums y los anuncios de empleo, qué incluye y qué deja fuera un currículum al estilo de EE. UU., y qué pasa después de la oferta (prestaciones e incorporación).",
+    "summary": "This reading explains how hiring works in the U.S.: how recruiters read resumes and job ads, what a U.S.-style resume includes and leaves out, and what happens after the offer (benefits and onboarding).",
+    "video_ref": "None in the original (empty lesson). CelsU chose: TED@UPS – Regina Hartley, “Why the best hire might not have the perfect resume.”",
+    "article_ref": "None in the original (empty lesson). CelsU wrote an original article from cited sources.",
+    "instructions": "Read the article and the three case studies, do each activity and answer the reflection questions. You will use your answers in this week's writing (your resume) and speaking (your career pitch) tasks."
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "title_en": "The Resume That Says Too Much",
+      "title_es": "El currículum que dice demasiado",
+      "scene": "Luis, an accountant from Guadalajara, applies for a job in Phoenix. This is the experience section of his resume:",
+      "message": {
+        "from": "Luis's resume · Experience",
+        "text": "Accountant, Grupo Delta (2018–2024). I was in charge of doing the monthly reports and paying the suppliers. I am a responsible and hardworking person. Age: 36. Married, 2 children."
+      },
+      "outcome": "The recruiter looks at it for a few seconds and moves on to the next resume.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "model": "Accountant | Grupo Delta | Guadalajara, MX | 2018–2024\n• Prepared monthly financial reports for 3 business units, always on deadline\n• Processed payments to 120+ suppliers and reduced late fees by 30%\n• Created an Excel checklist that cut month-end closing errors",
+        "hints_en": [
+          "Start each line with an action verb",
+          "Add a number or a result",
+          "Remove “I” and adjectives about yourself",
+          "Delete age and family details"
+        ],
+        "hints_es": [
+          "Empieza cada línea con un verbo de acción",
+          "Agrega un número o un resultado",
+          "Quita “I” y los adjetivos sobre ti",
+          "Borra la edad y los datos familiares"
+        ],
+        "label_en": "My version of Luis's experience",
+        "label_es": "Mi versión de la experiencia de Luis",
+        "prompt_en": "Rewrite Luis's experience as a U.S.-style resume entry with 2–3 bullets.",
+        "prompt_es": "Reescribe la experiencia de Luis como una entrada de currículum al estilo de EE. UU., con 2 o 3 viñetas."
+      },
+      "questions": [
+        "What would you remove from Luis's resume, and why?",
+        "Which of his duties could become an achievement with a number?"
+      ],
+      "questions_es": [
+        "¿Qué quitarías del currículum de Luis y por qué?",
+        "¿Cuál de sus funciones podría convertirse en un logro con un número?"
+      ]
+    },
+    {
+      "id": "c2",
+      "title_en": "Reading the Job Ad",
+      "title_es": "Leer el anuncio de empleo",
+      "scene": "Ana finds this job ad and wants to decide if she should apply:",
+      "message": {
+        "from": "Job ad · Bilingual HR Assistant",
+        "text": "Bilingual HR Assistant – Full-time, Dallas, TX. Requirements: 2+ years of HR or administrative experience; fluent English and Spanish. You will: schedule interviews, prepare onboarding paperwork and answer employee questions about benefits. We offer: medical and dental insurance, a 401(k) with company match, and paid time off."
+      },
+      "outcome": "Ana uses the same key words in her resume and gets a call for a phone interview.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "parts": [
+          {
+            "t": "Bilingual HR Assistant – Full-time, Dallas, TX. "
+          },
+          {
+            "t": "Requirements: 2+ years of HR or administrative experience; fluent English and Spanish.",
+            "why": {
+              "en": "The required qualifications: check that you meet them and show them clearly on your resume.",
+              "es": "Los requisitos: revisa que los cumples y muéstralos con claridad en tu currículum."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "You will: schedule interviews, prepare onboarding paperwork and answer employee questions about benefits.",
+            "why": {
+              "en": "The responsibilities: these are the key words to use in your bullets, if they describe what you've done.",
+              "es": "Las responsabilidades: son las palabras clave para tus viñetas, si describen lo que has hecho."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "We offer: medical and dental insurance, a 401(k) with company match, and paid time off.",
+            "why": {
+              "en": "The benefits package: part of the offer. Compare it, not only the salary.",
+              "es": "El paquete de prestaciones: es parte de la oferta. Compáralo, no solo el sueldo."
+            }
+          }
+        ],
+        "prompt_en": "Tap the three parts of the ad that Ana should read most carefully.",
+        "prompt_es": "Toca las tres partes del anuncio que Ana debe leer con más atención."
+      },
+      "questions": [
+        "Which words from this ad should Ana use in her resume?",
+        "What does the ad tell you about the benefits, and why do they matter?"
+      ],
+      "questions_es": [
+        "¿Qué palabras de este anuncio debería usar Ana en su currículum?",
+        "¿Qué te dice el anuncio sobre las prestaciones y por qué importan?"
+      ]
+    },
+    {
+      "id": "c3",
+      "title_en": "Your First Day with HR",
+      "title_es": "Tu primer día con Recursos Humanos",
+      "scene": "On his first day, Carlos receives his onboarding packet: Form I-9, the benefits enrollment forms and the employee handbook. The HR manager asks: “Any questions?”",
+      "activity": {
+        "kind": "choose",
+        "options": [
+          {
+            "lead": "Carlos could say:",
+            "text": "No, it's fine. I'll look at it later.",
+            "correct": false,
+            "label_en": "Answer A",
+            "label_es": "Respuesta A"
+          },
+          {
+            "lead": "Or he could say:",
+            "text": "Yes, thank you. Could you walk me through the [[benefits package]]? I'd like to choose my health plan before the enrollment deadline.",
+            "correct": true,
+            "label_en": "Answer B",
+            "label_es": "Respuesta B"
+          }
+        ],
+        "prompt_en": "Tap the answer you would choose.",
+        "prompt_es": "Toca la respuesta que elegirías.",
+        "why": {
+          "en": "Answer B is more professional: Carlos asks a clear question, shows that he takes ownership of his paperwork, and avoids missing an important deadline. Answer A sounds polite, but he may lose time or benefits later.",
+          "es": "La respuesta B es más profesional: Carlos hace una pregunta clara, muestra que se hace responsable de sus trámites y evita perder una fecha importante. La respuesta A suena amable, pero después podría perder tiempo o prestaciones."
+        }
+      },
+      "questions": [
+        "Which answer would you choose? Why?",
+        "What would you ask HR on your first day in a U.S. company?"
+      ],
+      "questions_es": [
+        "¿Qué respuesta elegirías? ¿Por qué?",
+        "¿Qué le preguntarías a Recursos Humanos en tu primer día en una empresa de EE. UU.?"
+      ]
+    }
+  ]
+}

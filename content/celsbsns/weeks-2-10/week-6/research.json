@@ -1,0 +1,260 @@
+{
+  "tip": {
+    "en": "Most large U.S. companies publish their code on their website, often under “Investors,” “About us” or “Ethics & Compliance,” and many offer it as a PDF. Search for the company name plus “code of conduct” or “ethics policy.”",
+    "es": "La mayoría de las empresas grandes de EE. UU. publican su código en su sitio web, muchas veces en “Investors”, “About us” o “Ethics & Compliance”, y muchas lo ofrecen en PDF. Busca el nombre de la empresa más “code of conduct” o “ethics policy”."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already practiced honesty and accountability in your email.",
+      "es": "Ya practicaste la honestidad y la responsabilidad en tu correo."
+    },
+    "link_p": {
+      "en": "Now see how real U.S. companies put their ethical expectations in writing.",
+      "es": "Ahora mira cómo las empresas reales de EE. UU. ponen por escrito lo que esperan de sus empleados."
+    },
+    "title_a": "Company Codes",
+    "title_b": "of Conduct",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 U.S. companies",
+      "2 rules or values each",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 empresas de EE. UU.",
+      "2 reglas o valores de cada una",
+      "Mis frases"
+    ],
+    "intro_en": "Choose two U.S. companies, find their Code of Conduct or Ethics Policy, and identify two rules or values from each. Then compare them and keep the phrases that can help you write your own ethics statement.",
+    "intro_es": "Elige dos empresas de EE. UU., busca su Código de Conducta o Política de Ética e identifica dos reglas o valores de cada una. Después compáralas y quédate con las frases que te sirvan para escribir tu propia declaración de ética."
+  },
+  "week": 6,
+  "model": {
+    "name": "Northbridge Logistics",
+    "role": "Code of Conduct · Logistics · Columbus, OH",
+    "about": "At Northbridge, we do the right thing, even when it's hard. We keep honest records: every hour, every invoice, every delivery. We protect confidential information about our customers and our people. We don't accept gifts that could influence our decisions. If you see something that doesn't feel right, speak up. We will never retaliate against anyone who raises a concern in good faith.",
+    "answers": {
+      "en": [
+        "Northbridge Logistics, a transportation and logistics company in Ohio.",
+        "Rule 1: keep honest records (hours, invoices, deliveries). Rule 2: speak up, with a promise of no retaliation. It also mentions confidentiality and gifts.",
+        "Clear and friendly. It uses “we” and short sentences, not legal language.",
+        "“We do the right thing, even when it's hard.”",
+        "I liked that it is short and easy to remember. I'd improve: say how to report a concern (a manager, HR or a helpline)."
+      ],
+      "es": [
+        "Northbridge Logistics, una empresa de transporte y logística en Ohio.",
+        "Regla 1: llevar registros honestos (horas, facturas, entregas). Regla 2: alzar la voz, con la promesa de no represalias. También menciona la confidencialidad y los regalos.",
+        "Claro y amigable. Usa “we” y oraciones cortas, no lenguaje legal.",
+        "“We do the right thing, even when it's hard.”",
+        "Me gustó que es corto y fácil de recordar. Mejoraría: decir cómo reportar una inquietud (un gerente, Recursos Humanos o una línea de ayuda)."
+      ]
+    },
+    "initials": "NL"
+  },
+  "types": [
+    {
+      "en": "Code of conduct (PDF)",
+      "es": "Código de conducta (PDF)",
+      "key": "pdf"
+    },
+    {
+      "en": "Ethics web page",
+      "es": "Página de ética",
+      "key": "web"
+    },
+    {
+      "en": "Investor / governance page",
+      "es": "Página de inversionistas",
+      "key": "inv"
+    },
+    {
+      "en": "Other",
+      "es": "Otro",
+      "key": "other"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "The company and its industry",
+      "es": "La empresa y su industria",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "The behaviors it emphasizes",
+      "es": "Los comportamientos que enfatiza",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Tone and language",
+      "es": "Tono y lenguaje",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A phrase for your ethics statement",
+      "es": "Una frase para tu declaración de ética",
+      "color": "#C98A00"
+    },
+    {
+      "en": "Is it clear or inspiring?",
+      "es": "¿Es claro o inspirador?",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "code",
+      "mark": "C",
+      "color": "#2C6BC4",
+      "label_en": "Code of Conduct",
+      "label_es": "Código de conducta",
+      "desc_en": "The main document most companies publish.",
+      "desc_es": "El documento principal que publican la mayoría de las empresas.",
+      "query_template": "\"{field}\" code of conduct",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "ethics",
+      "mark": "E",
+      "color": "#7A4FD6",
+      "label_en": "Ethics policy",
+      "label_es": "Política de ética",
+      "desc_en": "Some companies call it an ethics policy or a statement of ethics.",
+      "desc_es": "Algunas empresas lo llaman política o declaración de ética.",
+      "query_template": "\"{field}\" ethics policy",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "investors",
+      "mark": "I",
+      "color": "#1F7A4D",
+      "label_en": "Investors: governance",
+      "label_es": "Inversionistas: gobierno corporativo",
+      "desc_en": "Public companies post their code in the governance section.",
+      "desc_es": "Las empresas públicas publican su código en la sección de gobierno corporativo.",
+      "query_template": "\"{field}\" investor relations corporate governance code of conduct",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "speakup",
+      "mark": "S",
+      "color": "#C98A00",
+      "label_en": "Speak-up / helpline page",
+      "label_es": "Página para reportar (helpline)",
+      "desc_en": "How employees can report a concern.",
+      "desc_es": "Cómo pueden los empleados reportar una inquietud.",
+      "query_template": "\"{field}\" ethics helpline speak up",
+      "search_template": "https://www.google.com/search?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "Reading actual codes of conduct helps you understand the ethical expectations U.S. companies place on employees—and the language they use to describe them.",
+    "goal_es": "Leer códigos de conducta reales te ayuda a entender las expectativas éticas que las empresas de EE. UU. tienen para sus empleados, y el lenguaje que utilizan para describirlas.",
+    "time": "1–1.5 hours",
+    "title": "Company Codes of Conduct",
+    "title_es": "Códigos de Conducta de Empresas",
+    "body_en": "🧠 Research Task\n\nTitle: Company Codes of Conduct\nTime: 1–1.5 hours\n\nTask:\n\nChoose two U.S. companies (for example, Google, Walmart, Deloitte).\n\nSearch their websites for \"Code of Conduct\" or \"Ethics Policy.\"\n\nIdentify two rules or values from each company.\n\nCompare:\n\nWhat behaviors do they emphasize?\n\nHow similar or different are the codes?\n\nWhich one do you personally find clearer or more inspiring?\n\nWhy This Matters:\nReading actual codes of conduct helps you understand the ethical expectations U.S. companies place on employees—and the language they use to describe them.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Códigos de Conducta de Empresas\nTiempo: 1–1.5 horas\n\nTarea:\n\nElige dos empresas de EE. UU. (por ejemplo, Google, Walmart, Deloitte).\n\nBusca en sus sitios web \"Code of Conduct\" (Código de Conducta) o \"Ethics Policy\" (Política de Ética).\n\nIdentifica dos reglas o valores de cada empresa.\n\nCompara:\n\n¿Qué comportamientos enfatizan?\n\n¿Qué tan similares o diferentes son los códigos?\n\n¿Cuál encuentras personalmente más claro o inspirador?\n\nPor qué Esto Importa:\nLeer códigos de conducta reales te ayuda a entender las expectativas éticas que las empresas de EE. UU. tienen para sus empleados, y el lenguaje que utilizan para describirlas."
+  },
+  "patterns": {
+    "en": [
+      "Both ask employees to speak up about concerns",
+      "Both promise no retaliation for reporting",
+      "Both protect confidential information",
+      "Both have rules about gifts or conflicts of interest",
+      "Both explain where to get help (manager, HR, helpline)",
+      "Both use examples or questions and answers"
+    ],
+    "es": [
+      "Las dos piden reportar las inquietudes",
+      "Las dos prometen no tomar represalias por reportar",
+      "Las dos protegen la información confidencial",
+      "Las dos tienen reglas sobre regalos o conflictos de intereses",
+      "Las dos explican dónde pedir ayuda (gerente, RR. HH., línea de ética)",
+      "Las dos usan ejemplos o preguntas y respuestas"
+    ]
+  },
+  "questions": {
+    "en": [
+      "Which company is it, and what industry is it in?",
+      "What behaviors does it emphasize? (tap the 2 rules or values you found)",
+      "What tone does the code use? (tap one or more)",
+      "One phrase you could use in your ethics statement",
+      "Is this code clear or inspiring? Why?"
+    ],
+    "es": [
+      "¿Qué empresa es y en qué industria está?",
+      "¿Qué comportamientos enfatiza? (toca las 2 reglas o valores que encontraste)",
+      "¿Qué tono usa el código? (toca uno o más)",
+      "Una frase que podrías usar en tu declaración de ética",
+      "¿Este código es claro o inspirador? ¿Por qué?"
+    ]
+  },
+  "sentences": {
+    "max": 7,
+    "min": 5
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Formal",
+      "Legal",
+      "Friendly",
+      "Clear",
+      "Inspiring"
+    ],
+    "es": [
+      "Formal",
+      "Legal",
+      "Amigable",
+      "Claro",
+      "Inspirador"
+    ]
+  },
+  "default_field": "Walmart",
+  "field_label": {
+    "en": "Company",
+    "es": "Empresa"
+  },
+  "field_examples": [
+    "Google",
+    "Walmart",
+    "Deloitte"
+  ],
+  "share_options": {
+    "en": [
+      "Honesty and accurate records",
+      "Confidential information",
+      "Conflicts of interest",
+      "Gifts and entertainment",
+      "Respect and no harassment",
+      "Speak up / no retaliation",
+      "Anti-bribery",
+      "Data privacy",
+      "Safety"
+    ],
+    "es": [
+      "Honestidad y registros correctos",
+      "Información confidencial",
+      "Conflictos de intereses",
+      "Regalos e invitaciones",
+      "Respeto y cero acoso",
+      "Reportar / no represalias",
+      "Anticorrupción",
+      "Privacidad de datos",
+      "Seguridad"
+    ]
+  },
+  "compare_q": {
+    "en": [
+      "What behaviors do they emphasize?",
+      "How similar or different are the codes?",
+      "Which one do you personally find clearer or more inspiring?"
+    ],
+    "es": [
+      "¿Qué comportamientos enfatizan?",
+      "¿Qué tan similares o diferentes son los códigos?",
+      "¿Cuál encuentras personalmente más claro o inspirador?"
+    ]
+  }
+}

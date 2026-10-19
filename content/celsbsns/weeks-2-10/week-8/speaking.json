@@ -1,0 +1,295 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Roleplay:",
+    "title_b": "Brand Consistency",
+    "chips_en": [
+      "2 hours",
+      "3 situations",
+      "10 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 situaciones",
+      "10 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Practice speaking for a brand in 3 real situations: a client call, a reply to an online complaint, and a 30-second pitch at an event. Keep the same brand voice and adjust your tone to each moment.",
+    "intro_es": "Practica hablar en nombre de una marca en 3 situaciones reales: una llamada con un cliente, una respuesta a una queja en línea y una presentación de 30 segundos en un evento. Mantén la misma voz de marca y ajusta tu tono a cada momento."
+  },
+  "week": 8,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Did your answers highlight the brand's values?",
+        "Was your tone respectful and calm with the complaint?",
+        "Was your pitch clear in 30 seconds?"
+      ],
+      "es": [
+        "¿Tus respuestas destacaron los valores de la marca?",
+        "¿Tu tono fue respetuoso y calmado con la queja?",
+        "¿Tu presentación fue clara en 30 segundos?"
+      ]
+    }
+  },
+  "reflection": {
+    "en": [
+      "Which activity felt most natural?",
+      "Which required you to adjust your tone the most?"
+    ],
+    "es": [
+      "¿Cuál actividad te pareció más natural?",
+      "¿Cuál requirió que ajustaras más tu tono?"
+    ]
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta",
+      "d_en": "Several times, even if it feels strange.",
+      "d_es": "Varias veces, aunque te sientas raro."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "people",
+      "t_en": "With a partner or ChatGPT",
+      "t_es": "Con un compañero o ChatGPT",
+      "d_en": "No partner? Use ChatGPT voice mode as the client.",
+      "d_es": "¿Sin compañero? Usa el modo de voz de ChatGPT como cliente."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 8.",
+      "d_es": "Las palabras de la Semana 8."
+    }
+  ],
+  "original": {
+    "goal": "Practice keeping a consistent brand voice in a client call, a social media response and an elevator pitch.",
+    "time": "2 hours",
+    "title": "Roleplay: Brand Consistency",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplay: Brand Consistency\nTime: 2 hours\n\nRemember to use www.chatgpt.com if you don't have a partner. Just click the \"speak\" button and ChatGPT can help you have these conversations.\n\nActivity 1 – Client Call\nPartner plays a client asking about your company's service. Practice giving answers that highlight brand values (e.g., reliability, innovation, quality).\n\nActivity 2 – Social Media Response\nPartner plays a customer who posts a complaint online. You respond in the brand voice—respectful, clear, and professional.\n\nActivity 3 – Elevator Pitch\nYou give a 30-second pitch of your company's value proposition as if meeting a potential client at an event.\n\nReflection:\nWhich activity felt most natural? Which required you to adjust your tone the most?",
+    "body_es": "🤝 Práctica de Conversación\n\nTítulo: Juego de Roles: Consistencia de Marca\nTiempo: 2 horas\n\nRecuerda usar www.chatgpt.com si no tienes un compañero. Solo haz clic en el botón \"speak\" y ChatGPT puede ayudarte a tener estas conversaciones.\n\nActividad 1 – Llamada con el Cliente\nTu compañero juega el papel de un cliente preguntando sobre el servicio de tu empresa. Practica dando respuestas que destaquen los valores de la marca (por ejemplo, fiabilidad, innovación, calidad).\n\nActividad 2 – Respuesta en Redes Sociales\nTu compañero juega el papel de un cliente que publica una queja en línea. Respondes en el tono de la marca: respetuoso, claro y profesional.\n\nActividad 3 – Presentación Rápida\nDas una presentación de 30 segundos sobre la propuesta de valor de tu empresa como si estuvieras conociendo a un cliente potencial en un evento.\n\nReflexión:\n¿Cuál actividad te pareció más natural? ¿Cuál requirió que ajustaras más tu tono?",
+    "goal_es": "Practicar cómo mantener una voz de marca consistente en una llamada con un cliente, una respuesta en redes sociales y una presentación rápida.",
+    "title_es": "Juego de Roles: Consistencia de Marca"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Practice 3 times. Each time, highlight a different brand value.",
+        "es": "Practica 3 veces. En cada intento, destaca un valor de la marca diferente."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Client call",
+          "es": "Zoom · Llamada con cliente"
+        },
+        "kind": "zoom",
+        "line": "Hi! Before we sign, can you tell me why we should choose your company?",
+        "meta": {
+          "en": "Client · 1 question",
+          "es": "Cliente · 1 pregunta"
+        },
+        "tile": {
+          "name": "Karen · Client",
+          "initials": "KM"
+        },
+        "speaker": {
+          "en": "KAREN · CLIENT",
+          "es": "KAREN · CLIENTA"
+        }
+      },
+      "title": {
+        "en": "Client Call",
+        "es": "Llamada con el cliente"
+      },
+      "points": {
+        "en": [
+          "What your company offers",
+          "One brand value, with a concrete example",
+          "A clear next step for the client"
+        ],
+        "es": [
+          "Qué ofrece tu empresa",
+          "Un valor de la marca, con un ejemplo concreto",
+          "Un siguiente paso claro para el cliente"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: highlight reliability",
+          "Try 2: highlight innovation",
+          "Try 3: highlight quality"
+        ],
+        "es": [
+          "Intento 1: destaca la confiabilidad",
+          "Intento 2: destaca la innovación",
+          "Intento 3: destaca la calidad"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "situation": {
+        "en": "A client asks about your company's service. Give answers that highlight the brand's values (for example reliability, innovation or quality).",
+        "es": "Una clienta pregunta sobre el servicio de tu empresa. Da respuestas que destaquen los valores de la marca (por ejemplo, confiabilidad, innovación o calidad)."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 2 times: first read the complaint and answer calmly, then answer again with a clearer next step.",
+        "es": "Practica 2 veces: primero lee la queja y responde con calma; luego responde otra vez con un siguiente paso más claro."
+      },
+      "icon": "people",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Social media · Public comment",
+          "es": "Redes sociales · Comentario público"
+        },
+        "kind": "meeting",
+        "line": "Ordered two weeks ago and still nothing. Is anyone even reading these messages?",
+        "meta": {
+          "en": "1 complaint · 14 likes",
+          "es": "1 queja · 14 me gusta"
+        },
+        "speaker": {
+          "en": "A CUSTOMER ONLINE",
+          "es": "UN CLIENTE EN LÍNEA"
+        }
+      },
+      "title": {
+        "en": "Social Media Response",
+        "es": "Respuesta en redes sociales"
+      },
+      "points": {
+        "en": [
+          "Thank them and say you're sorry for the problem",
+          "Explain what you will do, and when",
+          "Invite them to a private message to solve it"
+        ],
+        "es": [
+          "Agradece y di que lamentas el problema",
+          "Explica qué vas a hacer y cuándo",
+          "Invítalo a un mensaje privado para resolverlo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: calm and respectful",
+          "Try 2: add a clear next step and time"
+        ],
+        "es": [
+          "Intento 1: calmado y respetuoso",
+          "Intento 2: agrega un siguiente paso y una hora claros"
+        ]
+      },
+      "limit_s": [
+        20,
+        45
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "A customer posts a complaint online. Respond in the brand voice: respectful, clear and professional.",
+        "es": "Un cliente publica una queja en línea. Responde con la voz de la marca: respetuosa, clara y profesional."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 5 times, changing words slightly each time. Keep it under 30 seconds.",
+        "es": "Practica 5 veces, cambiando un poco las palabras cada vez. Que dure menos de 30 segundos."
+      },
+      "icon": "elev",
+      "reps": 5,
+      "scene": {
+        "bar": {
+          "en": "Networking event · Coffee break",
+          "es": "Evento de networking · Pausa para café"
+        },
+        "kind": "elevator",
+        "line": "Nice to meet you! So, what does your company do?",
+        "meta": {
+          "en": "30 s",
+          "es": "30 s"
+        },
+        "speaker": {
+          "en": "A POTENTIAL CLIENT",
+          "es": "UN CLIENTE POTENCIAL"
+        }
+      },
+      "title": {
+        "en": "Elevator Pitch",
+        "es": "Elevator pitch"
+      },
+      "points": {
+        "en": [
+          "Who your company helps",
+          "The value you offer (your value proposition)",
+          "Why you're different, and an invitation to talk more"
+        ],
+        "es": [
+          "A quién ayuda tu empresa",
+          "El valor que ofreces (tu propuesta de valor)",
+          "Por qué eres diferente, y una invitación a seguir hablando"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1",
+          "Try 2: start with the customer's problem",
+          "Try 3: add one concrete fact",
+          "Try 4: shorter",
+          "Try 5: your best version"
+        ],
+        "es": [
+          "Intento 1",
+          "Intento 2: empieza con el problema del cliente",
+          "Intento 3: agrega un dato concreto",
+          "Intento 4: más corto",
+          "Intento 5: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        20,
+        30
+      ],
+      "situation": {
+        "en": "You meet a potential client at an event. Give a 30-second pitch of your company's value proposition.",
+        "es": "Conoces a un cliente potencial en un evento. Da una presentación de 30 segundos sobre la propuesta de valor de tu empresa."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "0812f079-b982-4c5a-8e18-f4bbad9413f5"
+}

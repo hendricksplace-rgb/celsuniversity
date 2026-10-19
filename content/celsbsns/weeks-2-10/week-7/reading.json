@@ -1,0 +1,578 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Budgets",
+        "t_es": "Presupuestos",
+        "d_en": "How to read a budget and talk about being over or under it.",
+        "d_es": "Cómo leer un presupuesto y hablar de si estás por encima o por debajo."
+      },
+      {
+        "t_en": "The P&L",
+        "t_es": "El estado de resultados",
+        "d_en": "What revenue, expenses and the bottom line mean.",
+        "d_es": "Qué significan ingresos, gastos y la utilidad neta (el resultado final)."
+      },
+      {
+        "t_en": "ROI",
+        "t_es": "ROI",
+        "d_en": "How to connect your work to financial results with one simple number.",
+        "d_es": "Cómo conectar tu trabajo con resultados financieros usando un número sencillo."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "1 case study, 3 activities",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "1 caso, 3 actividades",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you learn the basic language of money at work: budgets, the P&L and ROI. You read a short article, watch a video, and follow Carlos, an operations employee who discovers that finance has a lot to do with his job.",
+    "intro_es": "En esta lectura aprendes el lenguaje básico del dinero en el trabajo: presupuestos, el estado de resultados (P&L) y el ROI. Lees un artículo corto, ves un video y sigues el caso de Carlos, un empleado de operaciones que descubre que las finanzas tienen mucho que ver con su trabajo."
+  },
+  "week": 7,
+  "video": {
+    "slug": "anil_lamba_the_balancing_act_fun_and_finance",
+    "event": "TEDx",
+    "extra": {
+      "slug": "lokesh_k_gurram_financial_education_made_easy",
+      "event": "TEDx",
+      "title": "Financial Education made Easy",
+      "source": 8,
+      "minutes": 15,
+      "speaker": "Lokesh K Gurram",
+      "provider": "ted"
+    },
+    "title": "The Balancing Act: Fun and Finance",
+    "source": 7,
+    "minutes": 15,
+    "speaker": "Anil Lamba",
+    "intro_en": "Watch the full talk inside the app. Write down the finance words you hear and your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta las palabras de finanzas que escuches y tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "Why does the speaker say everyone in a business should understand basic finance?",
+      "Which idea from the talk could help you make a better decision in your job?"
+    ],
+    "prompts_es": [
+      "¿Por qué dice el orador que todas las personas en una empresa deberían entender finanzas básicas?",
+      "¿Qué idea de la charla te podría ayudar a tomar una mejor decisión en tu trabajo?"
+    ]
+  },
+  "vocab": {
+    "budget": {
+      "d": "A plan that shows how much money a team, project or company expects to earn and spend in a period.",
+      "es": "presupuesto",
+      "ex": "Our marketing budget for this quarter is $20,000."
+    },
+    "over budget": {
+      "d": "Spending more money than the plan allowed.",
+      "es": "por encima del presupuesto, excedido",
+      "ex": "The project is $3,000 over budget, so we need to cut costs."
+    },
+    "cost-benefit analysis": {
+      "d": "Comparing what something will cost with what it will bring, before you decide.",
+      "es": "análisis costo-beneficio",
+      "ex": "Let's do a quick cost-benefit analysis before we buy the new software."
+    },
+    "revenue": {
+      "d": "The money a company receives from selling its products or services (the “top line”).",
+      "es": "ingresos (por ventas)",
+      "ex": "Revenue grew 6% this year."
+    },
+    "expenses": {
+      "d": "The money a company spends to operate, such as salaries, rent and marketing.",
+      "es": "gastos",
+      "ex": "We reduced our travel expenses by 15%."
+    },
+    "net income": {
+      "d": "The money left after all costs, expenses, interest and taxes are subtracted from revenue.",
+      "es": "utilidad neta, ganancia neta",
+      "ex": "Net income was $2 million last quarter."
+    },
+    "bottom line": {
+      "d": "The last line of the P&L: net income or profit. Also: the most important result.",
+      "es": "el resultado final (la utilidad neta)",
+      "ex": "Cutting waste has a direct impact on the bottom line."
+    },
+    "cash flow": {
+      "d": "The real money coming into and going out of a business in a period.",
+      "es": "flujo de efectivo",
+      "ex": "Sales are good, but our cash flow is tight this month."
+    },
+    "ROI": {
+      "d": "Return on investment: how much you gained compared with what you spent, usually as a percentage.",
+      "es": "retorno de la inversión",
+      "ex": "The new training program had an ROI of 50%."
+    },
+    "invoice": {
+      "d": "A formal bill that a seller sends to a buyer after providing a product or service.",
+      "es": "factura",
+      "ex": "Please send the invoice to accounts payable by Friday."
+    }
+  },
+  "warmup": {
+    "q_en": "When your manager talks about the budget in a meeting, you usually…",
+    "q_es": "Cuando tu jefe habla del presupuesto en una reunión, normalmente…",
+    "poll_en": [
+      "Think it's a topic for the finance team, not for me.",
+      "Listen, but I don't ask questions because the numbers confuse me.",
+      "Ask how my area affects the numbers and what I can do to help."
+    ],
+    "poll_es": [
+      "Pienso que es un tema del equipo de finanzas, no mío.",
+      "Escucho, pero no pregunto porque los números me confunden.",
+      "Pregunto cómo afecta mi área a los números y qué puedo hacer para ayudar."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: how do you see finance today?",
+    "title_es": "Antes de leer: ¿cómo ves las finanzas hoy?",
+    "note_q_en": "Which finance words do you already use at work (in English or Spanish)?",
+    "note_q_es": "¿Qué palabras de finanzas ya usas en tu trabajo (en inglés o en español)?",
+    "feedback_en": [
+      "Very common! Many people think the same. In U.S. companies, though, managers in every area are expected to understand their numbers. Today you'll see why.",
+      "That's honest, and it's a good place to start. The numbers are less difficult than they look. This reading gives you the key words.",
+      "Excellent! That is exactly the attitude U.S. employers value. This reading gives you the vocabulary to do it with confidence."
+    ],
+    "feedback_es": [
+      "¡Muy común! Mucha gente piensa igual. Pero en las empresas de EE. UU. se espera que los gerentes de todas las áreas entiendan sus números. Hoy vas a ver por qué.",
+      "Es una respuesta honesta y un buen punto de partida. Los números son menos difíciles de lo que parecen. Esta lectura te da las palabras clave.",
+      "¡Excelente! Esa es justo la actitud que valoran los empleadores en EE. UU. Esta lectura te da el vocabulario para hacerlo con seguridad."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Harvard Business Review, October 2009",
+      "url": "https://hbr.org/2009/10/are-your-people-financially-literate",
+      "who": "Karen Berman and Joe Knight",
+      "what": "“Are Your People Financially Literate?”"
+    },
+    {
+      "id": 2,
+      "pub": "Harvard Business Review, March 31, 2017",
+      "url": "https://hbr.org/2017/03/how-to-improve-your-finance-skills-even-if-you-hate-numbers",
+      "who": "Rebecca Knight",
+      "what": "“How to Improve Your Finance Skills (Even If You Hate Numbers)”"
+    },
+    {
+      "id": 3,
+      "pub": "U.S. Securities and Exchange Commission (SEC), 2014, reviewed 2017",
+      "url": "https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements",
+      "who": "U.S. Securities and Exchange Commission",
+      "what": "Beginners' Guide to Financial Statements"
+    },
+    {
+      "id": 4,
+      "pub": "Money, via Nasdaq.com, February 10, 2023",
+      "url": "https://www.nasdaq.com/articles/what-is-return-on-investment-roi",
+      "who": "Money Staff",
+      "what": "“What Is Return on Investment (ROI)?”"
+    },
+    {
+      "id": 5,
+      "pub": "Intuit QuickBooks, updated August 6, 2026",
+      "url": "https://quickbooks.intuit.com/accounting/what-is-an-invoice/",
+      "who": "Marshall Hargrave",
+      "what": "“What is an invoice? Definition, examples, and how to get paid on time”"
+    },
+    {
+      "id": 6,
+      "pub": "U.S. Small Business Administration · SBA.gov",
+      "url": "https://www.sba.gov/business-guide/manage-your-business/manage-your-finances",
+      "who": "U.S. Small Business Administration",
+      "what": "Business Guide — Manage your finances"
+    },
+    {
+      "id": 7,
+      "pub": "TEDxBITSGoa, 2020 · TED.com",
+      "url": "https://www.ted.com/talks/anil_lamba_the_balancing_act_fun_and_finance",
+      "who": "Anil Lamba",
+      "what": "“The Balancing Act: Fun and Finance”"
+    },
+    {
+      "id": 8,
+      "pub": "TEDxNITRourkela, 2021 · TED.com",
+      "url": "https://www.ted.com/talks/lokesh_k_gurram_financial_education_made_easy",
+      "who": "Lokesh K Gurram",
+      "what": "“Financial Education made Easy”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "Total revenue from sales",
+            "The budget for next year",
+            "Net income: what is left after all costs and expenses"
+          ],
+          "es": [
+            "Los ingresos totales por ventas",
+            "El presupuesto del próximo año",
+            "La utilidad neta: lo que queda después de todos los costos y gastos"
+          ]
+        },
+        "q": {
+          "en": "On a P&L, the “bottom line” is…",
+          "es": "En un estado de resultados, el “bottom line” es…"
+        },
+        "why": {
+          "en": "Right: the last line of the P&L shows the profit (or loss) after everything is subtracted.",
+          "es": "Así es: la última línea del estado de resultados muestra la ganancia (o pérdida) después de restar todo."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "150%",
+            "50%",
+            "$500"
+          ],
+          "es": [
+            "150 %",
+            "50 %",
+            "$500"
+          ]
+        },
+        "q": {
+          "en": "A project costs $1,000 and brings in $1,500. Using (gain − cost) ÷ cost × 100, the ROI is…",
+          "es": "Un proyecto cuesta $1,000 y genera $1,500. Con la fórmula (ganancia − costo) ÷ costo × 100, el ROI es…"
+        },
+        "why": {
+          "en": "Exactly: ($1,500 − $1,000) ÷ $1,000 × 100 = 50%. You gained 50 cents for every dollar you spent.",
+          "es": "Exacto: ($1,500 − $1,000) ÷ $1,000 × 100 = 50 %. Ganaste 50 centavos por cada dólar que gastaste."
+        }
+      },
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "Connected an operations decision to a cost saving",
+            "Asked the finance team to fix the budget",
+            "Cut quality to spend less"
+          ],
+          "es": [
+            "Conectó una decisión de operaciones con un ahorro",
+            "Le pidió al equipo de finanzas que arreglara el presupuesto",
+            "Bajó la calidad para gastar menos"
+          ]
+        },
+        "q": {
+          "en": "Carlos earned recognition because he…",
+          "es": "Carlos recibió reconocimiento porque…"
+        },
+        "why": {
+          "en": "Yes: he reviewed the budget himself and found a smarter way to order supplies. That is financial awareness.",
+          "es": "Sí: revisó él mismo el presupuesto y encontró una forma más inteligente de pedir suministros. Eso es conciencia financiera."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: one way I will connect my work to the numbers is…",
+      "es": "Mi conclusión: una forma en que voy a conectar mi trabajo con los números es…"
+    }
+  },
+  "cases_intro": {
+    "en": "Follow Carlos's case in three steps. Do each activity and, if you like, write down your ideas. The messages are in English, as you would see them at work.",
+    "es": "Sigue el caso de Carlos en tres pasos. Haz cada actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los verías en el trabajo."
+  },
+  "article": {
+    "dek": "Budgets, the P&L and ROI explained in plain English, and three habits that show your manager you understand the business.",
+    "title": "Speak the Language of Money: Finance Basics for Every Professional",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "Many professionals believe finance is “someone else's job.” In U.S. companies, it isn't. Senior leaders regularly share budgets and financial reports with managers in marketing, operations and other departments, and they expect those managers to understand them. Yet when researchers Karen Berman and Joe Knight gave a basic financial literacy test to a representative sample of U.S. managers, the average score was only 38%.{1} The good news: you don't need an accounting degree. You need a few key words and the habit of connecting your work to the numbers.",
+        "es": "Muchos profesionales creen que las finanzas son “trabajo de otros”. En las empresas de EE. UU. no es así. Los líderes comparten con frecuencia presupuestos e informes financieros con los gerentes de marketing, operaciones y otras áreas, y esperan que los entiendan. Sin embargo, cuando los investigadores Karen Berman y Joe Knight aplicaron un examen básico de educación financiera a una muestra representativa de gerentes en EE. UU., el promedio fue de solo 38 %. La buena noticia: no necesitas un título en contabilidad. Necesitas algunas palabras clave y el hábito de conectar tu trabajo con los números."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Start with the budget",
+        "en": "A [[budget]] is a plan for money: how much a team or project expects to earn and spend in a period, such as a month or a year. During that period, managers compare what they actually spend with the plan. If a team spends more than planned, it is [[over budget]]; if it spends less, it is under budget. The U.S. Small Business Administration suggests a simple test before adding any new cost, such as equipment or a new hire: compare the new benefits with the new costs.{6} This is a [[cost-benefit analysis]], and you can use it in any role.",
+        "es": "Un presupuesto es un plan para el dinero: cuánto espera ganar y gastar un equipo o un proyecto en un periodo, como un mes o un año. Durante ese periodo, los gerentes comparan lo que realmente gastan con el plan. Si un equipo gasta más de lo planeado, está por encima del presupuesto; si gasta menos, está por debajo. La Administración de Pequeñas Empresas de EE. UU. (SBA) sugiere una prueba sencilla antes de agregar un costo nuevo, como equipo o una contratación: comparar los beneficios nuevos con los costos nuevos. Eso es un análisis costo-beneficio, y lo puedes usar en cualquier puesto."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "h": "Read the P&L from top to bottom",
+        "en": "The profit and loss statement (P&L), also called the income statement, shows how a company performed over a period. As the U.S. Securities and Exchange Commission explains, it starts with [[revenue]], the money from sales. Then it subtracts the cost of what was sold, operating [[expenses]] such as salaries and marketing, and finally interest and taxes.{3} The last line shows whether the company made a profit or a loss. That is why [[net income]] is called the [[bottom line]]. One warning: profit is not the same as cash. The [[cash flow]] statement shows the real money coming in and going out, so a company can be profitable on paper and still be short of cash.{3}",
+        "es": "El estado de pérdidas y ganancias (P&L), también llamado estado de resultados, muestra cómo le fue a una empresa en un periodo. Como explica la Comisión de Bolsa y Valores de EE. UU. (SEC), empieza con los ingresos, el dinero de las ventas. Luego resta el costo de lo que se vendió, los gastos de operación como sueldos y marketing, y al final los intereses y los impuestos. La última línea muestra si la empresa tuvo ganancia o pérdida. Por eso a la utilidad neta se le llama “bottom line” (el resultado final). Una advertencia: la ganancia no es lo mismo que el efectivo. El estado de flujo de efectivo muestra el dinero real que entra y sale, así que una empresa puede tener ganancias en papel y aun así quedarse corta de efectivo."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think about your job, or the job you want. Which line of the P&L does your work affect most: revenue or expenses?",
+        "q_es": "Piensa en tu trabajo o en el trabajo que quieres. ¿Qué línea del estado de resultados afecta más tu trabajo: los ingresos o los gastos?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of financially aware professionals",
+        "items": [
+          {
+            "h": "1 · Know your numbers",
+            "icon": "target",
+            "en": "Learn the budget for your area and where the money goes. Harvard Business Review suggests a practical exercise: rebuild your company's income statement in a spreadsheet and ask “what if?” What if prices go down? What if sales go up?{2} You learn fast when you play with real numbers, and a colleague in finance can be a great mentor.",
+            "es": "Conoce el presupuesto de tu área y a dónde va el dinero. Harvard Business Review sugiere un ejercicio práctico: reconstruir el estado de resultados de tu empresa en una hoja de cálculo y preguntarte “¿qué pasaría si…?”. ¿Qué pasa si bajan los precios? ¿Y si suben las ventas? Aprendes rápido cuando juegas con números reales, y un colega de finanzas puede ser un gran mentor."
+          },
+          {
+            "h": "2 · Talk in ROI",
+            "icon": "mega",
+            "en": "[[ROI]] (return on investment) shows how much you gained compared with what you spent. A simple formula: (gain − cost) ÷ cost × 100.{4} If a training program costs $2,000 and brings in $3,000 in new business, the ROI is 50%. When you present an idea with its ROI, managers listen.",
+            "es": "El ROI (retorno de la inversión) muestra cuánto ganaste en comparación con lo que gastaste. Una fórmula sencilla: (ganancia − costo) ÷ costo × 100. Si un programa de capacitación cuesta $2,000 y genera $3,000 en negocios nuevos, el ROI es de 50 %. Cuando presentas una idea con su ROI, los gerentes te escuchan."
+          },
+          {
+            "h": "3 · Follow the paperwork",
+            "icon": "shield",
+            "en": "An [[invoice]] is the formal bill a seller sends after providing a product or service. It shows an invoice number, the date, the items, the total and the payment terms. “Net 30,” for example, means payment is due within 30 days of the invoice date.{5} Checking invoices carefully protects your company's cash.",
+            "es": "Una factura es el cobro formal que envía un vendedor después de entregar un producto o servicio. Incluye un número de factura, la fecha, los conceptos, el total y las condiciones de pago. “Net 30”, por ejemplo, significa que el pago vence 30 días después de la fecha de la factura. Revisar las facturas con cuidado protege el efectivo de tu empresa."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same update to your manager",
+        "h_es": "Antes y después: la misma actualización a tu jefe",
+        "intro_en": "Tap “After” to see how the same update changes when you talk in numbers.",
+        "intro_es": "Toca “Después” para ver cómo cambia la misma actualización cuando hablas con números.",
+        "before": {
+          "to": "Mark",
+          "subject": "Trade show",
+          "body": [
+            "Hi Mark, ",
+            {
+              "m": 1,
+              "t": "about the trade show, I think things went pretty well"
+            },
+            ", ",
+            {
+              "m": 2,
+              "t": "and maybe we spent a little less than planned"
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "because of some changes we made"
+            },
+            "."
+          ],
+          "marks": [
+            {
+              "en": "The main point is vague: what went well?",
+              "es": "La idea principal es vaga: ¿qué salió bien?"
+            },
+            {
+              "en": "Hedges and no numbers: how much less?",
+              "es": "Palabras que suavizan y ningún número: ¿cuánto menos?"
+            },
+            {
+              "en": "It doesn't say what changed or what to do next.",
+              "es": "No dice qué cambió ni qué hacer después."
+            }
+          ]
+        },
+        "after": {
+          "to": "Mark",
+          "subject": "Trade show: $800 under budget",
+          "body": [
+            "Hi Mark,\n",
+            {
+              "m": 1,
+              "t": "Good news: we finished the trade show $800 under budget."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "We shared a booth with our partner company, which cut our booth fee in half."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "I suggest we do the same at the fall show. Can I share the numbers at Monday's meeting?"
+            },
+            "\nThanks,\nAna"
+          ],
+          "marks": [
+            {
+              "en": "The result comes first, with an exact number.",
+              "es": "El resultado va primero, con un número exacto."
+            },
+            {
+              "en": "It explains the cause of the saving.",
+              "es": "Explica la causa del ahorro."
+            },
+            {
+              "en": "It proposes a next step: financial thinking in action.",
+              "es": "Propone un siguiente paso: pensamiento financiero en acción."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need to become an accountant. You need to understand a budget, read the main lines of a P&L, and explain results with simple numbers like ROI. In the case study below, you'll follow Carlos, an operations employee who discovers that finance has everything to do with his job.",
+        "es": "No necesitas convertirte en contador. Necesitas entender un presupuesto, leer las líneas principales de un estado de resultados y explicar resultados con números sencillos como el ROI. En el caso de estudio que sigue vas a acompañar a Carlos, un empleado de operaciones que descubre que las finanzas tienen todo que ver con su trabajo."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on Harvard Business Review, the SEC, the SBA, Money and QuickBooks",
+    "based_es": "Basado en Harvard Business Review, la SEC, la SBA, Money y QuickBooks",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Questions While Reading",
+    "title": "Why Financial Literacy Matters at Work",
+    "body_en": "📚 Reading Assignment\n\nTitle: Why Financial Literacy Matters at Work\nTime: ~1 hour\n\nCase Study:\nCarlos works in operations at a U.S. company. His manager asks him to reduce costs on a project. At first, Carlos thinks finance has nothing to do with him. But when he reviews the project's budget, he realizes that ordering supplies more efficiently saves the company $5,000. His manager notices—and Carlos earns recognition for showing financial awareness.\n\nQuestions while reading:\n\nHow did Carlos's decision affect the company's bottom line?\n\nWhat does this example show about financial literacy beyond the finance department?\n\nHow could you apply the same idea in your own role?\n\nArticle Reference:\n🔗 Harvard Business Review – Why Financial Literacy Is Essential for Managers — https://hbr.org/2017/01/why-financial-literacy-is-essential-for-managers\n\nVideo Reference:\n🎥 YouTube – Finance for Non-Finance Managers — https://www.youtube.com/watch?v=HkjZZq_oP84",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Por qué la Educación Financiera Importa en el Trabajo\nTiempo: ~1 hora\n\nEstudio de Caso:\nCarlos trabaja en operaciones en una empresa de EE. UU. Su gerente le pide que reduzca costos en un proyecto. Al principio, Carlos piensa que las finanzas no tienen nada que ver con él. Pero cuando revisa el presupuesto del proyecto, se da cuenta de que ordenar los suministros de manera más eficiente ahorra a la empresa $5,000. Su gerente lo nota, y Carlos recibe reconocimiento por demostrar conciencia financiera.\n\nPreguntas mientras lees:\n\n¿Cómo afectó la decisión de Carlos al resultado final de la empresa?\n\n¿Qué muestra este ejemplo sobre la educación financiera más allá del departamento de finanzas?\n\n¿Cómo podrías aplicar la misma idea en tu propio rol?\n\nReferencia del Artículo:\n🔗 Harvard Business Review – Why Financial Literacy Is Essential for Managers — https://hbr.org/2017/01/why-financial-literacy-is-essential-for-managers\n\nReferencia del Video:\n🎥 YouTube – Finance for Non-Finance Managers — https://www.youtube.com/watch?v=HkjZZq_oP84",
+    "summary": "Carlos, an operations employee at a U.S. company, reviews his project's budget and saves $5,000 by ordering supplies more efficiently, showing that financial literacy matters beyond the finance department.",
+    "title_es": "Por qué la Educación Financiera Importa en el Trabajo",
+    "video_ref": "YouTube – Finance for Non-Finance Managers — https://www.youtube.com/watch?v=HkjZZq_oP84",
+    "article_ref": "Harvard Business Review – Why Financial Literacy Is Essential for Managers — https://hbr.org/2017/01/why-financial-literacy-is-essential-for-managers",
+    "instructions": "Read the case study and answer the questions while reading."
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "scene": "Carlos works in operations at a U.S. company. His manager asks him to reduce costs on a project. At first, Carlos thinks finance has nothing to do with him. But when he reviews the project's budget, he sees an opportunity and writes to his manager:",
+      "message": {
+        "from": "Carlos → Manager",
+        "text": "Hi Linda, I reviewed the project budget. If we order supplies in one monthly batch instead of every week, we save $5,000 on this project. The quality stays the same. Can we start next month?"
+      },
+      "outcome": "His manager notices, and Carlos earns recognition for showing financial awareness.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "prompt_en": "Tap the three parts of Carlos's message that show financial awareness.",
+        "prompt_es": "Toca las tres partes del mensaje de Carlos que muestran conciencia financiera.",
+        "parts": [
+          {
+            "t": "Hi Linda, "
+          },
+          {
+            "t": "I reviewed the project budget.",
+            "why": {
+              "en": "He went to the numbers himself instead of waiting for Finance.",
+              "es": "Fue él mismo a los números, en lugar de esperar a Finanzas."
+            }
+          },
+          {
+            "t": " If we order supplies in one monthly batch instead of every week, "
+          },
+          {
+            "t": "we save $5,000 on this project.",
+            "why": {
+              "en": "An exact amount that goes straight to the bottom line.",
+              "es": "Una cantidad exacta que impacta directamente el resultado final."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "The quality stays the same.",
+            "why": {
+              "en": "He saves money without lowering quality, the kind of cut managers trust.",
+              "es": "Ahorra sin bajar la calidad: el tipo de recorte en el que confían los gerentes."
+            }
+          },
+          {
+            "t": " Can we start next month?"
+          }
+        ]
+      },
+      "title_en": "The $5,000 Decision",
+      "title_es": "La decisión de $5,000",
+      "questions": [
+        "How did Carlos's decision affect the company's bottom line?"
+      ],
+      "questions_es": [
+        "¿Cómo afectó la decisión de Carlos al resultado final de la empresa?"
+      ]
+    },
+    {
+      "id": "c2",
+      "scene": "The same week, two employees in other departments receive the same request: “Please look for ways to reduce costs.”",
+      "activity": {
+        "kind": "choose",
+        "prompt_en": "Tap the answer that shows financial literacy beyond the finance department.",
+        "prompt_es": "Toca la respuesta que muestra educación financiera más allá del departamento de finanzas.",
+        "options": [
+          {
+            "lead": "One employee says:",
+            "text": "Budgets are Finance's job. I just do my work.",
+            "correct": false,
+            "label_en": "Employee A",
+            "label_es": "Empleado A"
+          },
+          {
+            "lead": "Another says:",
+            "text": "Let me review our part of the [[budget]]. Small changes in my area can improve the [[bottom line]].",
+            "correct": true,
+            "label_en": "Employee B",
+            "label_es": "Empleado B"
+          }
+        ],
+        "why": {
+          "en": "Employee B understands that every department spends money and can save money. Like Carlos, they connect their daily work to the company's results. Employee A misses the chance to add value.",
+          "es": "El empleado B entiende que cada departamento gasta dinero y puede ahorrarlo. Como Carlos, conecta su trabajo diario con los resultados de la empresa. El empleado A pierde la oportunidad de aportar valor."
+        }
+      },
+      "title_en": "Finance Beyond the Finance Department",
+      "title_es": "Las finanzas más allá del departamento de finanzas",
+      "questions": [
+        "What does this example show about financial literacy beyond the finance department?"
+      ],
+      "questions_es": [
+        "¿Qué muestra este ejemplo sobre la educación financiera más allá del departamento de finanzas?"
+      ]
+    },
+    {
+      "id": "c3",
+      "scene": "Now it's your turn. Think about your current or future job. Like Carlos, find one place where your work touches the budget.",
+      "activity": {
+        "kind": "rewrite",
+        "prompt_en": "Write a short message (2–4 sentences) to your manager with one idea to save money or earn more in your role. Include a number.",
+        "prompt_es": "Escribe un mensaje corto (2 a 4 oraciones) a tu jefe con una idea para ahorrar dinero o ganar más en tu puesto. Incluye un número.",
+        "label_en": "My message",
+        "label_es": "Mi mensaje",
+        "hints_en": [
+          "Say what you reviewed",
+          "Give one clear idea",
+          "Add an amount or a percentage",
+          "End with a next step"
+        ],
+        "hints_es": [
+          "Di qué revisaste",
+          "Da una idea clara",
+          "Agrega una cantidad o un porcentaje",
+          "Termina con un siguiente paso"
+        ],
+        "model": "Hi Linda,\nI reviewed our team's software subscriptions. We pay for 12 licenses, but we only use 8. If we cancel the other 4, we save about $1,900 a year. Can I make the change this week?\nThank you,\nCarlos"
+      },
+      "title_en": "Your Turn: Apply It to Your Role",
+      "title_es": "Tu turno: aplícalo a tu puesto",
+      "questions": [
+        "How could you apply the same idea in your own role?"
+      ],
+      "questions_es": [
+        "¿Cómo podrías aplicar la misma idea en tu propio rol?"
+      ]
+    }
+  ]
+}

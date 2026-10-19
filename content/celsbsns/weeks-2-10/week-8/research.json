@@ -1,0 +1,243 @@
+{
+  "tip": {
+    "en": "Compare the same kind of content for both brands, for example their homepage or their last five social media posts. That way your comparison is fair.",
+    "es": "Compara el mismo tipo de contenido en las dos marcas, por ejemplo su página principal o sus últimas cinco publicaciones en redes. Así tu comparación es justa."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already written a brand message.",
+      "es": "Ya escribiste un mensaje de marca."
+    },
+    "link_p": {
+      "en": "Now see how two famous U.S. brands do it, and find models for your own voice.",
+      "es": "Ahora mira cómo lo hacen dos marcas famosas de EE. UU. y encuentra modelos para tu propia voz."
+    },
+    "title_a": "Analyzing",
+    "title_b": "Brand Voice",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 U.S. brands",
+      "Compare + choose",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 marcas de EE. UU.",
+      "Compara y elige",
+      "Mis frases"
+    ],
+    "intro_en": "Choose two U.S. companies with strong branding (for example Nike, Apple, Patagonia or Coca-Cola). Review their websites or social media, identify their brand voice, compare them, and decide which voice feels more effective to you.",
+    "intro_es": "Elige dos empresas de EE. UU. con una marca fuerte (por ejemplo Nike, Apple, Patagonia o Coca-Cola). Revisa sus sitios web o redes sociales, identifica su voz de marca, compáralas y decide qué voz te parece más efectiva."
+  },
+  "week": 8,
+  "model": {
+    "name": "Patagonia",
+    "role": "Outdoor clothing · Ventura, California",
+    "about": "On its website and social media, Patagonia talks less about selling and more about protecting nature. Its mission statement, “We're in business to save our home planet,” appears across the brand. Product pages talk about repairing gear, recycled materials and products made to last. The photos show real places and people outdoors, not studio models.",
+    "answers": {
+      "en": [
+        "Outdoor clothing and gear.",
+        "Inspiring and serious, with a calm, honest voice.",
+        "Words like “planet”, “repair” and “responsible”; real outdoor photos; very few prices on the main page.",
+        "It shows its values with actions: repairing clothes, using recycled materials, supporting environmental causes.",
+        "Very effective for people who care about the environment. A phrase I could borrow: “We're in business to…” to explain my purpose."
+      ],
+      "es": [
+        "Ropa y equipo para actividades al aire libre.",
+        "Inspiradora y seria, con una voz tranquila y honesta.",
+        "Palabras como “planet”, “repair” y “responsible”; fotos reales al aire libre; casi no hay precios en la página principal.",
+        "Muestra sus valores con acciones: reparar ropa, usar materiales reciclados, apoyar causas ambientales.",
+        "Muy efectiva para personas a las que les importa el medio ambiente. Una frase que podría usar: “We're in business to…” para explicar mi propósito."
+      ]
+    },
+    "initials": "PA"
+  },
+  "types": [
+    {
+      "en": "Website",
+      "es": "Sitio web",
+      "key": "web"
+    },
+    {
+      "en": "Instagram",
+      "es": "Instagram",
+      "key": "ig"
+    },
+    {
+      "en": "YouTube / ads",
+      "es": "YouTube / anuncios",
+      "key": "yt"
+    },
+    {
+      "en": "LinkedIn",
+      "es": "LinkedIn",
+      "key": "in"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "The brand and its industry",
+      "es": "La marca y su industria",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Its brand voice",
+      "es": "Su voz de marca",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Words, tone or visuals that stand out",
+      "es": "Palabras, tono o imágenes que destacan",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "How it communicates its values",
+      "es": "Cómo comunica sus valores",
+      "color": "#C98A00"
+    },
+    {
+      "en": "How effective it is for you",
+      "es": "Qué tan efectiva te parece",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "website",
+      "mark": "W",
+      "color": "#1F7A4D",
+      "desc_en": "Their homepage and “About us” page.",
+      "desc_es": "Su página principal y la página “About us”.",
+      "label_en": "Official website",
+      "label_es": "Sitio web oficial",
+      "query_template": "{field} official website about us",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "instagram",
+      "mark": "IG",
+      "color": "#C2185B",
+      "desc_en": "Their last posts: words, photos and replies.",
+      "desc_es": "Sus últimas publicaciones: palabras, fotos y respuestas.",
+      "label_en": "Instagram posts",
+      "label_es": "Publicaciones en Instagram",
+      "query_template": "{field} instagram",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "youtube",
+      "mark": "▶",
+      "color": "#D32F2F",
+      "desc_en": "Their ads and campaign videos.",
+      "desc_es": "Sus anuncios y videos de campaña.",
+      "label_en": "YouTube: ads and campaigns",
+      "label_es": "YouTube: anuncios y campañas",
+      "query_template": "{field} ad campaign",
+      "search_template": "https://www.youtube.com/results?search_query={q}"
+    },
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "How they talk to professionals and future employees.",
+      "desc_es": "Cómo les hablan a profesionales y futuros empleados.",
+      "label_en": "LinkedIn company page",
+      "label_es": "Página de empresa en LinkedIn",
+      "query_template": "{field}",
+      "search_template": "https://www.linkedin.com/search/results/companies/?keywords={q}"
+    }
+  ],
+  "original": {
+    "goal": "Recognize how companies use communication styles to build identity, and find models to apply in your own work.",
+    "time": "1–1.5 hours",
+    "title": "Analyzing Brand Voice",
+    "body_en": "🧠 Research Task\n\nTitle: Analyzing Brand Voice\nTime: 1–1.5 hours\n\nTask:\n\nChoose two U.S. companies with strong branding (e.g., Nike, Apple, Patagonia, Coca-Cola).\n\nReview their websites or social media.\n\nIdentify their brand voice: is it casual, formal, inspiring, playful?\n\nCompare:\n\nWhat words, tone, or visuals stand out?\n\nHow do they communicate their values?\n\nWhich brand voice feels more effective to you?\n\nWhy This Matters:\nThis helps you recognize how companies use communication styles to build identity—and gives you models to apply in your own work.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Analizando la Voz de Marca\nTiempo: 1–1.5 horas\n\nTarea:\n\nElige dos empresas estadounidenses con una fuerte marca (por ejemplo, Nike, Apple, Patagonia, Coca-Cola).\n\nRevisa sus sitios web o redes sociales.\n\nIdentifica su voz de marca: ¿es casual, formal, inspiradora, juguetona?\n\nCompara:\n\n¿Qué palabras, tono o elementos visuales destacan?\n\n¿Cómo comunican sus valores?\n\n¿Qué voz de marca te parece más efectiva?\n\nPor qué es importante:\nEsto te ayuda a reconocer cómo las empresas utilizan estilos de comunicación para construir identidad, y te ofrece modelos que puedes aplicar en tu propio trabajo.",
+    "goal_es": "Reconocer cómo las empresas utilizan estilos de comunicación para construir identidad y encontrar modelos que puedas aplicar en tu propio trabajo.",
+    "title_es": "Analizando la Voz de Marca"
+  },
+  "patterns": {
+    "en": [
+      "They repeat one clear message everywhere",
+      "They show their values with actions and examples",
+      "They use the same key words again and again",
+      "Their visuals match their words",
+      "They speak to a specific audience",
+      "They use short, memorable slogans"
+    ],
+    "es": [
+      "Repiten un mensaje claro en todos lados",
+      "Muestran sus valores con acciones y ejemplos",
+      "Usan las mismas palabras clave una y otra vez",
+      "Sus imágenes coinciden con sus palabras",
+      "Le hablan a un público específico",
+      "Usan eslóganes cortos y fáciles de recordar"
+    ]
+  },
+  "questions": {
+    "en": [
+      "Which brand is it, and what does it sell?",
+      "What is its brand voice? (tap one or more)",
+      "What words, tone or visuals stand out? (tap all that apply)",
+      "How does it communicate its values?",
+      "How effective is this brand voice for you, and why?"
+    ],
+    "es": [
+      "¿Qué marca es y qué vende?",
+      "¿Cuál es su voz de marca? (toca una o más)",
+      "¿Qué palabras, tono o imágenes destacan? (toca todo lo que aplique)",
+      "¿Cómo comunica sus valores?",
+      "¿Qué tan efectiva te parece esta voz de marca y por qué?"
+    ]
+  },
+  "sentences": {
+    "max": 7,
+    "min": 4
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Casual",
+      "Formal",
+      "Inspiring",
+      "Playful",
+      "Serious"
+    ],
+    "es": [
+      "Casual",
+      "Formal",
+      "Inspiradora",
+      "Juguetona",
+      "Seria"
+    ]
+  },
+  "default_field": "Nike",
+  "share_options": {
+    "en": [
+      "Slogans",
+      "Short sentences",
+      "Strong images",
+      "Customer stories",
+      "Humor",
+      "Facts and numbers",
+      "Calls to action"
+    ],
+    "es": [
+      "Eslóganes",
+      "Oraciones cortas",
+      "Imágenes fuertes",
+      "Historias de clientes",
+      "Humor",
+      "Datos y números",
+      "Llamadas a la acción"
+    ]
+  },
+  "compare_q": {
+    "en": [
+      "Which brand voice feels more effective to you? Why?"
+    ],
+    "es": [
+      "¿Qué voz de marca te parece más efectiva? ¿Por qué?"
+    ]
+  }
+}

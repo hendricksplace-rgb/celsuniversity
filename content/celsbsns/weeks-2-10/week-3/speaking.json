@@ -1,0 +1,362 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Management and Leadership",
+    "title_b": "in Action",
+    "chips_en": [
+      "2 hours",
+      "4 situations",
+      "8 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "4 situaciones",
+      "8 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Roleplay 4 real situations where you switch between management (tasks, structure, accountability) and leadership (vision, motivation, communication). Practice out loud, see what you said, and notice how the same message feels different in each style.",
+    "intro_es": "Practica con juegos de roles 4 situaciones reales donde alternas entre la gestión (tareas, estructura, responsabilidad) y el liderazgo (visión, motivación, comunicación). Practica en voz alta, mira lo que dijiste y nota cómo el mismo mensaje se siente diferente en cada estilo."
+  },
+  "week": 3,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Was it clear?",
+        "Was the tone right for the situation?",
+        "Did it sound motivating?"
+      ],
+      "es": [
+        "¿Fue claro?",
+        "¿El tono fue el adecuado para la situación?",
+        "¿Sonó motivador?"
+      ]
+    }
+  },
+  "reflection": {
+    "limit_s": [
+      60,
+      120
+    ],
+    "intro_en": "After finishing all activities, record a short (1–2 minute) reflection answering:",
+    "intro_es": "Después de terminar todas las actividades, graba una breve reflexión (1–2 minutos) respondiendo:",
+    "questions": {
+      "en": [
+        "Which style felt more natural for you: management or leadership?",
+        "Which one do you need to practice more to succeed in a U.S. workplace?"
+      ],
+      "es": [
+        "¿Qué estilo te pareció más natural: gestión o liderazgo?",
+        "¿Cuál necesitas practicar más para tener éxito en un trabajo en EE. UU.?"
+      ]
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "people",
+      "t_en": "Pair up if you can",
+      "t_es": "Practica en pareja si puedes",
+      "d_en": "A classmate, colleague or friend.",
+      "d_es": "Un compañero de clase, colega o amigo."
+    },
+    {
+      "icon": "repeat",
+      "t_en": "Switch roles and repeat",
+      "t_es": "Cambien de rol y repitan",
+      "d_en": "Each of you plays the manager once.",
+      "d_es": "Cada quien hace de gerente una vez."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 3.",
+      "d_es": "Las palabras de la Semana 3."
+    }
+  ],
+  "original": {
+    "goal": "Practice switching between management (tasks, structure, accountability) and leadership (vision, motivation, communication) styles in real conversations.",
+    "time": "2 hours",
+    "title": "Roleplaying Management and Leadership in Action",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplaying Management and Leadership in Action\nTime: 2 hours\nObjective: Practice switching between management (tasks, structure, accountability) and leadership (vision, motivation, communication) styles in real conversations.\n\nActivity 1: Delegating Tasks (Manager Role)\n\nPair up with a classmate, colleague, or friend.\n\nOne person acts as the manager, the other as the team member.\n\nScenario Prompt (Manager):\n\"[Name], I'd like you to complete the client presentation draft by Wednesday at noon. Please share it with me for review before we finalize it Thursday afternoon.\"\n\n⚡ Focus: Be clear, direct, and structured. Use deadlines and accountability.\n\nSwitch roles and repeat.\n\nActivity 2: Motivating the Team (Leader Role)\n\nSame partner, new scenario.\n\nImagine the team is stressed about a deadline.\n\nScenario Prompt (Leader):\n\"I know this deadline feels tough, but what we're doing matters. This presentation will show the client what we're capable of. I believe in your work, and if we stay focused, we'll succeed together.\"\n\n⚡ Focus: Use encouragement, positive tone, and shared purpose.\n\nSwitch roles and repeat.\n\nActivity 3: Giving Feedback\n\nOne partner plays the employee who submitted a report with errors.\n\nThe other gives feedback first as a manager, then as a leader.\n\n❌ Manager (weak example): \"This report has mistakes. Fix them.\"\n✅ Manager (better): \"This report needs corrections—please fix sections 2 and 3 by tomorrow.\"\n✅ Leader: \"Your analysis was strong, but some errors slipped in. Let's correct them so the final report reflects your great work.\"\n\n⚡ Focus: Practice tone, word choice, and balance between directness and encouragement.\n\nActivity 4: Handling a Problem\n\nScenario: A project is delayed. One person is the boss, the other is the team lead explaining the situation.\n\nTeam Lead Example:\n\nManager-style: \"We are delayed two days because of vendor issues. I've adjusted the timeline and reassigned tasks.\"\n\nLeader-style: \"We are delayed two days due to vendor issues, but I've outlined new steps to recover. If we stay coordinated, we can still exceed client expectations.\"\n\n⚡ Focus: Deliver the same news both ways—see how it feels different.\n\nSelf-Reflection Prompt\n\nAfter finishing all activities, record a short (1–2 minute) reflection answering:\n\nWhich style felt more natural for you—management or leadership?\n\nWhich one do you need to practice more to succeed in a U.S. workplace?\n\nWhy This Matters:\n\nIn U.S. companies, you will often be asked to manage tasks and lead people at the same time. Practicing both styles will make you adaptable, professional, and promotable.",
+    "body_es": "🤝 Práctica de Hablar\n\nTítulo: Juego de Roles de Gestión y Liderazgo en Acción  \nTiempo: 2 horas  \nObjetivo: Practicar el cambio entre estilos de gestión (tareas, estructura, responsabilidad) y liderazgo (visión, motivación, comunicación) en conversaciones reales.\n\nActividad 1: Delegar Tareas (Rol de Gerente)\n\nEmpareja con un compañero de clase, colega o amigo.\n\nUna persona actúa como el gerente, la otra como el miembro del equipo.\n\nEscenario (Gerente):  \n\"[Nombre], me gustaría que completes el borrador de la presentación para el cliente antes del miércoles al mediodía. Por favor, compártelo conmigo para revisarlo antes de finalizarlo el jueves por la tarde.\"\n\n⚡ Enfoque: Sé claro, directo y estructurado. Usa plazos y responsabilidad.\n\nCambia de roles y repite.\n\nActividad 2: Motivar al Equipo (Rol de Líder)\n\nMismo compañero, nuevo escenario.\n\nImagina que el equipo está estresado por un plazo.\n\nEscenario (Líder):  \n\"Yo sé que este plazo parece difícil, pero lo que estamos haciendo importa. Esta presentación mostrará al cliente de lo que somos capaces. Creo en tu trabajo, y si nos mantenemos enfocados, tendremos éxito juntos.\"\n\n⚡ Enfoque: Usa ánimo, tono positivo y propósito compartido.\n\nCambia de roles y repite.\n\nActividad 3: Dar Retroalimentación\n\nUn compañero juega el papel del empleado que entregó un informe con errores.\n\nEl otro da retroalimentación primero como gerente, luego como líder.\n\n❌ Gerente (ejemplo débil): \"Este informe tiene errores. Arréglalos.\"  \n✅ Gerente (mejor): \"Este informe necesita correcciones—por favor corrige las secciones 2 y 3 para mañana.\"  \n✅ Líder: \"Tu análisis fue fuerte, pero se colaron algunos errores. Vamos a corregirlos para que el informe final refleje tu gran trabajo.\"\n\n⚡ Enfoque: Practica el tono, la elección de palabras y el equilibrio entre la directitud y el ánimo.\n\nActividad 4: Manejar un Problema\n\nEscenario: Un proyecto está retrasado. Una persona es el jefe, la otra es el líder del equipo explicando la situación.\n\nEjemplo de Líder del Equipo:\n\nEstilo de gerente: \"Estamos retrasados dos días debido a problemas con el proveedor. He ajustado el cronograma y reasignado tareas.\"\n\nEstilo de líder: \"Estamos retrasados dos días debido a problemas con el proveedor, pero he delineado nuevos pasos para recuperarnos. Si nos mantenemos coordinados, aún podemos superar las expectativas del cliente.\"\n\n⚡ Enfoque: Entrega la misma noticia de ambas maneras—observa cómo se siente diferente.\n\nReflexión Personal\n\nDespués de terminar todas las actividades, graba una breve reflexión (1–2 minutos) respondiendo:\n\n¿Qué estilo te pareció más natural—gestión o liderazgo?\n\n¿Cuál necesitas practicar más para tener éxito en un lugar de trabajo en EE.UU.?\n\nPor qué Esto Importa:\n\nEn las empresas de EE.UU., a menudo se te pedirá que gestiones tareas y lideres personas al mismo tiempo. Practicar ambos estilos te hará adaptable, profesional y con posibilidades de ascenso.",
+    "goal_es": "Practicar el cambio entre estilos de gestión (tareas, estructura, responsabilidad) y liderazgo (visión, motivación, comunicación) en conversaciones reales.",
+    "title_es": "Juego de Roles de Gestión y Liderazgo en Acción"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Be clear, direct and structured. Use deadlines and accountability. If you have a partner, switch roles and repeat.",
+        "es": "Sé claro, directo y estructurado. Usa plazos y responsabilidad. Si tienes pareja, cambien de rol y repitan."
+      },
+      "icon": "video",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Zoom · 1:1 with Alex",
+          "es": "Zoom · 1:1 con Alex"
+        },
+        "kind": "zoom",
+        "line": "Hi! You wanted to talk about the client presentation?",
+        "meta": {
+          "en": "1:1 · 15 min",
+          "es": "1:1 · 15 min"
+        },
+        "tile": {
+          "name": "Alex · Team member",
+          "initials": "AL"
+        },
+        "speaker": {
+          "en": "ALEX",
+          "es": "ALEX"
+        }
+      },
+      "title": {
+        "en": "Delegating Tasks (Manager Role)",
+        "es": "Delegar tareas (rol de gerente)"
+      },
+      "points": {
+        "en": [
+          "Who does it (use their name)",
+          "What to do and by when",
+          "When you will review it"
+        ],
+        "es": [
+          "Quién lo hace (usa su nombre)",
+          "Qué hacer y para cuándo",
+          "Cuándo lo vas a revisar"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: use the model sentence",
+          "Try 2: your own words"
+        ],
+        "es": [
+          "Intento 1: usa la frase modelo",
+          "Intento 2: con tus propias palabras"
+        ]
+      },
+      "model": "[Name], I'd like you to complete the client presentation draft by Wednesday at noon. Please share it with me for review before we finalize it Thursday afternoon.",
+      "limit_s": [
+        15,
+        30
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "You are the manager. Ask a team member to complete the client presentation draft by Wednesday at noon and to share it with you for review before you finalize it Thursday afternoon.",
+        "es": "Tú eres el gerente. Pídele a un miembro del equipo que termine el borrador de la presentación para el cliente antes del miércoles al mediodía y que te lo comparta para revisarlo antes de finalizarlo el jueves por la tarde."
+      }
+    },
+    {
+      "how": {
+        "en": "Use encouragement, a positive tone and shared purpose. If you have a partner, switch roles and repeat.",
+        "es": "Usa ánimo, un tono positivo y un propósito compartido. Si tienes pareja, cambien de rol y repitan."
+      },
+      "icon": "people",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Team Meeting · Client Presentation",
+          "es": "Team Meeting · Client Presentation"
+        },
+        "kind": "meeting",
+        "line": "Honestly, I'm not sure we can make this deadline…",
+        "meta": {
+          "en": "5 people · stressed",
+          "es": "5 personas · estresadas"
+        },
+        "speaker": {
+          "en": "A TEAM MEMBER",
+          "es": "UN MIEMBRO DEL EQUIPO"
+        }
+      },
+      "title": {
+        "en": "Motivating the Team (Leader Role)",
+        "es": "Motivar al equipo (rol de líder)"
+      },
+      "points": {
+        "en": [
+          "Recognize that the deadline feels tough",
+          "Explain why the work matters",
+          "Show you believe in the team"
+        ],
+        "es": [
+          "Reconoce que el plazo se siente difícil",
+          "Explica por qué importa el trabajo",
+          "Muestra que crees en el equipo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: use the model",
+          "Try 2: your own words"
+        ],
+        "es": [
+          "Intento 1: usa el modelo",
+          "Intento 2: con tus propias palabras"
+        ]
+      },
+      "model": "I know this deadline feels tough, but what we're doing matters. This presentation will show the client what we're capable of. I believe in your work, and if we stay focused, we'll succeed together.",
+      "limit_s": [
+        20,
+        40
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "Same partner, new scenario. The team is stressed about a deadline. As the leader, encourage them and remind them of the shared purpose.",
+        "es": "Misma pareja, nuevo escenario. El equipo está estresado por un plazo. Como líder, anímalos y recuérdales el propósito compartido."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice tone, word choice and the balance between directness and encouragement. Avoid the weak version: “This report has mistakes. Fix them.”",
+        "es": "Practica el tono, la elección de palabras y el equilibrio entre ser directo y dar ánimo. Evita la versión débil: “This report has mistakes. Fix them.”"
+      },
+      "icon": "video",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Zoom · 1:1 Feedback",
+          "es": "Zoom · 1:1 Feedback"
+        },
+        "kind": "zoom",
+        "line": "Did you get a chance to look at my report?",
+        "meta": {
+          "en": "Report with errors",
+          "es": "Informe con errores"
+        },
+        "tile": {
+          "name": "Sam · Analyst",
+          "initials": "SM"
+        },
+        "speaker": {
+          "en": "SAM",
+          "es": "SAM"
+        }
+      },
+      "title": {
+        "en": "Giving Feedback",
+        "es": "Dar retroalimentación"
+      },
+      "points": {
+        "en": [
+          "Name the problem specifically",
+          "Say what to fix and by when",
+          "As a leader: recognize what was good"
+        ],
+        "es": [
+          "Nombra el problema con precisión",
+          "Di qué corregir y para cuándo",
+          "Como líder: reconoce lo que estuvo bien"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: as a manager",
+          "Try 2: as a leader"
+        ],
+        "es": [
+          "Intento 1: como gerente",
+          "Intento 2: como líder"
+        ]
+      },
+      "model": "Manager (better): This report needs corrections—please fix sections 2 and 3 by tomorrow.\nLeader: Your analysis was strong, but some errors slipped in. Let's correct them so the final report reflects your great work.",
+      "limit_s": [
+        15,
+        30
+      ],
+      "situation": {
+        "en": "A team member submitted a report with errors. Give feedback first as a manager, then as a leader.",
+        "es": "Un miembro del equipo entregó un informe con errores. Da retroalimentación primero como gerente y luego como líder."
+      }
+    },
+    {
+      "how": {
+        "en": "Deliver the same news both ways and notice how it feels different.",
+        "es": "Da la misma noticia de las dos maneras y observa cómo se siente diferente."
+      },
+      "icon": "people",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Project Status · with your boss",
+          "es": "Project Status · con tu jefa"
+        },
+        "kind": "meeting",
+        "line": "So, where are we on the project?",
+        "meta": {
+          "en": "Delayed 2 days",
+          "es": "2 días de retraso"
+        },
+        "speaker": {
+          "en": "YOUR BOSS",
+          "es": "TU JEFA"
+        }
+      },
+      "title": {
+        "en": "Handling a Problem",
+        "es": "Manejar un problema"
+      },
+      "points": {
+        "en": [
+          "The problem and the delay",
+          "What you've already done about it",
+          "The next step (as a leader: the positive outlook)"
+        ],
+        "es": [
+          "El problema y el retraso",
+          "Lo que ya hiciste al respecto",
+          "El siguiente paso (como líder: la visión positiva)"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: manager-style",
+          "Try 2: leader-style"
+        ],
+        "es": [
+          "Intento 1: estilo gerente",
+          "Intento 2: estilo líder"
+        ]
+      },
+      "model": "Manager-style: We are delayed two days because of vendor issues. I've adjusted the timeline and reassigned tasks.\nLeader-style: We are delayed two days due to vendor issues, but I've outlined new steps to recover. If we stay coordinated, we can still exceed client expectations.",
+      "limit_s": [
+        20,
+        40
+      ],
+      "situation": {
+        "en": "A project is delayed two days because of vendor issues. You are the team lead explaining the situation to your boss.",
+        "es": "Un proyecto tiene dos días de retraso por problemas con un proveedor. Tú eres el líder del equipo y le explicas la situación a tu jefa."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "ab5cc31e-c87b-45e6-a581-9c1fa3329265"
+}

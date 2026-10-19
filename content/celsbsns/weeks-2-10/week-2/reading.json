@@ -1,0 +1,631 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Punctuality",
+        "t_es": "Puntualidad",
+        "d_en": "Why time is a sign of respect in U.S. companies.",
+        "d_es": "Por qué el tiempo es una señal de respeto en las empresas de EE. UU."
+      },
+      {
+        "t_en": "Respect",
+        "t_es": "Respeto",
+        "d_en": "First names, direct but polite talk, and open feedback.",
+        "d_es": "Nombres de pila, hablar directo pero con amabilidad y retroalimentación abierta."
+      },
+      {
+        "t_en": "Soft skills",
+        "t_es": "Habilidades blandas",
+        "d_en": "Why U.S. employers value them as much as technical skills.",
+        "d_es": "Por qué los empleadores en EE. UU. las valoran tanto como las técnicas."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 activities",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 actividades",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover the unwritten rules of U.S. workplace culture: time, respect and teamwork. You read a short article, watch a talk, and work through your first week at a U.S. marketing firm.",
+    "intro_es": "En esta lectura descubres las reglas no escritas de la cultura laboral en EE. UU.: el tiempo, el respeto y el trabajo en equipo. Lees un artículo corto, ves una charla y vives tu primera semana en una firma de marketing en EE. UU."
+  },
+  "week": 2,
+  "video": {
+    "slug": "margaret_heffernan_forget_the_pecking_order_at_work",
+    "event": "TED",
+    "extra": {
+      "slug": "amy_edmondson_how_to_turn_a_group_of_strangers_into_a_team",
+      "event": "TED",
+      "title": "How to turn a group of strangers into a team",
+      "source": 7,
+      "minutes": 13,
+      "speaker": "Amy C. Edmondson",
+      "provider": "ted"
+    },
+    "title": "Forget the pecking order at work",
+    "source": 6,
+    "minutes": 16,
+    "speaker": "Margaret Heffernan",
+    "intro_en": "Watch the full talk inside the app. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "According to the speaker, what makes a team strong: a few superstars, or the connections between people?",
+      "Which small habit from the talk could you use with your coworkers this week?"
+    ],
+    "prompts_es": [
+      "Según la oradora, ¿qué hace fuerte a un equipo: unas cuantas estrellas o las conexiones entre las personas?",
+      "¿Qué pequeño hábito de la charla podrías usar con tus compañeros esta semana?"
+    ]
+  },
+  "vocab": {
+    "soft skills": {
+      "d": "People skills such as communication, teamwork, adaptability and problem-solving.",
+      "es": "habilidades blandas o interpersonales",
+      "ex": "Her soft skills helped her get promoted quickly."
+    },
+    "culture fit": {
+      "d": "How well a person's values and work style match the way a company works.",
+      "es": "encajar con la cultura de la empresa",
+      "ex": "They hired him because he was a strong culture fit."
+    },
+    "linear-time": {
+      "d": "A culture where tasks happen one at a time, in order, and schedules and deadlines are taken seriously.",
+      "es": "de tiempo lineal (puntual y ordenado)",
+      "ex": "The U.S. is a linear-time culture: 9:00 means 9:00."
+    },
+    "punctual": {
+      "d": "Arriving or finishing something at the agreed time.",
+      "es": "puntual",
+      "ex": "Being punctual shows respect for your team."
+    },
+    "agenda": {
+      "d": "A list of the topics a meeting will cover.",
+      "es": "orden del día, temas de la reunión",
+      "ex": "Please send the agenda before the meeting."
+    },
+    "heads-up": {
+      "d": "A short, early warning about something that is going to happen.",
+      "es": "un aviso con anticipación",
+      "ex": "Thanks for the heads-up about the delay."
+    },
+    "constructive feedback": {
+      "d": "Comments that point out a problem in a helpful way and suggest how to improve.",
+      "es": "retroalimentación constructiva",
+      "ex": "Constructive feedback focuses on the work, not the person."
+    },
+    "psychological safety": {
+      "d": "A shared belief in a team that it is safe to ask questions, share ideas or admit mistakes.",
+      "es": "seguridad psicológica",
+      "ex": "Psychological safety helps teams learn faster."
+    },
+    "business casual": {
+      "d": "A dress code that is neat and professional but not formal, for example a shirt and trousers without a tie.",
+      "es": "vestimenta de negocios informal (casual de oficina)",
+      "ex": "Our office dress code is business casual."
+    },
+    "hedges": {
+      "d": "Words like 'maybe', 'kind of' or 'I think' that make a statement less direct.",
+      "es": "palabras que suavizan o evitan comprometerse",
+      "ex": "Too many hedges can make you sound unsure."
+    },
+    "on track": {
+      "d": "Progressing as planned.",
+      "es": "encaminado, al día",
+      "ex": "The project is on track for Friday."
+    },
+    "setbacks": {
+      "d": "Problems that delay progress.",
+      "es": "contratiempos",
+      "ex": "We've had some setbacks, but we are back on track."
+    },
+    "bottom line": {
+      "d": "The most important point or result.",
+      "es": "lo esencial, la conclusión principal",
+      "ex": "The bottom line is that we need the report by Friday."
+    },
+    "low-context": {
+      "d": "A culture where people say things directly and clearly, so you don't need to 'read between the lines'.",
+      "es": "de bajo contexto",
+      "ex": "The U.S. is a very low-context culture."
+    },
+    "at face value": {
+      "d": "Accepting words exactly as they are said, without looking for a hidden meaning.",
+      "es": "literalmente, tal como se dice",
+      "ex": "Americans usually take your words at face value."
+    },
+    "follow-through": {
+      "d": "Doing what you said you would do, completely and on time.",
+      "es": "cumplir hasta el final lo que prometes",
+      "ex": "Her follow-through earned her the team's trust."
+    },
+    "take ownership": {
+      "d": "Accept responsibility for a task or a problem and act on it.",
+      "es": "hacerte responsable",
+      "ex": "Good leaders take ownership when things go wrong."
+    },
+    "first-name basis": {
+      "d": "A relationship where people call each other by their first names.",
+      "es": "trato por el nombre de pila",
+      "ex": "Everyone here is on a first-name basis, even with the CEO."
+    }
+  },
+  "warmup": {
+    "q_en": "Your team meeting starts at 9:00. You usually…",
+    "q_es": "Tu junta de equipo empieza a las 9:00. Normalmente…",
+    "poll_en": [
+      "Arrive around 9:10. A few minutes late is normal.",
+      "Arrive at 9:00 exactly, sometimes while it's starting.",
+      "Arrive at 8:55, ready to begin."
+    ],
+    "poll_es": [
+      "Llego como a las 9:10. Unos minutos tarde es normal.",
+      "Llego a las 9:00 en punto, a veces cuando ya está empezando.",
+      "Llego a las 8:55, listo para empezar."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: how do you handle time at work?",
+    "title_es": "Antes de leer: ¿cómo manejas el tiempo en el trabajo?",
+    "note_q_en": "What have you heard about workplace culture in U.S. companies?",
+    "note_q_es": "¿Qué has escuchado sobre la cultura laboral en las empresas de EE. UU.?",
+    "feedback_en": [
+      "This is common in many places, where a little flexibility is normal. In the U.S., it can look like you don't value the team's time. Today you'll see why.",
+      "You're close! In many U.S. teams, “on time” means ready to start, not walking in. The article shows the small difference that matters.",
+      "Great habit! Arriving a few minutes early is exactly what U.S. teams expect. This reading shows the other unwritten rules."
+    ],
+    "feedback_es": [
+      "Es común en muchos lugares, donde un poco de flexibilidad es normal. En EE. UU. puede parecer que no valoras el tiempo del equipo. Hoy vas a ver por qué.",
+      "¡Vas muy bien! En muchos equipos de EE. UU., “a tiempo” significa listo para empezar, no entrando por la puerta. El artículo muestra esa pequeña diferencia que sí importa.",
+      "¡Excelente hábito! Llegar unos minutos antes es justo lo que esperan los equipos en EE. UU. Esta lectura te muestra las otras reglas no escritas."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Fast Company, January 31, 2019 (on LinkedIn's 2019 Global Talent Trends report)",
+      "url": "https://www.fastcompany.com/90298828/linkedin-research-reveals-the-value-of-soft-skills",
+      "who": "Jennifer Shappley",
+      "what": "“LinkedIn research reveals the value of soft skills”"
+    },
+    {
+      "id": 2,
+      "pub": "LinkedIn Newsroom, January 28, 2019",
+      "url": "https://news.linkedin.com/2019/January/linkedin-releases-2019-global-talent-trends-report",
+      "who": "LinkedIn",
+      "what": "“LinkedIn Releases 2019 Global Talent Trends Report”"
+    },
+    {
+      "id": 3,
+      "pub": "Harvard Business Review, July–August 2017",
+      "url": "https://hbr.org/2017/07/being-the-boss-in-brussels-boston-and-beijing",
+      "who": "Erin Meyer",
+      "what": "“Being the Boss in Brussels, Boston, and Beijing”"
+    },
+    {
+      "id": 4,
+      "pub": "PublicAffairs, 2014",
+      "url": "https://erinmeyer.com/books/the-culture-map/",
+      "who": "Erin Meyer",
+      "what": "The Culture Map: Breaking Through the Invisible Boundaries of Global Business"
+    },
+    {
+      "id": 5,
+      "pub": "Google re:Work (originally published 2015)",
+      "url": "https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness",
+      "who": "Google",
+      "what": "“Understand team effectiveness”"
+    },
+    {
+      "id": 6,
+      "pub": "TEDWomen 2015 · TED.com",
+      "url": "https://www.ted.com/talks/margaret_heffernan_forget_the_pecking_order_at_work",
+      "who": "Margaret Heffernan",
+      "what": "“Forget the pecking order at work”"
+    },
+    {
+      "id": 7,
+      "pub": "TED Salon: Brightline Initiative, 2017 · TED.com",
+      "url": "https://www.ted.com/talks/amy_edmondson_how_to_turn_a_group_of_strangers_into_a_team",
+      "who": "Amy C. Edmondson",
+      "what": "“How to turn a group of strangers into a team”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 1,
+        "q": {
+          "en": "In LinkedIn's 2019 Global Talent Trends report, 92% of talent professionals said soft skills…",
+          "es": "En el informe Global Talent Trends 2019 de LinkedIn, el 92 % de los profesionales de talento dijo que las habilidades blandas…"
+        },
+        "o": {
+          "en": [
+            "are less important than technical skills",
+            "matter as much as, or more than, technical skills",
+            "only matter for managers"
+          ],
+          "es": [
+            "son menos importantes que las técnicas",
+            "importan tanto o más que las técnicas",
+            "solo importan para los gerentes"
+          ]
+        },
+        "why": {
+          "en": "Right: that is why companies pay so much attention to how you communicate and work with others.",
+          "es": "Así es: por eso las empresas ponen tanta atención en cómo te comunicas y trabajas con otros."
+        }
+      },
+      {
+        "a": 2,
+        "q": {
+          "en": "Your manager says, “Please, call me Alex.” This means…",
+          "es": "Tu gerente te dice: “Please, call me Alex.” Esto significa que…"
+        },
+        "o": {
+          "en": [
+            "there is no hierarchy, so the manager's decisions are only suggestions",
+            "you should keep saying “Mr. Johnson” to be safe",
+            "the style is friendly and egalitarian, but Alex is still the boss"
+          ],
+          "es": [
+            "no hay jerarquía, así que las decisiones del gerente son solo sugerencias",
+            "deberías seguir diciéndole “Mr. Johnson” por si acaso",
+            "el estilo es amable e igualitario, pero Alex sigue siendo el jefe"
+          ]
+        },
+        "why": {
+          "en": "Exactly: first names are normal in the U.S., and many decisions still come from the top.",
+          "es": "Exacto: usar el nombre de pila es normal en EE. UU., y muchas decisiones siguen viniendo de arriba."
+        }
+      },
+      {
+        "a": 0,
+        "q": {
+          "en": "When Google studied 180 of its teams, the most important factor for success was…",
+          "es": "Cuando Google estudió 180 de sus equipos, el factor más importante para el éxito fue…"
+        },
+        "o": {
+          "en": [
+            "psychological safety",
+            "having the smartest people on the team",
+            "working longer hours"
+          ],
+          "es": [
+            "la seguridad psicológica",
+            "tener a las personas más inteligentes en el equipo",
+            "trabajar más horas"
+          ]
+        },
+        "why": {
+          "en": "Yes: teams do better when people feel safe to ask questions and admit mistakes.",
+          "es": "Sí: los equipos funcionan mejor cuando la gente se siente segura para preguntar y admitir errores."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My one-sentence summary: what I learned from this reading is…",
+      "es": "Mi resumen en una oración: lo que aprendí de esta lectura es…"
+    }
+  },
+  "cases_intro": {
+    "en": "Do each activity and, if you like, write down your ideas. The workplace texts are in English, as you would see them at work.",
+    "es": "Haz cada actividad y, si quieres, apunta tus ideas. Los textos del trabajo están en inglés, como los verías en la oficina."
+  },
+  "article": {
+    "dek": "The unwritten rules of time, respect and teamwork in U.S. offices, and three habits you can start using this week.",
+    "title": "Fitting In at Work: The Unwritten Rules of U.S. Workplace Culture",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "When LinkedIn surveyed thousands of recruiters and hiring managers for its 2019 Global Talent Trends report, 92% said [[soft skills]] matter as much as, or more than, technical skills. And 89% said that “bad hires” usually have weak soft skills.{1}{2} In other words, your résumé can get you the interview, but how you work with people often decides whether you get the job, and how fast you grow in it.",
+        "es": "Cuando LinkedIn encuestó a miles de reclutadores y gerentes de contratación para su informe Global Talent Trends 2019, el 92 % dijo que las habilidades blandas importan tanto o más que las habilidades técnicas. Y el 89 % dijo que las “malas contrataciones” suelen tener habilidades blandas débiles. Es decir: tu currículum puede conseguirte la entrevista, pero tu forma de trabajar con la gente muchas veces decide si te dan el puesto y qué tan rápido creces en él."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Every workplace has unwritten rules",
+        "en": "Companies often talk about their “culture”: the shared values, habits and expectations that shape how people work together. Some rules are written in the employee handbook. Many are not. New employees learn them by watching: when meetings really start, how people disagree, what they wear, and how they talk to the boss. Being a good [[culture fit]] does not mean changing who you are. It means reading these signals and adjusting your behavior so your skills can shine.",
+        "es": "Las empresas hablan mucho de su “cultura”: los valores, hábitos y expectativas compartidos que definen cómo trabaja la gente en equipo. Algunas reglas están escritas en el manual del empleado. Muchas no. Los empleados nuevos las aprenden observando: a qué hora empiezan de verdad las juntas, cómo expresa la gente un desacuerdo, cómo se viste y cómo le habla al jefe. Encajar en la cultura no significa cambiar quién eres. Significa leer esas señales y ajustar tu comportamiento para que tus habilidades destaquen."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "h": "Time is a promise",
+        "en": "In her book The Culture Map, INSEAD professor Erin Meyer places the United States on the [[linear-time]] side of her scheduling scale: work moves step by step, plans are followed, and deadlines are taken seriously.{4} Being [[punctual]] is a way of showing respect for other people's time. A meeting set for 9:00 usually starts at 9:00, often with an [[agenda]]. Many Latin American cultures are more flexible with time, and that flexibility has real strengths. But in a U.S. office, arriving ten minutes late without a message can look like you don't care. If you are going to be late, send a [[heads-up]] before the meeting starts.",
+        "es": "En su libro The Culture Map, la profesora de INSEAD Erin Meyer ubica a Estados Unidos del lado del “tiempo lineal” en su escala de manejo del tiempo: el trabajo avanza paso a paso, los planes se siguen y las fechas límite se toman en serio. Ser puntual es una forma de respetar el tiempo de los demás. Una junta citada a las 9:00 normalmente empieza a las 9:00, muchas veces con una agenda. Muchas culturas latinoamericanas son más flexibles con el tiempo, y esa flexibilidad tiene ventajas reales. Pero en una oficina en EE. UU., llegar diez minutos tarde sin avisar puede dar la impresión de que no te importa. Si vas a llegar tarde, avisa antes de que empiece la junta."
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "First names, but there is still a boss",
+        "en": "Meyer also describes American bosses as outwardly egalitarian: they encourage people to use first names and to speak up in meetings.{3} So calling your manager “Alex” instead of “Mr. Johnson” is normal, and it is not disrespectful. Being on a [[first-name basis]] does not remove the hierarchy, though. In the same article, Meyer explains that many decisions in U.S. companies are still made from the top down. Once a decision is made, the team is expected to move forward together.",
+        "es": "Meyer también describe a los jefes estadounidenses como igualitarios en apariencia: animan a la gente a llamarlos por su nombre de pila y a opinar en las juntas. Así que llamar a tu gerente “Alex” en lugar de “Mr. Johnson” es normal y no es una falta de respeto. Pero tratarse por el nombre no elimina la jerarquía. En el mismo artículo, Meyer explica que en las empresas de EE. UU. muchas decisiones se siguen tomando de arriba hacia abajo. Una vez que se decide algo, se espera que el equipo avance unido."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think about your last job. How did people address the boss, and what happened when someone arrived late to a meeting?",
+        "q_es": "Piensa en tu último trabajo. ¿Cómo se dirigía la gente al jefe y qué pasaba cuando alguien llegaba tarde a una junta?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits that help you fit in",
+        "items": [
+          {
+            "h": "1 · Be on time, or warn early",
+            "icon": "clock",
+            "en": "Arrive a few minutes before meetings, join video calls on time, and meet your deadlines. If something changes, tell people early and give a new time. Reliability and [[follow-through]] matter a lot here: Meyer describes the U.S. as a culture where trust is built mainly through the work you do.{4}",
+            "es": "Llega unos minutos antes a las juntas, conéctate a tiempo a las videollamadas y cumple tus fechas de entrega. Si algo cambia, avisa con tiempo y da una nueva hora. Aquí ser confiable y cumplir lo que prometes pesa mucho: Meyer describe a EE. UU. como una cultura donde la confianza se construye sobre todo con el trabajo que haces."
+          },
+          {
+            "h": "2 · Be direct, but kind",
+            "icon": "chat",
+            "en": "In U.S. meetings, people usually say what they think, even when they disagree, but they say it politely. Meyer places the U.S. near the middle of her feedback scale, so a soft start helps when you have something negative to say.{4} Phrases like “I see it a little differently” or “Could we try…?” let you disagree without sounding rude. Remember Week 1: the U.S. is a [[low-context]] culture, where people take your words [[at face value]], so state the [[bottom line]] and skip extra [[hedges]]. Give [[constructive feedback]] about the work, never about the person.",
+            "es": "En las juntas en EE. UU. la gente suele decir lo que piensa, incluso cuando no está de acuerdo, pero lo dice con amabilidad. Meyer ubica a EE. UU. cerca del centro de su escala de retroalimentación, así que un inicio suave ayuda cuando tienes algo negativo que decir. Frases como “I see it a little differently” o “Could we try…?” te permiten no estar de acuerdo sin sonar grosero. Recuerda la Semana 1: EE. UU. es una cultura de bajo contexto, donde la gente toma tus palabras tal como las dices, así que di lo esencial primero y evita suavizar de más. Da retroalimentación constructiva sobre el trabajo, nunca sobre la persona."
+          },
+          {
+            "h": "3 · Help make it safe to speak up",
+            "icon": "shield",
+            "en": "When Google studied 180 of its teams, the most important factor in team success was [[psychological safety]]: a shared belief that the team is a safe place to take interpersonal risks, such as asking a question or admitting a mistake.{5} You help build it when you ask questions, share ideas, thank people for their help, and respond calmly when someone points out a problem.",
+            "es": "Cuando Google estudió 180 de sus equipos, el factor más importante para su éxito fue la seguridad psicológica: la creencia compartida de que en el equipo es seguro arriesgarse, por ejemplo al hacer una pregunta o admitir un error. Tú ayudas a construirla cuando haces preguntas, compartes ideas, agradeces la ayuda de otros y respondes con calma cuando alguien señala un problema."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: running late",
+        "h_es": "Antes y después: vas a llegar tarde",
+        "intro_en": "Tap “After” to see how a good heads-up respects your team's time.",
+        "intro_es": "Toca “Después” para ver cómo un buen aviso respeta el tiempo de tu equipo.",
+        "before": {
+          "to": "Planning Team",
+          "subject": "Sorry",
+          "body": [
+            "Hi, ",
+            {
+              "m": 1,
+              "t": "sorry, sorry!! The traffic is crazy today and I left a little late"
+            },
+            ". ",
+            {
+              "m": 2,
+              "t": "I'll be there soon"
+            },
+            ", ",
+            {
+              "m": 3,
+              "t": "don't worry about me"
+            },
+            "."
+          ],
+          "marks": [
+            {
+              "en": "A long excuse in a very informal tone. Sent at 9:12, after the meeting started.",
+              "es": "Una excusa larga y en tono muy informal. Enviado a las 9:12, cuando la junta ya había empezado."
+            },
+            {
+              "en": "“Soon” is not a time. Nobody knows when you will arrive.",
+              "es": "“Soon” no es una hora. Nadie sabe cuándo vas a llegar."
+            },
+            {
+              "en": "It doesn't say what the team should do: wait or start?",
+              "es": "No dice qué debe hacer el equipo: ¿esperar o empezar?"
+            }
+          ]
+        },
+        "after": {
+          "to": "Planning Team",
+          "subject": "Running 10 minutes late for the 9:00 meeting",
+          "body": [
+            "Hi team,\n",
+            {
+              "m": 1,
+              "t": "Quick heads-up: I'm running about 10 minutes late for our 9:00 meeting."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "Please start without me. I'll join by 9:10."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "My update is already in our project doc, so you have what you need."
+            },
+            "\nThanks,\nCarlos"
+          ],
+          "marks": [
+            {
+              "en": "Sent at 8:45, before the meeting, with an exact time.",
+              "es": "Enviado a las 8:45, antes de la junta, con una hora exacta."
+            },
+            {
+              "en": "It tells the team what to do, so nobody wastes time waiting.",
+              "es": "Le dice al equipo qué hacer, para que nadie pierda tiempo esperando."
+            },
+            {
+              "en": "It takes responsibility: the work is ready even if he is late.",
+              "es": "Se hace responsable: su parte está lista aunque llegue tarde."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a5",
+        "type": "para",
+        "h": "What about the dress code?",
+        "en": "Dress codes vary a lot in the U.S. Many offices are [[business casual]], many tech companies are very relaxed, and jobs where you meet clients can be more formal. The safest strategy is simple: ask HR or your manager before your first day, then watch what your team wears during your first week and adjust. The same rule works for everything in this article: watch, ask, and adapt.",
+        "es": "Los códigos de vestimenta varían mucho en EE. UU. Muchas oficinas usan vestimenta casual de negocios, muchas empresas de tecnología son muy relajadas y los puestos donde atiendes clientes pueden ser más formales. La estrategia más segura es sencilla: pregunta a Recursos Humanos o a tu gerente antes de tu primer día, y luego observa cómo se viste tu equipo durante la primera semana y ajústate. La misma regla sirve para todo lo de este artículo: observa, pregunta y adáptate."
+      },
+      {
+        "id": "a6",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need to give up your own culture to succeed in a U.S. company. Your warmth, your loyalty and your ability to build relationships are real strengths. This week, add three habits on top of them: respect people's time, be direct and kind, and help your team feel safe to speak up. And when you face [[setbacks]], [[take ownership]] and share your plan to get back [[on track]]. In the activities below, you will see these habits in a real first week at work.",
+        "es": "No necesitas renunciar a tu propia cultura para tener éxito en una empresa de EE. UU. Tu calidez, tu lealtad y tu capacidad para construir relaciones son fortalezas reales. Esta semana súmales tres hábitos: respeta el tiempo de los demás, sé directo y amable, y ayuda a que tu equipo se sienta seguro para hablar. Y cuando tengas contratiempos, hazte responsable y comparte tu plan para volver a estar al día. En las actividades que siguen vas a ver estos hábitos en una primera semana real de trabajo."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on LinkedIn, Erin Meyer and Google re:Work",
+    "based_es": "Basado en LinkedIn, Erin Meyer y Google re:Work",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Article Summary",
+    "title": "Understanding Workplace Culture and Business Etiquette in the U.S.",
+    "body_en": "📚 Reading Assignment\n\nTitle: Understanding Workplace Culture and Business Etiquette in the U.S.\nTime: ~1 hour\nObjective: To give you real-world examples of how workplace culture and etiquette affect communication, collaboration, and career growth in U.S. companies.\n\n📚 Article: SHRM – Understanding Workplace Culture\n🎥 Video: Job Interview Tools – U.S. Workplace Culture Explained — https://www.youtube.com/watch?v=KkE-4tLMCXw\n\nPart 1 – Case Study: Culture in Action\n\nScenario:\nYou've just joined a mid-sized U.S. marketing firm. The company values innovation and collaboration, but the team also works under tight deadlines. During your first week, you notice:\n\nMost meetings start right on time, with a clear agenda.\n\nPeople speak directly but politely, even when disagreeing.\n\nEmployees address managers by their first names.\n\nFeedback is given openly, in both group and one-on-one settings.\n\nReading Focus:\n\nIdentify the cultural signals in the scenario above.\n\nReflect on how each behavior shows respect for the company's culture.\n\nCompare these behaviors to what you have experienced in your own country.\n\nPart 2 – Professional Article\n\nArticle Summary: \"Soft Skills Are the New Hard Skills\" (Based on a LinkedIn Global Talent Trends report)\n\n92% of talent professionals believe soft skills—such as communication, adaptability, and problem-solving—are as important or more important than technical skills.\n\nCompanies often choose candidates who fit the company culture over those with stronger technical skills but weaker interpersonal abilities.\n\nUnderstanding and adapting to workplace culture can make you more promotable.\n\nYour Task While Reading:\n\nHighlight at least three cultural differences between the U.S. workplace and what you are used to.\n\nNote two examples from the article that show why soft skills matter.\n\nWrite a one-sentence summary of what you learned from this reading.",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Entendiendo la Cultura Laboral y la Etiqueta Empresarial en los EE.UU.\nTiempo: ~1 hora\nObjetivo: Proporcionarte ejemplos del mundo real sobre cómo la cultura laboral y la etiqueta afectan la comunicación, la colaboración y el crecimiento profesional en las empresas de EE.UU.\n\n📚 Artículo: SHRM – Understanding Workplace Culture\n🎥 Video: Job Interview Tools – U.S. Workplace Culture Explained — https://www.youtube.com/watch?v=KkE-4tLMCXw\n\nParte 1 – Estudio de Caso: Cultura en Acción\n\nEscenario:\nAcabas de unirte a una firma de marketing de tamaño mediano en EE.UU. La empresa valora la innovación y la colaboración, pero el equipo también trabaja bajo plazos ajustados. Durante tu primera semana, notas que:\n\nLa mayoría de las reuniones comienzan puntualmente, con una agenda clara.\n\nLas personas hablan de manera directa pero educada, incluso cuando no están de acuerdo.\n\nLos empleados se dirigen a los gerentes por su nombre de pila.\n\nLa retroalimentación se da abiertamente, tanto en grupo como de manera individual.\n\nEnfoque de Lectura:\n\nIdentifica las señales culturales en el escenario anterior.\n\nReflexiona sobre cómo cada comportamiento muestra respeto por la cultura de la empresa.\n\nCompara estos comportamientos con lo que has experimentado en tu propio país.\n\nParte 2 – Artículo Profesional\n\nResumen del Artículo: \"Soft Skills Are the New Hard Skills\" (Basado en un informe de LinkedIn Global Talent Trends)\n\nEl 92% de los profesionales de talento creen que las habilidades blandas—como la comunicación, la adaptabilidad y la resolución de problemas—son tan importantes o más importantes que las habilidades técnicas.\n\nLas empresas a menudo eligen candidatos que se ajustan a la cultura de la empresa sobre aquellos con habilidades técnicas más fuertes pero habilidades interpersonales más débiles.\n\nEntender y adaptarse a la cultura laboral puede hacerte más promovible.\n\nTu Tarea Mientras Lees:\n\nDestaca al menos tres diferencias culturales entre el lugar de trabajo en EE.UU. y lo que estás acostumbrado.\n\nAnota dos ejemplos del artículo que muestren por qué las habilidades blandas son importantes.\n\nEscribe un resumen de una oración sobre lo que aprendiste de esta lectura.",
+    "summary": "To give you real-world examples of how workplace culture and etiquette affect communication, collaboration, and career growth in U.S. companies.",
+    "title_es": "Entendiendo la Cultura Laboral y la Etiqueta Empresarial en los EE.UU.",
+    "video_ref": "Job Interview Tools – U.S. Workplace Culture Explained — https://www.youtube.com/watch?v=KkE-4tLMCXw",
+    "article_ref": "SHRM – Understanding Workplace Culture",
+    "instructions": "Highlight at least three cultural differences between the U.S. workplace and what you are used to. Note two examples from the article that show why soft skills matter. Write a one-sentence summary of what you learned from this reading."
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "scene": "You've just joined a mid-sized U.S. marketing firm. The company values innovation and collaboration, but the team also works under tight deadlines. During your first week, you notice:",
+      "message": {
+        "from": "My first week · notes",
+        "text": "Most meetings start right on time, with a clear agenda.\nPeople speak directly but politely, even when disagreeing.\nEmployees address managers by their first names.\nFeedback is given openly, in both group and one-on-one settings."
+      },
+      "activity": {
+        "kind": "spot",
+        "parts": [
+          {
+            "t": "Most meetings start right on time, with a clear agenda.",
+            "why": {
+              "en": "Time is respect: nobody's time is wasted, and everyone knows the goal of the meeting.",
+              "es": "El tiempo es respeto: no se desperdicia el tiempo de nadie y todos saben el objetivo de la junta."
+            }
+          },
+          {
+            "t": "\n"
+          },
+          {
+            "t": "People speak directly but politely, even when disagreeing.",
+            "why": {
+              "en": "Honest ideas help the team decide better, and a polite tone protects the relationship.",
+              "es": "Las ideas honestas ayudan al equipo a decidir mejor, y el tono amable cuida la relación."
+            }
+          },
+          {
+            "t": "\n"
+          },
+          {
+            "t": "Employees address managers by their first names.",
+            "why": {
+              "en": "An egalitarian style: everyone's voice counts, but the manager is still the boss.",
+              "es": "Un estilo igualitario: la voz de todos cuenta, pero el gerente sigue siendo el jefe."
+            }
+          },
+          {
+            "t": "\n"
+          },
+          {
+            "t": "Feedback is given openly, in both group and one-on-one settings.",
+            "why": {
+              "en": "Feedback is about improving the work, not attacking the person. Taking it calmly shows maturity.",
+              "es": "La retroalimentación busca mejorar el trabajo, no atacar a la persona. Recibirla con calma muestra madurez."
+            }
+          }
+        ],
+        "prompt_en": "Tap the four cultural signals to see how each one shows respect.",
+        "prompt_es": "Toca las cuatro señales culturales para ver cómo cada una muestra respeto."
+      },
+      "title_en": "Culture in Action",
+      "title_es": "Cultura en acción",
+      "questions": [
+        "Identify the cultural signals in the scenario above.",
+        "Reflect on how each behavior shows respect for the company's culture."
+      ],
+      "questions_es": [
+        "Identifica las señales culturales en el escenario anterior.",
+        "Reflexiona sobre cómo cada comportamiento muestra respeto por la cultura de la empresa."
+      ]
+    },
+    {
+      "id": "c2",
+      "scene": "Article summary: “Soft Skills Are the New Hard Skills” (based on a LinkedIn Global Talent Trends report). A U.S. hiring manager must choose between two final candidates for the same job.",
+      "activity": {
+        "kind": "choose",
+        "why": {
+          "en": "Most U.S. employers would choose Candidate B. As the article summary says, companies often choose candidates who fit the company culture over those with stronger technical skills but weaker interpersonal abilities. Communication, adaptability and openness to feedback can make you more promotable.",
+          "es": "La mayoría de los empleadores en EE. UU. elegiría al candidato B. Como dice el resumen del artículo, las empresas a menudo eligen candidatos que encajan con la cultura de la empresa sobre aquellos con habilidades técnicas más fuertes pero habilidades interpersonales más débiles. La comunicación, la adaptabilidad y la apertura a la retroalimentación pueden hacerte más promovible."
+        },
+        "options": [
+          {
+            "lead": "Candidate A says:",
+            "text": "I have the strongest technical skills in the group. I prefer to work alone, and I don't really need feedback.",
+            "correct": false,
+            "label_en": "Candidate A",
+            "label_es": "Candidato A"
+          },
+          {
+            "lead": "Candidate B says:",
+            "text": "My technical skills are solid, and I keep learning. I ask questions early, keep my team updated, and I'm open to [[constructive feedback]].",
+            "correct": true,
+            "label_en": "Candidate B",
+            "label_es": "Candidato B"
+          }
+        ],
+        "prompt_en": "Which candidate would most U.S. companies hire? Tap your answer.",
+        "prompt_es": "¿A qué candidato contratarían la mayoría de las empresas en EE. UU.? Toca tu respuesta."
+      },
+      "title_en": "Soft Skills Are the New Hard Skills",
+      "title_es": "Las habilidades blandas son las nuevas habilidades duras",
+      "questions": [
+        "Note two examples from the article that show why soft skills matter."
+      ],
+      "questions_es": [
+        "Anota dos ejemplos del artículo que muestren por qué las habilidades blandas son importantes."
+      ]
+    },
+    {
+      "id": "c3",
+      "scene": "Think about a workplace you know well in your own country. Compare it with the U.S. office in the scenario and the article.",
+      "activity": {
+        "kind": "rewrite",
+        "model": "1. In the U.S., meetings start right on time. In my last job, we often started 10 or 15 minutes late.\n2. Here, people call the manager by their first name. At home, we used titles like “Licenciado” or “Ingeniero.”\n3. In the U.S., feedback is given openly, even in group meetings. In my country, it was usually private.",
+        "hints_en": [
+          "Time and meetings",
+          "How people address the boss",
+          "How feedback is given",
+          "Dress code"
+        ],
+        "hints_es": [
+          "El tiempo y las juntas",
+          "Cómo se dirigen al jefe",
+          "Cómo se da la retroalimentación",
+          "La vestimenta"
+        ],
+        "label_en": "My 3 cultural differences",
+        "label_es": "Mis 3 diferencias culturales",
+        "prompt_en": "Write at least three cultural differences between the U.S. workplace and what you are used to.",
+        "prompt_es": "Escribe al menos tres diferencias culturales entre el lugar de trabajo en EE. UU. y lo que estás acostumbrado."
+      },
+      "title_en": "Your Turn: Compare Cultures",
+      "title_es": "Tu turno: compara culturas",
+      "questions": [
+        "Compare these behaviors to what you have experienced in your own country.",
+        "Highlight at least three cultural differences between the U.S. workplace and what you are used to."
+      ],
+      "questions_es": [
+        "Compara estos comportamientos con lo que has experimentado en tu propio país.",
+        "Destaca al menos tres diferencias culturales entre el lugar de trabajo en EE. UU. y lo que estás acostumbrado."
+      ]
+    }
+  ]
+}

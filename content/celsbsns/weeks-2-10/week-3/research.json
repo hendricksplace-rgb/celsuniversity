@@ -1,0 +1,245 @@
+{
+  "tip": {
+    "en": "Search for roles in your own field and choose postings located in the U.S. Look at the “Responsibilities” and “Qualifications” sections: that's where the management and leadership language is.",
+    "es": "Busca puestos de tu propio campo y elige ofertas ubicadas en EE. UU. Mira las secciones “Responsibilities” y “Qualifications”: ahí está el lenguaje de gestión y liderazgo."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already written like a manager and like a leader.",
+      "es": "Ya escribiste como gerente y como líder."
+    },
+    "link_p": {
+      "en": "Now see the exact words U.S. employers use when they describe what they want in managers and leaders.",
+      "es": "Ahora mira las palabras exactas que usan los empleadores en EE. UU. para describir lo que buscan en gerentes y líderes."
+    },
+    "title_a": "How U.S. Companies Define",
+    "title_b": "Management & Leadership",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 real job postings",
+      "5–6 sentence summary",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 ofertas reales",
+      "Resumen de 5–6 oraciones",
+      "Mis frases"
+    ],
+    "intro_en": "Imagine you are applying for a supervisory role in a U.S. company. Find 2 real job postings with management or leadership responsibilities, save the sentences that describe those skills, compare them, and keep the phrases that work for you.",
+    "intro_es": "Imagina que estás solicitando un puesto de supervisión en una empresa de EE. UU. Encuentra 2 ofertas de trabajo reales con responsabilidades de gestión o liderazgo, guarda las oraciones que describen esas habilidades, compáralas y quédate con las frases que te sirvan."
+  },
+  "week": 3,
+  "model": {
+    "name": "Operations Manager",
+    "role": "Sample posting from the lesson",
+    "about": "Lead and motivate a team to meet performance goals. Ensure compliance with safety standards. Delegate tasks effectively.",
+    "answers": {
+      "en": [
+        "Operations Manager at a large company (sample posting from the lesson).",
+        "Management: ensure compliance with safety standards; delegate tasks effectively.",
+        "Leadership: lead and motivate a team to meet performance goals.",
+        "“Lead and motivate a team to meet performance goals.”",
+        "It focuses more on structure and accountability (management) than on vision. It connects with the video: motivating people is part of the job, not an extra."
+      ],
+      "es": [
+        "Operations Manager en una empresa grande (oferta de ejemplo de la lección).",
+        "Gestión: asegurar el cumplimiento de normas de seguridad; delegar tareas de forma efectiva.",
+        "Liderazgo: liderar y motivar a un equipo para cumplir objetivos de desempeño.",
+        "“Lead and motivate a team to meet performance goals.”",
+        "Se enfoca más en la estructura y la responsabilidad (gestión) que en la visión. Se conecta con el video: motivar a las personas es parte del trabajo, no un extra."
+      ]
+    },
+    "initials": "OM"
+  },
+  "types": [
+    {
+      "en": "LinkedIn Jobs",
+      "es": "LinkedIn Jobs",
+      "key": "in"
+    },
+    {
+      "en": "Indeed",
+      "es": "Indeed",
+      "key": "ind"
+    },
+    {
+      "en": "Company careers page",
+      "es": "Página de empleos de una empresa",
+      "key": "car"
+    },
+    {
+      "en": "USAJOBS (government)",
+      "es": "USAJOBS (gobierno)",
+      "key": "gov"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "Job title and company",
+      "es": "Puesto y empresa",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Management skills (organization, deadlines, delegation)",
+      "es": "Habilidades de gestión (organización, plazos, delegación)",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Leadership skills (vision, motivation, communication)",
+      "es": "Habilidades de liderazgo (visión, motivación, comunicación)",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "Two sentences you saved",
+      "es": "Dos oraciones que guardaste",
+      "color": "#C98A00"
+    },
+    {
+      "en": "What it tells you, and the link to this week's video",
+      "es": "Qué te dice y su relación con el video de la semana",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "Job postings with “Responsibilities” and “Qualifications”.",
+      "desc_es": "Ofertas con secciones “Responsibilities” y “Qualifications”.",
+      "label_en": "LinkedIn Jobs",
+      "label_es": "LinkedIn Jobs",
+      "query_template": "{field} manager",
+      "search_template": "https://www.linkedin.com/jobs/search/?keywords={q}&location=United%20States"
+    },
+    {
+      "key": "indeed",
+      "mark": "i",
+      "color": "#2557A7",
+      "desc_en": "Thousands of U.S. postings for team leads and supervisors.",
+      "desc_es": "Miles de ofertas en EE. UU. para líderes de equipo y supervisores.",
+      "label_en": "Indeed",
+      "label_es": "Indeed",
+      "query_template": "{field} team lead",
+      "search_template": "https://www.indeed.com/jobs?q={q}"
+    },
+    {
+      "key": "careers",
+      "mark": "C",
+      "color": "#1F7A4D",
+      "desc_en": "The “Careers” page of a U.S. company you admire.",
+      "desc_es": "La página “Careers” de una empresa de EE. UU. que admires.",
+      "label_en": "Company careers pages",
+      "label_es": "Páginas de empleo de empresas",
+      "query_template": "{field} supervisor careers USA",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "usajobs",
+      "mark": "US",
+      "color": "#7A4FD6",
+      "desc_en": "Official U.S. government jobs; very detailed duties.",
+      "desc_es": "Empleos oficiales del gobierno de EE. UU.; funciones muy detalladas.",
+      "label_en": "USAJOBS",
+      "label_es": "USAJOBS",
+      "query_template": "{field} supervisor",
+      "search_template": "https://www.usajobs.gov/Search/Results?k={q}"
+    }
+  ],
+  "original": {
+    "goal": "Explore how real U.S. companies describe the qualities of good managers and leaders in their job postings and company values.",
+    "time": "1–1.5 hours",
+    "title": "How U.S. Companies Define Management & Leadership",
+    "body_en": "🧠 Research Task\n\nTitle: How U.S. Companies Define Management & Leadership\nTime: 1–1.5 hours\nObjective: Explore how real U.S. companies describe the qualities of good managers and leaders in their job postings and company values.\n\nScenario:\n\nImagine you are applying for a supervisory role in a U.S. company. To prepare, you research how companies describe their expectations for management and leadership in job descriptions and company websites.\n\nYour Task:\n\nSearch for two U.S. job postings for positions that include management or leadership responsibilities.\n\nExample: \"Project Manager,\" \"Team Lead,\" \"Operations Supervisor.\"\n\nCopy or save at least two sentences from each posting that describe leadership or management skills.\n\nExample: \"Must be able to delegate tasks effectively and motivate cross-functional teams.\"\n\nCompare the postings:\n\nWhich skills are listed as management (organization, deadlines, delegation)?\n\nWhich are listed as leadership (vision, motivation, communication)?\n\nWrite a short summary paragraph (5–6 sentences) explaining:\n\nWhat you learned about U.S. expectations of managers and leaders.\n\nHow these align with what we've studied in this week's video.\n\nWhy This Matters:\n\nBy researching actual postings, you'll see the exact language U.S. employers use when describing what they want in managers and leaders. This not only prepares you for future applications—it also helps you practice the vocabulary in real-world contexts.\n\nExample:\n\nJob Posting 1 (Amazon, Operations Manager):\n\"Lead and motivate a team to meet performance goals. Ensure compliance with safety standards. Delegate tasks effectively.\"\n\nJob Posting 2 (Google, Project Lead):\n\"Communicate project vision clearly. Inspire teams to innovate. Drive results through collaboration and accountability.\"\n\nSummary: Amazon emphasizes structure and accountability (management), while Google highlights vision and innovation (leadership). Both expect strong communication and teamwork.\n\nYou can upload your example to the following link in your Google Classroom: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTUzNTUzMjUw/details",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Cómo las Empresas de EE.UU. Definen la Gestión y el Liderazgo\nTiempo: 1–1.5 horas\nObjetivo: Explorar cómo las empresas reales de EE.UU. describen las cualidades de buenos gerentes y líderes en sus ofertas de trabajo y valores de la empresa.\n\nEscenario:\n\nImagina que estás solicitando un puesto de supervisión en una empresa de EE.UU. Para prepararte, investigas cómo las empresas describen sus expectativas para la gestión y el liderazgo en las descripciones de trabajo y sitios web de la empresa.\n\nTu Tarea:\n\nBusca dos ofertas de trabajo en EE.UU. para puestos que incluyan responsabilidades de gestión o liderazgo.\n\nEjemplo: \"Project Manager\" (Gerente de Proyecto), \"Team Lead\" (Líder de Equipo), \"Operations Supervisor\" (Supervisor de Operaciones).\n\nCopia o guarda al menos dos oraciones de cada oferta que describan habilidades de liderazgo o gestión.\n\nEjemplo: \"Must be able to delegate tasks effectively and motivate cross-functional teams.\" (Debe ser capaz de delegar tareas de manera efectiva y motivar equipos multifuncionales).\n\nCompara las ofertas:\n\n¿Qué habilidades se enumeran como gestión (organización, plazos, delegación)?\n\n¿Cuáles se enumeran como liderazgo (visión, motivación, comunicación)?\n\nEscribe un párrafo resumen corto (5–6 oraciones) explicando:\n\nLo que aprendiste sobre las expectativas de EE.UU. para gerentes y líderes.\n\nCómo se alinean con lo que hemos estudiado en el video de esta semana.\n\nPor qué Esto Importa:\n\nAl investigar ofertas reales, verás el lenguaje exacto que los empleadores de EE.UU. usan al describir lo que quieren en gerentes y líderes. Esto no solo te prepara para futuras solicitudes, sino que también te ayuda a practicar el vocabulario en contextos del mundo real.\n\nEjemplo:\n\nOferta de Trabajo 1 (Amazon, Operations Manager):\n\"Lead and motivate a team to meet performance goals. Ensure compliance with safety standards. Delegate tasks effectively.\" (Liderar y motivar a un equipo para cumplir con los objetivos de rendimiento. Asegurar el cumplimiento de las normas de seguridad. Delegar tareas de manera efectiva).\n\nOferta de Trabajo 2 (Google, Project Lead):\n\"Communicate project vision clearly. Inspire teams to innovate. Drive results through collaboration and accountability.\" (Comunicar claramente la visión del proyecto. Inspirar a los equipos a innovar. Impulsar resultados a través de la colaboración y la responsabilidad).\n\nResumen: Amazon enfatiza la estructura y la responsabilidad (gestión), mientras que Google destaca la visión y la innovación (liderazgo). Ambos esperan una fuerte comunicación y trabajo en equipo.\n\nPuedes subir tu ejemplo al siguiente enlace en tu Google Classroom: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTUzNTUzMjUw/details",
+    "goal_es": "Explorar cómo las empresas reales de EE.UU. describen las cualidades de buenos gerentes y líderes en sus ofertas de trabajo y valores de la empresa.",
+    "title_es": "Cómo las Empresas de EE.UU. Definen la Gestión y el Liderazgo"
+  },
+  "patterns": {
+    "en": [
+      "They use action verbs: lead, manage, drive, deliver",
+      "They mention deadlines, goals or metrics (KPIs)",
+      "They ask you to delegate and hold people accountable",
+      "They ask you to motivate, coach and develop people",
+      "They mention vision and clear communication",
+      "They mention collaboration across teams"
+    ],
+    "es": [
+      "Usan verbos de acción: lead, manage, drive, deliver",
+      "Mencionan plazos, metas o indicadores (KPIs)",
+      "Piden delegar y hacer que la gente rinda cuentas",
+      "Piden motivar, entrenar y desarrollar a las personas",
+      "Mencionan visión y comunicación clara",
+      "Mencionan colaboración entre equipos"
+    ]
+  },
+  "questions": {
+    "en": [
+      "What is the job title and company?",
+      "Which management skills does it list? (tap all that apply)",
+      "Which leadership skills does it list? (tap one or more)",
+      "Copy two sentences from the posting that describe management or leadership",
+      "What does it tell you about U.S. expectations, and how does it connect to this week's video?"
+    ],
+    "es": [
+      "¿Cuál es el puesto y la empresa?",
+      "¿Qué habilidades de gestión menciona? (toca todo lo que aplique)",
+      "¿Qué habilidades de liderazgo menciona? (toca una o más)",
+      "Copia dos oraciones de la oferta que describan gestión o liderazgo",
+      "¿Qué te dice sobre lo que se espera en EE. UU. y cómo se relaciona con el video de esta semana?"
+    ]
+  },
+  "sentences": {
+    "max": 6,
+    "min": 5
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Vision",
+      "Motivation",
+      "Communication",
+      "Coaching",
+      "Collaboration",
+      "Innovation"
+    ],
+    "es": [
+      "Visión",
+      "Motivación",
+      "Comunicación",
+      "Coaching",
+      "Colaboración",
+      "Innovación"
+    ]
+  },
+  "default_field": "operations",
+  "share_options": {
+    "en": [
+      "Organization",
+      "Deadlines",
+      "Delegation",
+      "Planning and budgets",
+      "Accountability",
+      "Problem solving",
+      "Compliance and safety"
+    ],
+    "es": [
+      "Organización",
+      "Plazos",
+      "Delegación",
+      "Planeación y presupuestos",
+      "Responsabilidad",
+      "Resolver problemas",
+      "Cumplimiento y seguridad"
+    ]
+  },
+  "compare_q": {
+    "en": [
+      "Compare your two postings in a short paragraph (5–6 sentences): what did you learn about U.S. expectations of managers and leaders, and how does it align with this week's video?"
+    ],
+    "es": [
+      "Compara tus dos ofertas en un párrafo corto (5–6 oraciones): ¿qué aprendiste sobre lo que se espera de gerentes y líderes en EE. UU., y cómo se alinea con el video de esta semana?"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 7",
+      "es": "Tu semana 7"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Take a pause. See everything you did this week, check how comfortable you feel with finance, and write one financial commitment.",
+    "intro_es": "Haz una pausa. Mira todo lo que hiciste esta semana, evalúa qué tan cómodo te sientes con las finanzas y escribe un compromiso financiero."
+  },
+  "next": {
+    "week": 8,
+    "title": "Marketing & Brand Communication",
+    "bullets": {
+      "en": [
+        "Messaging, brand identity and customer interaction",
+        "How to write a short product or service pitch",
+        "Promoting a brand or business you admire"
+      ],
+      "es": [
+        "Mensajes, identidad de marca e interacción con clientes",
+        "Cómo escribir un pitch corto de un producto o servicio",
+        "Promover una marca o empresa que admiras"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 8: how you represent yourself professionally",
+      "es": "Capstone · Parte 8: cómo te representas profesionalmente"
+    }
+  },
+  "week": 7,
+  "original": {
+    "goal": "Connect your work to finance: check what you learned, reflect, and write a one-sentence financial commitment.",
+    "time": "1 hour",
+    "title": "Connecting Your Work to Finance",
+    "body_en": "📈 Feedback & Progress\n\nTitle: Connecting Your Work to Finance\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can define revenue, expenses, profit, and ROI.\n\nI understand what a budget is and why it matters.\n\nI practiced connecting my work to financial results.\n\nI reviewed at least one company's financial performance.\n\nI explained a financial concept in my own words.\n\nStep 2 – Reflection Questions\n\nWhich financial term felt easiest for you to understand and explain?\n\nWhich term or concept will you need to practice more?\n\nHow can you show financial awareness in your current or future role?\n\nStep 3 – Action Note\nWrite a one-sentence financial commitment:\n\n\"I will review my company's budget with my manager to better understand our costs.\"\n\n\"I will calculate ROI on at least one project I work on this month.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTítulo: Conectando tu Trabajo con las Finanzas\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo definir ingresos, gastos, ganancias y ROI.\n\nEntiendo qué es un presupuesto y por qué es importante.\n\nPractiqué conectar mi trabajo con los resultados financieros.\n\nRevisé el desempeño financiero de al menos una empresa.\n\nExpliqué un concepto financiero con mis propias palabras.\n\nPaso 2 – Preguntas de Reflexión\n\n¿Qué término financiero te resultó más fácil de entender y explicar?\n\n¿Qué término o concepto necesitarás practicar más?\n\n¿Cómo puedes demostrar conciencia financiera en tu rol actual o futuro?\n\nPaso 3 – Nota de Acción\nEscribe un compromiso financiero de una oración:\n\n\"Revisaré el presupuesto de mi empresa con mi gerente para entender mejor nuestros costos.\"\n\n\"Calcularé el ROI en al menos un proyecto en el que trabaje este mes.\"",
+    "goal_es": "Conectar tu trabajo con las finanzas: revisar lo que aprendiste, reflexionar y escribir un compromiso financiero de una oración.",
+    "title_es": "Conectando tu Trabajo con las Finanzas"
+  },
+  "questions": [
+    {
+      "en": "Which financial term felt easiest for you to understand and explain?",
+      "es": "¿Qué término financiero te resultó más fácil de entender y explicar?"
+    },
+    {
+      "en": "Which term or concept will you need to practice more?",
+      "es": "¿Qué término o concepto necesitarás practicar más?"
+    },
+    {
+      "en": "How can you show financial awareness in your current or future role?",
+      "es": "¿Cómo puedes demostrar conciencia financiera en tu puesto actual o futuro?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can define revenue, expenses, profit and ROI",
+      "es": "Puedo definir ingresos, gastos, ganancias y ROI",
+      "auto": null,
+      "vocab": true
+    },
+    {
+      "en": "I understand what a budget is and why it matters",
+      "es": "Entiendo qué es un presupuesto y por qué es importante",
+      "auto": null
+    },
+    {
+      "en": "I practiced connecting my work to financial results",
+      "es": "Practiqué conectar mi trabajo con los resultados financieros",
+      "auto": "writing"
+    },
+    {
+      "en": "I reviewed at least one company's financial performance",
+      "es": "Revisé el desempeño financiero de al menos una empresa",
+      "auto": "research"
+    },
+    {
+      "en": "I explained a financial concept in my own words",
+      "es": "Expliqué un concepto financiero con mis propias palabras",
+      "auto": "video"
+    },
+    {
+      "en": "I practiced the 3 finance roleplays out loud",
+      "es": "Practiqué en voz alta los 3 juegos de roles de finanzas",
+      "auto": "speaking"
+    }
+  ],
+  "ai_practice": {
+    "tip": {
+      "en": "If it can repeat your idea back correctly, your explanation is clear! If not, use simpler words and add a number.",
+      "es": "Si puede repetir tu idea correctamente, ¡tu explicación es clara! Si no, usa palabras más sencillas y agrega un número."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Explain one financial term with an example (the one from your Video).",
+        "Notice: did it understand you the first time? Did it ask you to repeat anything?",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Explica un término financiero con un ejemplo (el de tu Video).",
+        "Fíjate: ¿te entendió a la primera? ¿Te pidió repetir algo?",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Was my explanation clear? How can I make it more professional?",
+      "Can you ask me three simple questions about budgets, ROI or the P&L?",
+      "Let's practice. I'll explain a financial term, and you give me feedback on my clarity, grammar and vocabulary."
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "Finance vocabulary",
+      "Explaining numbers",
+      "Writing",
+      "Pronunciation",
+      "Confidence speaking",
+      "Grammar"
+    ],
+    "es": [
+      "Vocabulario de finanzas",
+      "Explicar números",
+      "Escritura",
+      "Pronunciación",
+      "Seguridad al hablar",
+      "Gramática"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "I will review my company's budget with my manager to better understand our costs.",
+      "I will calculate ROI on at least one project I work on this month.",
+      "I will learn the main lines of my company's P&L.",
+      "I will use 5 finance words in my tasks next week."
+    ],
+    "es": [
+      "Revisaré el presupuesto de mi empresa con mi gerente para entender mejor nuestros costos.",
+      "Calcularé el ROI en al menos un proyecto en el que trabaje este mes.",
+      "Aprenderé las líneas principales del estado de resultados de mi empresa.",
+      "Usaré 5 palabras de finanzas en mis tareas la próxima semana."
+    ]
+  }
+}
