@@ -145,6 +145,17 @@ export function nextLesson(c: CourseStats) {
   return n ? { id: n.id, title: n.title } : null;
 }
 
+/**
+ * "Continue where you left off" (the Inicio rule): the course touched last, else the first by sort order,
+ * with its next lesson. Shared by the home and Mis cursos.
+ */
+export function resumeCourse(courses: CourseStats[]) {
+  const sorted = [...courses].sort((a, b) => a.sort - b.sort);
+  const course = sorted.filter((c) => c.last).sort((a, b) => (a.last!.at < b.last!.at ? 1 : -1))[0] ?? sorted[0];
+  const next = course ? nextLesson(course) : null;
+  return course && next ? { course, next } : null;
+}
+
 /** Assignments for the classes the student belongs to (as a student). */
 export async function myAssignments(supabase: Client, userId: string): Promise<Assignment[]> {
   const { data: memberships } = await supabase.from("class_members").select("class_id").eq("user_id", userId).eq("member_role", "student");
