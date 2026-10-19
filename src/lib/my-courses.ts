@@ -6,6 +6,7 @@ import type { Client } from "@/lib/supabase/types";
 import { accessibleCourses, courseStats, nextLesson, resumeCourse, type CourseStats } from "@/lib/learning";
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { ROUTE_PROGRAM } from "@/lib/route";
+import { BSNS_SLUG, bsnsHomeHref } from "@/lib/bsns";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -24,6 +25,8 @@ export const stateOf = (c: CourseStats): CardState => (c.completed ? "done" : c.
 export const pctOf = (c: CourseStats) => (c.lessons ? Math.round((c.done / c.lessons) * 100) : 0);
 /** Where the card's button goes: the next lesson, or the course page once finished. */
 export function hrefOf(c: CourseStats) {
+  // CelsBSNS has no course page any more: its week page is home (celsu-celsbsns-semana-brief).
+  if (c.slug === BSNS_SLUG) return bsnsHomeHref(c);
   const n = nextLesson(c);
   return c.completed || !n ? `/app/cursos/${c.slug}` : `/app/lecciones/${n.id}`;
 }

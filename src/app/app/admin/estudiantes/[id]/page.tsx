@@ -21,13 +21,15 @@ export default async function Estudiante({ params }: Props) {
   if (!viewer || !isAdminRole(viewer.role)) notFound();
   const { data: p } = await supabase.from("profiles").select("id, email, display_name, created_at").eq("id", id).maybeSingle();
   if (!p) notFound();
-  const [{ data: enr }, targets] = await Promise.all([
+  const [{ data: enr }, targets, { data: pledges }] = await Promise.all([
     supabase
       .from("enrollments")
       .select("id, status, source, starts_at, expires_at, course:courses(title), program:programs(title)")
       .eq("user_id", id)
       .order("created_at", { ascending: false }),
     accessTargets(supabase),
+    // CelsBSNS "Mi compromiso" (the syllabus): staff and admins can read every signature.
+    supabase.from("course_commitments").select("id, signed_name, signed_at, course:courses(title)").eq("user_id", id).order("signed_at"),
   ]);
   const now = Date.now();
 
@@ -41,6 +43,11 @@ export default async function Estudiante({ params }: Props) {
         <p className="mt-1 text-sm font-semibold text-[#6B6680]">
           {p.email} · se registró el {fmt(p.created_at)}
         </p>
+        {(pledges ?? []).map((c) => (
+          <p key={c.id} className="mt-2 inline-flex rounded-full bg-[#E3F6E8] px-3 py-1 text-xs font-extrabold text-[#15803D]">
+            ✓ Compromiso firmado · {fmt(c.signed_at)} · {one(c.course as { title: string } | { title: string }[] | null)?.title ?? ""} · “{c.signed_name}”
+          </p>
+        ))}
       </div>
 
       <section className="space-y-3 rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm">

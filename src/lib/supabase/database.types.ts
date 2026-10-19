@@ -434,6 +434,48 @@ export type Database = {
           },
         ]
       }
+      course_commitments: {
+        Row: {
+          course_id: string
+          id: string
+          lang: string
+          signed_at: string
+          signed_name: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          id?: string
+          lang?: string
+          signed_at?: string
+          signed_name: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          id?: string
+          lang?: string
+          signed_at?: string
+          signed_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_commitments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_commitments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           accent_color: string | null

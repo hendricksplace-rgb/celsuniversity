@@ -6,6 +6,7 @@ import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { listExams } from "@/lib/civics-server";
 import { loadCoursePage } from "@/lib/course-page";
+import { currentWeekOf, weekPath } from "@/lib/bsns";
 import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -20,6 +21,8 @@ export default async function CoursePage({ params }: Props) {
   const theme = themeForCourse({ slug });
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   if (!page) notFound();
+  // CelsBSNS: the old week-list page is gone; old links and bookmarks land on the student's current week.
+  if (theme === "celsbsns") redirect(weekPath(page.course.slug, currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.map((p) => p.done) })))));
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   const tool = AI_TOOL_OF_SLUG[slug];
   const notice = (
