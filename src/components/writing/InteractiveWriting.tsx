@@ -8,6 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
+import { CAPSTONE_PARTS, emailToBackground, partBody } from "@/lib/capstone";
 import { countWords, formatChecks, fullEmail, type HistoryEntry, type Lang, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type NavLink } from "@/components/bsns/shell";
 import s from "./writing.module.css";
@@ -352,6 +353,18 @@ export function InteractiveWriting(p: Props) {
     if (busy || !subId) return;
     setBusy("cap");
     setError(false);
+    // The email body goes into the part's "Tu experiencia profesional" field (fields.bg), keeping what the student
+    // already wrote in the other fields on the Capstone page; body mirrors the fields as plain text.
+    const { data: cur } = await db()
+      .from("capstone_parts")
+      .select("fields, sources")
+      .eq("user_id", p.userId)
+      .eq("course_id", p.courseId)
+      .eq("part", data.capstone_part)
+      .maybeSingle();
+    const obj = (x: unknown) => (x && typeof x === "object" && !Array.isArray(x) ? (x as Record<string, string>) : {});
+    const fields = { ...obj(cur?.fields), bg: emailToBackground(body) };
+    const def = CAPSTONE_PARTS.find((c) => c.part === data.capstone_part);
     const { error: e } = await db()
       .from("capstone_parts")
       .upsert(
@@ -361,7 +374,9 @@ export function InteractiveWriting(p: Props) {
           part: data.capstone_part,
           source_submission_id: subId,
           title: data.capstone_title.es,
-          body: fullEmail(subject, body),
+          fields,
+          sources: { ...obj(cur?.sources), submission: subId },
+          body: def ? partBody(def, fields) : fullEmail(subject, body),
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_id,course_id,part" },

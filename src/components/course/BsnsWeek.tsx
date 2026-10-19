@@ -326,7 +326,7 @@ export function BsnsWeek({
               </span>
               <span>
                 <b>{t.myCapstone}</b>
-                <small>{fill(t.partOf, { n: d.currentWeek })}</small>
+                <small>{fill(d.n === d.currentWeek && d.capDone ? t.partDoneOf : t.partOf, { n: d.currentWeek })}</small>
               </span>
               <Icon id="arrow" />
             </Link>
@@ -650,11 +650,12 @@ export function BsnsWeek({
               <p>{t.capText}</p>
               <ol className={s.ms}>
                 {d.milestones.map((m) => (
-                  <li key={m.part} className={cx(m.now && s.on)}>
-                    <i aria-hidden="true" />
+                  <li key={m.part} className={cx(m.now && s.on, m.done && s.msDone)}>
+                    <i aria-hidden="true">{m.done && <Icon id="check" />}</i>
                     <div>
                       <span>
                         {fill(t.msPart, { n: m.part })} · {m.now ? t.msThisWeek : fill(t.msWeek, { n: m.week })}
+                        {m.done && ` · ${t.msDone}`}
                       </span>
                       {m.label}
                     </div>

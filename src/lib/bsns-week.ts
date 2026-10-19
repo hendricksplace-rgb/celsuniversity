@@ -5,6 +5,7 @@ import type { createClient } from "@/lib/supabase/server";
 import type { CoursePage, Episode, Part } from "@/lib/course-page";
 import { initials } from "@/lib/my-classes";
 import { capstoneParts, loadSyllabus } from "@/lib/bsns-syllabus";
+import { completedCapstoneParts } from "@/lib/capstone-server";
 import {
   BSNS_WEEKS,
   DUE_DAY,
@@ -117,7 +118,10 @@ export type BsnsWeek = {
   currentWeek: number;
   routeFill: number;
   coach: { name: string; initials: string } | null;
-  milestones: { week: number; part: number; label: string; now: boolean }[];
+  /** done: the part's capstone_parts.completed_at is set (nothing else counts). */
+  milestones: { week: number; part: number; label: string; now: boolean; done: boolean }[];
+  /** This week's Capstone part is complete. */
+  capDone: boolean;
   resources: Resource[];
   courseResources: Resource[];
 };
@@ -161,7 +165,7 @@ export async function loadBsnsWeek(
   const programIds = (links ?? []).map((l) => l.program_id as string);
   const scope = [`course_id.eq.${page.course.id}`, ...(programIds.length ? [`program_id.in.(${programIds.join(",")})`] : [])];
 
-  const [{ data: subs }, { data: blocks }, { data: enrolls }, { data: classRows }, { data: res }, syllabus] = await Promise.all([
+  const [{ data: subs }, { data: blocks }, { data: enrolls }, { data: classRows }, { data: res }, syllabus, capDone] = await Promise.all([
     allIds.length ? supabase.from("submissions").select("lesson_id, status").eq("user_id", userId).in("lesson_id", allIds) : Promise.resolve({ data: [] }),
     taskIds.length
       ? supabase
@@ -181,6 +185,7 @@ export async function loadBsnsWeek(
       .eq("classes.status", "active"),
     supabase.from("resources").select("id, label, label_es, resource_type, url, sort_order").eq("module_id", week.id).order("sort_order"),
     loadSyllabus(supabase, page),
+    completedCapstoneParts(supabase, userId, page.course.id),
   ]);
   const subOf = new Map((subs ?? []).map((s) => [s.lesson_id, s]));
   const statusOf = (p: Part) => taskStatus(p, subOf.get(p.id));
@@ -383,7 +388,7 @@ export async function loadBsnsWeek(
   // ---- Capstone: this week's part, the next 2 and part 10, from the syllabus ----
   const parts = capstoneParts(syllabus, lang);
   const shown = parts.filter((p) => (p.week >= week.n && p.week <= week.n + 2) || p.week === BSNS_WEEKS);
-  const milestones = shown.map((m) => ({ week: m.week, part: m.part, label: m.text, now: m.week === week.n }));
+  const milestones = shown.map((m) => ({ week: m.week, part: m.part, label: m.text, now: m.week === week.n, done: capDone.has(m.part) }));
 
   // Hero title: "Professional Communication & Capstone Launch" → ["Professional Communication", "& Capstone Launch"].
   const clean = weekTitle(week.title);
@@ -417,6 +422,7 @@ export async function loadBsnsWeek(
     routeFill,
     coach,
     milestones,
+    capDone: capDone.has(week.n),
     resources,
     courseResources,
   };

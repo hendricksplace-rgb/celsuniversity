@@ -1,13 +1,14 @@
 import "server-only";
 import type { createClient } from "@/lib/supabase/server";
-import { fullEmail, type HistoryEntry, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
+import { emailToBackground } from "@/lib/capstone";
+import { type HistoryEntry, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
 export type WritingLoad = {
   data: WritingData;
   sub: WritingSubmission | null;
-  /** The Capstone part already holds this submission's current text. */
+  /** The Capstone part's "experiencia profesional" field (fields.bg) already holds this submission's current body. */
   capstoneSaved: boolean;
   /** The student's coach (a teacher in one of their classes), and who reviewed this submission. */
   coachName: string | null;
@@ -29,7 +30,7 @@ export async function loadWriting(supabase: Client, userId: string, lessonId: st
       .eq("lesson_id", lessonId)
       .maybeSingle(),
     supabase.rpc("my_class_people"),
-    supabase.from("capstone_parts").select("part, source_submission_id, body").eq("user_id", userId).eq("course_id", courseId),
+    supabase.from("capstone_parts").select("part, source_submission_id, fields").eq("user_id", userId).eq("course_id", courseId),
     supabase.from("phrase_bank").select("text").eq("user_id", userId).order("created_at"),
   ]);
   if (!row?.data) return null;
@@ -47,7 +48,7 @@ export async function loadWriting(supabase: Client, userId: string, lessonId: st
   return {
     data,
     sub,
-    capstoneSaved: !!(sub && cap && sub.status === "reviewed" && cap.source_submission_id === sub.id && cap.body === fullEmail(sub.subject ?? "", sub.body)),
+    capstoneSaved: !!(sub && cap && sub.status === "reviewed" && cap.source_submission_id === sub.id && (cap.fields as Record<string, unknown> | null)?.bg === emailToBackground(sub.body)),
     coachName: list.find((p) => p.member_role === "teacher" && p.display_name)?.display_name ?? null,
     myPhrases: [...new Set((bank ?? []).map((b) => b.text))],
     reviewerName: sub?.reviewed_by ? (list.find((p) => p.user_id === sub.reviewed_by && p.display_name)?.display_name ?? null) : null,

@@ -247,6 +247,22 @@ const PATHS = {
     </>
   ),
   chev: <path d="M9 6l6 6-6 6" />,
+  wand: <path d="M4 20L16 8M14 4l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" />,
+  dot: <circle cx="12" cy="12" r="3" />,
+  vol: (
+    <>
+      <path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />
+      <path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />
+    </>
+  ),
+  shuffle: <path d="M4 7h3.5c4 0 5 10 9 10H20M4 17h3.5c1.6 0 2.7-1.6 3.6-3.4M16.5 7H20M17.5 4l3 3-3 3M17.5 14l3 3-3 3" />,
+  sparkle: (
+    <>
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+      <path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" />
+    </>
+  ),
+  up: <path d="M6 15l6-6 6 6" />,
 };
 export type IconName = keyof typeof PATHS;
 export function Icon({ name, size = 18, className }: { name: IconName; size?: number; className?: string }) {
@@ -347,29 +363,33 @@ export function TopBar({
   onLang,
   progress,
   row,
+  kicker,
+  backLabel,
 }: {
-  week: number;
-  kind: string;
+  week?: number;
+  kind?: string;
   title: string;
   backHref: string;
   lang: Lang;
   onLang: (l: Lang) => void;
-  progress: number;
+  /** 0–1; null hides the 4 px bar (Dictionary). */
+  progress: number | null;
   /** The tablet/phone row under the bar ("Paso N de M · step" and a button or status). */
   row: React.ReactNode;
+  /** Replaces "SEMANA N · KIND" on pages that belong to no week ("CELSBSNS · PROYECTO FINAL"). */
+  kicker?: string;
+  backLabel?: string;
 }) {
   const t = SHELL[lang];
   return (
     <div className={s.sticky}>
       <header className={s.bar}>
         <div className={s.barIn}>
-          <Link href={backHref} className={s.backBtn} aria-label={t.back(week)}>
+          <Link href={backHref} className={s.backBtn} aria-label={backLabel ?? t.back(week ?? 1)}>
             <Icon name="back" size={20} />
           </Link>
           <div className={s.barTitle}>
-            <p className={s.barKick}>
-              {lang === "es" ? "SEMANA" : "WEEK"} {week} · {kind}
-            </p>
+            <p className={s.barKick}>{kicker ?? `${lang === "es" ? "SEMANA" : "WEEK"} ${week} · ${kind}`}</p>
             <p className={s.barName}>{title}</p>
           </div>
           <div className={s.langToggle} role="group" aria-label={t.lang}>
@@ -380,9 +400,11 @@ export function TopBar({
             ))}
           </div>
         </div>
-        <div className={s.progress} aria-hidden>
-          <span style={{ transform: `scaleX(${progress})` }} />
-        </div>
+        {progress !== null && (
+          <div className={s.progress} aria-hidden>
+            <span style={{ transform: `scaleX(${progress})` }} />
+          </div>
+        )}
       </header>
       <div className={s.stepRow}>{row}</div>
     </div>
