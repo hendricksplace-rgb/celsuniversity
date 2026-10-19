@@ -223,7 +223,9 @@
   border-radius: 14px;
   background: #d6006a;
   color: #fff;
-  box-shadow: 0 10px 24px rgba(214, 0, 106, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 10px 24px rgba(214, 0, 106, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   transition: filter 0.2s;
 }
 .btn:hover {
@@ -435,7 +437,9 @@
   overflow: hidden;
   isolation: isolate;
   min-height: 210px;
-  box-shadow: 0 24px 50px rgba(20, 17, 43, 0.18), 0 18px 60px -20px var(--glow);
+  box-shadow:
+    0 24px 50px rgba(20, 17, 43, 0.18),
+    0 18px 60px -20px var(--glow);
 }
 .pc::before {
   content: "";
@@ -454,7 +458,9 @@
   border-radius: 26px;
   pointer-events: none;
   z-index: 1;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 -40px 60px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -40px 60px rgba(0, 0, 0, 0.25);
   background: radial-gradient(60% 50% at 15% 0%, rgba(255, 255, 255, 0.1), transparent 70%);
 }
 .pc > *:not(.deco):not(.layer) {
@@ -711,7 +717,9 @@
   z-index: 1;
 }
 .eval::after {
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -50px 70px rgba(40, 0, 60, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -50px 70px rgba(40, 0, 60, 0.3);
   background: radial-gradient(60% 50% at 10% 0%, rgba(255, 255, 255, 0.18), transparent 70%);
 }
 .eval > *:not(.emblemBg),
@@ -742,7 +750,9 @@
   background: linear-gradient(145deg, #2a1458, #14112b);
   display: grid;
   place-items: center;
-  box-shadow: 0 14px 30px rgba(20, 17, 43, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 14px 30px rgba(20, 17, 43, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transform: rotate(-4deg);
 }
 .emblem svg {
@@ -800,7 +810,9 @@
   box-shadow: 0 24px 50px rgba(255, 150, 0, 0.16);
 }
 .tip::after {
-  box-shadow: inset 0 1px 0 #fff, inset 0 -40px 60px rgba(255, 176, 32, 0.1);
+  box-shadow:
+    inset 0 1px 0 #fff,
+    inset 0 -40px 60px rgba(255, 176, 32, 0.1);
 }
 .tipH {
   font-size: 20px;
@@ -857,14 +869,20 @@
   place-items: center;
   font-size: 24px;
   background: #fff;
-  box-shadow: 0 6px 14px rgba(20, 17, 43, 0.08), inset 0 1px 0 #fff;
+  box-shadow:
+    0 6px 14px rgba(20, 17, 43, 0.08),
+    inset 0 1px 0 #fff;
 }
 .badgeOn {
   background: linear-gradient(135deg, #ffe600, #ffb020);
-  box-shadow: 0 10px 20px rgba(255, 176, 32, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 10px 20px rgba(255, 176, 32, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 .badgeNext {
-  box-shadow: 0 0 0 2px #e8137b, 0 6px 14px rgba(232, 19, 123, 0.2);
+  box-shadow:
+    0 0 0 2px #e8137b,
+    0 6px 14px rgba(232, 19, 123, 0.2);
 }
 .badgeOff {
   opacity: 0.55;

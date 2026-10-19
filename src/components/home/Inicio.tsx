@@ -19,7 +19,9 @@ export function Page({ children }: { children: React.ReactNode }) {
 export function Hero({ t, name, sub, children }: { t: T; name: string | null; sub?: string; children?: React.ReactNode }) {
   return (
     <header className={`${s.hero} ${s.bleed}`} style={children ? undefined : { paddingBottom: 44 }}>
-      <Image className={s.wm} src="/site/lam-white.png" alt="" aria-hidden width={600} height={195} sizes="620px" loading="lazy" />
+      {/* Above the fold and 4.7 KB: loaded eagerly as is (lazy loading made it the late LCP element). */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- tiny decorative PNG */}
+      <img className={s.wm} src="/site/lam-white.png" alt="" aria-hidden width={600} height={195} fetchPriority="high" />
       <div className={`${s.glow} ${s.g1}`} />
       <div className={`${s.glow} ${s.g2}`} />
       <div className={s.wrap}>
@@ -153,7 +155,13 @@ function WeekCard({ t, data }: { t: T; data: HomeData }) {
 
 const DOTS = ["#E8137B", "#00CCFE", "#FFE600", "#B6EC7A", "#FFB020"];
 const bandText = (t: T, b: BandItem) =>
-  b.kind === "streakToday" || b.kind === "goal" ? fill(t.band[b.kind], { n: b.n }) : b.kind === "medal" ? fill(t.band.medal, { name: b.name }) : b.kind === "fresh" ? fill(t.band.fresh, b) : t.band[b.kind];
+  b.kind === "streakToday" || b.kind === "goal"
+    ? fill(t.band[b.kind], { n: b.n })
+    : b.kind === "medal"
+      ? fill(t.band.medal, { name: b.name })
+      : b.kind === "fresh"
+        ? fill(t.band.fresh, b)
+        : t.band[b.kind];
 
 /** The dark band, tilted −2°, scrolling every 46 s: personal messages built on the server (lib/home). */
 export function Band({ t, items }: { t: T; items: BandItem[] }) {
@@ -185,7 +193,12 @@ const DECO: Partial<Record<ThemeKey, { src: string; w: number; h: number }>> = {
   celsbsns: { src: "/site/celsbsns-bubbles.png", w: 289, h: 252 },
   celsus: { src: "/site/celsus-us3d.jpg", w: 1000, h: 540 },
 };
-const CARD: Record<ThemeKey, string> = { celstv: s.tv, celsbsns: s.bs, celsus: s.us, celsglobal: s.gl };
+const CARD: Record<ThemeKey, string> = {
+  celstv: s.tv,
+  celsbsns: s.bs,
+  celsus: s.us,
+  celsglobal: s.gl,
+};
 
 function Logo({ brand }: { brand: ThemeKey }) {
   if (brand === "celstv")
@@ -402,7 +415,13 @@ export function Grow({ t, data }: { t: T; data: HomeData }) {
                 <Gauge small />
               </div>
               <div>
-                <span className={`${s.tag} ${s.t3}`} style={{ display: "inline-block", textTransform: "uppercase" }}>
+                <span
+                  className={`${s.tag} ${s.t3}`}
+                  style={{
+                    display: "inline-block",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {t.evalTag}
                 </span>
                 <h3 className={s.evalH}>{t.english}</h3>
@@ -444,7 +463,12 @@ export function Grow({ t, data }: { t: T; data: HomeData }) {
             {nx?.unit && nx.min > 0 && (
               <div className={s.mbar}>
                 <i style={{ width: `${Math.max(6, pct(nx.have, nx.min))}%` }} />
-                <span>{fill(nx.unit === "days" ? t.daysProgress : t.xpProgress, { n: nx.have.toLocaleString("es-MX"), min: nx.min.toLocaleString("es-MX") })}</span>
+                <span>
+                  {fill(nx.unit === "days" ? t.daysProgress : t.xpProgress, {
+                    n: nx.have.toLocaleString("es-MX"),
+                    min: nx.min.toLocaleString("es-MX"),
+                  })}
+                </span>
               </div>
             )}
             <ul className={s.badges}>
