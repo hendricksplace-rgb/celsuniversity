@@ -6,11 +6,12 @@ import { themeForCourse } from "@/lib/themes";
 import { loadCoursePage } from "@/lib/course-page";
 import { MEDIA_TYPES, SUBMISSION_TYPES, taskTime, weekPath } from "@/lib/bsns";
 import { BsnsTask } from "@/components/course/BsnsTask";
-import { InteractiveReading, InteractiveResearch, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
 import { loadReading } from "@/lib/reading-server";
 import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
+import { loadSpeaking } from "@/lib/speaking-server";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
@@ -30,19 +31,34 @@ export default async function BsnsTaskPage({ params }: Props) {
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   if (!access) redirect(`/app/cursos/${slug}`);
 
-  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content or video_task_content row replaces the task screen.
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content or speaking_content row replaces the task screen.
   // Only the loader for this lesson's type runs (one database round trip).
   const ty = part.type;
-  const [reading, writing, research, video] = await Promise.all([
+  const [reading, writing, research, video, speaking] = await Promise.all([
     ty === "reading" ? loadReading(supabase, viewer.user.id, id) : null,
     ty === "writing" ? loadWriting(supabase, viewer.user.id, id, page.course.id) : null,
     ty === "research" ? loadResearch(supabase, viewer.user.id, id) : null,
     ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, id) : null,
+    ty === "speaking" ? loadSpeaking(supabase, viewer.user.id, id) : null,
   ]);
-  if (reading || writing || research || video) {
+  if (reading || writing || research || video || speaking) {
     const at = week.parts.findIndex((x) => x.id === id);
     const link = (x: (typeof week.parts)[number] | undefined) => (x ? { title: x.title, href: x.href } : null);
     const nav = { backHref: weekPath(slug, week.n), prev: link(week.parts[at - 1]), next: link(week.parts[at + 1]), defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    if (speaking)
+      return (
+        <InteractiveSpeaking
+          {...nav}
+          data={speaking.data}
+          lessonId={id}
+          userId={viewer.user.id}
+          vocab={speaking.vocab}
+          best={speaking.best}
+          reps={speaking.reps}
+          partner={speaking.partner}
+          completedAt={speaking.completedAt}
+        />
+      );
     if (video)
       return <InteractiveVideo {...nav} data={video.data} lessonId={id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
     if (research)

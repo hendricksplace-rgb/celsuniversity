@@ -200,6 +200,33 @@ const PATHS = {
     </>
   ),
   text: <path d="M4 6h16M4 10h16M4 14h10M4 18h12" />,
+  stop: <rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor" />,
+  people: (
+    <>
+      <circle cx="9" cy="8" r="3.5" />
+      <path d="M2.5 20a6.5 6.5 0 0 1 13 0" />
+      <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14a6.5 6.5 0 0 1 3.5 6" />
+    </>
+  ),
+  elev: (
+    <>
+      <rect x="4" y="3" width="16" height="18" rx="2" />
+      <path d="M12 3v18M8 9l-1.5 2h3zM16 15l-1.5-2h3z" />
+    </>
+  ),
+  repeat: (
+    <>
+      <path d="M17 2l3 3-3 3" />
+      <path d="M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3" />
+      <path d="M20 13v2a4 4 0 0 1-4 4H4" />
+    </>
+  ),
+  mirror: (
+    <>
+      <ellipse cx="12" cy="10" rx="6" ry="8" />
+      <path d="M12 18v4M8 22h8" />
+    </>
+  ),
 };
 export type IconName = keyof typeof PATHS;
 export function Icon({ name, size = 18, className }: { name: IconName; size?: number; className?: string }) {
@@ -374,7 +401,20 @@ export function RailCard({ title, children, className }: { title: string; childr
 }
 
 /** "Tu avance": a step is checked once reached; the current one is highlighted. */
-export function RailSteps({ steps, current, done, onGo }: { steps: string[]; current: number; done: (i: number) => boolean; onGo: (i: number) => void }) {
+export function RailSteps({
+  steps,
+  current,
+  done,
+  onGo,
+  extra,
+}: {
+  steps: string[];
+  current: number;
+  done: (i: number) => boolean;
+  onGo: (i: number) => void;
+  /** A small counter after the step name (Speaking: "1/3"). */
+  extra?: (i: number) => React.ReactNode;
+}) {
   return (
     <ol className={s.railSteps}>
       {steps.map((name, i) => (
@@ -382,6 +422,7 @@ export function RailSteps({ steps, current, done, onGo }: { steps: string[]; cur
           <button type="button" onClick={() => onGo(i)} aria-current={current === i ? "step" : undefined} data-done={done(i) || undefined}>
             <span className={s.railDot}>{done(i) ? <Icon name="check" size={13} /> : i + 1}</span>
             {name}
+            {extra?.(i) != null && <small className={s.railExtra}>{extra(i)}</small>}
           </button>
         </li>
       ))}

@@ -243,6 +243,12 @@ div:has(> main > .page) > nav {
   background: var(--soft);
   color: var(--ink);
 }
+.railExtra {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--mut);
+}
 .railDot {
   flex: none;
   display: grid;

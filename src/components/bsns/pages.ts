@@ -5,3 +5,4 @@ export const InteractiveReading = dynamic(() => import("@/components/reading/Int
 export const InteractiveWriting = dynamic(() => import("@/components/writing/InteractiveWriting").then((m) => m.InteractiveWriting));
 export const InteractiveResearch = dynamic(() => import("@/components/research/InteractiveResearch").then((m) => m.InteractiveResearch));
 export const InteractiveVideo = dynamic(() => import("@/components/video/InteractiveVideo").then((m) => m.InteractiveVideo));
+export const InteractiveSpeaking = dynamic(() => import("@/components/speaking/InteractiveSpeaking").then((m) => m.InteractiveSpeaking));

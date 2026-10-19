@@ -2401,6 +2401,111 @@ export type Database = {
         }
         Relationships: []
       }
+      speaking_best: {
+        Row: {
+          created_at: string
+          duration_s: number | null
+          exercise: number
+          id: string
+          lesson_id: string
+          points: number[]
+          text: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_s?: number | null
+          exercise: number
+          id?: string
+          lesson_id: string
+          points?: number[]
+          text: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_s?: number | null
+          exercise?: number
+          id?: string
+          lesson_id?: string
+          points?: number[]
+          text?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "speaking_best_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      speaking_content: {
+        Row: {
+          data: Json
+          lesson_id: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          lesson_id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          lesson_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "speaking_content_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: true
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      speaking_progress: {
+        Row: {
+          completed_at: string | null
+          lesson_id: string
+          partner_feedback: number[]
+          reps: number[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          lesson_id: string
+          partner_feedback?: number[]
+          reps?: number[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          lesson_id?: string
+          partner_feedback?: number[]
+          reps?: number[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "speaking_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       stripe_events: {
         Row: {
           id: string

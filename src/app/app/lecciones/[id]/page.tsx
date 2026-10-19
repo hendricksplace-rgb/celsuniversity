@@ -8,11 +8,12 @@ import { loadLessonContent } from "@/lib/lesson-content";
 import { themeForCourse } from "@/lib/themes";
 import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
-import { InteractiveReading, InteractiveResearch, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
 import { loadReading } from "@/lib/reading-server";
 import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
+import { loadSpeaking } from "@/lib/speaking-server";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -32,16 +33,17 @@ export default async function LessonPage({ params }: Props) {
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
 
-  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content or video_task_content row replaces the old page for this lesson.
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content or speaking_content row replaces the old page for this lesson.
   // Only the loader for this lesson's type runs (one database round trip).
   const ty = access && theme === "celsbsns" ? lesson.lesson_type : null;
-  const [reading, writing, research, video] = await Promise.all([
+  const [reading, writing, research, video, speaking] = await Promise.all([
     ty === "reading" ? loadReading(supabase, viewer.user.id, lesson.id) : null,
     ty === "writing" ? loadWriting(supabase, viewer.user.id, lesson.id, course.id) : null,
     ty === "research" ? loadResearch(supabase, viewer.user.id, lesson.id) : null,
     ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, lesson.id) : null,
+    ty === "speaking" ? loadSpeaking(supabase, viewer.user.id, lesson.id) : null,
   ]);
-  if (reading || writing || research || video) {
+  if (reading || writing || research || video || speaking) {
     const [{ data: weekLessons }, weekN, backHref] = await Promise.all([
       supabase.from("lessons").select("id, title, has_content, lesson_type").eq("module_id", lessonModule.id).order("sort_order"),
       weekNumber(supabase, course.id, lessonModule.id),
@@ -53,6 +55,20 @@ export default async function LessonPage({ params }: Props) {
     const link = (l: (typeof list)[number] | undefined) =>
       l ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` } : null;
     const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    if (speaking)
+      return (
+        <InteractiveSpeaking
+          {...nav}
+          data={speaking.data}
+          lessonId={lesson.id}
+          userId={viewer.user.id}
+          vocab={speaking.vocab}
+          best={speaking.best}
+          reps={speaking.reps}
+          partner={speaking.partner}
+          completedAt={speaking.completedAt}
+        />
+      );
     if (video)
       return <InteractiveVideo {...nav} data={video.data} lessonId={lesson.id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
     if (research)
