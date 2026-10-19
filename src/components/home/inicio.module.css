@@ -37,12 +37,15 @@
   background: linear-gradient(160deg, #2fd9ff 0%, #00ccfe 45%, #00b4f0 100%);
   padding: 34px 0 84px;
 }
-.wm {
+/* The faint LAM wordmark: a pseudo-element, so it never becomes the page's LCP element. */
+.hero::before {
+  content: "";
   position: absolute;
   right: -40px;
   bottom: -60px;
   width: 620px;
-  height: auto;
+  aspect-ratio: 600 / 195;
+  background: url("/site/lam-white.png") no-repeat center / contain;
   opacity: 0.12;
   pointer-events: none;
 }
@@ -906,7 +909,7 @@
     margin-top: -1.5rem;
     padding: 22px 0 76px;
   }
-  .wm {
+  .hero::before {
     width: 380px;
   }
   .tags {

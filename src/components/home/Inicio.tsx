@@ -19,9 +19,6 @@ export function Page({ children }: { children: React.ReactNode }) {
 export function Hero({ t, name, sub, children }: { t: T; name: string | null; sub?: string; children?: React.ReactNode }) {
   return (
     <header className={`${s.hero} ${s.bleed}`} style={children ? undefined : { paddingBottom: 44 }}>
-      {/* Above the fold and 4.7 KB: loaded eagerly as is (lazy loading made it the late LCP element). */}
-      {/* eslint-disable-next-line @next/next/no-img-element -- tiny decorative PNG */}
-      <img className={s.wm} src="/site/lam-white.png" alt="" aria-hidden width={600} height={195} fetchPriority="high" />
       <div className={`${s.glow} ${s.g1}`} />
       <div className={`${s.glow} ${s.g2}`} />
       <div className={s.wrap}>
