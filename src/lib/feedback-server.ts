@@ -1,5 +1,4 @@
 import "server-only";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { createClient } from "@/lib/supabase/server";
 import { countWords } from "@/lib/writing";
 import { vocabCount } from "@/lib/speaking";
@@ -23,8 +22,6 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
   const video = find("video_submission");
   const speaking = find("speaking");
   const none = Promise.resolve({ data: null });
-  // course_commitments lives on main's types; read it untyped so the two branches don't collide.
-  const raw = supabase as unknown as SupabaseClient;
 
   const [{ data: row }, { data: refl }, notes, rprog, sub, phrases, rrefl, proof, sprog, sbest, commit, rc, vc] = await Promise.all([
     supabase.from("feedback_content").select("data").eq("lesson_id", lessonId).maybeSingle(),
@@ -37,7 +34,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
     video ? supabase.from("video_proofs").select("thumb_path, duration_s").eq("user_id", userId).eq("lesson_id", video.id).maybeSingle() : none,
     speaking ? supabase.from("speaking_progress").select("reps, completed_at").eq("user_id", userId).eq("lesson_id", speaking.id).maybeSingle() : none,
     speaking ? supabase.from("speaking_best").select("exercise, text").eq("user_id", userId).eq("lesson_id", speaking.id).order("exercise") : none,
-    raw.from("course_commitments").select("signed_name, signed_at").eq("user_id", userId).eq("course_id", courseId).maybeSingle(),
+    supabase.from("course_commitments").select("signed_name, signed_at").eq("user_id", userId).eq("course_id", courseId).maybeSingle(),
     reading ? supabase.from("reading_content").select("data").eq("lesson_id", reading.id).maybeSingle() : none,
     video ? supabase.from("video_task_content").select("data").eq("lesson_id", video.id).maybeSingle() : none,
   ]);
@@ -52,7 +49,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
   const reps = ((sprog.data as { reps?: number[] } | null)?.reps ?? []).reduce((a, b) => a + Number(b), 0);
   const vocab = Object.entries(((rc.data as { data?: { vocab?: Record<string, { es: string }> } } | null)?.data?.vocab ?? {}) as Record<string, { es: string }>).map(([word, v]) => ({ word, es: v.es }));
   const usedText = [s?.body ?? "", ...bests.map((b) => b.text)].join("\n");
-  const c = commit.data as { signed_name?: string; signed_at?: string } | null;
+  const c = commit.data;
 
   const numbers: WeekNumbers = {
     reading: {

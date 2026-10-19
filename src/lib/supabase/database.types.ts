@@ -14,48 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      admin_audit_log: {
-        Row: {
-          action: string
-          actor: string | null
-          after: Json | null
-          at: string
-          before: Json | null
-          course_id: string | null
-          id: number
-          lesson_id: string | null
-          row_id: string | null
-          table_name: string
-          undone_at: string | null
-        }
-        Insert: {
-          action: string
-          actor?: string | null
-          after?: Json | null
-          at?: string
-          before?: Json | null
-          course_id?: string | null
-          id?: number
-          lesson_id?: string | null
-          row_id?: string | null
-          table_name: string
-          undone_at?: string | null
-        }
-        Update: {
-          action?: string
-          actor?: string | null
-          after?: Json | null
-          at?: string
-          before?: Json | null
-          course_id?: string | null
-          id?: number
-          lesson_id?: string | null
-          row_id?: string | null
-          table_name?: string
-          undone_at?: string | null
-        }
-        Relationships: []
-      }
       account_deletion_requests: {
         Row: {
           completed_at: string | null
@@ -80,6 +38,48 @@ export type Database = {
           reason?: string | null
           requested_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor: string | null
+          after: Json | null
+          at: string
+          before: Json | null
+          course_id: string | null
+          id: number
+          lesson_id: string | null
+          row_id: string | null
+          table_name: string
+          undone_at: string | null
+        }
+        Insert: {
+          action: string
+          actor?: string | null
+          after?: Json | null
+          at?: string
+          before?: Json | null
+          course_id?: string | null
+          id?: never
+          lesson_id?: string | null
+          row_id?: string | null
+          table_name: string
+          undone_at?: string | null
+        }
+        Update: {
+          action?: string
+          actor?: string | null
+          after?: Json | null
+          at?: string
+          before?: Json | null
+          course_id?: string | null
+          id?: never
+          lesson_id?: string | null
+          row_id?: string | null
+          table_name?: string
+          undone_at?: string | null
         }
         Relationships: []
       }
@@ -248,44 +248,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      client_errors: {
-        Row: { at: string; id: number; kind: string; message: string; route: string | null; session_id: string; stack: string | null; user_agent: string | null; user_id: string | null }
-        Insert: { at?: string; id?: never; kind?: string; message: string; route?: string | null; session_id: string; stack?: string | null; user_agent?: string | null; user_id?: string | null }
-        Update: { at?: string; id?: never; kind?: string; message?: string; route?: string | null; session_id?: string; stack?: string | null; user_agent?: string | null; user_id?: string | null }
-        Relationships: []
-      }
-      feedback_content: {
-        Row: {
-          data: Json
-          lesson_id: string
-          updated_at: string
-        }
-        Insert: {
-          data: Json
-          lesson_id: string
-          updated_at?: string
-        }
-        Update: {
-          data?: Json
-          lesson_id?: string
-          updated_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "feedback_content_lesson_id_fkey"
-            columns: ["lesson_id"]
-            isOneToOne: true
-            referencedRelation: "lessons"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      function_errors: {
-        Row: { at: string; function: string; id: number; message: string; status: number | null }
-        Insert: { at?: string; function: string; id?: never; message: string; status?: number | null }
-        Update: { at?: string; function?: string; id?: never; message?: string; status?: number | null }
-        Relationships: []
       }
       class_assignments: {
         Row: {
@@ -459,6 +421,42 @@ export type Database = {
           },
         ]
       }
+      client_errors: {
+        Row: {
+          at: string
+          id: number
+          kind: string
+          message: string
+          route: string | null
+          session_id: string
+          stack: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          at?: string
+          id?: never
+          kind?: string
+          message: string
+          route?: string | null
+          session_id: string
+          stack?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          at?: string
+          id?: never
+          kind?: string
+          message?: string
+          route?: string | null
+          session_id?: string
+          stack?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       content_blocks: {
         Row: {
           block_type: string
@@ -508,6 +506,48 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: false
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_commitments: {
+        Row: {
+          course_id: string
+          id: string
+          lang: string
+          signed_at: string
+          signed_name: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          id?: string
+          lang?: string
+          signed_at?: string
+          signed_name: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          id?: string
+          lang?: string
+          signed_at?: string
+          signed_name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_commitments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_commitments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1079,6 +1119,56 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      feedback_content: {
+        Row: {
+          data: Json
+          lesson_id: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          lesson_id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          lesson_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_content_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: true
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      function_errors: {
+        Row: {
+          at: string
+          function: string
+          id: number
+          message: string
+          status: number | null
+        }
+        Insert: {
+          at?: string
+          function: string
+          id?: never
+          message: string
+          status?: number | null
+        }
+        Update: {
+          at?: string
+          function?: string
+          id?: never
+          message?: string
+          status?: number | null
+        }
+        Relationships: []
       }
       gamification: {
         Row: {
@@ -2832,14 +2922,6 @@ export type Database = {
     Functions: {
       admin_duplicate_module: { Args: { p_module: string }; Returns: string }
       can_use_ai_tools: { Args: never; Returns: boolean }
-      my_class_people: {
-        Args: never
-        Returns: { class_id: string | null; user_id: string; member_role: string; display_name: string | null }[]
-      }
-      log_client_error: {
-        Args: { p_kind?: string; p_message: string; p_route: string; p_session_id: string; p_stack?: string; p_user_agent?: string }
-        Returns: boolean
-      }
       content_health: {
         Args: never
         Returns: {
@@ -2862,6 +2944,26 @@ export type Database = {
         Args: { p_max?: number; p_token: string }
         Returns: boolean
       }
+      log_client_error: {
+        Args: {
+          p_kind?: string
+          p_message: string
+          p_route: string
+          p_session_id: string
+          p_stack?: string
+          p_user_agent?: string
+        }
+        Returns: boolean
+      }
+      my_class_people: {
+        Args: never
+        Returns: {
+          class_id: string
+          display_name: string
+          member_role: string
+          user_id: string
+        }[]
+      }
       my_evaluation_history: {
         Args: never
         Returns: {
@@ -2871,7 +2973,11 @@ export type Database = {
       }
       my_new_badges: {
         Args: never
-        Returns: { code: string; name: string; color: string }[]
+        Returns: {
+          code: string
+          color: string
+          name: string
+        }[]
       }
       my_resume_reviews: {
         Args: never

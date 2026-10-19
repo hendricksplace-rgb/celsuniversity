@@ -6,7 +6,6 @@
 // "Agregar a mi Capstone". Sending marks the lesson complete through record_lesson_progress (finishLesson).
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Json } from "@/lib/supabase/database.types";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
 import { countWords, formatChecks, fullEmail, type HistoryEntry, type Lang, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
@@ -333,15 +332,18 @@ export function InteractiveWriting(p: Props) {
       coach_improve: p.sub.coach_improve,
       coach_message: p.sub.coach_message ?? p.sub.coach_feedback,
     };
-    const nextHistory = [...history, entry];
-    const { error: e } = await db()
+    // reviewed → draft: guard_submission appends the reviewed version to history and clears the coach fields
+    // server side (students can't write them); the returned history replaces the local guess.
+    const { data: row, error: e } = await db()
       .from("submissions")
-      .update({ status: "draft", history: nextHistory as unknown as Json, coach_good: null, coach_improve: null, coach_message: null })
+      .update({ status: "draft" })
       .eq("user_id", p.userId)
-      .eq("lesson_id", p.lessonId);
+      .eq("lesson_id", p.lessonId)
+      .select("history")
+      .maybeSingle();
     setBusy(null);
-    if (e) return setError(true);
-    setHistory(nextHistory);
+    if (e || !row) return setError(true);
+    setHistory(Array.isArray(row.history) ? (row.history as unknown as HistoryEntry[]) : [...history, entry]);
     setStatus("draft");
     setCapSaved(false);
     requestAnimationFrame(() => goTo("w2"));

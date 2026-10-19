@@ -13,6 +13,11 @@ import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
 import { loadSpeaking } from "@/lib/speaking-server";
 import { loadFeedback } from "@/lib/feedback-server";
+import { cookies } from "next/headers";
+import type { CoursePage, Episode, Part } from "@/lib/course-page";
+import { currentWeekOf, videoTitle } from "@/lib/bsns";
+import { SYLLABUS_LANG_COOKIE, isSyllabus, loadSyllabus, parseSyllabus } from "@/lib/bsns-syllabus";
+import { BsnsSyllabus } from "@/components/course/BsnsSyllabus";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
@@ -31,6 +36,8 @@ export default async function BsnsTaskPage({ params }: Props) {
   if (!page || !week || !part) notFound();
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   if (!access) redirect(`/app/cursos/${slug}`);
+
+  if (isSyllabus(part)) return <Syllabus supabase={supabase} page={page} week={week} part={part} userId={viewer.user.id} displayName={viewer.displayName} />;
 
   // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content, speaking_content or feedback_content row replaces the task screen.
   // Only the loader for this lesson's type runs (one database round trip).
@@ -160,6 +167,55 @@ export default async function BsnsTaskPage({ params }: Props) {
       done={part.done}
       sub={sub ? { ...sub, media_url: media?.signedUrl ?? null } : null}
       feedback={(weekSubs ?? []).map((s) => ({ task: titleOf.get(s.lesson_id) ?? "", text: s.coach_feedback ?? "", at: s.reviewed_at }))}
+    />
+  );
+}
+
+/** CelsBSNS syllabus (celsu-celsbsns-syllabus-brief.md): the same lesson text, parsed into a styled page. */
+async function Syllabus({
+  supabase,
+  page,
+  week,
+  part,
+  userId,
+  displayName,
+}: {
+  supabase: Awaited<ReturnType<typeof createClient>>;
+  page: CoursePage;
+  week: Episode;
+  part: Part;
+  userId: string;
+  displayName: string | null;
+}) {
+  const [text, { data: signed }, jar] = await Promise.all([
+    loadSyllabus(supabase, page),
+    supabase.from("course_commitments").select("signed_name, signed_at").eq("user_id", userId).eq("course_id", page.course.id).maybeSingle(),
+    cookies(),
+  ]);
+  const en = text?.en ?? "";
+  const es = text?.es ?? null;
+  // Previous / Next: the real neighbouring lessons of the week (the week page when there is none before).
+  const at = week.parts.findIndex((p) => p.id === part.id);
+  const label = (p: Part) => (p.type === "video" ? videoTitle(p.title) : taskTime(p.title).name);
+  const before = week.parts[at - 1];
+  const after = week.parts[at + 1];
+  const saved = jar.get(SYLLABUS_LANG_COOKIE)?.value;
+  return (
+    <BsnsSyllabus
+      initialLang={saved === "es" ? "es" : "en"}
+      parsed={{ en: parseSyllabus(en), es: es ? parseSyllabus(es) : null }}
+      raw={{ en, es }}
+      week={week.n}
+      currentWeek={currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.map((p) => p.done) })))}
+      weekHref={weekPath(page.course.slug, week.n)}
+      prev={before ? { label: label(before), href: before.href } : null}
+      next={after ? { label: label(after), href: after.href } : null}
+      userId={userId}
+      lessonId={part.id}
+      done={part.done}
+      courseId={page.course.id}
+      prefillName={displayName?.trim() ?? ""}
+      signed={signed ? { name: signed.signed_name, at: signed.signed_at } : null}
     />
   );
 }

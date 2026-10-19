@@ -67,6 +67,7 @@ const UI = {
     best: "Guardar como mi mejor intento",
     bestOn: "Mi mejor intento",
     saved: "MI MEJOR INTENTO GUARDADO",
+    unstar: "Quitar de mi mejor intento",
     bonusK: "RETO EXTRA · OPCIONAL",
     bonus: "Pide la opinión de tu compañero",
     bonusI: "Si practicaste con alguien, pídele que conteste esto después de escucharte.",
@@ -126,6 +127,7 @@ const UI = {
     best: "Save as my best try",
     bestOn: "My best try",
     saved: "MY SAVED BEST TRY",
+    unstar: "Remove as my best try",
     bonusK: "BONUS CHALLENGE · OPTIONAL",
     bonus: "Ask your partner for feedback",
     bonusI: "If you practiced with someone, ask them to answer this after they listen to you.",
@@ -229,8 +231,16 @@ export function InteractiveSpeaking(p: Props) {
   const star = (i: number, k: number) => {
     const tr = tries[i][k];
     if (!tr?.text) return;
+    if (bestIdx[i] === k) return void unstar(i);
     setBestIdx((cur) => cur.map((b, x) => (x === i ? k : b)));
     void saveBest(i, tr);
+  };
+  /** Tapping the starred try again removes it (speaking_best has an owner DELETE policy). */
+  const unstar = async (i: number) => {
+    setBestIdx((cur) => cur.map((b, x) => (x === i ? null : b)));
+    const { error } = await db().from("speaking_best").delete().eq("user_id", p.userId).eq("lesson_id", p.lessonId).eq("exercise", i + 1);
+    setSaveError(!!error);
+    if (!error) setSavedBest((cur) => cur.map((b, x) => (x === i ? null : b)));
   };
   const toggleSelf = (i: number, k: number, j: number) => {
     const tr = tries[i][k];
@@ -582,6 +592,7 @@ export function InteractiveSpeaking(p: Props) {
                 onMic={() => (recIdx === i ? void stopMic() : void startMic(i))}
                 onManual={() => addTry(i, { text: "", dur: 0, self: [], manual: true })}
                 onStar={(k) => star(i, k)}
+                onUnstar={() => void unstar(i)}
                 onSelf={(k, j) => toggleSelf(i, k, j)}
                 onTyped={(k, text) => setTyped(i, k, text)}
                 onAddTyped={(text) => {
@@ -778,6 +789,7 @@ function ExerciseCard({
   onMic,
   onManual,
   onStar,
+  onUnstar,
   onSelf,
   onTyped,
   onAddTyped,
@@ -802,6 +814,7 @@ function ExerciseCard({
   onMic: () => void;
   onManual: () => void;
   onStar: (k: number) => void;
+  onUnstar: () => void;
   onSelf: (k: number, j: number) => void;
   onTyped: (k: number, text: string) => void;
   onAddTyped: (text: string) => void;
@@ -913,6 +926,12 @@ function ExerciseCard({
               <p className={s.tx} lang="en">
                 {highlight(savedBest.text)}
               </p>
+              <div className={s.acts}>
+                <button type="button" className={s.bestb} onClick={onUnstar}>
+                  <Icon name="star" size={17} />
+                  {t.unstar}
+                </button>
+              </div>
             </div>
           )}
           {tries

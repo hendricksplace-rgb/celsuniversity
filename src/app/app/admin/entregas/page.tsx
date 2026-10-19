@@ -43,7 +43,11 @@ export default async function SubmissionsQueue({ searchParams }: Props) {
   const open = id ? (rows ?? []).find((r) => r.id === id) : null;
   if (open) {
     const l = label(open);
-    const { data: media } = open.media_path ? await supabase.storage.from("submissions").createSignedUrl(open.media_path, 3600) : { data: null };
+    const [{ data: media }, { data: pledge }] = await Promise.all([
+      open.media_path ? supabase.storage.from("submissions").createSignedUrl(open.media_path, 3600) : Promise.resolve({ data: null }),
+      // CelsBSNS "Mi compromiso" (signed on the syllabus).
+      supabase.from("course_commitments").select("signed_at").eq("user_id", open.user_id).order("signed_at").limit(1).maybeSingle(),
+    ]);
     // CelsBSNS Interactive Writing Task: the email as sent and the coach's three fields.
     const { data: wc } = await supabase.from("writing_content").select("data").eq("lesson_id", open.lesson_id).maybeSingle();
     const writingTo = wc ? ((wc.data as { to_label?: string }).to_label ?? "—") : null;
@@ -59,6 +63,11 @@ export default async function SubmissionsQueue({ searchParams }: Props) {
           <p className="text-sm font-semibold text-[#6B6680]">
             {who.get(open.user_id)} · {open.submitted_at ? fmt.format(new Date(open.submitted_at)) : ""}
           </p>
+          {pledge && (
+            <p className="mt-2 inline-flex rounded-full bg-[#E3F1E6] px-3 py-1 text-xs font-extrabold text-[#1E7A3A]">
+              ✓ {fill(tb.queuePledge, { date: new Intl.DateTimeFormat(lang === "es" ? "es-MX" : "en-US", { dateStyle: "medium", timeZone: "America/Mexico_City" }).format(new Date(pledge.signed_at)) })}
+            </p>
+          )}
         </header>
         {media?.signedUrl &&
           (isVideo ? <video controls playsInline src={media.signedUrl} className="aspect-video w-full rounded-2xl bg-black" /> : <audio controls src={media.signedUrl} className="w-full" />)}

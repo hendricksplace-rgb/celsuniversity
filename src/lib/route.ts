@@ -1,6 +1,7 @@
 // The CelsGLOBAL route (/app/programas/celsglobal): 5 stages, one course each, in a suggested order.
 // Stages are never locked: any can be opened, and several can be in progress at once.
 import type { Client } from "@/lib/supabase/types";
+import { BSNS_SLUG, bsnsHomeHref } from "@/lib/bsns";
 import { accessibleCourses, courseStats, myAssignments, nextLesson, type Assignment, type CourseStats } from "@/lib/learning";
 
 export const ROUTE_PROGRAM = "international-professional-development";
@@ -58,12 +59,15 @@ export async function loadRoute(supabase: Client, userId: string) {
     // An assignment on one module opens that module's first lesson.
     const inModule = assignment?.moduleId && s ? s.order.filter((o) => o.moduleId === assignment.moduleId) : [];
     const assignedLesson = inModule.find((o) => !o.done) ?? inModule[0] ?? null;
+    // CelsBSNS has no course page: its current week is home.
     const href =
-      state === "progress" && next
-        ? `/app/lecciones/${next.id}`
-        : state === "assigned" && (assignedLesson || next)
-          ? `/app/lecciones/${(assignedLesson ?? next)!.id}`
-          : `/app/cursos/${c.slug}`;
+      c.slug === BSNS_SLUG && s
+        ? bsnsHomeHref(s)
+        : state === "progress" && next
+          ? `/app/lecciones/${next.id}`
+          : state === "assigned" && (assignedLesson || next)
+            ? `/app/lecciones/${(assignedLesson ?? next)!.id}`
+            : `/app/cursos/${c.slug}`;
     return [
       {
         n: i + 1,
