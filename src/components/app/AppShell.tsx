@@ -36,7 +36,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className="min-h-screen bg-[#F7F5FA] text-[#1B1830]"
+      className="min-h-screen overflow-x-clip bg-[#F7F5FA] text-[#1B1830]"
       data-prefs=""
       data-sound={prefs.sound_effects ? "on" : "off"}
       data-es={prefs.show_spanish ? "on" : "off"}
@@ -57,14 +57,16 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             <details className="relative">
               <summary
                 aria-label={t.shell.account}
-                className="grid h-9 w-9 cursor-pointer list-none place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#F5178C] to-[#35C3F0] text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C] [&::-webkit-details-marker]:hidden"
+                className="avatar-ring block h-10 w-10 cursor-pointer list-none rounded-full p-[2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C] [&::-webkit-details-marker]:hidden"
               >
-                {me?.avatar_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- public avatar, 256 px
-                  <img src={me.avatar_url} alt="" width={36} height={36} className="h-full w-full object-cover" />
-                ) : (
-                  name.trim().charAt(0).toUpperCase() || "?"
-                )}
+                <span className="grid h-full w-full place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[#7B61FF] to-[#E8137B] text-sm font-extrabold text-white">
+                  {me?.avatar_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- public avatar, 256 px
+                    <img src={me.avatar_url} alt="" width={36} height={36} className="h-full w-full object-cover" />
+                  ) : (
+                    name.trim().charAt(0).toUpperCase() || "?"
+                  )}
+                </span>
               </summary>
               <div className="absolute right-0 mt-2 w-56 rounded-2xl border border-[#EFE6F2] bg-white p-2 text-sm shadow-xl">
                 <p className="truncate px-3 py-2 text-xs font-semibold text-[#6B6680]">{viewer.user.email}</p>

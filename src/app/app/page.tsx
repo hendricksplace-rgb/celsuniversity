@@ -15,7 +15,7 @@ export default async function StudentHomePage() {
 
   const data = await loadHome(supabase, user.id);
   return data.programs.length ? (
-    <StudentHome t={t.dash} levelLabel={t.app.level} data={data} />
+    <StudentHome t={t.dash} data={data} />
   ) : (
     <GuestHome t={t.dash} levelLabel={t.app.level} data={data} locale={lang === "en" ? "en-US" : "es-MX"} />
   );

@@ -31,6 +31,27 @@ body {
   }
 }
 
+/* Student area: the avatar's slowly rotating rainbow ring (Inicio redesign). */
+@property --ring-a {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+.avatar-ring {
+  background: conic-gradient(from var(--ring-a), #e8137b, #ffb020, #ffe600, #b6ec7a, #00ccfe, #7b61ff, #e8137b);
+  animation: avatar-ring 6s linear infinite;
+}
+@keyframes avatar-ring {
+  to {
+    --ring-a: 360deg;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .avatar-ring {
+    animation: none;
+  }
+}
+
 /* ---------- Program themes: same components, different tokens ---------- */
 [data-theme] {
   background: var(--t-bg);
