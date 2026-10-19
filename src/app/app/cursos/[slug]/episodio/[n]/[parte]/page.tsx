@@ -14,6 +14,7 @@ import { QuizPart } from "@/components/part/QuizPart";
 import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
 import { CelsBookPart, type CelsBook, type BookSection } from "@/components/part/CelsBookPart";
+import { CelsusQuizRoute } from "@/components/celsbook/QuizRoute";
 
 /** CelsCast (block `celscast`, version 1): lines with speaker and per-word start times (`wt`). */
 function celscastTrack(data: Record<string, unknown>, sign: (ref: string) => string | null): Track {
@@ -153,6 +154,11 @@ export default async function PartPage({ params, searchParams }: Props) {
 
   const page = await loadCoursePage(supabase, viewer.user.id, slug, themeForCourse({ slug }), viewer.isStaff);
   const episode = page?.episodes.find((e) => e.n === Number(n));
+  // CelsUS Part 6, "Quiz del episodio N": the CelsBook's quiz (components/celsbook/QuizRoute.tsx).
+  if (key === "quiz" && page?.layout === "citizenship" && episode) {
+    if (!(await canAccessCourse(supabase, viewer, page.course.id))) redirect(`/app/cursos/${page.course.slug}`);
+    return <CelsusQuizRoute supabase={supabase} viewer={viewer} courseId={page.course.id} courseSlug={page.course.slug} episode={episode} />;
+  }
   const part = episode?.parts.find((p) => p.key === key);
   if (!page || page.layout !== "episodes" || !episode || !part) notFound();
   const courseHref = `/app/cursos/${page.course.slug}`;
