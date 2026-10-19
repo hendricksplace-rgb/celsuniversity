@@ -171,6 +171,13 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
     const n = i + 1;
     const all = toParts(m, n);
     const { core: parts, extra } = layout === "citizenship" ? splitCelsus(all) : { core: all, extra: [] as Part[] };
+    // CelsUS: the Tarjetas part and the Part 6 quiz have their own screens under the episode.
+    for (const p of parts) {
+      if (p.role === "cards") p.href = `${episodePath(course.slug ?? slug, n)}/tarjetas`;
+      if (p.role === "quiz") p.href = `${episodePath(course.slug ?? slug, n)}/quiz`;
+      // The interactive CelsBook (ebooks, slug celsus-celsbook-episode-N) replaces the old lesson page.
+      if (p.role === "book") p.href = `/app/libros/celsus-celsbook-episode-${n}`;
+    }
     const done = parts.filter((p) => p.done).length;
     const state: EpisodeState = parts.length > 0 && done === parts.length ? "done" : done > 0 ? "now" : "new";
     return {

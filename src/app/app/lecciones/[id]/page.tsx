@@ -1,4 +1,4 @@
-import { studentLessons } from "@/lib/course-page";
+import { loadCoursePage, studentLessons } from "@/lib/course-page";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -26,13 +26,26 @@ export default async function LessonPage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/lecciones/${id}`);
 
   // RLS: students only see published, non-teacher lessons.
-  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, module:modules(id, title, course:courses(id, slug, title))").eq("id", id).maybeSingle();
+  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, module:modules(id, title, kind, course:courses(id, slug, title, layout))").eq("id", id).maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   if (!lesson || !lessonModule || !course) notFound();
 
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
+
+  // CelsUS core parts: the Tarjetas, CelsBook and quiz have their own screens; the video, audio and class stay
+  // here and report to the episode's completion flow when finished (afterPartFinished).
+  let celsus: { courseSlug: string; n: number } | null = null;
+  if (access && course.layout === "citizenship_modules" && lessonModule.kind === "lesson_week" && course.slug) {
+    const page = await loadCoursePage(supabase, viewer.user.id, course.slug, theme, viewer.isStaff);
+    const ep = page?.episodes.find((e) => e.id === lessonModule.id);
+    const part = ep?.parts.find((p) => p.id === lesson.id);
+    if (ep && part) {
+      if (part.role === "cards" || part.role === "quiz" || part.role === "book") redirect(part.href);
+      celsus = { courseSlug: course.slug, n: ep.n };
+    }
+  }
 
   // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content, speaking_content or feedback_content row replaces the old page for this lesson.
   // Only the loader for this lesson's type runs (one database round trip).
@@ -163,6 +176,7 @@ export default async function LessonPage({ params }: Props) {
           initialParts={(progress?.parts ?? {}) as Record<string, unknown>}
           initialStatus={progress?.status ?? null}
           t={{ parts: t.lesson.partsDone, finish: t.lesson.markDone, finished: t.lesson.finished, xp: t.lesson.xpEarned }}
+          celsus={celsus ? { ...celsus, t: t.lesson.celsus } : null}
         >
           {visible.length === 0 ? (
             <p className="t-card t-muted">{t.lesson.empty}</p>
