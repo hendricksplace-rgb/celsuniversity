@@ -6,12 +6,13 @@ import { themeForCourse } from "@/lib/themes";
 import { loadCoursePage } from "@/lib/course-page";
 import { MEDIA_TYPES, SUBMISSION_TYPES, taskTime, weekPath } from "@/lib/bsns";
 import { BsnsTask } from "@/components/course/BsnsTask";
-import { InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { InteractiveFeedback, InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
 import { loadReading } from "@/lib/reading-server";
 import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
 import { loadSpeaking } from "@/lib/speaking-server";
+import { loadFeedback } from "@/lib/feedback-server";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
@@ -31,7 +32,7 @@ export default async function BsnsTaskPage({ params }: Props) {
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   if (!access) redirect(`/app/cursos/${slug}`);
 
-  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content or speaking_content row replaces the task screen.
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content, speaking_content or feedback_content row replaces the task screen.
   // Only the loader for this lesson's type runs (one database round trip).
   const ty = part.type;
   const [reading, writing, research, video, speaking] = await Promise.all([
@@ -41,10 +42,28 @@ export default async function BsnsTaskPage({ params }: Props) {
     ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, id) : null,
     ty === "speaking" ? loadSpeaking(supabase, viewer.user.id, id) : null,
   ]);
-  if (reading || writing || research || video || speaking) {
+  const feedback =
+    ty === "feedback" ? await loadFeedback(supabase, viewer.user.id, id, page.course.id, week.n, week.parts.map((x) => ({ id: x.id, type: x.type, title: x.title, href: x.href }))) : null;
+  if (reading || writing || research || video || speaking || feedback) {
     const at = week.parts.findIndex((x) => x.id === id);
     const link = (x: (typeof week.parts)[number] | undefined) => (x ? { title: x.title, href: x.href } : null);
     const nav = { backHref: weekPath(slug, week.n), prev: link(week.parts[at - 1]), next: link(week.parts[at + 1]), defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    if (feedback)
+      return (
+        <InteractiveFeedback
+          backHref={nav.backHref}
+          prev={nav.prev}
+          defaultLang={nav.defaultLang}
+          data={feedback.data}
+          lessonId={id}
+          courseId={page.course.id}
+          userId={viewer.user.id}
+          nextWeekHref={week.n < page.episodes.length ? weekPath(slug, week.n + 1) : null}
+          capstoneHref={`/app/cursos/${slug}/capstone`}
+          numbers={feedback.numbers}
+          reflection={feedback.reflection}
+        />
+      );
     if (speaking)
       return (
         <InteractiveSpeaking
@@ -89,17 +108,18 @@ export default async function BsnsTaskPage({ params }: Props) {
           myPhrases={writing.myPhrases}
         />
       );
-    return (
-      <InteractiveReading
-        {...nav}
-        data={reading!.data}
-        lessonId={id}
-        userId={viewer.user.id}
-        initialNotes={reading!.notes}
-        initialState={reading!.state}
-        completedAt={reading!.completedAt}
-      />
-    );
+    if (reading)
+      return (
+        <InteractiveReading
+          {...nav}
+          data={reading.data}
+          lessonId={id}
+          userId={viewer.user.id}
+          initialNotes={reading.notes}
+          initialState={reading.state}
+          completedAt={reading.completedAt}
+        />
+      );
   }
 
   const kind = part.type === "feedback" ? "feedback" : part.type && SUBMISSION_TYPES.has(part.type) ? "submission" : "read";

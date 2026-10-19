@@ -119,6 +119,9 @@ div:has(> main > .page) > nav {
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--blue2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .barName {
   font-family: var(--head);

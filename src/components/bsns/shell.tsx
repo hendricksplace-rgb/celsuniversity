@@ -227,6 +227,26 @@ const PATHS = {
       <path d="M12 18v4M8 22h8" />
     </>
   ),
+  chart: <path d="M4 20V10M10 20V5M16 20v-7M22 20H2" />,
+  compass: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M15.5 8.5l-2 5-5 2 2-5z" />
+    </>
+  ),
+  sign: (
+    <>
+      <path d="M3 17c3-4 5-9 7-9s-1 9 1 9 3-4 4-4 1 3 3 3 2-1 3-2" />
+      <path d="M3 21h18" />
+    </>
+  ),
+  copy: (
+    <>
+      <rect x="8" y="8" width="12" height="12" rx="2.5" />
+      <path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" />
+    </>
+  ),
+  chev: <path d="M9 6l6 6-6 6" />,
 };
 export type IconName = keyof typeof PATHS;
 export function Icon({ name, size = 18, className }: { name: IconName; size?: number; className?: string }) {

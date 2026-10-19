@@ -8,6 +8,7 @@ import { themeForCourse } from "@/lib/themes";
 import { loadCoursePage } from "@/lib/course-page";
 import { taskStatus, taskTime, videoTitle, weekTitle, type TaskStatus } from "@/lib/bsns";
 import { fill, pad } from "@/components/course/kit";
+import { previousWeekGoal } from "@/lib/feedback-server";
 
 type Props = { params: Promise<{ slug: string; n: string }> };
 
@@ -33,6 +34,8 @@ export default async function BsnsWeekPage({ params }: Props) {
   const week = page?.episodes.find((e) => e.n === Number(n));
   if (!page || !week) notFound();
 
+  // The goal the student wrote when closing last week ("Feedback & Progress"); owner-only row.
+  const goal = await previousWeekGoal(supabase, viewer.user.id, page.course.id, week.n);
   const { data: subs } = week.parts.length
     ? await supabase.from("submissions").select("lesson_id, status").eq("user_id", viewer.user.id).in("lesson_id", week.parts.map((p) => p.id))
     : { data: [] };
@@ -54,6 +57,11 @@ export default async function BsnsWeekPage({ params }: Props) {
         </div>
         <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#C9D6EE]">{fill(tb.weekOf, { n: week.n, total: page.episodes.length })}</p>
         <h1 className="text-[22px] font-extrabold leading-tight">{weekTitle(week.title)}</h1>
+        {goal && (
+          <p className="rounded-lg bg-white/12 px-3 py-2 text-[13px] font-semibold text-[#E3ECFA]">
+            <strong className="text-white">{t.bsns.weekGoal}</strong> {goal}
+          </p>
+        )}
         <div className="flex items-center gap-2.5">
           <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/20">
             <span className="block h-full bg-white" style={{ width: `${week.parts.length ? (done / week.parts.length) * 100 : 0}%` }} />

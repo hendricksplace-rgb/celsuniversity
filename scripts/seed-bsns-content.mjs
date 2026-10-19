@@ -1,7 +1,7 @@
 // CelsBSNS interactive lessons: writes one week's JSON into public.reading_content (ReadingData, src/lib/reading.ts),
 // public.writing_content (WritingData, src/lib/writing.ts), public.research_content (ResearchData,
 // src/lib/research.ts), public.video_task_content (VideoTaskData, src/lib/video-task.ts) or public.speaking_content
-// (SpeakingData, src/lib/speaking.ts). The only tables it writes; lessons and
+// (SpeakingData, src/lib/speaking.ts) or public.feedback_content (FeedbackData, src/lib/feedback.ts). The only tables it writes; lessons and
 // content_blocks are not touched. Server-side only: needs SUPABASE_SECRET_KEY in the environment (never in client code).
 //   node --env-file=.env.local scripts/seed-bsns-content.mjs reading <lesson-id> content/celsbsns/reading-semana1.json          (dry run)
 //   node --env-file=.env.local scripts/seed-bsns-content.mjs writing <lesson-id> content/celsbsns/writing-semana1.json --write
@@ -13,11 +13,12 @@ const write = process.argv.includes("--write");
 const REQUIRED = {
   reading: ["week", "original", "hero", "warmup", "article", "vocab", "sources", "video", "cases", "checkpoint"],
   writing: ["week", "original", "hero", "scenario", "parts", "rules", "example", "words", "to_label", "capstone_part"],
+  feedback: ["week", "original", "hero", "statements", "questions", "next", "goal_suggestions", "focus_options", "ai_practice"],
   speaking: ["week", "original", "hero", "rules", "vocab_from_lesson_id", "exercises", "bonus"],
   video_task: ["week", "original", "hero", "seconds", "must", "tips", "delivery", "script_source_lesson_id", "capstone_part"],
   research: ["week", "original", "hero", "sentences", "sources", "lenses", "types", "share_options", "tone_options", "model", "patterns"],
 };
-if (!REQUIRED[kind] || !/^[0-9a-f-]{36}$/.test(lessonId ?? "") || !file) throw new Error("usage: seed-bsns-content.mjs reading|writing|research|video_task|speaking <lesson-id> <file.json> [--write]");
+if (!REQUIRED[kind] || !/^[0-9a-f-]{36}$/.test(lessonId ?? "") || !file) throw new Error("usage: seed-bsns-content.mjs reading|writing|research|video_task|speaking|feedback <lesson-id> <file.json> [--write]");
 
 const clean = (v) => (v ?? "").replace(/[​-‍⁠﻿]/g, "").trim();
 const url = clean(process.env.NEXT_PUBLIC_SUPABASE_URL);

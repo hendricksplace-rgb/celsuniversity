@@ -8,12 +8,13 @@ import { loadLessonContent } from "@/lib/lesson-content";
 import { themeForCourse } from "@/lib/themes";
 import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
-import { InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import { InteractiveFeedback, InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
 import { loadReading } from "@/lib/reading-server";
 import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
 import { loadSpeaking } from "@/lib/speaking-server";
+import { loadFeedback } from "@/lib/feedback-server";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -33,7 +34,7 @@ export default async function LessonPage({ params }: Props) {
   const theme = themeForCourse(course);
   const access = await canAccessCourse(supabase, viewer, course.id);
 
-  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content or speaking_content row replaces the old page for this lesson.
+  // CelsBSNS interactive lessons: a reading_content, writing_content, research_content, video_task_content, speaking_content or feedback_content row replaces the old page for this lesson.
   // Only the loader for this lesson's type runs (one database round trip).
   const ty = access && theme === "celsbsns" ? lesson.lesson_type : null;
   const [reading, writing, research, video, speaking] = await Promise.all([
@@ -43,7 +44,7 @@ export default async function LessonPage({ params }: Props) {
     ty === "video_submission" ? loadVideoTask(supabase, viewer.user.id, lesson.id) : null,
     ty === "speaking" ? loadSpeaking(supabase, viewer.user.id, lesson.id) : null,
   ]);
-  if (reading || writing || research || video || speaking) {
+  if (reading || writing || research || video || speaking || ty === "feedback") {
     const [{ data: weekLessons }, weekN, backHref] = await Promise.all([
       supabase.from("lessons").select("id, title, has_content, lesson_type").eq("module_id", lessonModule.id).order("sort_order"),
       weekNumber(supabase, course.id, lessonModule.id),
@@ -55,6 +56,26 @@ export default async function LessonPage({ params }: Props) {
     const link = (l: (typeof list)[number] | undefined) =>
       l ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` } : null;
     const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    const feedback =
+      ty === "feedback" && weekN > 0
+        ? await loadFeedback(supabase, viewer.user.id, lesson.id, course.id, weekN, list.map((l) => ({ id: l.id, type: l.lesson_type, title: l.title, href: link(l)!.href })))
+        : null;
+    if (feedback)
+      return (
+        <InteractiveFeedback
+          backHref={nav.backHref}
+          prev={nav.prev}
+          defaultLang={nav.defaultLang}
+          data={feedback.data}
+          lessonId={lesson.id}
+          courseId={course.id}
+          userId={viewer.user.id}
+          nextWeekHref={weekN < 10 ? `/app/cursos/${course.slug}/semana/${weekN + 1}` : null}
+          capstoneHref={`/app/cursos/${course.slug}/capstone`}
+          numbers={feedback.numbers}
+          reflection={feedback.reflection}
+        />
+      );
     if (speaking)
       return (
         <InteractiveSpeaking
@@ -99,17 +120,18 @@ export default async function LessonPage({ params }: Props) {
           myPhrases={writing.myPhrases}
         />
       );
-    return (
-      <InteractiveReading
-        {...nav}
-        data={reading!.data}
-        lessonId={lesson.id}
-        userId={viewer.user.id}
-        initialNotes={reading!.notes}
-        initialState={reading!.state}
-        completedAt={reading!.completedAt}
-      />
-    );
+    if (reading)
+      return (
+        <InteractiveReading
+          {...nav}
+          data={reading.data}
+          lessonId={lesson.id}
+          userId={viewer.user.id}
+          initialNotes={reading.notes}
+          initialState={reading.state}
+          completedAt={reading.completedAt}
+        />
+      );
   }
 
   const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: allSiblings }] = await Promise.all([

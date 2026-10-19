@@ -255,6 +255,32 @@ export type Database = {
         Update: { at?: string; id?: never; kind?: string; message?: string; route?: string | null; session_id?: string; stack?: string | null; user_agent?: string | null; user_id?: string | null }
         Relationships: []
       }
+      feedback_content: {
+        Row: {
+          data: Json
+          lesson_id: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          lesson_id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          lesson_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_content_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: true
+            referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       function_errors: {
         Row: { at: string; function: string; id: number; message: string; status: number | null }
         Insert: { at?: string; function: string; id?: never; message: string; status?: number | null }
@@ -2716,6 +2742,59 @@ export type Database = {
             columns: ["lesson_id"]
             isOneToOne: true
             referencedRelation: "lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      weekly_reflections: {
+        Row: {
+          answers: string[]
+          completed_at: string | null
+          confidence: number | null
+          course_id: string
+          created_at: string
+          focus: string[]
+          id: string
+          next_goal: string | null
+          self_eval: number[]
+          updated_at: string
+          user_id: string
+          week: number
+        }
+        Insert: {
+          answers?: string[]
+          completed_at?: string | null
+          confidence?: number | null
+          course_id: string
+          created_at?: string
+          focus?: string[]
+          id?: string
+          next_goal?: string | null
+          self_eval?: number[]
+          updated_at?: string
+          user_id: string
+          week: number
+        }
+        Update: {
+          answers?: string[]
+          completed_at?: string | null
+          confidence?: number | null
+          course_id?: string
+          created_at?: string
+          focus?: string[]
+          id?: string
+          next_goal?: string | null
+          self_eval?: number[]
+          updated_at?: string
+          user_id?: string
+          week?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "weekly_reflections_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
             referencedColumns: ["id"]
           },
         ]

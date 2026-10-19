@@ -731,10 +731,10 @@ function Scene({ e, t, lang }: { e: SpeakingExercise; t: UIT; lang: Lang }) {
       {sc.kind === "meeting" && (
         <div className={s.tiles} style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
           {[
-            ["MK", "#C98A00"],
+            ["MK", "#9A6A00"],
             ["LS", "#1F7A4D"],
             ["DP", "#C2185B"],
-            ["RT", "#00A3C4"],
+            ["RT", "#007E98"],
             ["JB", "#7A4FD6"],
             [t.youI, "#2C6BC4"],
           ].map(([n, c], k) => (
