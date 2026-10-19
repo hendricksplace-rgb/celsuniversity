@@ -2,6 +2,7 @@
 // module; its parts are the module's lessons, minus teacher-only ones (the Teachersbook never shows to
 // students). A part is done when its progress row is `completed`; nothing is ever locked.
 import type { createClient } from "@/lib/supabase/server";
+import { HIDDEN_FROM_STUDENTS, dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import type { ThemeKey } from "@/lib/themes";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -58,6 +59,8 @@ export type Part = {
   xpEarned: number;
   lastActivity: string | null;
   href: string;
+  /** Not published (only staff see drafts). */
+  draft?: boolean;
 };
 export type EpisodeState = "done" | "now" | "new";
 export type Episode = {
@@ -121,6 +124,7 @@ export const episodePath = (slug: string, n: number) => `/app/cursos/${slug}/epi
 const bsnsWeek = (slug: string, n: number) => `/app/cursos/${slug}/semana/${n}`;
 
 function partHref(slug: string, n: number, layout: Layout, l: { id: string; lesson_type: string | null }, key: PartKey | null, bsns: boolean) {
+  if (bsns && isDictionaryLesson(l.id)) return dictionaryPath(slug);
   if (bsns && n > 0 && l.lesson_type !== "video") return `${bsnsWeek(slug, n)}/tarea/${l.id}`;
   return layout === "episodes" && key ? `${episodePath(slug, n)}/${key}` : `/app/lecciones/${l.id}`;
 }
@@ -138,7 +142,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
 
   // Never the Teachersbook (or any teacher-only lesson) on these screens; drafts and empty lessons only for staff.
   const visible = (m: NonNullable<typeof modules>[number]) => {
-    const ls = (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff));
+    const ls = (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff) && (isStaff || !HIDDEN_FROM_STUDENTS.has(l.id)));
     return isStaff ? ls : studentLessons(ls);
   };
   const lessonIds = (modules ?? []).flatMap((m) => visible(m).map((l) => l.id));
@@ -163,6 +167,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
         xpEarned: p?.xp_earned ?? 0,
         lastActivity: p?.last_activity ?? null,
         href: partHref(course.slug ?? slug, n, layout, l, key, theme === "celsbsns"),
+        draft: l.status !== "published",
       };
     });
 

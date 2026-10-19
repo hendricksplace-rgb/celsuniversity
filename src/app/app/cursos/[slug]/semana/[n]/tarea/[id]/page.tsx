@@ -18,6 +18,7 @@ import type { CoursePage, Episode, Part } from "@/lib/course-page";
 import { currentWeekOf, videoTitle } from "@/lib/bsns";
 import { SYLLABUS_LANG_COOKIE, isSyllabus, loadSyllabus, parseSyllabus } from "@/lib/bsns-syllabus";
 import { BsnsSyllabus } from "@/components/course/BsnsSyllabus";
+import { dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
@@ -30,6 +31,7 @@ export default async function BsnsTaskPage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}/semana/${n}/tarea/${id}`);
   const theme = themeForCourse({ slug });
   if (theme !== "celsbsns") notFound();
+  if (isDictionaryLesson(id)) redirect(dictionaryPath(slug));
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   const week = page?.episodes.find((e) => e.n === Number(n));
   const part = week?.parts.find((p) => p.id === id);
