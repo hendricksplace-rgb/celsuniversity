@@ -72,6 +72,7 @@ export default async function LessonPage({ params }: Props) {
           userId={viewer.user.id}
           nextWeekHref={weekN < 10 ? `/app/cursos/${course.slug}/semana/${weekN + 1}` : null}
           capstoneHref={`/app/cursos/${course.slug}/capstone`}
+          courseCloseHref={`/app/cursos/${course.slug}/capstone`}
           numbers={feedback.numbers}
           reflection={feedback.reflection}
         />

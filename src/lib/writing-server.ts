@@ -47,7 +47,7 @@ export async function loadWriting(supabase: Client, userId: string, lessonId: st
   return {
     data,
     sub,
-    capstoneSaved: !!(sub && cap && sub.status === "reviewed" && cap.source_submission_id === sub.id && cap.body === fullEmail(sub.subject ?? "", sub.body)),
+    capstoneSaved: !!(sub && cap && sub.status !== "draft" && cap.source_submission_id === sub.id && cap.body === fullEmail(sub.subject ?? "", sub.body)),
     coachName: list.find((p) => p.member_role === "teacher" && p.display_name)?.display_name ?? null,
     myPhrases: [...new Set((bank ?? []).map((b) => b.text))],
     reviewerName: sub?.reviewed_by ? (list.find((p) => p.user_id === sub.reviewed_by && p.display_name)?.display_name ?? null) : null,

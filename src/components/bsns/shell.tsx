@@ -249,6 +249,8 @@ const PATHS = {
   chev: <path d="M9 6l6 6-6 6" />,
 };
 export type IconName = keyof typeof PATHS;
+/** An icon name from content data, or the fallback when the set doesn't have it (e.g. week 2's "user2"). */
+export const iconOr = (name: string, fallback: IconName): IconName => (Object.hasOwn(PATHS, name) ? (name as IconName) : fallback);
 export function Icon({ name, size = 18, className }: { name: IconName; size?: number; className?: string }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden className={className}>

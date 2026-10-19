@@ -1,6 +1,6 @@
 import "server-only";
 import type { createClient } from "@/lib/supabase/server";
-import type { SpeakingBest, SpeakingData, VocabWord } from "@/lib/speaking";
+import { partnerLength, repsLength, type SpeakingBest, type SpeakingData, type VocabWord } from "@/lib/speaking";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -32,8 +32,9 @@ export async function loadSpeaking(supabase: Client, userId: string, lessonId: s
     data,
     vocab: Object.entries(v).map(([word, x]) => ({ word, es: x.es.split(",")[0].trim() })),
     best: (best ?? []).map((b) => ({ exercise: b.exercise, text: b.text, duration_s: b.duration_s === null ? null : Number(b.duration_s), points: (b.points ?? []).map(Number) })),
-    reps: [0, 1, 2].map((i) => Number(prog?.reps?.[i] ?? 0)),
-    partner: [0, 1, 2].map((i) => Number(prog?.partner_feedback?.[i] ?? 0)),
+    // Sized from the week's data (3 or 4 exercises, 2 or 3 partner questions).
+    reps: Array.from({ length: repsLength(data) }, (_, i) => Number(prog?.reps?.[i] ?? 0)),
+    partner: Array.from({ length: partnerLength(data) }, (_, i) => Number(prog?.partner_feedback?.[i] ?? 0)),
     completedAt: prog?.completed_at ?? null,
   };
 }

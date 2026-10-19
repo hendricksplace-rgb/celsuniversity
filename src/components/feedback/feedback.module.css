@@ -847,3 +847,88 @@ label.lab {
     stroke-dashoffset: 0;
   }
 }
+
+/* ---------- weeks 2–10 additions ---------- */
+.hint {
+  margin-top: -6px !important;
+  font-size: 14px !important;
+  font-style: italic;
+}
+.note label {
+  align-items: flex-start;
+  font-weight: 600;
+}
+.note label b {
+  font-weight: 800;
+}
+.optB {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--soft, #eef4fd);
+  color: var(--blue2);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  vertical-align: 1px;
+}
+.noteEx {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+.noteEx li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #fff8e6;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #4a3a10;
+}
+.noteEx small {
+  font-weight: 500;
+  color: #6b5a2a;
+}
+.w1cmp {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--soft, #eef4fd);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.w1cmp p + p {
+  margin-top: 4px !important;
+}
+.w1K {
+  margin-bottom: 4px !important;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--blue2);
+}
+.w2[data-final] {
+  background:
+    radial-gradient(400px 220px at 100% 0, rgba(245, 210, 122, 0.3), transparent 60%),
+    linear-gradient(150deg, #0f2a5c, #3a2a7a);
+}
+.w2[data-final] .w2k {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f5d27a;
+}
+.findone .w2 {
+  margin: 18px 0 4px;
+  text-align: left;
+}
