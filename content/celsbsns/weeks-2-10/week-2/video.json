@@ -1,0 +1,153 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Showing Respect Through",
+    "title_b": "Professional Communication",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 2"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 2"
+    ],
+    "intro_en": "Record yourself as if it's your first day at a new job. Introduce yourself, describe the culture of a U.S. company you researched, and show how you would use professional etiquette at work.",
+    "intro_es": "Grábate como si fuera tu primer día en un nuevo trabajo. Preséntate, describe la cultura de una empresa de EE. UU. que investigaste y muestra cómo usarías la etiqueta profesional en el trabajo."
+  },
+  "must": [
+    {
+      "en": "Your name, role and one personal detail",
+      "es": "Tu nombre, tu puesto y un detalle personal",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "The culture of a U.S. company you researched",
+      "es": "La cultura de una empresa de EE. UU. que investigaste",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "The values they highlight and why they matter",
+      "es": "Los valores que destacan y por qué son importantes",
+      "color": "#1F7A4D"
+    },
+    {
+      "en": "An example of professional etiquette at work",
+      "es": "Un ejemplo de etiqueta profesional en el trabajo",
+      "color": "#C98A00"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Check your mic",
+      "es": "Revisa tu micrófono",
+      "icon": "mic",
+      "desc_en": "Make sure your voice is clear.",
+      "desc_es": "Asegúrate de que tu voz se escuche clara."
+    },
+    {
+      "en": "Face the light",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Light in front of you, not behind.",
+      "desc_es": "La luz frente a ti, no detrás."
+    },
+    {
+      "en": "Limit distractions",
+      "es": "Sin distracciones",
+      "icon": "phone",
+      "desc_en": "Quiet background, no interruptions.",
+      "desc_es": "Fondo silencioso y sin interrupciones."
+    },
+    {
+      "en": "Eye contact",
+      "es": "Contacto visual",
+      "icon": "eye",
+      "desc_en": "Look at the camera, not the screen.",
+      "desc_es": "Mira a la cámara, no a la pantalla."
+    },
+    {
+      "en": "Watch your timing",
+      "es": "Cuida el tiempo",
+      "icon": "clock",
+      "desc_en": "Keep it within 2–3 minutes.",
+      "desc_es": "Mantente entre 2 y 3 minutos."
+    },
+    {
+      "en": "Dress for day one",
+      "es": "Vístete como el primer día",
+      "icon": "shirt",
+      "desc_en": "Neat, like your first day at the office.",
+      "desc_es": "Presentable, como en tu primer día en la oficina."
+    }
+  ],
+  "week": 2,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "First impressions count",
+        "Speak like you would in a job interview."
+      ],
+      [
+        "Clear and respectful",
+        "Like in a virtual meeting with U.S. colleagues."
+      ],
+      [
+        "Calm and confident",
+        "Pause between your four points."
+      ]
+    ],
+    "es": [
+      [
+        "Las primeras impresiones cuentan",
+        "Habla como lo harías en una entrevista de trabajo."
+      ],
+      [
+        "Claro y respetuoso",
+        "Como en una reunión virtual con colegas de EE. UU."
+      ],
+      [
+        "Tranquilo y seguro",
+        "Haz una pausa entre tus cuatro puntos."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record yourself speaking in English, applying what you've learned about workplace culture and etiquette.",
+    "time": "1 hour",
+    "title": "Showing Respect Through Professional Communication",
+    "body_en": "📹 Video Quiz\n\nTitle: Showing Respect Through Professional Communication\nTime: 1 hour\nObjective: Record yourself speaking in English, applying what you've learned about workplace culture and etiquette.\n\nYour Task:\n\nRecord a 2–3 minute video (using your phone or computer) where you:\n\nIntroduce yourself as if it's your first day at a new job.\n\nInclude your name, role, and one personal detail (e.g., \"I enjoy teamwork and problem-solving\").\n\nDescribe one U.S. company's culture that you researched in the Research Task.\n\nSay what values they highlight and why you think they matter.\n\nGive an example of how you would show professional etiquette in a workplace situation.\n\nExample: how you would ask your manager for clarification politely.\n\nTips for a Strong Video:\n\n🎤 Check your mic → Make sure your voice is clear.\n\n💡 Face the light → Light in front of you, not behind.\n\n📵 Limit distractions → Quiet background, no interruptions.\n\n👀 Eye contact → Look at the camera, not the screen.\n\n🕒 Timing → Keep it within 2–3 minutes.\n\nWhy This Matters:\n\nSpeaking confidently on video builds the same skills you'll need in:\n\nJob interviews (first impressions count).\n\nVirtual meetings with U.S. colleagues.\n\nDaily communication where clarity and respect are key.\n\nExtra Challenge (Optional):\n\nOpen ChatGPT in voice mode and give your introduction + culture description to it. Then ask:\n\"Can you give me feedback on my clarity, tone, and grammar?\"\nThis will give you instant practice and feedback.\n\n👉 Upload your video to the course platform. Your instructors may select some videos for additional feedback.\n\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAxMTY5NTgwNDEz/details",
+    "body_es": "📹 Cuestionario en Video\n\nTítulo: Mostrando Respeto a Través de la Comunicación Profesional\nTiempo: 1 hora\nObjetivo: Grábate hablando en inglés, aplicando lo que has aprendido sobre la cultura y etiqueta en el lugar de trabajo.\n\nTu Tarea:\n\nGraba un video de 2 a 3 minutos (usando tu teléfono o computadora) donde:\n\nTe presentes como si fuera tu primer día en un nuevo trabajo.\n\nIncluye tu nombre, puesto y un detalle personal (por ejemplo, \"I enjoy teamwork and problem-solving\" (disfruto el trabajo en equipo y la resolución de problemas)).\n\nDescribe la cultura de una empresa estadounidense que investigaste en la Tarea de Investigación.\n\nDi qué valores destacan y por qué crees que son importantes.\n\nDa un ejemplo de cómo mostrarías etiqueta profesional en una situación laboral.\n\nEjemplo: cómo pedirías a tu gerente una aclaración de manera educada.\n\nConsejos para un Video Fuerte:\n\n🎤 Revisa tu micrófono → Asegúrate de que tu voz sea clara.\n\n💡 Enfrenta la luz → Luz frente a ti, no detrás.\n\n📵 Limita distracciones → Fondo silencioso, sin interrupciones.\n\n👀 Contacto visual → Mira a la cámara, no a la pantalla.\n\n🕒 Tiempo → Manténlo dentro de 2 a 3 minutos.\n\nPor Qué Esto Importa:\n\nHablar con confianza en video desarrolla las mismas habilidades que necesitarás en:\n\nEntrevistas de trabajo (las primeras impresiones cuentan).\n\nReuniones virtuales con colegas estadounidenses.\n\nComunicación diaria donde la claridad y el respeto son clave.\n\nDesafío Extra (Opcional):\n\nAbre ChatGPT en modo de voz y da tu introducción + descripción de la cultura. Luego pregunta:\n\"Can you give me feedback on my clarity, tone, and grammar?\" (¿Puedes darme retroalimentación sobre mi claridad, tono y gramática?)\nEsto te dará práctica y retroalimentación instantánea.\n\n👉 Sube tu video a la plataforma del curso. Tus instructores pueden seleccionar algunos videos para retroalimentación adicional.\n\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAxMTY5NTgwNDEz/details",
+    "goal_es": "Grábate hablando en inglés, aplicando lo que has aprendido sobre la cultura y etiqueta en el lugar de trabajo.",
+    "title_es": "Mostrando Respeto a Través de la Comunicación Profesional"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 2,
+  "script_source_lesson_id": "77630354-b8a4-4bc2-827a-5ba44fcf0b41",
+  "example_line": {
+    "en": "For example: how you would ask your manager for clarification politely.",
+    "es": "Por ejemplo: cómo le pedirías una aclaración a tu gerente de forma educada."
+  },
+  "ai_challenge": {
+    "intro_en": "Optional: open ChatGPT in voice mode, say your introduction and culture description, then ask:",
+    "intro_es": "Opcional: abre ChatGPT en modo de voz, di tu presentación y tu descripción de la cultura, y luego pregunta:",
+    "prompts": [
+      "Can you give me feedback on my clarity, tone, and grammar?"
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import { loadCoursePage, studentLessons } from "@/lib/course-page";
+import { dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -32,6 +33,8 @@ export default async function LessonPage({ params }: Props) {
   if (!lesson || !lessonModule || !course) notFound();
 
   const theme = themeForCourse(course);
+  // CelsBSNS: "Course Dictionary" (and the old "Course Dictionary (2)" note) open the Dictionary page.
+  if (theme === "celsbsns" && course.slug && isDictionaryLesson(lesson.id)) redirect(dictionaryPath(course.slug));
   const access = await canAccessCourse(supabase, viewer, course.id);
 
   // CelsUS core parts: the Tarjetas, CelsBook and quiz have their own screens; the video, audio and class stay
@@ -85,6 +88,7 @@ export default async function LessonPage({ params }: Props) {
           userId={viewer.user.id}
           nextWeekHref={weekN < 10 ? `/app/cursos/${course.slug}/semana/${weekN + 1}` : null}
           capstoneHref={`/app/cursos/${course.slug}/capstone`}
+          courseCloseHref={`/app/cursos/${course.slug}/capstone`}
           numbers={feedback.numbers}
           reflection={feedback.reflection}
         />

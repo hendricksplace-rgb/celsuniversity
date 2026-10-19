@@ -1,0 +1,140 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Speaking Like a Manager",
+    "title_b": "and Like a Leader",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 3"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 3"
+    ],
+    "intro_en": "Record yourself as the leader of a small team: introduce yourself, give one clear instruction as a manager, then motivate your team as a leader. Use your two Writing emails as a base.",
+    "intro_es": "Grábate como si dirigieras un pequeño equipo: preséntate, da una instrucción clara como gerente y luego motiva a tu equipo como líder. Usa tus dos correos de Writing como base."
+  },
+  "must": [
+    {
+      "en": "Introduce yourself as the person leading a small team",
+      "es": "Preséntate como la persona que dirige un pequeño equipo",
+      "color": "#7A4FD6",
+      "ex": "Hi, I'm [Name], and I'm supervising this week's project."
+    },
+    {
+      "en": "Give one instruction as a manager: task, deadline, review",
+      "es": "Da una instrucción como gerente: tarea, fecha y revisión",
+      "color": "#2C6BC4",
+      "ex": "Please complete the draft report by Thursday at 5 PM. I'll review it Friday morning so we can deliver on time."
+    },
+    {
+      "en": "Motivate your team as a leader: why it matters and thanks",
+      "es": "Motiva a tu equipo como líder: por qué importa y agradecimiento",
+      "color": "#1F7A4D",
+      "ex": "This report is important because it shows the client we are reliable and innovative. I appreciate the effort you've all put in, and I know together we can deliver something excellent."
+    }
+  ],
+  "tips": [
+    {
+      "en": "Clear, confident voice",
+      "es": "Voz clara y segura",
+      "icon": "mic",
+      "desc_en": "Be clear, confident and professional.",
+      "desc_es": "Sé claro, seguro y profesional."
+    },
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "Talk to it like it's your team.",
+      "desc_es": "Háblale como si fuera tu equipo."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a light source; avoid shadows.",
+      "desc_es": "Ponte frente a una fuente de luz; evita sombras."
+    },
+    {
+      "en": "Simple background",
+      "es": "Fondo sencillo",
+      "icon": "phone",
+      "desc_en": "No distractions behind you.",
+      "desc_es": "Sin distracciones detrás de ti."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "Dress like you're leading a meeting.",
+      "desc_es": "Vístete como si dirigieras una reunión."
+    },
+    {
+      "en": "Smile when you motivate",
+      "es": "Sonríe al motivar",
+      "icon": "smile",
+      "desc_en": "Your face changes your tone.",
+      "desc_es": "Tu cara cambia tu tono."
+    }
+  ],
+  "week": 3,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Manager tone: clear and direct",
+        "Structured: names, tasks, times."
+      ],
+      [
+        "Leader tone: motivating and inclusive",
+        "Use “we”; explain why it matters."
+      ],
+      [
+        "A clear switch",
+        "Pause before you change from instruction to motivation."
+      ]
+    ],
+    "es": [
+      [
+        "Tono de gerente: claro y directo",
+        "Estructurado: nombres, tareas, horas."
+      ],
+      [
+        "Tono de líder: motivador e incluyente",
+        "Usa “we”; explica por qué importa."
+      ],
+      [
+        "Un cambio claro",
+        "Haz una pausa antes de pasar de la instrucción a la motivación."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record yourself applying both management and leadership communication styles in a professional scenario.",
+    "time": "1 hour",
+    "title": "Speaking Like a Manager and Like a Leader",
+    "body_en": "📹 Video Quiz\n\nTitle: Speaking Like a Manager and Like a Leader\nTime: 1 hour\nObjective: Record yourself applying both management and leadership communication styles in a professional scenario.\n\nYour Task:\n\nRecord a 2–3 minute video where you complete these steps:\n\nIntroduce yourself as if you're leading a small team.\n\nExample: \"Hi, I'm [Name], and I'm supervising this week's project.\"\n\nGive one instruction as a manager.\n\nExample: \"Please complete the draft report by Thursday at 5 PM. I'll review it Friday morning so we can deliver on time.\"\n\nMotivate your team as a leader.\n\nExample: \"This report is important because it shows the client we are reliable and innovative. I appreciate the effort you've all put in, and I know together we can deliver something excellent.\"\n\nTips for Your Video:\n\n🎤 Voice: Be clear, confident, and professional.\n\n👀 Eye contact: Look directly at the camera.\n\n💡 Lighting: Face a light source, avoid shadows.\n\n📵 Background: Keep it simple and distraction-free.\n\n🕒 Length: Aim for 2–3 minutes.\n\nWhy This Matters:\n\nThis activity builds the ability to switch between management tone (clear, structured, direct) and leadership tone (motivating, inspiring, inclusive). Both are essential in U.S. workplaces.\n\nOptional AI Practice:\n\nUse ChatGPT in voice mode. Give your manager-style instruction and leader-style motivation. Then ask:\n\n\"How was my clarity?\"\n\n\"Did my tone sound motivating?\"\n\n\"What can I improve?\"\n\nOnce you have made your video, upload your result to your Google Classroom at the following link:\n\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTU0MTk3MjM1/details",
+    "body_es": "📹 Cuestionario en Video\n\nTítulo: Hablando como un Gerente y como un Líder  \nTiempo: 1 hora  \nObjetivo: Grábate aplicando estilos de comunicación tanto de gestión como de liderazgo en un escenario profesional.\n\nTu Tarea:\n\nGraba un video de 2 a 3 minutos donde completes estos pasos:\n\nPreséntate como si estuvieras liderando un pequeño equipo.\n\nEjemplo: \"Hi, I'm [Name], and I'm supervising this week's project.\"\n\nDa una instrucción como gerente.\n\nEjemplo: \"Please complete the draft report by Thursday at 5 PM. I'll review it Friday morning so we can deliver on time.\"\n\nMotiva a tu equipo como líder.\n\nEjemplo: \"This report is important because it shows the client we are reliable and innovative. I appreciate the effort you've all put in, and I know together we can deliver something excellent.\"\n\nConsejos para tu Video:\n\n🎤 Voz: Sé claro, seguro y profesional.\n\n👀 Contacto visual: Mira directamente a la cámara.\n\n💡 Iluminación: Enfréntate a una fuente de luz, evita sombras.\n\n📵 Fondo: Mantenlo simple y sin distracciones.\n\n🕒 Duración: Apunta a 2-3 minutos.\n\nPor Qué Esto Importa:\n\nEsta actividad desarrolla la habilidad de alternar entre un tono de gestión (claro, estructurado, directo) y un tono de liderazgo (motivador, inspirador, inclusivo). Ambos son esenciales en los lugares de trabajo en EE.UU.\n\nPráctica Opcional con IA:\n\nUsa ChatGPT en modo de voz. Da tu instrucción al estilo gerente y tu motivación al estilo líder. Luego pregunta:\n\n\"How was my clarity?\"\n\n\"Did my tone sound motivating?\"\n\n\"What can I improve?\"\n\nUna vez que hayas hecho tu video, sube tu resultado a tu Google Classroom en el siguiente enlace:\n\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTU0MTk3MjM1/details",
+    "goal_es": "Grábate aplicando estilos de comunicación tanto de gestión como de liderazgo en un escenario profesional.",
+    "title_es": "Hablando como un Gerente y como un Líder"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 3,
+  "script_source_lesson_id": "0cc20fba-cffc-4e2b-b2e0-79848e27b02b"
+}

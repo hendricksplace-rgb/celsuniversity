@@ -1,0 +1,165 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 5",
+      "es": "Tu semana 5"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Clarity in structure, confidence at work. Take a pause, see everything you did this week, check how you feel, and decide what's next.",
+    "intro_es": "Claridad en la estructura, confianza en el trabajo. Haz una pausa, mira todo lo que hiciste esta semana, evalúa cómo te sientes y decide qué sigue."
+  },
+  "next": {
+    "week": 6,
+    "title": "Business Ethics & Conduct",
+    "bullets": {
+      "en": [
+        "Confidentiality, honesty and responsibility at work",
+        "Ethics in U.S. companies",
+        "Writing your ethics statement, or a time you made a difficult decision"
+      ],
+      "es": [
+        "Confidencialidad, honestidad y responsabilidad en el trabajo",
+        "La ética en las empresas de EE. UU.",
+        "Escribir tu declaración de ética, o una vez que tomaste una decisión difícil"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 6: values and professionalism",
+      "es": "Capstone · Parte 6: valores y profesionalismo"
+    }
+  },
+  "week": 5,
+  "original": {
+    "goal": "Reflect on clarity in structure and confidence at work, and write a one-sentence action plan for next week.",
+    "time": "1 hour",
+    "title": "Clarity in Structure & Confidence at Work",
+    "body_en": "📈 Feedback & Progress\n\nTitle: Clarity in Structure & Confidence at Work\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can explain the four main types of organizational structures.\n\nI can identify key departments and their roles.\n\nI understand the importance of reporting lines and chain of command.\n\nI practiced cross-functional collaboration scenarios.\n\nI know how to ask questions to clarify my role.\n\nStep 2 – Reflection Questions\n\nWhich type of structure makes the most sense to you, and why?\n\nHow can understanding structure improve your performance at work?\n\nWhat's one thing you'll do differently in your next workplace to clarify your role?\n\nStep 3 – Action Note\nWrite a one-sentence action plan for next week.\n\n\"I will ask about reporting lines during onboarding at my next job.\"\n\n\"I will draw an org chart to better understand where I fit in.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTítulo: Claridad en la Estructura y Confianza en el Trabajo\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo explicar los cuatro tipos principales de estructuras organizacionales.\n\nPuedo identificar los departamentos clave y sus funciones.\n\nEntiendo la importancia de las líneas de reporte y la cadena de mando.\n\nPractiqué escenarios de colaboración multifuncional.\n\nSé cómo hacer preguntas para aclarar mi rol.\n\nPaso 2 – Preguntas de Reflexión\n\n¿Qué tipo de estructura tiene más sentido para ti y por qué?\n\n¿Cómo puede mejorar tu desempeño en el trabajo el entender la estructura?\n\n¿Qué es una cosa que harás diferente en tu próximo lugar de trabajo para aclarar tu rol?\n\nPaso 3 – Nota de Acción\nEscribe un plan de acción de una oración para la próxima semana.\n\n\"Preguntaré sobre las líneas de reporte durante la inducción en mi próximo trabajo.\"\n\n\"Dibujaré un organigrama para entender mejor dónde encajo.\"",
+    "goal_es": "Reflexionar sobre la claridad en la estructura y la confianza en el trabajo, y escribir un plan de acción de una oración para la próxima semana.",
+    "title_es": "Claridad en la Estructura y Confianza en el Trabajo"
+  },
+  "questions": [
+    {
+      "en": "Which type of structure makes the most sense to you, and why?",
+      "es": "¿Qué tipo de estructura tiene más sentido para ti y por qué?"
+    },
+    {
+      "en": "How can understanding structure improve your performance at work?",
+      "es": "¿Cómo puede mejorar tu desempeño en el trabajo el entender la estructura?"
+    },
+    {
+      "en": "What's one thing you'll do differently in your next workplace to clarify your role?",
+      "es": "¿Qué es una cosa que harás diferente en tu próximo lugar de trabajo para aclarar tu rol?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can explain the four main types of organizational structures",
+      "es": "Puedo explicar los cuatro tipos principales de estructuras organizacionales",
+      "auto": null
+    },
+    {
+      "en": "I can identify key departments and their roles",
+      "es": "Puedo identificar los departamentos clave y sus funciones",
+      "auto": null
+    },
+    {
+      "en": "I understand the importance of reporting lines and chain of command",
+      "es": "Entiendo la importancia de las líneas de reporte y la cadena de mando",
+      "auto": null
+    },
+    {
+      "en": "I practiced cross-functional collaboration scenarios",
+      "es": "Practiqué escenarios de colaboración interfuncional",
+      "auto": "speaking"
+    },
+    {
+      "en": "I know how to ask questions to clarify my role",
+      "es": "Sé cómo hacer preguntas para aclarar mi rol",
+      "auto": "writing"
+    },
+    {
+      "en": "I recorded my video explaining where I fit in a company",
+      "es": "Grabé mi video explicando dónde encajo en una empresa",
+      "auto": "video"
+    }
+  ],
+  "ai_practice": {
+    "tip": {
+      "en": "If it understands you the first time, you're probably speaking clearly! If not, slow down and try again.",
+      "es": "Si te entiende a la primera, ¡probablemente estás hablando con claridad! Si no, baja la velocidad y vuelve a intentarlo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Explain where you fit in a company: the structure, your role and who you report to.",
+        "Notice: did it understand you the first time? Did it ask you to repeat anything?",
+        "Ask for feedback or a roleplay with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Explica dónde encajas en una empresa: la estructura, tu rol y a quién le reportas.",
+        "Fíjate: ¿te entendió a la primera? ¿Te pidió repetir algo?",
+        "Pídele retroalimentación o un juego de roles con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Can you give me feedback on my pronunciation and clarity?",
+      "Let's roleplay. You're my new manager, and I'll ask you who should receive my weekly updates.",
+      "Let's practice. Play someone from Finance, and I'll explain how my role connects with yours."
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "Pronunciation",
+      "Vocabulary",
+      "Writing",
+      "Grammar",
+      "Confidence speaking",
+      "Listening"
+    ],
+    "es": [
+      "Pronunciación",
+      "Vocabulario",
+      "Escritura",
+      "Gramática",
+      "Seguridad al hablar",
+      "Escuchar y entender"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "I will ask about reporting lines during onboarding at my next job.",
+      "I will draw an org chart to better understand where I fit in.",
+      "Practice speaking 10 min a day",
+      "Use 5 new words in my tasks"
+    ],
+    "es": [
+      "Preguntaré sobre las líneas de reporte durante la inducción en mi próximo trabajo.",
+      "Dibujaré un organigrama para entender mejor dónde encajo.",
+      "Practicar speaking 10 min al día",
+      "Usar 5 palabras nuevas en mis tareas"
+    ]
+  }
+}

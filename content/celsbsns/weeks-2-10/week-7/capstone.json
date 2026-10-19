@@ -1,0 +1,56 @@
+{
+  "part": 7,
+  "week": 7,
+  "title_es": "Tu comprensión de las finanzas básicas",
+  "title_en": "Your understanding of basic finance",
+  "preview_es": [
+    "Explica con tus palabras un presupuesto y una factura",
+    "Tu presupuesto para tus primeros 3 meses en EE. UU."
+  ],
+  "preview_en": [
+    "Explain a budget and an invoice in your own words",
+    "Your budget for your first 3 months in the U.S."
+  ],
+  "fields": [
+    {
+      "k": "budget_invoice",
+      "type": "textarea",
+      "min": 120,
+      "fill_from": "video",
+      "label_es": "Un presupuesto y una factura, con tus palabras",
+      "label_en": "A budget and an invoice, in your own words",
+      "hint_es": "En inglés: qué es cada uno y un ejemplo sencillo de tu trabajo. Puedes partir de lo que dijiste en tu video.",
+      "hint_en": "What each one is and a simple example from your work. You can start from what you said in your video."
+    },
+    {
+      "k": "roi_example",
+      "type": "textarea",
+      "min": 100,
+      "fill_from": "writing",
+      "label_es": "Cómo conectas tu trabajo con resultados financieros",
+      "label_en": "How you connect your work to financial results",
+      "hint_es": "En inglés: un resultado con números (costo, ventas o ahorro, y el ROI). Puedes partir de tu correo de Writing.",
+      "hint_en": "One result with numbers (cost, sales or savings, and the ROI). You can start from your Writing email."
+    },
+    {
+      "k": "budget_3_months",
+      "type": "textarea",
+      "min": 150,
+      "fill_from": null,
+      "label_es": "Tu presupuesto para tus primeros 3 meses en EE. UU.",
+      "label_en": "Your budget for your first 3 months in the U.S.",
+      "hint_es": "En inglés: ingresos esperados y gastos mensuales (renta, transporte, comida, teléfono, seguro, ahorro). Di si quedas por encima o por debajo.",
+      "hint_en": "Expected income and monthly expenses (rent, transportation, food, phone, insurance, savings). Say if you end up over or under budget."
+    },
+    {
+      "k": "finance_commitment",
+      "type": "input",
+      "min": 40,
+      "fill_from": null,
+      "label_es": "Tu compromiso financiero",
+      "label_en": "Your financial commitment",
+      "hint_es": "Una oración en inglés, por ejemplo: “I will calculate ROI on one project this month.”",
+      "hint_en": "One sentence, for example: “I will calculate ROI on one project this month.”"
+    }
+  ]
+}

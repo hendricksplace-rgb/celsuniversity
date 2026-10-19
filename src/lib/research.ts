@@ -29,15 +29,25 @@ export type ResearchData = {
   default_field: string;
   tip: Bi;
   lenses: { color: string; es: string; en: string }[];
-  /** "Where did you find it?" (research_entries.source_type). */
-  types: { key: "in" | "yt" | "bio" | "web"; es: string; en: string }[];
+  /** "Where did you find it?" (research_entries.source_type: a short key, different per week). */
+  types: { key: string; es: string; en: string }[];
   share_options: { es: string[]; en: string[] };
   tone_options: { es: string[]; en: string[] };
   questions: { es: string[]; en: string[] };
-  /** A made-up practice profile, marked "EJEMPLO FICTICIO". */
-  model: { name: string; initials: string; role: string; about: string; answers: { es: string[]; en: string[] } };
+  /** The practice example: made up ("EJEMPLO FICTICIO") unless `model_is_real` or it cites `source_url` ("EJEMPLO REAL"). */
+  model: { name: string; initials: string; role: string; about: string; answers: { es: string[]; en: string[] }; source_url?: string };
+  model_is_real?: boolean;
   patterns: { es: string[]; en: string[] };
+  /** The original's "compare your two examples" questions, shown in "Lo que aprendí". */
+  compare_q?: { es: string[]; en: string[] };
+  /** A label for the search field when it isn't "your field or job" (e.g. "Company name"), with examples. */
+  field_label?: Bi;
+  field_examples?: string[];
+  /** Week 2: "share one takeaway in your Video and Speaking". */
+  share_next?: Bi;
 };
+
+export const modelIsReal = (d: ResearchData) => !!d.model_is_real || !!d.model.source_url;
 
 export type ResearchEntry = {
   slot: number;
@@ -67,10 +77,22 @@ export function entryComplete(e: ResearchEntry, range: { min: number; max: numbe
   return !!e.source_type && e.url.trim().length > 8 && !/\[[^\]]*\]/.test(e.analysis) && n >= range.min && n <= range.max;
 }
 
-/** "Armar un borrador": the mockup's draft() template (no AI). Leaves [blanks] for the student. */
+/** "Armar un borrador": the mockup's draft() template (no AI). Leaves [blanks] for the student. Week 1 analyzes
+ *  people's introductions; later weeks analyze companies, postings or tools, so their template is neutral. */
 export function draftAnalysis(e: ResearchEntry, data: ResearchData) {
   const sh = e.share.map((j) => data.share_options.en[j]?.toLowerCase()).filter(Boolean);
   const to = e.tone.map((j) => data.tone_options.en[j]?.toLowerCase()).filter(Boolean);
+  if (data.week !== 1)
+    return [
+      `${e.who.trim() || "[Name]"}: ${e.field.trim() || "[what it is]"}.`,
+      `It highlights ${sh.length ? sh.join(", ") : "[what it highlights]"}.`,
+      `It comes across as ${to.length ? to.join(" and ") : "[how it comes across]"}.`,
+      `One phrase I could use is “${e.borrow.trim() || "[phrase]"}”.`,
+      `What stood out to me was [what stood out].`,
+      `I could apply this by [your idea].`,
+    ]
+      .slice(0, Math.max(data.sentences.min, Math.min(6, data.sentences.max)))
+      .join(" ");
   const who = e.who.trim() || "This professional";
   return [
     `${who} works in ${e.field.trim() || "[field]"}.`,

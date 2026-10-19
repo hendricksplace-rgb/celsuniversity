@@ -1,0 +1,58 @@
+{
+  "part": 3,
+  "week": 3,
+  "title_es": "Tus rasgos de liderazgo",
+  "title_en": "Your leadership traits",
+  "preview_es": [
+    "3 rasgos de liderazgo que tienes o quieres desarrollar",
+    "Una vez que guiaste a otros (o te gustaría hacerlo)",
+    "Tu estilo de liderazgo en una frase"
+  ],
+  "preview_en": [
+    "3 leadership traits you have or want to build",
+    "A time you led others (or would like to)",
+    "Your leadership style in one sentence"
+  ],
+  "fields": [
+    {
+      "k": "traits",
+      "label_es": "3 rasgos de liderazgo que tienes o quieres desarrollar",
+      "label_en": "3 leadership traits you have or want to build",
+      "hint_es": "En inglés, separados por comas. Por ejemplo: clear communicator, calm under pressure, good at developing people.",
+      "hint_en": "In English, separated by commas. For example: clear communicator, calm under pressure, good at developing people.",
+      "type": "input",
+      "min": 20,
+      "fill_from": null
+    },
+    {
+      "k": "story",
+      "label_es": "Una vez que guiaste a otros (o te gustaría hacerlo)",
+      "label_en": "A time you led others (or would like to)",
+      "hint_es": "3–5 oraciones en inglés: la situación, qué hiciste como gerente (tareas, fechas) y como líder (motivación), y el resultado.",
+      "hint_en": "3–5 sentences in English: the situation, what you did as a manager (tasks, deadlines) and as a leader (motivation), and the result.",
+      "type": "textarea",
+      "min": 150,
+      "fill_from": null
+    },
+    {
+      "k": "style",
+      "label_es": "Tu estilo de liderazgo en una frase",
+      "label_en": "Your leadership style in one sentence",
+      "hint_es": "Por ejemplo: “I give my team a clear plan and remind them why the work matters.”",
+      "hint_en": "For example: “I give my team a clear plan and remind them why the work matters.”",
+      "type": "input",
+      "min": 40,
+      "fill_from": null
+    },
+    {
+      "k": "leader_msg",
+      "label_es": "Tu mensaje al equipo como líder",
+      "label_en": "Your message to the team as a leader",
+      "hint_es": "Tu correo del líder de Writing ya está aquí. Mejóralo si quieres.",
+      "hint_en": "Your Leader email from Writing is already here. Improve it if you want.",
+      "type": "textarea",
+      "min": 120,
+      "fill_from": "writing"
+    }
+  ]
+}

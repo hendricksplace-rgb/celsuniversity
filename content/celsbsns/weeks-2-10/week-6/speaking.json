@@ -1,0 +1,293 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Roleplay: Handling",
+    "title_b": "Ethical Dilemmas",
+    "chips_en": [
+      "2 hours",
+      "3 roleplays",
+      "9 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 juegos de roles",
+      "9 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Practice 3 real situations where you need to stay ethical and professional: a secret about layoffs, a report to HR, and an expensive gift from a client. Practice out loud, see what you said, and repeat until it sounds natural.",
+    "intro_es": "Practica 3 situaciones reales donde necesitas mantenerte ético y profesional: un secreto sobre despidos, un reporte a Recursos Humanos y un regalo caro de un cliente. Practica en voz alta, mira lo que dijiste y repite hasta que suene natural."
+  },
+  "week": 6,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Did I stay calm and professional?",
+        "Was I clear, respectful and objective?",
+        "Did I mention company policy when it was needed?"
+      ],
+      "es": [
+        "¿Me mantuve tranquilo y profesional?",
+        "¿Fui claro, respetuoso y objetivo?",
+        "¿Mencioné la política de la empresa cuando hacía falta?"
+      ]
+    }
+  },
+  "reflection": {
+    "en": [
+      "Which roleplay was most difficult for you?",
+      "What strategy helped you stay professional?"
+    ],
+    "es": [
+      "¿Cuál juego de roles fue el más difícil para ti?",
+      "¿Qué estrategia te ayudó a mantenerte profesional?"
+    ]
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta",
+      "d_en": "Several times, even if it feels strange.",
+      "d_es": "Varias veces, aunque te sientas raro."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "people",
+      "t_en": "With a partner or ChatGPT",
+      "t_es": "Con un compañero o ChatGPT",
+      "d_en": "No partner? Ask ChatGPT to play the other role.",
+      "d_es": "¿Sin compañero? Pídele a ChatGPT que haga el otro papel."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 6.",
+      "d_es": "Las palabras de la Semana 6."
+    }
+  ],
+  "original": {
+    "goal": "Practice handling workplace ethical dilemmas clearly, respectfully and professionally through three roleplays.",
+    "goal_es": "Practicar cómo manejar dilemas éticos en el trabajo de forma clara, respetuosa y profesional con tres juegos de roles.",
+    "time": "2 hours",
+    "title": "Roleplay: Handling Ethical Dilemmas",
+    "title_es": "Juego de Roles: Manejo de Dilemas Éticos",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplay: Handling Ethical Dilemmas\nTime: 2 hours\n\nRemember that if you don't have a partner to practice with, use ChatGPT.\n\nActivity 1 – Confidential Information\nPartner plays a coworker: \"I'll tell you something I heard about layoffs, but don't tell anyone.\"\nYou respond professionally.\n\nActivity 2 – Reporting Misconduct\nPartner plays HR. You explain that you saw a coworker misusing company resources. Practice being clear, respectful, and objective.\n\nActivity 3 – Gray Area Decision\nPartner plays a client offering you an expensive gift. You respond: \"Thank you, but I need to check our company's policy first.\"\n\nReflection:\nWhich roleplay was most difficult for you? What strategy helped you stay professional?",
+    "body_es": "🤝 Práctica de Hablar\n\nTítulo: Juego de Roles: Manejo de Dilemas Éticos\nTiempo: 2 horas\n\nRecuerda que si no tienes un compañero para practicar, usa ChatGPT.\n\nActividad 1 – Información Confidencial\nEl compañero juega como un colega: \"I'll tell you something I heard about layoffs, but don't tell anyone.\" \nResponde de manera profesional.\n\nActividad 2 – Reportar Mala Conducta\nEl compañero juega como Recursos Humanos. Explicas que viste a un colega haciendo un mal uso de los recursos de la empresa. Practica ser claro, respetuoso y objetivo.\n\nActividad 3 – Decisión en Área Gris\nEl compañero juega como un cliente que te ofrece un regalo caro. Respondes: \"Thank you, but I need to check our company's policy first.\"\n\nReflexión:\n¿Cuál juego de roles fue el más difícil para ti? ¿Qué estrategia te ayudó a mantenerte profesional?"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Practice 3 times. Each time, find a kind but firm way to stop the gossip.",
+        "es": "Practica 3 veces. En cada una, busca una forma amable pero firme de detener el chisme."
+      },
+      "icon": "elev",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Elevator · Floor 5",
+          "es": "Elevador · Piso 5"
+        },
+        "kind": "elevator",
+        "line": "I'll tell you something I heard about layoffs, but don't tell anyone.",
+        "meta": {
+          "en": "Just the two of you",
+          "es": "Solo ustedes dos"
+        },
+        "speaker": {
+          "en": "A COWORKER",
+          "es": "UN COLEGA"
+        }
+      },
+      "title": {
+        "en": "Confidential Information",
+        "es": "Información confidencial"
+      },
+      "points": {
+        "en": [
+          "Stay friendly with your coworker",
+          "Say you'd rather not hear or share rumors",
+          "Suggest waiting for official information"
+        ],
+        "es": [
+          "Sé amable con tu colega",
+          "Di que prefieres no escuchar ni compartir rumores",
+          "Sugiere esperar la información oficial"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: friendly",
+          "Try 2: shorter and firmer",
+          "Try 3: your best version"
+        ],
+        "es": [
+          "Intento 1: amable",
+          "Intento 2: más corto y firme",
+          "Intento 3: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        15,
+        30
+      ],
+      "situation": {
+        "en": "A coworker says: “I'll tell you something I heard about layoffs, but don't tell anyone.” You respond professionally.",
+        "es": "Un colega te dice: “I'll tell you something I heard about layoffs, but don't tell anyone.” Respondes de manera profesional."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times: once alone, once with a partner or ChatGPT playing HR, and once more with your best version. Be clear, respectful and objective.",
+        "es": "Practica 3 veces: una sola, una con un compañero o ChatGPT haciendo de Recursos Humanos, y otra con tu mejor versión. Sé claro, respetuoso y objetivo."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · HR Check-in",
+          "es": "Zoom · Reunión con RR. HH."
+        },
+        "kind": "zoom",
+        "line": "Thanks for reaching out. What would you like to tell me?",
+        "meta": {
+          "en": "Private meeting",
+          "es": "Reunión privada"
+        },
+        "tile": {
+          "name": "Maria · HR",
+          "initials": "MH"
+        },
+        "speaker": {
+          "en": "MARIA · HR",
+          "es": "MARIA · RR. HH."
+        }
+      },
+      "title": {
+        "en": "Reporting Misconduct",
+        "es": "Reportar una mala conducta"
+      },
+      "points": {
+        "en": [
+          "What you saw: the facts (what, when, where)",
+          "No labels or guesses about the person",
+          "Offer to give more details or help"
+        ],
+        "es": [
+          "Lo que viste: los hechos (qué, cuándo, dónde)",
+          "Sin etiquetas ni suposiciones sobre la persona",
+          "Ofrece dar más detalles o ayudar"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: alone",
+          "Try 2: with a partner or ChatGPT",
+          "Try 3: your best version"
+        ],
+        "es": [
+          "Intento 1: solo",
+          "Intento 2: con un compañero o ChatGPT",
+          "Intento 3: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "Your partner plays HR. You explain that you saw a coworker misusing company resources (for example, using the company card for personal purchases). Practice being clear, respectful and objective.",
+        "es": "Tu compañero hace de Recursos Humanos. Explicas que viste a un colega haciendo mal uso de los recursos de la empresa (por ejemplo, usar la tarjeta de la empresa para compras personales). Practica ser claro, respetuoso y objetivo."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times. Always include the key sentence: “Thank you, but I need to check our company's policy first.”",
+        "es": "Practica 3 veces. Incluye siempre la frase clave: “Thank you, but I need to check our company's policy first.”"
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Client lunch · Brightway",
+          "es": "Comida con cliente · Brightway"
+        },
+        "kind": "meeting",
+        "line": "We got you something special to say thank you: a new tablet!",
+        "meta": {
+          "en": "3 people",
+          "es": "3 personas"
+        },
+        "speaker": {
+          "en": "TOM · CLIENT",
+          "es": "TOM · CLIENTE"
+        }
+      },
+      "title": {
+        "en": "Gray Area Decision",
+        "es": "Decisión en área gris"
+      },
+      "points": {
+        "en": [
+          "Thank the client warmly",
+          "Say: “Thank you, but I need to check our company's policy first.”",
+          "Keep the relationship positive"
+        ],
+        "es": [
+          "Agradece al cliente con calidez",
+          "Di: “Thank you, but I need to check our company's policy first.”",
+          "Mantén la relación positiva"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: the key sentence",
+          "Try 2: add a warm thank-you",
+          "Try 3: your best version"
+        ],
+        "es": [
+          "Intento 1: la frase clave",
+          "Intento 2: agrega un agradecimiento cálido",
+          "Intento 3: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        15,
+        30
+      ],
+      "situation": {
+        "en": "Your partner plays a client offering you an expensive gift. You respond: “Thank you, but I need to check our company's policy first.”",
+        "es": "Tu compañero hace de cliente y te ofrece un regalo caro. Respondes: “Thank you, but I need to check our company's policy first.”"
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "8fb32000-4c00-46c0-bcaa-818f936a1b97"
+}

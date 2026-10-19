@@ -1,0 +1,578 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Structure",
+        "t_es": "Estructura",
+        "d_en": "The four structures you'll hear about in U.S. companies.",
+        "d_es": "Las cuatro estructuras de las que vas a oír en empresas de EE. UU."
+      },
+      {
+        "t_en": "Reporting lines",
+        "t_es": "Líneas de reporte",
+        "d_en": "How to read an org chart and know who you report to.",
+        "d_es": "Cómo leer un organigrama y saber a quién le reportas."
+      },
+      {
+        "t_en": "Role clarity",
+        "t_es": "Claridad de rol",
+        "d_en": "Why asking the right person builds trust and saves time.",
+        "d_es": "Por qué preguntarle a la persona correcta genera confianza y ahorra tiempo."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "1 case in 3 parts",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "1 caso en 3 partes",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you learn how U.S. companies organize people: titles, departments and reporting lines. You read a short article, watch a video, and follow Luis through his first week at a new company.",
+    "intro_es": "En esta lectura aprendes cómo organizan a su gente las empresas en EE. UU.: puestos, departamentos y líneas de reporte. Lees un artículo corto, ves un video y acompañas a Luis en su primera semana en una empresa nueva."
+  },
+  "week": 5,
+  "video": {
+    "slug": "yves_morieux_as_work_gets_more_complex_6_rules_to_simplify",
+    "event": "TED@BCG",
+    "extra": {
+      "slug": "ricardo_semler_how_to_run_a_company_with_almost_no_rules",
+      "event": "TEDGlobal",
+      "title": "How to run a company with (almost) no rules",
+      "source": 7,
+      "minutes": 22,
+      "speaker": "Ricardo Semler",
+      "provider": "ted"
+    },
+    "title": "As work gets more complex, 6 rules to simplify",
+    "source": 6,
+    "minutes": 12,
+    "speaker": "Yves Morieux",
+    "intro_en": "Watch the full talk inside the app. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "What does the speaker say happens when companies keep adding structures, processes and rules?",
+      "Which of his simple rules could help Luis, or you, in a new job?"
+    ],
+    "prompts_es": [
+      "¿Qué dice el orador que pasa cuando las empresas agregan más y más estructuras, procesos y reglas?",
+      "¿Cuál de sus reglas sencillas podría ayudar a Luis, o a ti, en un trabajo nuevo?"
+    ]
+  },
+  "vocab": {
+    "org chart": {
+      "d": "A diagram that shows the jobs in a company and how they are connected.",
+      "es": "organigrama",
+      "ex": "HR gave Luis an org chart on his first week."
+    },
+    "reporting line": {
+      "d": "The connection between you and the person you report to.",
+      "es": "línea de reporte",
+      "ex": "My reporting line goes to the Operations Manager."
+    },
+    "chain of command": {
+      "d": "The line of authority from the top of a company to the bottom.",
+      "es": "cadena de mando",
+      "ex": "Follow the chain of command: talk to your manager first."
+    },
+    "direct report": {
+      "d": "A person who reports directly to a specific manager.",
+      "es": "subordinado directo, persona a tu cargo",
+      "ex": "Karen has six direct reports."
+    },
+    "span of control": {
+      "d": "The number of people one manager supervises directly.",
+      "es": "tramo de control, número de personas que supervisa un jefe",
+      "ex": "Flat companies usually have a wide span of control."
+    },
+    "dotted line": {
+      "d": "A second, less formal reporting line, for example to a project leader.",
+      "es": "línea punteada, reporte secundario",
+      "ex": "I report to Karen, with a dotted line to the project lead."
+    },
+    "point of contact": {
+      "d": "The person you should contact about a specific topic.",
+      "es": "persona de contacto",
+      "ex": "Priya is our point of contact in Finance."
+    },
+    "cross-functional": {
+      "d": "Involving people from different departments working together.",
+      "es": "interfuncional, entre departamentos",
+      "ex": "The launch needs a cross-functional team."
+    }
+  },
+  "warmup": {
+    "q_en": "At a new job, when you have a question and don't know who to ask, you usually…",
+    "q_es": "En un trabajo nuevo, cuando tienes una duda y no sabes a quién preguntar, normalmente…",
+    "poll_en": [
+      "Ask the friendliest coworker, even if it's not their area.",
+      "Go straight to the top boss so the answer is official.",
+      "First figure out who is responsible for that topic, then ask that person."
+    ],
+    "poll_es": [
+      "Le pregunto al compañero más amable, aunque no sea su área.",
+      "Voy directo con el jefe más alto para que la respuesta sea oficial.",
+      "Primero averiguo quién es responsable de ese tema y luego le pregunto a esa persona."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: who do you ask?",
+    "title_es": "Antes de leer: ¿a quién le preguntas?",
+    "note_q_en": "What do you already know about how U.S. companies are organized?",
+    "note_q_es": "¿Qué sabes ya sobre cómo se organizan las empresas en EE. UU.?",
+    "feedback_en": [
+      "Very human, and coworkers can help. But in the U.S. the person who 'owns' the topic should answer, or you may get the wrong information. Today you'll see how to find that person.",
+      "In many Latin American companies, going to the top shows respect. In the U.S., skipping your manager can look like going over their head. The article explains why.",
+      "Great starting point! That's exactly how role clarity works in U.S. companies. This reading gives you the map: the org chart."
+    ],
+    "feedback_es": [
+      "Es muy humano, y los compañeros pueden ayudar. Pero en EE. UU. debe responder la persona “dueña” del tema; si no, puedes recibir información equivocada. Hoy vas a ver cómo encontrar a esa persona.",
+      "En muchas empresas de América Latina ir con el jefe más alto muestra respeto. En EE. UU., saltarte a tu jefe directo puede verse como pasar por encima de él. El artículo explica por qué.",
+      "¡Excelente punto de partida! Así funciona la claridad de roles en las empresas de EE. UU. Esta lectura te da el mapa: el organigrama."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Fortune (The Associated Press), March 20, 2025 (reports Gallup survey data)",
+      "url": "https://www.fortune.com/2025/03/20/half-of-employees-feel-lost-at-work-layoffs/",
+      "who": "Cathy Bussewitz, The Associated Press",
+      "what": "“It's not just Gen Z: Half of employees feel lost at work. Layoffs are making it worse”"
+    },
+    {
+      "id": 2,
+      "pub": "OpenStax (Rice University), Introduction to Business 2e",
+      "url": "https://openstax.org/books/introduction-business-2e/pages/7-1-building-organizational-structures",
+      "who": "Lawrence J. Gitman, Carl McDaniel, Amit Shah, Monique Reece, Linda Koffel, Bethann Talsma, James C. Hyatt",
+      "what": "“7.1 Building Organizational Structures”"
+    },
+    {
+      "id": 3,
+      "pub": "OpenStax (Rice University), Introduction to Business 2e",
+      "url": "https://openstax.org/books/introduction-business-2e/pages/7-4-authority-establishing-organizational-relationships",
+      "who": "Lawrence J. Gitman, Carl McDaniel, Amit Shah, Monique Reece, Linda Koffel, Bethann Talsma, James C. Hyatt",
+      "what": "“7.4 Authority—Establishing Organizational Relationships”"
+    },
+    {
+      "id": 4,
+      "pub": "OpenStax (Rice University), Introduction to Business 2e",
+      "url": "https://openstax.org/books/introduction-business-2e/pages/7-2-contemporary-structures",
+      "who": "Lawrence J. Gitman, Carl McDaniel, Amit Shah, Monique Reece, Linda Koffel, Bethann Talsma, James C. Hyatt",
+      "what": "“7.2 Contemporary Structures”"
+    },
+    {
+      "id": 5,
+      "pub": "Indeed Career Guide, updated July 31, 2023",
+      "url": "https://www.indeed.com/career-advice/career-development/types-of-organizational-structures",
+      "who": "Indeed Editorial Team",
+      "what": "“10 Types of Organizational Structures for Businesses”"
+    },
+    {
+      "id": 6,
+      "pub": "TED@BCG San Francisco, 2013 · TED.com",
+      "url": "https://www.ted.com/talks/yves_morieux_as_work_gets_more_complex_6_rules_to_simplify",
+      "who": "Yves Morieux",
+      "what": "“As work gets more complex, 6 rules to simplify”"
+    },
+    {
+      "id": 7,
+      "pub": "TEDGlobal 2014 · TED.com",
+      "url": "https://www.ted.com/talks/ricardo_semler_how_to_run_a_company_with_almost_no_rules",
+      "who": "Ricardo Semler",
+      "what": "“How to run a company with (almost) no rules”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "Everyone in a team shares the same title",
+            "The CEO approves every decision",
+            "Each employee takes instructions from only one boss"
+          ],
+          "es": [
+            "Todos en un equipo tienen el mismo puesto",
+            "El director general aprueba cada decisión",
+            "Cada empleado recibe instrucciones de un solo jefe"
+          ]
+        },
+        "q": {
+          "en": "In a traditional chain of command, “unity of command” means…",
+          "es": "En una cadena de mando tradicional, la “unidad de mando” significa que…"
+        },
+        "why": {
+          "en": "Right: one person, one boss. It gives clear direction. Matrix structures break this rule on purpose.",
+          "es": "Así es: una persona, un jefe. Da una dirección clara. Las estructuras matriciales rompen esta regla a propósito."
+        }
+      },
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "Two managers: a functional manager and a project manager",
+            "No manager at all",
+            "A manager in a different country"
+          ],
+          "es": [
+            "Dos jefes: uno de su área y uno de proyecto",
+            "Ningún jefe",
+            "Un jefe en otro país"
+          ]
+        },
+        "q": {
+          "en": "In a matrix structure, an employee usually has…",
+          "es": "En una estructura matricial, un empleado normalmente tiene…"
+        },
+        "why": {
+          "en": "Exactly. That's powerful for complex projects, but it can make roles unclear, so asking questions matters even more.",
+          "es": "Exacto. Es útil para proyectos complejos, pero puede hacer que los roles no queden claros; por eso preguntar es todavía más importante."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "The Operations Director, because he is the most senior",
+            "His direct manager, Karen",
+            "Any coworker in HR"
+          ],
+          "es": [
+            "El director de Operaciones, porque es el de más alto rango",
+            "Su jefa directa, Karen",
+            "Cualquier compañero de Recursos Humanos"
+          ]
+        },
+        "q": {
+          "en": "In Luis's case, who should he ask first about changing his work hours?",
+          "es": "En el caso de Luis, ¿a quién debe preguntarle primero sobre cambiar su horario de trabajo?"
+        },
+        "why": {
+          "en": "Yes: day-to-day schedule questions go to your direct manager. HR handles policies like time off, pay and benefits.",
+          "es": "Sí: las dudas del horario del día a día van con tu jefe directo. Recursos Humanos se encarga de políticas como vacaciones, pago y prestaciones."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: in my next job, the first thing I will find out about the structure is…",
+      "es": "Mi conclusión: en mi próximo trabajo, lo primero que voy a averiguar sobre la estructura es…"
+    }
+  },
+  "cases_intro": {
+    "en": "Follow Luis through his first weeks. Read each part, do the activity and, if you like, write down your ideas. The messages are in English, as you would see them at work.",
+    "es": "Acompaña a Luis en sus primeras semanas. Lee cada parte, haz la actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los verías en el trabajo."
+  },
+  "article": {
+    "dek": "Titles, departments and reporting lines: how to read the map of a U.S. company and find your place in it.",
+    "title": "Who Do I Ask? How U.S. Companies Organize People and Roles",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "Imagine your first week at a new job. You have one question about your schedule, another about your paycheck, and a third about a project. Who do you ask? In a U.S. company, the answer depends on the structure, and many workers are not sure. In a Gallup survey from late 2024, just under half of U.S. employees strongly agreed that they knew what was expected of them at work, down from 56% in early 2020.{1}",
+        "es": "Imagina tu primera semana en un trabajo nuevo. Tienes una duda sobre tu horario, otra sobre tu pago y una tercera sobre un proyecto. ¿A quién le preguntas? En una empresa de EE. UU. la respuesta depende de la estructura, y muchos trabajadores no lo tienen claro. En una encuesta de Gallup de finales de 2024, poco menos de la mitad de los empleados en EE. UU. dijo estar totalmente de acuerdo en que sabía lo que se esperaba de ellos en el trabajo; a principios de 2020 era el 56 %."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "The org chart is your map",
+        "en": "Most companies show their structure in an [[org chart]]: a diagram where each box is a job and the lines show how the jobs are connected.{2} People are grouped into departments. The most common way is by function, such as Marketing, Finance, Sales or Operations. Companies can also group people by product, by type of customer, or by region, and large companies often mix several of these at once.{2}",
+        "es": "La mayoría de las empresas muestran su estructura en un organigrama: un diagrama donde cada caja es un puesto y las líneas muestran cómo se conectan los puestos. Las personas se agrupan en departamentos. La forma más común es por función, como Marketing, Finanzas, Ventas u Operaciones. Las empresas también pueden agrupar a la gente por producto, por tipo de cliente o por región, y las empresas grandes muchas veces combinan varias de estas formas a la vez."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "h": "Who do you report to?",
+        "en": "The lines on the chart show the [[chain of command]]: the line of authority from the top of the company to the bottom, which tells everyone who reports to whom.{3} Your [[reporting line]] connects you to your manager, and each person you manage is a [[direct report]]. Traditional companies follow the idea that each employee takes instructions from only one boss. The number of people one manager supervises is called the [[span of control]].{3}",
+        "es": "Las líneas del organigrama muestran la cadena de mando: la línea de autoridad desde la parte más alta de la empresa hasta la más baja, que le dice a todos quién le reporta a quién. Tu línea de reporte te conecta con tu jefe, y cada persona que tú supervisas es un subordinado directo. Las empresas tradicionales siguen la idea de que cada empleado recibe instrucciones de un solo jefe. El número de personas que supervisa un jefe se llama tramo de control."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think about your last job. Could you draw your reporting line, from you to the top of the company?",
+        "q_es": "Piensa en tu último trabajo. ¿Podrías dibujar tu línea de reporte, desde ti hasta lo más alto de la empresa?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Four structures you'll hear about",
+        "items": [
+          {
+            "h": "1 · Functional: grouped by expertise",
+            "icon": "target",
+            "en": "People with the same skills work together in departments such as Marketing or Finance, and each department has its own manager.{5} You become an expert in your area, but you need to make an extra effort to communicate with other departments.",
+            "es": "Las personas con las mismas habilidades trabajan juntas en departamentos como Marketing o Finanzas, y cada departamento tiene su propio jefe. Te vuelves experto en tu área, pero tienes que hacer un esfuerzo extra para comunicarte con otros departamentos."
+          },
+          {
+            "h": "2 · Divisional: grouped by product or region",
+            "icon": "mega",
+            "en": "The company is split into divisions, for example by product line or by region, and each division has its own leaders and resources.{5} Each division works almost like a smaller company inside the big one.",
+            "es": "La empresa se divide en divisiones, por ejemplo por línea de producto o por región, y cada división tiene sus propios líderes y recursos. Cada división funciona casi como una empresa más pequeña dentro de la grande."
+          },
+          {
+            "h": "3 · Matrix: two bosses",
+            "icon": "shield",
+            "en": "People from different functions join project teams, so each person has two supervisors: a functional manager and a project manager.{4} This helps with complex projects, but the double reporting line can create unclear roles and power struggles.{4} People often call the second line a [[dotted line]].",
+            "es": "Personas de distintas áreas se unen a equipos de proyecto, así que cada persona tiene dos supervisores: el jefe de su área y el jefe del proyecto. Esto ayuda en proyectos complejos, pero la doble línea de reporte puede causar roles poco claros y luchas de poder. Muchas veces a la segunda línea se le llama “línea punteada”."
+          },
+          {
+            "h": "4 · Flat: few layers",
+            "icon": "star",
+            "en": "Flat companies remove many layers of middle management, so employees have more responsibility and more power to make decisions.{5} You may talk directly with senior leaders, but you also need to organize your own work.",
+            "es": "Las empresas planas eliminan muchos niveles de mandos medios, así que los empleados tienen más responsabilidad y más poder para tomar decisiones. Puedes hablar directamente con los líderes de más alto nivel, pero también necesitas organizar tu propio trabajo."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: asking the right person",
+        "h_es": "Antes y después: preguntarle a la persona correcta",
+        "intro_en": "Tap “After” to see how the same request changes when you follow the reporting line.",
+        "intro_es": "Toca “Después” para ver cómo cambia la misma petición cuando sigues la línea de reporte.",
+        "before": {
+          "to": "Operations Director",
+          "subject": "Question",
+          "body": [
+            "Hi Mr. Collins, ",
+            {
+              "m": 1,
+              "t": "sorry to bother you, I wasn't sure who to ask"
+            },
+            ". ",
+            {
+              "m": 2,
+              "t": "Maybe you can help me with my work hours, my benefits form and the deadline for the inventory project?"
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "Thanks!"
+            }
+          ],
+          "marks": [
+            {
+              "en": "It skips Luis's direct manager and goes over her head.",
+              "es": "Se salta a la jefa directa de Luis y pasa por encima de ella."
+            },
+            {
+              "en": "Three topics with three different owners, in one vague question.",
+              "es": "Tres temas con tres responsables distintos, en una sola pregunta vaga."
+            },
+            {
+              "en": "No clear request, no date, no reason.",
+              "es": "Sin petición clara, sin fecha y sin razón."
+            }
+          ]
+        },
+        "after": {
+          "to": "Karen (direct manager)",
+          "subject": "Request to change my work hours",
+          "body": [
+            "Hi Karen,\n",
+            {
+              "m": 1,
+              "t": "Could I change my hours to 7 AM–3 PM, starting Monday, May 6?"
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "The earlier schedule matches the warehouse shift I support, so I can answer their questions faster."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "If there's a form or a process I should follow, I'm happy to complete it. I've sent my benefits question to HR."
+            },
+            "\nThank you,\nLuis"
+          ],
+          "marks": [
+            {
+              "en": "The right person, and the request comes first with a date.",
+              "es": "La persona correcta, y la petición va primero con una fecha."
+            },
+            {
+              "en": "A short reason that connects to his role.",
+              "es": "Una razón corta que se conecta con su rol."
+            },
+            {
+              "en": "He follows the process and sends the other question to its owner.",
+              "es": "Sigue el proceso y manda la otra duda a quien le corresponde."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need to memorize every box on the chart. You need to know three things: who you report to, who your [[point of contact]] is in other departments, and how to work well in [[cross-functional]] teams. In the case below, you'll follow Luis as he learns this the hard way.",
+        "es": "No necesitas memorizar cada caja del organigrama. Necesitas saber tres cosas: a quién le reportas, quién es tu persona de contacto en otros departamentos y cómo trabajar bien en equipos interfuncionales. En el caso que sigue vas a acompañar a Luis mientras lo aprende por las malas."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on Gallup (via AP), OpenStax and Indeed",
+    "based_es": "Basado en Gallup (vía AP), OpenStax e Indeed",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Questions while reading",
+    "title": "Understanding Organizational Structures in the U.S.",
+    "body_en": "📚 Reading Assignment\n\nTitle: Understanding Organizational Structures in the U.S.\nTime: ~1 hour\n\nCase Study:\nLuis starts a new role at a mid-sized U.S. company. On his first week, he's unsure whether to ask his manager or HR about scheduling questions. After two missteps, he asks HR for help, and they explain the chain of command and give him an organizational chart. Suddenly, things become clearer—he now knows exactly who to report to and who to approach for different issues.\n\nQuestions while reading:\n\nWhat mistakes did Luis make?\n\nHow did HR help him better understand the company?\n\nWhy is role clarity important for building trust and efficiency?\n\nArticle Reference:\n🔗 Indeed – Types of Organizational Structures in Business — https://www.indeed.com/career-advice/career-development/types-of-organizational-structures\n\nVideo Reference:\n🎥 YouTube – Organizational Structures Explained — https://www.youtube.com/watch?v=8FBLzJcP0ic",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Entendiendo las Estructuras Organizacionales en EE.UU.\nTiempo: ~1 hora\n\nEstudio de Caso:\nLuis comienza un nuevo puesto en una empresa estadounidense de tamaño medio. En su primera semana, no está seguro si debe preguntar a su gerente o a Recursos Humanos sobre cuestiones de programación. Después de dos errores, pide ayuda a Recursos Humanos, y ellos le explican la cadena de mando y le dan un organigrama. De repente, las cosas se vuelven más claras: ahora sabe exactamente a quién reportar y a quién acudir para diferentes problemas.\n\nPreguntas mientras lees:\n\n¿Qué errores cometió Luis?\n\n¿Cómo le ayudó Recursos Humanos a entender mejor la empresa?\n\n¿Por qué es importante la claridad de roles para construir confianza y eficiencia?\n\nReferencia del Artículo:\n🔗 Indeed – Types of Organizational Structures in Business — https://www.indeed.com/career-advice/career-development/types-of-organizational-structures\n\nReferencia del Video:\n🎥 YouTube – Organizational Structures Explained — https://www.youtube.com/watch?v=8FBLzJcP0ic",
+    "summary": "Luis starts a new role at a mid-sized U.S. company. On his first week, he's unsure whether to ask his manager or HR about scheduling questions. After two missteps, he asks HR for help, and they explain the chain of command and give him an organizational chart. Suddenly, things become clearer—he now knows exactly who to report to and who to approach for different issues.",
+    "title_es": "Entendiendo las Estructuras Organizacionales en EE.UU.",
+    "video_ref": "YouTube – Organizational Structures Explained — https://www.youtube.com/watch?v=8FBLzJcP0ic",
+    "article_ref": "Indeed – Types of Organizational Structures in Business — https://www.indeed.com/career-advice/career-development/types-of-organizational-structures",
+    "instructions": "Questions while reading: What mistakes did Luis make? How did HR help him better understand the company? Why is role clarity important for building trust and efficiency?"
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "scene": "Luis starts a new role at a mid-sized U.S. company. On Monday, he asks his manager, Karen, how to request time off in the HR system. She tells him that's an HR question. On Tuesday, he emails the Operations Director, Karen's boss, about his work hours:",
+      "message": {
+        "from": "Luis → Operations Director",
+        "text": "Hi Mr. Collins, sorry to bother you. Karen said my time-off question is for HR, so maybe you can help me with my schedule? I'd like to work 7 to 3 instead of 9 to 5, if that's possible."
+      },
+      "outcome": "The director forwards the email to Karen. Karen is surprised that Luis went over her head.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "model": "Hi Karen,\nCould I change my hours to 7 AM–3 PM, starting next Monday? It matches the warehouse shift I support. Is there a form or a process I should follow?\nThank you,\nLuis",
+        "hints_en": [
+          "Write to your direct manager",
+          "Put the request first",
+          "Give a date and a short reason",
+          "Ask about the process"
+        ],
+        "hints_es": [
+          "Escríbele a tu jefa directa",
+          "Pon la petición primero",
+          "Da una fecha y una razón corta",
+          "Pregunta por el proceso"
+        ],
+        "label_en": "My version of the email",
+        "label_es": "Mi versión del correo",
+        "prompt_en": "Rewrite Luis's message so it goes to the right person and is clear.",
+        "prompt_es": "Reescribe el mensaje de Luis para que llegue a la persona correcta y sea claro."
+      },
+      "title_en": "Two Missteps",
+      "title_es": "Dos errores",
+      "questions": [
+        "What mistakes did Luis make?",
+        "Who should Luis contact first about his work hours? Why?"
+      ],
+      "questions_es": [
+        "¿Qué errores cometió Luis?",
+        "¿A quién debería contactar Luis primero sobre su horario? ¿Por qué?"
+      ]
+    },
+    {
+      "id": "c2",
+      "scene": "After two missteps, Luis asks HR for help. Jasmine from HR replies:",
+      "message": {
+        "from": "HR (Jasmine) → Luis",
+        "text": "Hi Luis, happy to help! Here's our org chart so you can see the whole team. For your daily schedule and work hours, talk to Karen first. She's your direct manager. For time off, benefits and pay, contact HR. If you're ever not sure, ask Karen and she'll point you to the right person."
+      },
+      "outcome": "Luis saves the org chart. Now he knows exactly who to report to and who to approach for different issues.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "parts": [
+          {
+            "t": "Hi Luis, happy to help! "
+          },
+          {
+            "t": "Here's our org chart so you can see the whole team.",
+            "why": {
+              "en": "It gives him a visual map of the company.",
+              "es": "Le da un mapa visual de la empresa."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "For your daily schedule and work hours, talk to Karen first. She's your direct manager.",
+            "why": {
+              "en": "It names his reporting line: the chain of command starts with Karen.",
+              "es": "Le dice cuál es su línea de reporte: la cadena de mando empieza con Karen."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "For time off, benefits and pay, contact HR.",
+            "why": {
+              "en": "It makes clear which topics belong to HR.",
+              "es": "Deja claro qué temas le tocan a Recursos Humanos."
+            }
+          },
+          {
+            "t": " If you're ever not sure, ask Karen and she'll point you to the right person."
+          }
+        ],
+        "prompt_en": "Tap the three parts of HR's answer that make things clear for Luis.",
+        "prompt_es": "Toca las tres partes de la respuesta de Recursos Humanos que le aclaran todo a Luis."
+      },
+      "title_en": "HR Draws the Map",
+      "title_es": "Recursos Humanos dibuja el mapa",
+      "questions": [
+        "How did HR help him better understand the company?",
+        "Which part of HR's answer would help you most in your first week?"
+      ],
+      "questions_es": [
+        "¿Cómo le ayudó Recursos Humanos a entender mejor la empresa?",
+        "¿Qué parte de la respuesta de Recursos Humanos te ayudaría más en tu primera semana?"
+      ]
+    },
+    {
+      "id": "c3",
+      "scene": "Two weeks later, Luis needs the March sales numbers from Finance for a report.",
+      "activity": {
+        "kind": "choose",
+        "why": {
+          "en": "Message B is better: Luis writes to the right person, says who he is and where he fits, makes a clear request with a date, and explains why. Message A goes to everyone, has no owner and no deadline, so it wastes people's time.",
+          "es": "El mensaje B es mejor: Luis le escribe a la persona correcta, dice quién es y dónde encaja, hace una petición clara con fecha y explica por qué. El mensaje A va para todos, no tiene responsable ni fecha, así que le hace perder el tiempo a la gente."
+        },
+        "options": [
+          {
+            "lead": "Message A, to All Staff:",
+            "text": "Hi everyone, does anybody know who has the sales numbers? I need them soon. Thanks!",
+            "correct": false,
+            "label_en": "Message A",
+            "label_es": "Mensaje A"
+          },
+          {
+            "lead": "Message B, to Priya in Finance:",
+            "text": "Hi Priya, I'm Luis, the new operations analyst on Karen's team. Karen told me you're our [[point of contact]] in Finance. Could you send me the March sales numbers by Thursday? I need them for our monthly delivery report.",
+            "correct": true,
+            "label_en": "Message B",
+            "label_es": "Mensaje B"
+          }
+        ],
+        "prompt_en": "Tap the message you would send.",
+        "prompt_es": "Toca el mensaje que enviarías."
+      },
+      "title_en": "Role Clarity in Action",
+      "title_es": "La claridad de roles en acción",
+      "questions": [
+        "Why is role clarity important for building trust and efficiency?",
+        "What does Message B show about how well Luis now understands the structure?"
+      ],
+      "questions_es": [
+        "¿Por qué es importante la claridad de roles para construir confianza y eficiencia?",
+        "¿Qué muestra el mensaje B sobre lo bien que Luis entiende ahora la estructura?"
+      ]
+    }
+  ]
+}

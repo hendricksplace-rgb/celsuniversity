@@ -1,0 +1,563 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Management",
+        "t_es": "Gestión",
+        "d_en": "How managers bring order: clear tasks, owners and deadlines.",
+        "d_es": "Cómo los gerentes ponen orden: tareas claras, responsables y fechas."
+      },
+      {
+        "t_en": "Leadership",
+        "t_es": "Liderazgo",
+        "d_en": "How leaders give a direction and motivate people to follow it.",
+        "d_es": "Cómo los líderes dan una dirección y motivan a la gente a seguirla."
+      },
+      {
+        "t_en": "Balance",
+        "t_es": "Equilibrio",
+        "d_en": "Why U.S. companies want people who can do both.",
+        "d_es": "Por qué las empresas en EE. UU. buscan personas que hagan las dos cosas."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 case studies",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 casos de estudio",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover the difference between managing and leading, and why U.S. companies value professionals who can switch between the two. You read a short article, watch a video, and work through a real case with two supervisors.",
+    "intro_es": "En esta lectura descubres la diferencia entre gestionar y liderar, y por qué las empresas en EE. UU. valoran a los profesionales que saben alternar entre las dos cosas. Lees un artículo corto, ves un video y analizas un caso real con dos supervisores."
+  },
+  "week": 3,
+  "video": {
+    "slug": "roselinde_torres_what_it_takes_to_be_a_great_leader",
+    "event": "TED@BCG",
+    "extra": {
+      "slug": "simon_sinek_why_good_leaders_make_you_feel_safe",
+      "event": "TED",
+      "title": "Why good leaders make you feel safe",
+      "source": 5,
+      "minutes": 12,
+      "speaker": "Simon Sinek",
+      "provider": "ted"
+    },
+    "title": "What it takes to be a great leader",
+    "source": 4,
+    "minutes": 9,
+    "speaker": "Roselinde Torres",
+    "intro_en": "Watch the full talk inside the app. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "What are the three questions that, according to Roselinde Torres, great leaders ask themselves?",
+      "Which of those questions is most useful for your career right now? Why?"
+    ],
+    "prompts_es": [
+      "¿Cuáles son las tres preguntas que, según Roselinde Torres, se hacen los grandes líderes?",
+      "¿Cuál de esas preguntas te sirve más para tu carrera en este momento? ¿Por qué?"
+    ]
+  },
+  "vocab": {
+    "align": {
+      "d": "Get people to agree on and work toward the same goal.",
+      "es": "alinear, poner a todos en la misma dirección",
+      "ex": "A good leader aligns the team behind one clear goal."
+    },
+    "delegate": {
+      "d": "Give part of your work or responsibility to another person.",
+      "es": "delegar",
+      "ex": "She delegates the design work to Jorge and the numbers to Ana."
+    },
+    "accountability": {
+      "d": "Being responsible for your work and ready to explain the results.",
+      "es": "responsabilidad (rendir cuentas)",
+      "ex": "Clear deadlines create accountability on the team."
+    },
+    "the big picture": {
+      "d": "The general situation or the main goal, not the small details.",
+      "es": "el panorama general",
+      "ex": "Leaders help the team see the big picture."
+    },
+    "buy-in": {
+      "d": "Real agreement and support from people for a plan or an idea.",
+      "es": "compromiso, apoyo real (de la gente a un plan)",
+      "ex": "When people understand why, you get buy-in, not just obedience."
+    },
+    "micromanage": {
+      "d": "Control every small detail of other people's work.",
+      "es": "controlar cada detalle del trabajo de otros",
+      "ex": "Good managers set clear goals and don't micromanage."
+    },
+    "empower": {
+      "d": "Give people the trust, tools and authority to make decisions.",
+      "es": "empoderar, dar autonomía",
+      "ex": "Empower your team to solve small problems on their own."
+    },
+    "step up": {
+      "d": "Take action or more responsibility when it is needed.",
+      "es": "dar un paso al frente",
+      "ex": "When the project fell behind, Maria stepped up and reorganized the plan."
+    }
+  },
+  "warmup": {
+    "q_en": "Your team is behind on a deadline. Your first reaction is to…",
+    "q_es": "Tu equipo va atrasado con una fecha de entrega. Tu primera reacción es…",
+    "poll_en": [
+      "Make a new plan, assign tasks and check progress every day.",
+      "Remind everyone why the project matters and encourage them.",
+      "Do both: share a clear plan and explain why it matters."
+    ],
+    "poll_es": [
+      "Hacer un nuevo plan, repartir tareas y revisar el avance todos los días.",
+      "Recordarle a todos por qué importa el proyecto y darles ánimo.",
+      "Las dos cosas: compartir un plan claro y explicar por qué importa."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: are you more of a manager or a leader?",
+    "title_es": "Antes de leer: ¿eres más gerente o más líder?",
+    "note_q_en": "Think of the best boss you have had. What did that person do well?",
+    "note_q_es": "Piensa en el mejor jefe que has tenido. ¿Qué hacía bien esa persona?",
+    "feedback_en": [
+      "That's a manager's reaction: structure and control. It gets results, but the team can feel pressure. Today you'll see what to add.",
+      "That's a leader's reaction: purpose and energy. It motivates, but without a plan, deadlines can slip. Today you'll see what to add.",
+      "Great starting point! That is the balance U.S. companies look for. This reading helps you do it on purpose."
+    ],
+    "feedback_es": [
+      "Esa es una reacción de gerente: estructura y control. Da resultados, pero el equipo puede sentirse presionado. Hoy vas a ver qué agregar.",
+      "Esa es una reacción de líder: propósito y energía. Motiva, pero sin un plan las fechas se pueden retrasar. Hoy vas a ver qué agregar.",
+      "¡Excelente punto de partida! Ese es el equilibrio que buscan las empresas en EE. UU. Esta lectura te ayuda a hacerlo de forma consciente."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Harvard Business Review, December 2001 (first published 1990)",
+      "url": "https://hbr.org/2001/12/what-leaders-really-do",
+      "who": "John P. Kotter",
+      "what": "“What Leaders Really Do”"
+    },
+    {
+      "id": 2,
+      "pub": "Gallup Business Journal, April 21, 2015",
+      "url": "https://news.gallup.com/businessjournal/182792/managers-account-variance-employee-engagement.aspx",
+      "who": "Randall Beck and Jim Harter",
+      "what": "“Managers Account for 70% of Variance in Employee Engagement”"
+    },
+    {
+      "id": 3,
+      "pub": "Google re:Work",
+      "url": "https://rework.withgoogle.com/intl/en/guides/following-the-data-the-research-behind-great-managers",
+      "who": "Google",
+      "what": "“Following the data: The research behind great managers” (Project Oxygen)"
+    },
+    {
+      "id": 4,
+      "pub": "TED@BCG San Francisco, October 2013 · TED.com",
+      "url": "https://www.ted.com/talks/roselinde_torres_what_it_takes_to_be_a_great_leader",
+      "who": "Roselinde Torres",
+      "what": "“What it takes to be a great leader”"
+    },
+    {
+      "id": 5,
+      "pub": "TED2014 · TED.com",
+      "url": "https://www.ted.com/talks/simon_sinek_why_good_leaders_make_you_feel_safe",
+      "who": "Simon Sinek",
+      "what": "“Why good leaders make you feel safe”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "Change / complexity",
+            "Complexity / change",
+            "Budgets / people's feelings"
+          ],
+          "es": [
+            "El cambio / la complejidad",
+            "La complejidad / el cambio",
+            "Los presupuestos / los sentimientos de la gente"
+          ]
+        },
+        "q": {
+          "en": "According to John Kotter, management is about coping with ___, and leadership is about coping with ___.",
+          "es": "Según John Kotter, la gestión trata de manejar ___, y el liderazgo trata de manejar ___."
+        },
+        "why": {
+          "en": "Right: managers bring order to complex work; leaders give direction when things change.",
+          "es": "Así es: los gerentes ponen orden en el trabajo complejo; los líderes dan dirección cuando las cosas cambian."
+        }
+      },
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "About 10%",
+            "About 30%",
+            "At least 70%"
+          ],
+          "es": [
+            "Alrededor del 10 %",
+            "Alrededor del 30 %",
+            "Al menos el 70 %"
+          ]
+        },
+        "q": {
+          "en": "Gallup estimates that managers account for how much of the variance in team engagement?",
+          "es": "Según Gallup, ¿qué parte de la variación en el compromiso de los equipos depende de los gerentes?"
+        },
+        "why": {
+          "en": "Exactly: at least 70%. The person who leads the team makes a huge difference.",
+          "es": "Exacto: al menos el 70 %. La persona que dirige el equipo hace una gran diferencia."
+        }
+      },
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "It only sets deadlines",
+            "It only motivates the team",
+            "It recognizes the effort, explains why, and gives clear tasks and deadlines"
+          ],
+          "es": [
+            "Solo pone fechas límite",
+            "Solo motiva al equipo",
+            "Reconoce el esfuerzo, explica por qué y da tareas y fechas claras"
+          ]
+        },
+        "q": {
+          "en": "In Case 3, the best message works because…",
+          "es": "En el caso 3, el mejor mensaje funciona porque…"
+        },
+        "why": {
+          "en": "Yes: it combines leadership (why and recognition) with management (who, what and when).",
+          "es": "Sí: combina liderazgo (el porqué y el reconocimiento) con gestión (quién, qué y para cuándo)."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway, in two sentences: what did I learn about balancing management and leadership?",
+      "es": "Mi conclusión, en dos oraciones: ¿qué aprendí sobre equilibrar la gestión y el liderazgo?"
+    }
+  },
+  "cases_intro": {
+    "en": "At a U.S. technology company, two supervisors handle challenges differently. Read each case, do the activity and, if you like, write down your ideas. The messages are in English, as you would see them at work.",
+    "es": "En una empresa de tecnología en EE. UU., dos supervisores manejan los retos de forma diferente. Lee cada caso, haz la actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los verías en el trabajo."
+  },
+  "article": {
+    "dek": "What the research says about managers and leaders, why the best supervisors switch between the two, and three habits you can practice this week.",
+    "title": "Manage the Work, Lead the People: Why U.S. Companies Want Both",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "At work, people often use the words manager and leader as if they mean the same thing. They don't. In a classic Harvard Business Review article, Harvard professor John Kotter explains that management is about coping with complexity, while leadership is about coping with change.{1} Managers bring order: they plan, set budgets, organize people and solve problems. Leaders set a direction, [[align]] people behind it, and motivate them to keep going.",
+        "es": "En el trabajo, la gente muchas veces usa las palabras gerente y líder como si significaran lo mismo. No es así. En un artículo clásico de Harvard Business Review, el profesor de Harvard John Kotter explica que la gestión trata de manejar la complejidad, mientras que el liderazgo trata de manejar el cambio. Los gerentes ponen orden: planean, hacen presupuestos, organizan a las personas y resuelven problemas. Los líderes marcan una dirección, alinean a la gente detrás de ella y la motivan para seguir adelante."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Two different jobs that work together",
+        "en": "Kotter's key point is that the two are complementary, not rivals.{1} Strong management without leadership can make a team efficient but rigid. Strong leadership without management can create a lot of energy but few results. That is why, in U.S. workplaces, the people who move up are often the ones who can do both: keep the work organized and keep the team motivated.",
+        "es": "La idea central de Kotter es que las dos cosas se complementan; no compiten. Una buena gestión sin liderazgo puede hacer que un equipo sea eficiente pero rígido. Un buen liderazgo sin gestión puede crear mucha energía pero pocos resultados. Por eso, en los trabajos en EE. UU., las personas que suben de puesto suelen ser las que saben hacer las dos cosas: mantener el trabajo organizado y al equipo motivado."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "h": "Why the person in charge matters so much",
+        "en": "Research shows how much this affects people. Gallup estimates that managers account for at least 70% of the variance in employee engagement across business units.{2} In other words, one company can have energized teams and exhausted teams, and the biggest difference is often the person in charge. Gallup also reports that companies fail to choose the candidate with the right talent for the manager job 82% of the time.{2}",
+        "es": "Las investigaciones muestran cuánto afecta esto a las personas. Gallup estima que los gerentes explican al menos el 70 % de la variación en el compromiso de los empleados entre unidades de negocio. Es decir, en una misma empresa puede haber equipos con energía y equipos agotados, y la mayor diferencia suele ser la persona a cargo. Gallup también reporta que las empresas no eligen al candidato con el talento adecuado para el puesto de gerente en el 82 % de los casos."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think of the best boss you have had. Was that person stronger at managing the work, leading the people, or both?",
+        "q_es": "Piensa en el mejor jefe que has tenido. ¿Era más fuerte gestionando el trabajo, liderando a las personas o en las dos cosas?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of managers who also lead",
+        "items": [
+          {
+            "icon": "target",
+            "h": "1 · Manage: clear tasks, owners and deadlines",
+            "en": "Good managers [[delegate]] with precision: what needs to be done, who owns it, and by when. They follow up, so there is real [[accountability]] and nobody has to guess. Google's Project Oxygen, a study of what its most effective managers do, lists focusing on productivity and results and making strong decisions among the key behaviors.{3}",
+            "es": "Los buenos gerentes delegan con precisión: qué hay que hacer, quién es responsable y para cuándo. Dan seguimiento, así que hay una responsabilidad real y nadie tiene que adivinar. Project Oxygen, un estudio de Google sobre lo que hacen sus gerentes más efectivos, incluye enfocarse en la productividad y los resultados y tomar decisiones firmes entre los comportamientos clave."
+          },
+          {
+            "icon": "mega",
+            "h": "2 · Lead: explain the why",
+            "en": "Leaders connect daily tasks to [[the big picture]]: why this project matters to the client and to the company. Project Oxygen also lists having a clear vision and strategy and communicating effectively.{3} When people understand the why, you get real [[buy-in]], not just obedience.",
+            "es": "Los líderes conectan las tareas diarias con el panorama general: por qué este proyecto importa para el cliente y para la empresa. Project Oxygen también incluye tener una visión y una estrategia claras y comunicarse de forma efectiva. Cuando la gente entiende el porqué, obtienes un compromiso real, no solo obediencia."
+          },
+          {
+            "icon": "shield",
+            "h": "3 · Balance: empower, don't micromanage",
+            "en": "The best supervisors don't [[micromanage]]. Project Oxygen highlights being a good coach and empowering the team without micromanaging.{3} They give a clear structure, [[empower]] people to do the work, and [[step up]] with support when the team struggles.",
+            "es": "Los mejores supervisores no controlan cada detalle. Project Oxygen destaca ser un buen coach y darle autonomía al equipo sin controlar cada detalle. Dan una estructura clara, confían en que la gente haga el trabajo y dan un paso al frente para apoyar cuando el equipo tiene dificultades."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same email",
+        "h_es": "Antes y después: el mismo correo",
+        "intro_en": "Tap “After” to see how the same message changes when you add leadership to management.",
+        "intro_es": "Toca “Después” para ver cómo cambia el mismo mensaje cuando sumas liderazgo a la gestión.",
+        "before": {
+          "to": "Project Team",
+          "subject": "Report deadline",
+          "body": [
+            "Team,\n",
+            {
+              "m": 1,
+              "t": "The client report is due Friday at 3 PM. Ana: financial section. Jorge: design updates."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "No excuses this time."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "Send me your parts by Thursday."
+            },
+            "\nCarlos"
+          ],
+          "marks": [
+            {
+              "en": "Clear tasks and owners (good management), but nothing about why it matters.",
+              "es": "Tareas y responsables claros (buena gestión), pero nada sobre por qué importa."
+            },
+            {
+              "en": "It sounds like a threat: it hurts trust and motivation.",
+              "es": "Suena a amenaza: daña la confianza y la motivación."
+            },
+            {
+              "en": "No recognition of the team's effort so far.",
+              "es": "No reconoce el esfuerzo que el equipo ya hizo."
+            }
+          ]
+        },
+        "after": {
+          "to": "Project Team",
+          "subject": "Client report: our plan for Friday",
+          "body": [
+            "Hi team,\n",
+            {
+              "m": 1,
+              "t": "Thank you for all the work you've put into the client report so far."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "This report shows the client that we deliver quality, so it really matters."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "To finish by Friday at 3 PM: Ana, please complete the financial section, and Jorge, please finalize the design updates by Thursday at noon. I'll review the draft Thursday afternoon."
+            },
+            "\nI know we can do this together.\nBest,\nCarlos"
+          ],
+          "marks": [
+            {
+              "en": "It recognizes the team's effort (leadership).",
+              "es": "Reconoce el esfuerzo del equipo (liderazgo)."
+            },
+            {
+              "en": "It explains why the work matters (leadership).",
+              "es": "Explica por qué importa el trabajo (liderazgo)."
+            },
+            {
+              "en": "Clear owners, tasks and deadlines, plus a review time (management).",
+              "es": "Responsables, tareas y fechas claras, más un momento de revisión (gestión)."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need a manager title to practice this. Every time you ask for something at work, you can be clear about the task and the deadline, and also explain why it matters. In the case study below, two supervisors at a U.S. technology company each do only half of the job. Your task: find what is missing and fix it.",
+        "es": "No necesitas un puesto de gerente para practicar esto. Cada vez que pides algo en el trabajo, puedes ser claro con la tarea y la fecha, y también explicar por qué importa. En el caso de estudio que sigue, dos supervisores de una empresa de tecnología en EE. UU. hacen solo la mitad del trabajo cada uno. Tu tarea: encontrar lo que falta y corregirlo."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on Harvard Business Review, Gallup and Google re:Work",
+    "based_es": "Basado en Harvard Business Review, Gallup y Google re:Work",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Article Summary",
+    "title": "Management vs. Leadership: Why Both Matter",
+    "body_en": "📚 Reading Assignment\n\nTitle: Management vs. Leadership: Why Both Matter\nTime: ~1 hour\nObjective: To understand how management and leadership complement each other, and why both are critical in U.S. workplaces.\n\n📚 Article: Harvard Business Review – The Difference Between Managers and Leaders — https://hbr.org/2020/02/the-difference-between-managers-and-leaders\n🎥 Video: TED – What It Takes to Be a Great Leader | Roselinde Torres — https://www.youtube.com/watch?v=aUYSDEYdmzw\n\nPart 1 – Case Study: Two Styles in Action\n\nScenario:\nAt a U.S. technology company, two supervisors handle challenges differently:\n\nSupervisor A (Manager-focused):\nKeeps tight schedules, assigns tasks clearly, and ensures reports are completed on time. The work gets done efficiently, but the team feels stressed and disconnected.\n\nSupervisor B (Leader-focused):\nPaints a vision for the project, encourages the team when they struggle, and highlights how their work connects to the company's goals. The team feels motivated, but sometimes deadlines slip.\n\nDiscussion Point:\nWhat's missing in each case? How could each supervisor balance management and leadership to get both results and team commitment?\n\nPart 2 – Professional Article Summary\n\nSource: Harvard Business Review – The Balance of Management and Leadership (summarized)\n\nManagement ensures stability and efficiency.\n\nLeadership drives change, growth, and innovation.\n\nU.S. companies promote employees who show they can do both.\n\nThe best professionals learn to switch between management and leadership depending on the situation.\n\nYour Task While Reading:\n\nUnderline (or note) three differences between management and leadership.\n\nWrite down two reasons why both skills are important in U.S. companies.\n\nSummarize in two sentences: what did you learn about balancing management and leadership?",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Management vs. Leadership: Por Qué Ambos Importan\nTiempo: ~1 hora\nObjetivo: Entender cómo la gestión y el liderazgo se complementan y por qué ambos son críticos en los lugares de trabajo de EE. UU.\n\n📚 Artículo: Harvard Business Review – The Difference Between Managers and Leaders — https://hbr.org/2020/02/the-difference-between-managers-and-leaders\n🎥 Video: TED – What It Takes to Be a Great Leader | Roselinde Torres — https://www.youtube.com/watch?v=aUYSDEYdmzw\n\nParte 1 – Estudio de Caso: Dos Estilos en Acción\n\nEscenario:\nEn una empresa de tecnología de EE. UU., dos supervisores manejan los desafíos de manera diferente:\n\nSupervisor A (Enfocado en la gestión):\nMantiene horarios estrictos, asigna tareas claramente y asegura que los informes se completen a tiempo. El trabajo se realiza de manera eficiente, pero el equipo se siente estresado y desconectado.\n\nSupervisor B (Enfocado en el liderazgo):\nPinta una visión para el proyecto, anima al equipo cuando tienen dificultades y destaca cómo su trabajo se conecta con los objetivos de la empresa. El equipo se siente motivado, pero a veces se retrasan los plazos.\n\nPunto de Discusión:\n¿Qué falta en cada caso? ¿Cómo podría cada supervisor equilibrar la gestión y el liderazgo para obtener tanto resultados como compromiso del equipo?\n\nParte 2 – Resumen de Artículo Profesional\n\nFuente: Harvard Business Review – The Balance of Management and Leadership (resumido)\n\nLa gestión asegura estabilidad y eficiencia.\n\nEl liderazgo impulsa el cambio, el crecimiento y la innovación.\n\nLas empresas de EE. UU. promueven a empleados que demuestran que pueden hacer ambas cosas.\n\nLos mejores profesionales aprenden a alternar entre gestión y liderazgo dependiendo de la situación.\n\nTu Tarea Mientras Lees:\n\nSubraya (o anota) tres diferencias entre gestión y liderazgo.\n\nEscribe dos razones por las cuales ambas habilidades son importantes en las empresas de EE. UU.\n\nResume en dos oraciones: ¿qué aprendiste sobre equilibrar la gestión y el liderazgo?",
+    "summary": "To understand how management and leadership complement each other, and why both are critical in U.S. workplaces.",
+    "title_es": "Management vs. Leadership: Por Qué Ambos Importan",
+    "video_ref": "TED – What It Takes to Be a Great Leader | Roselinde Torres — https://www.youtube.com/watch?v=aUYSDEYdmzw",
+    "article_ref": "Harvard Business Review – The Difference Between Managers and Leaders — https://hbr.org/2020/02/the-difference-between-managers-and-leaders",
+    "instructions": "Underline (or note) three differences between management and leadership. Write down two reasons why both skills are important in U.S. companies. Summarize in two sentences: what did you learn about balancing management and leadership?"
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "title_en": "Supervisor A: Results Without Commitment",
+      "title_es": "Supervisor A: resultados sin compromiso",
+      "scene": "Supervisor A (manager-focused) keeps tight schedules, assigns tasks clearly, and makes sure reports are completed on time. This is a typical message to the team:",
+      "message": {
+        "from": "Supervisor A → Team",
+        "text": "Team, the status report is due Thursday at 5 PM. Luis, update the test results. Priya, finish the budget table. Send me your sections by Wednesday at noon."
+      },
+      "outcome": "The work gets done efficiently, but the team feels stressed and disconnected.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "model": "Hi team,\nThank you for the extra effort this week. This status report helps leadership decide whether to fund the next phase of our project, so your work really counts. The report is due Thursday at 5 PM: Luis, please update the test results, and Priya, please finish the budget table. Send me your sections by Wednesday at noon, and tell me if anything is blocking you.\nI appreciate you all,\nSupervisor A",
+        "hints_en": [
+          "Keep the deadlines and owners",
+          "Add why the report matters",
+          "Recognize the team's effort",
+          "Offer support"
+        ],
+        "hints_es": [
+          "Mantén las fechas y los responsables",
+          "Agrega por qué importa el informe",
+          "Reconoce el esfuerzo del equipo",
+          "Ofrece apoyo"
+        ],
+        "label_en": "My balanced version",
+        "label_es": "Mi versión equilibrada",
+        "prompt_en": "Keep Supervisor A's structure, but add leadership: why the report matters and a line that recognizes the team.",
+        "prompt_es": "Mantén la estructura del supervisor A, pero agrega liderazgo: por qué importa el informe y una frase que reconozca al equipo."
+      },
+      "questions": [
+        "What's missing in Supervisor A's approach?",
+        "How could Supervisor A add leadership without losing structure?"
+      ],
+      "questions_es": [
+        "¿Qué le falta al estilo del supervisor A?",
+        "¿Cómo podría el supervisor A agregar liderazgo sin perder la estructura?"
+      ]
+    },
+    {
+      "id": "c2",
+      "title_en": "Supervisor B: Motivation Without a Plan",
+      "title_es": "Supervisor B: motivación sin plan",
+      "scene": "Supervisor B (leader-focused) paints a vision for the project, encourages the team when they struggle, and shows how their work connects to the company's goals. This is a typical message to the team:",
+      "message": {
+        "from": "Supervisor B → Team",
+        "text": "Team, I'm really proud of what we're building. This new app could change how our customers work, and every one of you is part of that. I know it's been a hard week, so let's keep going and do our best!"
+      },
+      "outcome": "The team feels motivated, but sometimes deadlines slip.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "spot",
+        "parts": [
+          {
+            "t": "Team, "
+          },
+          {
+            "t": "I'm really proud of what we're building.",
+            "why": {
+              "en": "It recognizes the team and their work.",
+              "es": "Reconoce al equipo y su trabajo."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "This new app could change how our customers work, and every one of you is part of that.",
+            "why": {
+              "en": "It connects daily work to the big picture.",
+              "es": "Conecta el trabajo diario con el panorama general."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "I know it's been a hard week, so let's keep going and do our best!",
+            "why": {
+              "en": "It encourages the team when they struggle.",
+              "es": "Anima al equipo cuando tiene dificultades."
+            }
+          }
+        ],
+        "prompt_en": "Tap the three parts of Supervisor B's message that show leadership. Then notice what is missing: who, what and by when?",
+        "prompt_es": "Toca las tres partes del mensaje del supervisor B que muestran liderazgo. Después fíjate qué falta: ¿quién, qué y para cuándo?"
+      },
+      "questions": [
+        "What's missing in Supervisor B's approach?",
+        "How could Supervisor B add management so deadlines don't slip?"
+      ],
+      "questions_es": [
+        "¿Qué le falta al estilo del supervisor B?",
+        "¿Cómo podría el supervisor B agregar gestión para que no se retrasen las fechas?"
+      ]
+    },
+    {
+      "id": "c3",
+      "title_en": "Getting Both: Results and Commitment",
+      "title_es": "Lograr las dos cosas: resultados y compromiso",
+      "scene": "The client demo is due Monday at 9 AM, and the team is tired. Which message gets both results and team commitment?",
+      "activity": {
+        "kind": "choose",
+        "why": {
+          "en": "Message C balances both styles: it recognizes the effort and explains why the demo matters (leadership), then gives each person a clear task, a deadline and a review time (management). A only manages, and B only motivates.",
+          "es": "El mensaje C equilibra los dos estilos: reconoce el esfuerzo y explica por qué importa la demostración (liderazgo), y luego le da a cada persona una tarea clara, una fecha y un momento de revisión (gestión). A solo gestiona y B solo motiva."
+        },
+        "options": [
+          {
+            "lead": "Supervisor A says:",
+            "label_en": "Message A",
+            "label_es": "Mensaje A",
+            "correct": false,
+            "text": "The demo is Monday at 9 AM. Everyone, finish your part by Friday."
+          },
+          {
+            "lead": "Supervisor B says:",
+            "label_en": "Message B",
+            "label_es": "Mensaje B",
+            "correct": false,
+            "text": "You're all amazing! Let's make this demo great!"
+          },
+          {
+            "lead": "A balanced supervisor says:",
+            "label_en": "Message C",
+            "label_es": "Mensaje C",
+            "correct": true,
+            "text": "Thanks for the long hours this week. This demo is our chance to win the client. To be ready Monday at 9 AM: Luis, run the final tests by Friday at noon; Priya, finish the slides by Friday at 5 PM. I'll do a practice run with you Friday afternoon."
+          }
+        ],
+        "prompt_en": "Tap the message you would send.",
+        "prompt_es": "Toca el mensaje que tú enviarías."
+      },
+      "questions": [
+        "Write down three differences between management and leadership.",
+        "Write down two reasons why both skills are important in U.S. companies."
+      ],
+      "questions_es": [
+        "Anota tres diferencias entre la gestión y el liderazgo.",
+        "Anota dos razones por las que ambas habilidades son importantes en las empresas de EE. UU."
+      ]
+    }
+  ]
+}

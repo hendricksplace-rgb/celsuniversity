@@ -1,0 +1,58 @@
+{
+  "part": 2,
+  "week": 2,
+  "title_es": "Valores y experiencias en el trabajo",
+  "title_en": "Workplace values and experiences",
+  "preview_es": [
+    "Tus 3 valores de trabajo más importantes",
+    "Una experiencia en el trabajo que te enseñó algo",
+    "Cómo te adaptas a un nuevo ambiente de trabajo"
+  ],
+  "preview_en": [
+    "Your 3 most important work values",
+    "A work experience that taught you something",
+    "How you adapt to a new work environment"
+  ],
+  "fields": [
+    {
+      "k": "values",
+      "label_es": "Tus 3 valores de trabajo más importantes",
+      "label_en": "Your 3 most important work values",
+      "hint_es": "Por ejemplo: respect, reliability, teamwork. Tus notas de Research pueden ayudarte.",
+      "hint_en": "For example: respect, reliability, teamwork. Your Research notes can help.",
+      "type": "input",
+      "min": 15,
+      "fill_from": "research"
+    },
+    {
+      "k": "experience",
+      "label_es": "Una experiencia en el trabajo que te enseñó algo",
+      "label_en": "A work experience that taught you something",
+      "hint_es": "Un reto o conflicto en el trabajo: qué pasó, qué hiciste para resolverlo y qué aprendiste. 3–5 oraciones en inglés.",
+      "hint_en": "A challenge or conflict at work: what happened, what you did to resolve it, and what you learned. 3–5 sentences in English.",
+      "type": "textarea",
+      "min": 150,
+      "fill_from": null
+    },
+    {
+      "k": "adapt",
+      "label_es": "Cómo te adaptas a un nuevo ambiente de trabajo",
+      "label_en": "How you adapt to a new work environment",
+      "hint_es": "¿Qué haces en tus primeras semanas? Observar, preguntar, ajustar tu tono, ser puntual… 2–4 oraciones en inglés.",
+      "hint_en": "What do you do in your first weeks? Observe, ask, adjust your tone, be on time… 2–4 sentences in English.",
+      "type": "textarea",
+      "min": 100,
+      "fill_from": null
+    },
+    {
+      "k": "culture_fit",
+      "label_es": "Por qué encajarías en la cultura de una empresa de EE. UU.",
+      "label_en": "Why you would fit into a U.S. company's culture",
+      "hint_es": "Tu respuesta a “How do you fit into our culture?”. Puedes partir del guion de tu Video.",
+      "hint_en": "Your answer to “How do you fit into our culture?”. You can start from your Video script.",
+      "type": "textarea",
+      "min": 80,
+      "fill_from": "video"
+    }
+  ]
+}

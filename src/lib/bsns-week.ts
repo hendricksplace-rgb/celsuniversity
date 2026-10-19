@@ -1,10 +1,10 @@
 // CelsBSNS week page v2 (celsu-celsbsns-semana-brief.md): everything the page shows, from the course page data,
-// the lesson texts, the student's submissions, the enrollment start, the class teacher and the week's resources.
+// the lesson texts, the student's submissions, the enrollment start and the week's resources.
 // Due dates are suggestions only: nothing is ever locked.
 import type { createClient } from "@/lib/supabase/server";
 import type { CoursePage, Episode, Part } from "@/lib/course-page";
-import { initials } from "@/lib/my-classes";
 import { capstoneParts, loadSyllabus } from "@/lib/bsns-syllabus";
+import { completedCapstoneParts } from "@/lib/capstone-server";
 import {
   BSNS_WEEKS,
   DUE_DAY,
@@ -116,8 +116,10 @@ export type BsnsWeek = {
   route: RouteNode[];
   currentWeek: number;
   routeFill: number;
-  coach: { name: string; initials: string } | null;
-  milestones: { week: number; part: number; label: string; now: boolean }[];
+  /** done: the part's capstone_parts.completed_at is set (nothing else counts). */
+  milestones: { week: number; part: number; label: string; now: boolean; done: boolean }[];
+  /** This week's Capstone part is complete. */
+  capDone: boolean;
   resources: Resource[];
   courseResources: Resource[];
 };
@@ -139,7 +141,8 @@ const PHASE_OF: Record<Kind, Phase["key"]> = {
   other: "prep",
 };
 
-/** Done for a CelsBSNS activity: the lesson is completed, or its submission went to the coach. */
+/** Done for a CelsBSNS activity: the lesson is completed or its Writing saved as finished (older rows: sent to or
+ *  reviewed by a coach). */
 const isDone = (s: TaskStatus) => s === "done" || s === "submitted" || s === "reviewed";
 
 export async function loadBsnsWeek(
@@ -161,7 +164,7 @@ export async function loadBsnsWeek(
   const programIds = (links ?? []).map((l) => l.program_id as string);
   const scope = [`course_id.eq.${page.course.id}`, ...(programIds.length ? [`program_id.in.(${programIds.join(",")})`] : [])];
 
-  const [{ data: subs }, { data: blocks }, { data: enrolls }, { data: classRows }, { data: res }, syllabus] = await Promise.all([
+  const [{ data: subs }, { data: blocks }, { data: enrolls }, { data: res }, syllabus, capDone] = await Promise.all([
     allIds.length ? supabase.from("submissions").select("lesson_id, status").eq("user_id", userId).in("lesson_id", allIds) : Promise.resolve({ data: [] }),
     taskIds.length
       ? supabase
@@ -173,14 +176,9 @@ export async function loadBsnsWeek(
           .order("sort_order")
       : Promise.resolve({ data: [] }),
     supabase.from("enrollments").select("starts_at").eq("user_id", userId).eq("status", "active").or(scope.join(",")).order("starts_at").limit(1),
-    supabase
-      .from("class_members")
-      .select("class_id, classes!inner(status, class_courses(course_id))")
-      .eq("user_id", userId)
-      .eq("member_role", "student")
-      .eq("classes.status", "active"),
     supabase.from("resources").select("id, label, label_es, resource_type, url, sort_order").eq("module_id", week.id).order("sort_order"),
     loadSyllabus(supabase, page),
+    completedCapstoneParts(supabase, userId, page.course.id),
   ]);
   const subOf = new Map((subs ?? []).map((s) => [s.lesson_id, s]));
   const statusOf = (p: Part) => taskStatus(p, subOf.get(p.id));
@@ -339,29 +337,6 @@ export async function loadBsnsWeek(
   });
   const routeFill = Math.min(1, Math.max(0, (currentWeek - 1 + (curEp ? share(curEp) : 0)) / (total - 1)));
 
-  // ---- Coach: the teacher of the student's active class (one with this course first) ----
-  let coach: BsnsWeek["coach"] = null;
-  if (classRows?.length) {
-    type ClassRow = {
-      class_id: string;
-      classes: { class_courses: { course_id: string }[] | null } | { class_courses: { course_id: string }[] | null }[] | null;
-    };
-    const withCourse = (classRows as ClassRow[]).find((r) => {
-      const c = Array.isArray(r.classes) ? r.classes[0] : r.classes;
-      return (c?.class_courses ?? []).some((cc) => cc.course_id === page.course.id);
-    });
-    const classIds = [withCourse?.class_id, ...classRows.map((r) => r.class_id)].filter((x): x is string => !!x);
-    const { data: people } = await supabase.rpc("my_class_people");
-    for (const id of classIds) {
-      const t = (people ?? []).find((m) => m.class_id === id && m.member_role === "teacher");
-      if (t) {
-        const name = t.display_name?.trim();
-        if (name) coach = { name, initials: initials(name) };
-        break;
-      }
-    }
-  }
-
   // ---- Resources: the week's own (with a link), else the course's resource lessons ----
   const tagOf = (t: string): Resource["tag"] =>
     /pdf|file|doc/i.test(t) ? "pdf" : /audio/i.test(t) ? "audio" : /video/i.test(t) ? "video" : /list|vocab/i.test(t) ? "list" : "link";
@@ -383,7 +358,7 @@ export async function loadBsnsWeek(
   // ---- Capstone: this week's part, the next 2 and part 10, from the syllabus ----
   const parts = capstoneParts(syllabus, lang);
   const shown = parts.filter((p) => (p.week >= week.n && p.week <= week.n + 2) || p.week === BSNS_WEEKS);
-  const milestones = shown.map((m) => ({ week: m.week, part: m.part, label: m.text, now: m.week === week.n }));
+  const milestones = shown.map((m) => ({ week: m.week, part: m.part, label: m.text, now: m.week === week.n, done: capDone.has(m.part) }));
 
   // Hero title: "Professional Communication & Capstone Launch" → ["Professional Communication", "& Capstone Launch"].
   const clean = weekTitle(week.title);
@@ -415,8 +390,8 @@ export async function loadBsnsWeek(
     route,
     currentWeek,
     routeFill,
-    coach,
     milestones,
+    capDone: capDone.has(week.n),
     resources,
     courseResources,
   };

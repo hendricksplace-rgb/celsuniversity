@@ -1,0 +1,142 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Your 1-Minute",
+    "title_b": "Career Pitch",
+    "chips_en": [
+      "1 hour",
+      "50 to 70 seconds",
+      "Your video stays with you",
+      "Capstone · Part 4"
+    ],
+    "chips_es": [
+      "1 hora",
+      "50 a 70 segundos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 4"
+    ],
+    "intro_en": "Record a 1-minute pitch about your career goals, as if a recruiter asked you: “Where do you see your career going?” Use your resume draft from Writing as a base and practice clarity, tone and confidence.",
+    "intro_es": "Graba un pitch de 1 minuto sobre tus metas profesionales, como si una reclutadora te preguntara: “Where do you see your career going?”. Usa el borrador de tu currículum de Writing como base y practica claridad, tono y seguridad."
+  },
+  "must": [
+    {
+      "en": "Who you are and your current or last role",
+      "es": "Quién eres y tu puesto actual o último",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Your strongest experience or result, with a number",
+      "es": "Tu experiencia o resultado más fuerte, con un número",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "The role you want next in the U.S.",
+      "es": "El puesto que quieres en EE. UU.",
+      "color": "#1F7A4D"
+    },
+    {
+      "en": "Why you're a good fit, and a confident close",
+      "es": "Por qué eres buena opción y un cierre seguro",
+      "color": "#C98A00"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "icon": "mic",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "It doesn't need to be formal.",
+      "desc_es": "No tiene que ser formal."
+    },
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "As if talking to a real person.",
+      "desc_es": "Como si hablaras con una persona real."
+    },
+    {
+      "en": "Smile once or twice",
+      "es": "Sonríe una o dos veces",
+      "icon": "smile",
+      "desc_en": "It shows confidence and friendliness.",
+      "desc_es": "Muestra seguridad y amabilidad."
+    }
+  ],
+  "week": 4,
+  "seconds": {
+    "min": 50,
+    "max": 70
+  },
+  "delivery": {
+    "en": [
+      [
+        "Clear, confident tone",
+        "Slow down when you say your key result."
+      ],
+      [
+        "Professional body language",
+        "Back straight, look at the camera."
+      ],
+      [
+        "One clear goal",
+        "End with the role you want next."
+      ]
+    ],
+    "es": [
+      [
+        "Tono claro y seguro",
+        "Habla más despacio al decir tu resultado clave."
+      ],
+      [
+        "Lenguaje corporal profesional",
+        "Espalda recta, mira a la cámara."
+      ],
+      [
+        "Una meta clara",
+        "Termina con el puesto que quieres."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record a 1-minute pitch about your career goals, clearly and with confidence.",
+    "time": "1 Hour",
+    "title": "Your 1-Minute Career Pitch",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. The original Kajabi lesson was empty: \"Content pending — this lesson was empty in the original Kajabi course.\"]\n\n📹 Video Submission – Week 4\n\nTitle: Your 1-Minute Career Pitch\nEstimated Time: 1 Hour\nGoal: Record a 1-minute pitch about your career goals, clearly and with confidence.\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nInstructions (CelsU, from the syllabus line “Speaking: 1-minute pitch about your career goals”):\nUse your resume draft as a base. In about 1 minute, say who you are, your strongest experience or result, the role you want next in the U.S., and why you are a good fit.",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. La lección original de Kajabi estaba vacía: \"Contenido pendiente: esta lección estaba vacía en el curso original de Kajabi.\"]\n\n📹 Envío de Video – Semana 4\n\nTítulo: Tu pitch profesional de 1 minuto\nTiempo Estimado: 1 Hora\nObjetivo: Grabar un pitch de 1 minuto sobre tus metas profesionales, con claridad y seguridad.\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nInstrucciones (CelsU, a partir de la línea del programa “Expresión oral: pitch de 1 minuto sobre tus metas profesionales”):\nUsa el borrador de tu currículum como base. En 1 minuto aproximadamente, di quién eres, tu experiencia o resultado más fuerte, el puesto que quieres en EE. UU. y por qué eres buena opción.",
+    "goal_es": "Grabar un pitch de 1 minuto sobre tus metas profesionales, con claridad y seguridad.",
+    "title_es": "Tu pitch profesional de 1 minuto"
+  },
+  "auto_stop_s": 90,
+  "capstone_part": 4,
+  "script_source_lesson_id": "f813d3d7-6f33-4446-aca6-fdc9f42f6dfb"
+}

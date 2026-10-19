@@ -1,0 +1,14 @@
+{
+  "part": 6,
+  "week": 6,
+  "title_es": "Valores y profesionalismo",
+  "title_en": "Values and professionalism",
+  "preview_es": ["Tu declaración de ética profesional", "Una decisión difícil que tomaste y por qué"],
+  "preview_en": ["Your professional ethics statement", "A difficult decision you made and why"],
+  "fields": [
+    {"k": "values", "label_es": "Mis 3 valores profesionales", "label_en": "My 3 professional values", "hint_es": "En inglés, separados por comas. Ej.: Honesty, accountability, respect", "hint_en": "Separated by commas. E.g.: Honesty, accountability, respect", "type": "input", "min": 15, "fill_from": null},
+    {"k": "ethics_statement", "label_es": "Mi declaración de ética profesional", "label_en": "My professional ethics statement", "hint_es": "Una o dos oraciones en inglés. Ej.: \"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\" (Puedes usar la que escribiste en Feedback y Progreso.)", "hint_en": "One or two sentences. E.g.: \"I will be transparent in my work, respect confidentiality, and take responsibility for mistakes.\" (You can use the one you wrote in Feedback & Progress.)", "type": "textarea", "min": 60, "fill_from": null},
+    {"k": "difficult_decision", "label_es": "Una decisión difícil que tomaste y por qué", "label_en": "A difficult decision you made and why", "hint_es": "En inglés: la situación, lo que decidiste, por qué y el resultado. Puedes usar el ejemplo de tu video.", "hint_en": "The situation, what you decided, why, and the result. You can use the example from your video.", "type": "textarea", "min": 200, "fill_from": null},
+    {"k": "accountability_email", "label_es": "Cómo manejo un error (mi correo)", "label_en": "How I handle a mistake (my email)", "hint_es": "Se llena con tu correo de Writing de esta semana. Puedes editarlo.", "hint_en": "Filled in from this week's Writing email. You can edit it.", "type": "textarea", "min": 120, "fill_from": "writing"}
+  ]
+}

@@ -18,10 +18,13 @@ import type { CoursePage, Episode, Part } from "@/lib/course-page";
 import { currentWeekOf, videoTitle } from "@/lib/bsns";
 import { SYLLABUS_LANG_COOKIE, isSyllabus, loadSyllabus, parseSyllabus } from "@/lib/bsns-syllabus";
 import { BsnsSyllabus } from "@/components/course/BsnsSyllabus";
+import { dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 
 type Props = { params: Promise<{ slug: string; n: string; id: string }> };
 
-/** CelsBSNS task (spec §3, phone 4): the instructions with "Ver en español", the answer, "Entregar a mi coach". */
+/** CelsBSNS task (spec §3, phone 4): the interactive page for the lesson's *_content row, else the instructions with
+ *  "Ver en español" and the answer. Prev / Next are the week's real neighbouring lessons; Feedback's Next is the
+ *  following week (week 10: the course close). */
 export default async function BsnsTaskPage({ params }: Props) {
   const { slug, n, id } = await params;
   const { t, lang } = await getDictionary();
@@ -30,6 +33,7 @@ export default async function BsnsTaskPage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}/semana/${n}/tarea/${id}`);
   const theme = themeForCourse({ slug });
   if (theme !== "celsbsns") notFound();
+  if (isDictionaryLesson(id)) redirect(dictionaryPath(slug));
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   const week = page?.episodes.find((e) => e.n === Number(n));
   const part = week?.parts.find((p) => p.id === id);
@@ -67,6 +71,7 @@ export default async function BsnsTaskPage({ params }: Props) {
           userId={viewer.user.id}
           nextWeekHref={week.n < page.episodes.length ? weekPath(slug, week.n + 1) : null}
           capstoneHref={`/app/cursos/${slug}/capstone`}
+          courseCloseHref={`/app/cursos/${slug}/capstone`}
           numbers={feedback.numbers}
           reflection={feedback.reflection}
         />

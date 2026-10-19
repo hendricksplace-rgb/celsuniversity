@@ -32,7 +32,8 @@ export type ArticleBlock =
   | { type: "habits"; id: string; h: string; items: { icon: "target" | "mega" | "shield"; h: string; en: string; es: string }[] }
   | { type: "compare"; id: string; h_es: string; h_en: string; intro_es: string; intro_en: string; before: Email; after: Email };
 
-export type Vocab = { es: string; d: string; ex: string };
+/** `review` (week 8): a week-1 word brought back for review, labeled "Repaso" on its card. */
+export type Vocab = { es: string; d: string; ex: string; review?: boolean };
 export type Source = { id: number; who: string; what: string; pub: string; url: string };
 export type Talk = { provider: "ted"; slug: string; title: string; speaker: string; event: string; minutes: number; source?: number };
 

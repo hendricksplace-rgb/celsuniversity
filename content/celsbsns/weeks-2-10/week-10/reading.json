@@ -1,0 +1,546 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Preparation",
+        "t_es": "Preparación",
+        "d_en": "Why U.S. interviewers expect you to know the company and practice your examples.",
+        "d_es": "Por qué en EE. UU. el entrevistador espera que conozcas la empresa y practiques tus ejemplos."
+      },
+      {
+        "t_en": "The STAR method",
+        "t_es": "El método STAR",
+        "d_en": "How to turn a vague answer into a clear story with a result.",
+        "d_es": "Cómo convertir una respuesta vaga en una historia clara con un resultado."
+      },
+      {
+        "t_en": "Career growth",
+        "t_es": "Crecimiento profesional",
+        "d_en": "How to talk about your goals so they connect with the company.",
+        "d_es": "Cómo hablar de tus metas para que conecten con la empresa."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 case studies",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 casos de estudio",
+      "Notas privadas"
+    ],
+    "intro_en": "This is the last reading of the course. You discover what U.S. interviewers listen for, learn the STAR method, and follow Daniela from a failed first interview to a job offer.",
+    "intro_es": "Esta es la última lectura del curso. Descubres qué escucha un entrevistador en EE. UU., aprendes el método STAR y acompañas a Daniela desde una primera entrevista fallida hasta una oferta de trabajo."
+  },
+  "week": 10,
+  "video": {
+    "slug": "jason_shen_looking_for_a_job_highlight_your_ability_not_your_experience",
+    "event": "TED",
+    "extra": {
+      "slug": "carol_dweck_the_power_of_believing_that_you_can_improve",
+      "event": "TEDx",
+      "title": "The power of believing that you can improve",
+      "source": 5,
+      "minutes": 10,
+      "speaker": "Carol Dweck",
+      "provider": "ted"
+    },
+    "title": "Looking for a job? Highlight your ability, not your experience",
+    "source": 4,
+    "minutes": 6,
+    "speaker": "Jason Shen",
+    "intro_en": "Watch the full talk inside the app. The speaker explains why few people work in a job that matches their past experience, and how to show employers what you can do. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. El orador explica por qué pocas personas trabajan en algo que coincide con su experiencia anterior y cómo mostrarle al empleador lo que sabes hacer. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "According to the speaker, why should employers look at ability and not only at experience?",
+      "What is one thing you can do (not just a job title you had) that you could prove with a STAR story in your interview?"
+    ],
+    "prompts_es": [
+      "Según el orador, ¿por qué los empleadores deberían fijarse en la capacidad y no solo en la experiencia?",
+      "¿Qué es algo que sabes hacer (no solo un puesto que tuviste) que podrías demostrar con una historia STAR en tu entrevista?"
+    ]
+  },
+  "vocab": {
+    "behavioral question": {
+      "d": "An interview question about how you acted in a real past situation, often starting with 'Tell me about a time when…'.",
+      "es": "pregunta de comportamiento (sobre una experiencia real)",
+      "ex": "Prepare three STAR stories for behavioral questions."
+    },
+    "vague": {
+      "d": "Not clear or specific; without details or examples.",
+      "es": "vago, poco claro",
+      "ex": "A vague answer makes it hard for the interviewer to believe you."
+    },
+    "walk me through": {
+      "d": "Explain something to me step by step.",
+      "es": "explícame paso a paso",
+      "ex": "Can you walk me through how you solved that problem?"
+    },
+    "track record": {
+      "d": "Your past results, which show what you can do in the future.",
+      "es": "historial de resultados, trayectoria comprobada",
+      "ex": "She has a strong track record of reducing costs."
+    },
+    "concise": {
+      "d": "Short and clear, using only the words you need.",
+      "es": "conciso, breve y claro",
+      "ex": "Keep your answer concise: about two minutes."
+    },
+    "stepping stone": {
+      "d": "Something you use only to get to something else.",
+      "es": "trampolín, paso intermedio",
+      "ex": "Don't describe the job as just a stepping stone."
+    },
+    "take initiative": {
+      "d": "Act on your own to solve a problem or improve something, without waiting to be told.",
+      "es": "tomar la iniciativa",
+      "ex": "Interviewers like candidates who take initiative."
+    },
+    "follow up": {
+      "d": "Contact someone again after a meeting or interview, for example with a thank-you email.",
+      "es": "dar seguimiento",
+      "ex": "Follow up with a short thank-you email within two days."
+    }
+  },
+  "warmup": {
+    "q_en": "When an interviewer says “Tell me about a time when…”, you usually…",
+    "q_es": "Cuando un entrevistador dice “Tell me about a time when…”, normalmente…",
+    "poll_en": [
+      "Talk about my qualities in general: I'm responsible, hard-working and a team player.",
+      "Tell a story, but I talk mostly about what my team did, not about me.",
+      "Tell one specific story: the situation, what I did, and the result."
+    ],
+    "poll_es": [
+      "Hablo de mis cualidades en general: soy responsable, trabajador y buen compañero.",
+      "Cuento una historia, pero hablo sobre todo de lo que hizo mi equipo, no de mí.",
+      "Cuento una historia concreta: la situación, lo que hice yo y el resultado."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point before the mock interview.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida antes de la entrevista simulada.",
+    "title_en": "Before you read: how do you answer today?",
+    "title_es": "Antes de leer: ¿cómo respondes hoy?",
+    "note_q_en": "Which interview question makes you most nervous, and why?",
+    "note_q_es": "¿Qué pregunta de entrevista te pone más nervioso y por qué?",
+    "feedback_en": [
+      "Very common! But in the U.S., adjectives without examples are hard to believe. Today you'll learn how to prove each quality with a short story.",
+      "Being a team player is a great value. The challenge is that the interviewer is hiring you, so they need to hear what you did. The STAR method helps you do both.",
+      "Excellent starting point! That is exactly what U.S. interviewers want. This reading helps you make your stories even clearer and more concise."
+    ],
+    "feedback_es": [
+      "¡Muy común! Pero en EE. UU. los adjetivos sin ejemplos cuestan creerse. Hoy vas a aprender a demostrar cada cualidad con una historia corta.",
+      "Ser buen compañero de equipo es un gran valor. El reto es que te están contratando a ti, así que necesitan escuchar qué hiciste tú. El método STAR te ayuda a lograr las dos cosas.",
+      "¡Excelente punto de partida! Eso es justo lo que busca un entrevistador en EE. UU. Esta lectura te ayuda a que tus historias sean todavía más claras y concisas."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "U.S. Bureau of Labor Statistics, Career Outlook, April 2016",
+      "url": "https://www.bls.gov/careeroutlook/2016/article/employment-interviewing.htm",
+      "who": "Olivia Crosby (updated by Elka Torpey)",
+      "what": "“Employment interviewing: Seizing the opportunity and the job”"
+    },
+    {
+      "id": 2,
+      "pub": "Career & Internship Center, University of Washington, 2020 (updated 2025)",
+      "url": "https://careers.uw.edu/resources/star-method-of-interviewing/",
+      "who": "University of Washington",
+      "what": "“STAR Method of Interviewing”"
+    },
+    {
+      "id": 3,
+      "pub": "Indeed Career Guide, updated June 15, 2026",
+      "url": "https://www.indeed.com/career-advice/interviewing/interview-question-where-do-you-see-yourself-in-five-years",
+      "who": "Hanne Keiling",
+      "what": "“How To Answer ‘Where Do You See Yourself in 5 Years?’”"
+    },
+    {
+      "id": 4,
+      "pub": "TED Residency, 2017 · TED.com",
+      "url": "https://www.ted.com/talks/jason_shen_looking_for_a_job_highlight_your_ability_not_your_experience",
+      "who": "Jason Shen",
+      "what": "“Looking for a job? Highlight your ability, not your experience”"
+    },
+    {
+      "id": 5,
+      "pub": "TEDxNorrkoping, 2014 · TED.com",
+      "url": "https://www.ted.com/talks/carol_dweck_the_power_of_believing_that_you_can_improve",
+      "who": "Carol Dweck",
+      "what": "“The power of believing that you can improve”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "A list of your best qualities",
+            "A summary of your whole resume",
+            "A specific story about what you did in a real situation"
+          ],
+          "es": [
+            "Una lista de tus mejores cualidades",
+            "Un resumen de todo tu currículum",
+            "Una historia concreta sobre lo que hiciste en una situación real"
+          ]
+        },
+        "q": {
+          "en": "A behavioral question like “Tell me about a time when…” asks for…",
+          "es": "Una pregunta de comportamiento como “Tell me about a time when…” pide…"
+        },
+        "why": {
+          "en": "Right: the interviewer wants evidence from your past, not adjectives.",
+          "es": "Así es: el entrevistador quiere pruebas de tu pasado, no adjetivos."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "The Situation",
+            "The Action",
+            "The Result"
+          ],
+          "es": [
+            "La Situación",
+            "La Acción",
+            "El Resultado"
+          ]
+        },
+        "q": {
+          "en": "In a STAR answer, which part should take most of your time?",
+          "es": "En una respuesta STAR, ¿qué parte debe ocupar la mayor parte de tu tiempo?"
+        },
+        "why": {
+          "en": "Exactly: the Action, the specific steps you took, is the heart of the story. Keep the situation and task short.",
+          "es": "Exacto: la Acción, los pasos concretos que tú diste, es el corazón de la historia. La situación y la tarea van cortas."
+        }
+      },
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "She practiced clear examples with the STAR method",
+            "She found a job with easier interviews",
+            "She memorized a perfect script"
+          ],
+          "es": [
+            "Practicó ejemplos claros con el método STAR",
+            "Buscó un trabajo con entrevistas más fáciles",
+            "Memorizó un guion perfecto"
+          ]
+        },
+        "q": {
+          "en": "What changed between Daniela's first and second interviews?",
+          "es": "¿Qué cambió entre la primera y la segunda entrevista de Daniela?"
+        },
+        "why": {
+          "en": "Yes: preparation and practice turned the same experience into a convincing answer. That is career growth.",
+          "es": "Sí: la preparación y la práctica convirtieron la misma experiencia en una respuesta convincente. Eso es crecimiento profesional."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: one thing I will do differently in my next interview is…",
+      "es": "Mi conclusión: una cosa que voy a hacer diferente en mi próxima entrevista es…"
+    }
+  },
+  "cases_intro": {
+    "en": "These three cases follow Daniela's story from beginning to end. Do each activity and, if you like, write down your ideas. The answers are in English, as you would hear them in an interview.",
+    "es": "Estos tres casos siguen la historia de Daniela de principio a fin. Haz cada actividad y, si quieres, apunta tus ideas. Las respuestas están en inglés, como las escucharías en una entrevista."
+  },
+  "article": {
+    "dek": "What U.S. interviewers listen for, how the STAR method turns experience into evidence, and how to talk about your future.",
+    "title": "Tell Your Story Clearly: How to Succeed in a U.S. Job Interview",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "A job interview in the United States is not a test of perfect English. It is a conversation where the employer checks one thing: can this person do the job well here? The U.S. Bureau of Labor Statistics gives job seekers simple advice: research the company's mission and goals before the interview, and rehearse your answers using real examples from past jobs, school and other activities.{1}",
+        "es": "Una entrevista de trabajo en Estados Unidos no es un examen de inglés perfecto. Es una conversación en la que el empleador revisa una sola cosa: ¿esta persona puede hacer bien el trabajo aquí? La Oficina de Estadísticas Laborales de EE. UU. da a quienes buscan empleo un consejo sencillo: investiga la misión y las metas de la empresa antes de la entrevista, y ensaya tus respuestas con ejemplos reales de trabajos anteriores, de la escuela y de otras actividades."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Interviewers want examples, not adjectives",
+        "en": "Many U.S. interviews include at least one [[behavioral question]], such as “Tell me about a time when…” or “Give me an example of…”.{2} The idea is simple: how you acted in the past is the best clue to how you will act in the future. If you answer “I'm very responsible” and stop there, your answer is [[vague]]. The government guide puts it plainly: draw on specific experiences and avoid vague responses.{1}",
+        "es": "Muchas entrevistas en EE. UU. incluyen al menos una pregunta de comportamiento, como “Tell me about a time when…” o “Give me an example of…”. La idea es sencilla: cómo actuaste en el pasado es la mejor pista de cómo vas a actuar en el futuro. Si respondes “I'm very responsible” y no dices más, tu respuesta es vaga. La guía del gobierno lo dice con claridad: usa experiencias concretas y evita las respuestas vagas."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "en": "For many Latin American professionals, this feels uncomfortable. We are often taught to be modest and to talk about “we,” not “I.” Teamwork is a real strength, and you should mention it. But in an interview, the company is hiring you, so the interviewer needs to hear the specific steps you personally took, even when you worked on a team.{2}",
+        "es": "Para muchos profesionales latinoamericanos esto se siente incómodo. Muchas veces nos enseñan a ser modestos y a hablar de “nosotros”, no de “yo”. El trabajo en equipo es una fortaleza real y vale la pena mencionarlo. Pero en una entrevista la empresa te está contratando a ti, así que el entrevistador necesita escuchar los pasos concretos que diste tú, aunque hayas trabajado en equipo."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think of one problem you solved at work. Can you say in one sentence what YOU did and what the result was?",
+        "q_es": "Piensa en un problema que resolviste en el trabajo. ¿Puedes decir en una oración qué hiciste TÚ y cuál fue el resultado?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of strong candidates",
+        "items": [
+          {
+            "h": "1 · Structure: answer with STAR",
+            "icon": "target",
+            "en": "STAR stands for Situation, Task, Action and Result. The University of Washington's career center suggests a simple balance: about 20% for the situation, 10% for your task, 60% for the actions you took, and 10% for the result, with numbers if possible.{2} When an interviewer says “[[walk me through]] it,” STAR gives you the path.",
+            "es": "STAR significa Situation (situación), Task (tarea), Action (acción) y Result (resultado). El centro de carreras de la Universidad de Washington sugiere un equilibrio sencillo: cerca de 20 % para la situación, 10 % para tu tarea, 60 % para las acciones que tomaste y 10 % para el resultado, con números si es posible. Cuando el entrevistador dice “walk me through it”, STAR te da el camino."
+          },
+          {
+            "h": "2 · Delivery: show confidence without words",
+            "icon": "mega",
+            "en": "How you speak matters as much as what you say. Make eye contact, keep good posture and smile; in video interviews, sitting up straight helps you sound enthusiastic.{1} Keep each answer [[concise]]: a clear two-minute story is stronger than a five-minute one.",
+            "es": "Cómo hablas importa tanto como lo que dices. Mira a los ojos, mantén una buena postura y sonríe; en entrevistas por video, sentarte derecho te ayuda a sonar entusiasta. Haz que cada respuesta sea concisa: una historia clara de dos minutos es más fuerte que una de cinco."
+          },
+          {
+            "h": "3 · Growth: connect your goals to the company",
+            "icon": "shield",
+            "en": "When an interviewer asks “Where do you see yourself in five years?”, they want to know if your goals fit the role and if you plan to stay and grow. Indeed's career guide recommends explaining how the job helps you reach your goals, and warns against calling it a [[stepping stone]].{3} Show that you [[take initiative]] in your own development.",
+            "es": "Cuando el entrevistador pregunta “Where do you see yourself in five years?”, quiere saber si tus metas encajan con el puesto y si piensas quedarte y crecer. La guía de carreras de Indeed recomienda explicar cómo el trabajo te ayuda a lograr tus metas, y advierte que no lo describas como un simple trampolín. Demuestra que tomas la iniciativa en tu propio desarrollo."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same answer",
+        "h_es": "Antes y después: la misma respuesta",
+        "intro_en": "The question is “Tell me about a time you solved a problem at work.” Tap “After” to see the same experience told with STAR.",
+        "intro_es": "La pregunta es “Tell me about a time you solved a problem at work.” Toca “Después” para ver la misma experiencia contada con STAR.",
+        "before": {
+          "to": "Interviewer",
+          "subject": "Tell me about a time you solved a problem at work.",
+          "body": [
+            "Well, ",
+            {
+              "m": 1,
+              "t": "I solve problems all the time, I'm very good at that."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "One time we had a lot of complaints and we fixed it, the whole team worked hard."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "I think it went well, more or less."
+            }
+          ],
+          "marks": [
+            {
+              "en": "An adjective with no proof.",
+              "es": "Un adjetivo sin pruebas."
+            },
+            {
+              "en": "“We” instead of “I”: what did YOU do?",
+              "es": "“Nosotros” en lugar de “yo”: ¿qué hiciste TÚ?"
+            },
+            {
+              "en": "No clear result and too many hedges.",
+              "es": "Sin resultado claro y con demasiadas dudas."
+            }
+          ]
+        },
+        "after": {
+          "to": "Interviewer",
+          "subject": "Tell me about a time you solved a problem at work.",
+          "body": [
+            {
+              "m": 1,
+              "t": "Last year, our customer service team was getting about 40 complaints a week about late deliveries, and my manager asked me to find the cause."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "I reviewed two months of orders, found that most delays came from one warehouse, and created a daily check-in call with their supervisor."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "In six weeks, complaints dropped to about 10 a week, and the check-in became standard practice."
+            }
+          ],
+          "marks": [
+            {
+              "en": "Situation and Task: short and specific.",
+              "es": "Situación y Tarea: cortas y concretas."
+            },
+            {
+              "en": "Action: the steps she personally took.",
+              "es": "Acción: los pasos que ella misma dio."
+            },
+            {
+              "en": "Result: a number and a lasting change.",
+              "es": "Resultado: un número y un cambio duradero."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "In his TED talk, Jason Shen points out that few people work in jobs that match their past experience or college major, and he argues that employers should look closely at what candidates can actually do.{4} That is good news for you: your skills travel with you to a new country. You have spent ten weeks building your Capstone; now prepare three STAR stories, a clear career goal, and a short thank-you note to [[follow up]] after your interview. Your [[track record]] is real. This week, you learn to tell it clearly.",
+        "es": "En su charla TED, Jason Shen señala que pocas personas trabajan en algo que coincida con su experiencia anterior o con su carrera universitaria, y propone que los empleadores se fijen en lo que el candidato realmente sabe hacer. Eso es una buena noticia para ti: tus habilidades viajan contigo a un nuevo país. Pasaste diez semanas construyendo tu Capstone; ahora prepara tres historias STAR, una meta profesional clara y una nota breve de agradecimiento para dar seguimiento después de tu entrevista. Tu trayectoria es real. Esta semana aprendes a contarla con claridad."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on the U.S. Bureau of Labor Statistics, the University of Washington and Indeed",
+    "based_es": "Basado en la Oficina de Estadísticas Laborales de EE. UU., la Universidad de Washington e Indeed",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Questions while reading",
+    "title": "Keys to Successful Interviews and Career Growth",
+    "body_en": "📚 Reading Assignment\n\nTitle: Keys to Successful Interviews and Career Growth\nTime: ~1 hour\n\nCase Study:\nDaniela applies for a position in a U.S. company. In her first interview, she gives vague answers and avoids eye contact. She isn't selected. Months later, after practicing the STAR method, she explains her achievements with clear examples. The interviewer is impressed, and Daniela gets the job.\n\nQuestions while reading:\n\nWhat mistakes did Daniela make in her first interview?\n\nHow did the STAR method improve her answers?\n\nWhat does her story teach about preparation and growth?\n\nArticle Reference:\n🔗 Indeed – 50 Most Common Interview Questions\n\nVideo Reference:\n🎥 YouTube – Interview Tips: Common Questions & Best Answers — https://www.youtube.com/watch?v=JxW4jV7lXbw",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Claves para Entrevistas Exitosas y Crecimiento Profesional\nTiempo: ~1 hora\n\nEstudio de Caso:\nDaniela aplica para un puesto en una empresa de EE. UU. En su primera entrevista, da respuestas vagas y evita el contacto visual. No es seleccionada. Meses después, tras practicar el método STAR, explica sus logros con ejemplos claros. El entrevistador queda impresionado y Daniela consigue el trabajo.\n\nPreguntas mientras lees:\n\n¿Qué errores cometió Daniela en su primera entrevista?\n\n¿Cómo mejoró el método STAR sus respuestas?\n\n¿Qué enseña su historia sobre la preparación y el crecimiento?\n\nReferencia del Artículo:\n🔗 Indeed – 50 Most Common Interview Questions\n\nReferencia del Video:\n🎥 YouTube – Interview Tips: Common Questions & Best Answers — https://www.youtube.com/watch?v=JxW4jV7lXbw",
+    "summary": "Daniela applies for a position in a U.S. company. In her first interview, she gives vague answers and avoids eye contact. She isn't selected. Months later, after practicing the STAR method, she explains her achievements with clear examples. The interviewer is impressed, and Daniela gets the job.",
+    "title_es": "Claves para Entrevistas Exitosas y Crecimiento Profesional",
+    "video_ref": "YouTube – Interview Tips: Common Questions & Best Answers — https://www.youtube.com/watch?v=JxW4jV7lXbw",
+    "article_ref": "Indeed – 50 Most Common Interview Questions",
+    "instructions": "Read the case study and answer the questions while reading."
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "scene": "Daniela applies for a position in a U.S. company. In her first interview, the hiring manager asks: “Tell me about a time you solved a problem at work.” She avoids eye contact and answers:",
+      "message": {
+        "from": "Daniela → Interviewer",
+        "text": "Well, I'm a very hard worker and I always try my best. I've solved many problems in my jobs. I think my team was happy with my work, more or less."
+      },
+      "outcome": "She gives vague answers and avoids eye contact. She isn't selected.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "spot",
+        "prompt_en": "Tap the three parts of Daniela's answer that make it weak.",
+        "prompt_es": "Toca las tres partes de la respuesta de Daniela que la hacen débil.",
+        "parts": [
+          {
+            "t": "Well, "
+          },
+          {
+            "t": "I'm a very hard worker and I always try my best.",
+            "why": {
+              "en": "Adjectives with no example: the interviewer can't check them.",
+              "es": "Adjetivos sin ejemplo: el entrevistador no puede comprobarlos."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "I've solved many problems in my jobs.",
+            "why": {
+              "en": "Vague: she never describes one real problem.",
+              "es": "Vago: nunca describe un problema real."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "I think my team was happy with my work, more or less.",
+            "why": {
+              "en": "No result, and “I think… more or less” sounds unsure.",
+              "es": "Sin resultado, y “I think… more or less” suena inseguro."
+            }
+          }
+        ]
+      },
+      "title_en": "The First Interview",
+      "title_es": "La primera entrevista",
+      "questions": [
+        "What mistakes did Daniela make in her first interview?"
+      ],
+      "questions_es": [
+        "¿Qué errores cometió Daniela en su primera entrevista?"
+      ]
+    },
+    {
+      "id": "c2",
+      "scene": "Months later, Daniela practices the STAR method. She takes the same question and rebuilds her answer with a real story from her last job.",
+      "message": {
+        "from": "Interviewer → Daniela",
+        "text": "Tell me about a time you solved a problem at work."
+      },
+      "activity": {
+        "kind": "rewrite",
+        "model": "Situation: At my last job, our team was receiving many complaints about late deliveries.\nTask: My manager asked me to find out why.\nAction: I reviewed two months of orders, found that most delays came from one warehouse, and set up a short daily call with their supervisor.\nResult: In six weeks, complaints went down by about 75%, and the daily call became standard practice.",
+        "hints_en": [
+          "Situation: where and when, in one sentence",
+          "Task: what you were responsible for",
+          "Action: the steps YOU took (use “I”)",
+          "Result: what changed, with a number if possible"
+        ],
+        "hints_es": [
+          "Situación: dónde y cuándo, en una oración",
+          "Tarea: de qué eras responsable",
+          "Acción: los pasos que diste TÚ (usa “I”)",
+          "Resultado: qué cambió, con un número si es posible"
+        ],
+        "label_en": "My STAR answer",
+        "label_es": "Mi respuesta STAR",
+        "prompt_en": "Answer the same question with a real story from your own experience, using the four STAR steps.",
+        "prompt_es": "Responde la misma pregunta con una historia real de tu experiencia, usando los cuatro pasos de STAR."
+      },
+      "title_en": "Practicing STAR",
+      "title_es": "Practicando STAR",
+      "questions": [
+        "How did the STAR method improve her answers?"
+      ],
+      "questions_es": [
+        "¿Cómo mejoró el método STAR sus respuestas?"
+      ]
+    },
+    {
+      "id": "c3",
+      "scene": "In her next interview, Daniela makes eye contact, smiles, and answers with clear examples. The interviewer asks: “Tell me about a time you had to meet a tight deadline.”",
+      "outcome": "The interviewer is impressed, and Daniela gets the job.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "choose",
+        "prompt_en": "Which answer sounds like the new Daniela? Tap your choice.",
+        "prompt_es": "¿Qué respuesta suena como la nueva Daniela? Toca tu elección.",
+        "options": [
+          {
+            "lead": "Answer A:",
+            "label_en": "Answer A",
+            "label_es": "Respuesta A",
+            "correct": false,
+            "text": "Deadlines are always stressful, but I work well under pressure. I never miss a deadline."
+          },
+          {
+            "lead": "Answer B:",
+            "label_en": "Answer B",
+            "label_es": "Respuesta B",
+            "correct": true,
+            "text": "Last spring, a client moved a report up by one week. I split the work into daily tasks, asked a colleague to check the numbers, and delivered it a day early. The client renewed the contract. I learned to [[take initiative]] early instead of waiting."
+          }
+        ],
+        "why": {
+          "en": "Answer B is a complete STAR story: a real situation, the actions she took, and a result. Answer A only makes claims. That difference came from preparation and practice.",
+          "es": "La respuesta B es una historia STAR completa: una situación real, las acciones que ella tomó y un resultado. La respuesta A solo hace afirmaciones. Esa diferencia vino de la preparación y la práctica."
+        }
+      },
+      "title_en": "The Second Interview",
+      "title_es": "La segunda entrevista",
+      "questions": [
+        "What does her story teach about preparation and growth?"
+      ],
+      "questions_es": [
+        "¿Qué enseña su historia sobre la preparación y el crecimiento?"
+      ]
+    }
+  ]
+}

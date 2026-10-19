@@ -2,13 +2,17 @@
 
 // CelsBSNS Interactive Writing Task (celsu-celsbsns-writing-brief.md, celsbsns-writing-semana1-mockup.html): the 6
 // colored parts, the original template email with "Ver las partes", an email composer that autosaves as a draft
-// submission, the self-check and automatic format checks (no AI), "Enviar a mi coach", the coach's feedback, and
-// "Agregar a mi Capstone". Sending marks the lesson complete through record_lesson_progress (finishLesson).
+// submission, the self-check and automatic format checks (no AI), "Guardar como terminado" and "Agregar a mi
+// Capstone". Matt's decision (2026-10-19): Writing has no coach. Saving sets the submission to 'finished' and marks the
+// lesson complete through record_lesson_progress (finishLesson). Older 'submitted' / 'reviewed' rows still display
+// (a reviewed one shows the coach's comments it got).
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
-import { countWords, formatChecks, fullEmail, type HistoryEntry, type Lang, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
+import { CAPSTONE_PARTS, emailToBackground, partBody } from "@/lib/capstone";
+import { writingFieldKey } from "@/lib/writing-capstone";
+import { countWords, emailFormatOf, formatChecks, fullEmail, type HistoryEntry, type Lang, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type NavLink } from "@/components/bsns/shell";
 import s from "./writing.module.css";
 
@@ -32,31 +36,35 @@ const UI = {
   es: {
     kick: "TAREA DE ESCRITURA",
     scK: "EL ESCENARIO",
-    steps: ["La tarea", "El ejemplo", "Escribe tu correo", "Revisa y entrega"],
+    steps: (d: Doc) => ["La tarea", "El ejemplo", `Escribe ${d.es.your}`, "Revisa y guarda"],
     step: "PASO",
-    s1: "Lo que debe incluir tu correo",
-    s1i: "Tu correo debe tener estas 6 partes. Cada una tiene su color: lo verás en el ejemplo y en tu revisión.",
+    s1: (d: Doc) => `Lo que debe incluir ${d.es.your}`,
+    s1i: (d: Doc, n: number) => `${cap(d.es.your)} debe tener estas ${n} partes. Cada una tiene su color: lo verás en el ejemplo y en tu revisión.`,
     forEx: "POR EJEMPLO",
     ex: "Mira un ejemplo",
-    exi: "Activa “Ver las partes” para ver dónde está cada una de las 6 partes.",
+    exi: (n: number) => `Activa “Ver las partes” para ver dónde está cada una de las ${n} partes.`,
     exL: "EJEMPLO · PLANTILLA DE GUÍA",
     showP: "Ver las partes",
-    w: "Escribe tu correo",
+    w: (d: Doc) => `Escribe ${d.es.your}`,
     wi: "Escribe aquí mismo. Se guarda solo. Usa las frases útiles si te ayudan: tócalas y se agregan donde está tu cursor.",
+    twoK: "DOS CORREOS EN UN MISMO TEXTO",
+    twoP: (a: number, b: number) => `Escribe primero el correo del gerente y después el del líder, separados por una línea en blanco. Cada uno de ${a} a ${b} palabras.`,
+    twoParts: (a: number, b: number) => `Partes ${a}–${b}`,
+    whyK: "POR QUÉ IMPORTA",
     to: "Para",
     subj: "Asunto",
     subjPh: "Introduction – Tu nombre",
     bodyPh: "Dear Team,\n\nMy name is…",
-    body: "Tu correo",
+    body: (d: Doc) => cap(d.es.your),
     wc: "Palabras",
     range: (a: number, b: number) => `Meta: ${a}–${b}`,
     phr: "FRASES ÚTILES",
     phrP: "Elige una parte y toca una frase.",
     phrAdd: (p: string) => `Agregar: ${p}`,
     mine: "Mis frases",
-    r: "Revisa y entrega",
-    ri: "Antes de enviarlo, confirma que tu correo tiene todo.",
-    selfH: "MI CORREO INCLUYE…",
+    r: "Revisa y guarda",
+    ri: (d: Doc) => `Antes de guardarlo, confirma que ${d.es.your} tiene todo.`,
+    selfH: (d: Doc) => `${d.es.mine.toUpperCase()} INCLUYE…`,
     autoH: "FORMATO",
     au: [
       ["Asunto escrito", "Ej.: "],
@@ -64,18 +72,16 @@ const UI = {
       ["Párrafos separados", "Al menos 3 párrafos"],
       ["Sin viñetas ni emojis", ""],
     ],
-    sendB: "Enviar a mi coach",
-    sending: "Enviando…",
-    missing: "Para enviar falta:",
+    sendB: "Guardar como terminado",
+    sending: "Guardando…",
+    missing: "Para terminar falta:",
     miss: { subject: "el asunto", range: (a: number, b: number) => `${a}–${b} palabras`, clean: "quitar viñetas o emojis", parts: (n: number) => `confirmar ${n} ${n === 1 ? "parte" : "partes"}` },
-    sendOk: "Todo listo. Tu coach lo revisa en menos de 48 h.",
-    sentH: "¡Enviado a tu coach!",
-    sentP: (n: string) => `${n} lo revisará en menos de 48 h. Te avisamos cuando tenga comentarios.`,
+    sendOk: "Todo listo. Se guarda en tu semana y la tarea queda completa.",
+    sentH: "¡Guardado en tu semana!",
+    sentP: (d: Doc, when: string) => `${cap(d.es.your)} ${d.es.saved}${when ? ` (${when})` : ""} y la tarea está completa. Agrégalo a tu Capstone o mejóralo cuando quieras.`,
+    savedChip: "Se guarda en tu semana",
     yourCoach: "Tu coach",
-    yourCoachL: "tu coach",
-    st: ["Enviado", "En revisión", "Comentarios"],
-    within: "Menos de 48 h",
-    yourMail: "TU CORREO ENVIADO",
+    yourMail: (d: Doc) => `${d.es.mine.toUpperCase()}`,
     version: (n: number) => `VERSIÓN ${n}`,
     fbK: "COMENTARIOS",
     revH: "Tu coach revisó tu correo",
@@ -86,14 +92,14 @@ const UI = {
     capB: (n: number) => `Agregar a mi Capstone · Parte ${n}`,
     capDone: (n: number, t: string) => `Guardado en tu Capstone · Parte ${n}: ${t}`,
     toast: (n: number) => `Guardado en tu Capstone · Parte ${n}`,
-    redo: "Mejorar y volver a enviar",
+    redo: "Mejorar y volver a guardar",
     rail: "TU AVANCE",
     stat: "ESTADO",
     stD: "Borrador",
-    stS: "Con tu coach",
+    stS: "Terminada",
     stR: "Revisada",
     stDp: "Se guarda solo mientras escribes.",
-    stSp: "Tu coach responde en menos de 48 h.",
+    stSp: "Guardada en tu semana. Puedes mejorarla cuando quieras.",
     stRp: "Ya tienes comentarios de tu coach.",
     saving: "Guardando…",
     saved: "Guardado",
@@ -106,31 +112,35 @@ const UI = {
   en: {
     kick: "WRITING TASK",
     scK: "THE SCENARIO",
-    steps: ["The task", "The example", "Write your email", "Review and submit"],
+    steps: (d: Doc) => ["The task", "The example", `Write ${d.en.your}`, "Review and save"],
     step: "STEP",
-    s1: "What your email must include",
-    s1i: "Your email needs these 6 parts. Each one has its own color: you'll see it in the example and in your review.",
+    s1: (d: Doc) => `What ${d.en.your} must include`,
+    s1i: (d: Doc, n: number) => `${cap(d.en.your)} needs these ${n} parts. Each one has its own color: you'll see it in the example and in your review.`,
     forEx: "FOR EXAMPLE",
     ex: "See an example",
-    exi: "Turn on “Show the parts” to see where each of the 6 parts is.",
+    exi: (n: number) => `Turn on “Show the parts” to see where each of the ${n} parts is.`,
     exL: "EXAMPLE · TEMPLATE FOR GUIDANCE",
     showP: "Show the parts",
-    w: "Write your email",
+    w: (d: Doc) => `Write ${d.en.your}`,
     wi: "Write right here. It saves automatically. Use the useful phrases if they help: tap one and it's added where your cursor is.",
+    twoK: "TWO EMAILS IN ONE TEXT",
+    twoP: (a: number, b: number) => `Write the manager email first, then the leader email, separated by a blank line. Each one ${a} to ${b} words.`,
+    twoParts: (a: number, b: number) => `Parts ${a}–${b}`,
+    whyK: "WHY IT MATTERS",
     to: "To",
     subj: "Subject",
     subjPh: "Introduction – Your name",
     bodyPh: "Dear Team,\n\nMy name is…",
-    body: "Your email",
+    body: (d: Doc) => cap(d.en.your),
     wc: "Words",
     range: (a: number, b: number) => `Goal: ${a}–${b}`,
     phr: "USEFUL PHRASES",
     phrP: "Pick a part and tap a phrase.",
     phrAdd: (p: string) => `Add: ${p}`,
     mine: "My phrases",
-    r: "Review and submit",
-    ri: "Before you send it, confirm your email has everything.",
-    selfH: "MY EMAIL INCLUDES…",
+    r: "Review and save",
+    ri: (d: Doc) => `Before you save it, confirm ${d.en.your} has everything.`,
+    selfH: (d: Doc) => `${d.en.mine.toUpperCase()} INCLUDES…`,
     autoH: "FORMAT",
     au: [
       ["Subject line", "E.g. "],
@@ -138,18 +148,16 @@ const UI = {
       ["Separate paragraphs", "At least 3 paragraphs"],
       ["No bullet points or emojis", ""],
     ],
-    sendB: "Send to my coach",
-    sending: "Sending…",
+    sendB: "Save as finished",
+    sending: "Saving…",
     missing: "Still needed:",
     miss: { subject: "a subject", range: (a: number, b: number) => `${a}–${b} words`, clean: "remove bullets or emojis", parts: (n: number) => `confirm ${n} ${n === 1 ? "part" : "parts"}` },
-    sendOk: "All set. Your coach reviews it within 48 h.",
-    sentH: "Sent to your coach!",
-    sentP: (n: string) => `${n} will review it within 48 h. We'll let you know when there's feedback.`,
+    sendOk: "All set. It's saved to your week and the task is complete.",
+    sentH: "Saved to your week!",
+    sentP: (d: Doc, when: string) => `${cap(d.en.your)} ${d.en.saved}${when ? ` (${when})` : ""} and the task is complete. Add it to your Capstone or improve it whenever you like.`,
+    savedChip: "Saved to your week",
     yourCoach: "Your coach",
-    yourCoachL: "your coach",
-    st: ["Sent", "In review", "Feedback"],
-    within: "Within 48 h",
-    yourMail: "YOUR SENT EMAIL",
+    yourMail: (d: Doc) => `${d.en.mine.toUpperCase()}`,
     version: (n: number) => `VERSION ${n}`,
     fbK: "FEEDBACK",
     revH: "Your coach reviewed your email",
@@ -160,14 +168,14 @@ const UI = {
     capB: (n: number) => `Add to my Capstone · Part ${n}`,
     capDone: (n: number, t: string) => `Saved to your Capstone · Part ${n}: ${t}`,
     toast: (n: number) => `Saved to your Capstone · Part ${n}`,
-    redo: "Improve and resend",
+    redo: "Improve and save again",
     rail: "YOUR PROGRESS",
     stat: "STATUS",
     stD: "Draft",
-    stS: "With your coach",
+    stS: "Finished",
     stR: "Reviewed",
     stDp: "Saves automatically as you write.",
-    stSp: "Your coach replies within 48 h.",
+    stSp: "Saved to your week. You can improve it anytime.",
     stRp: "Your coach's feedback is ready.",
     saving: "Saving…",
     saved: "Saved",
@@ -179,6 +187,15 @@ const UI = {
   },
 };
 type UIT = (typeof UI)["es"];
+
+/** What the student writes: an email (most weeks), two emails (week 3) or a resume (week 4). */
+type Doc = { es: { your: string; mine: string; saved: string }; en: { your: string; mine: string; saved: string } };
+const DOCS: Record<"email" | "emails" | "resume", Doc> = {
+  email: { es: { your: "tu correo", mine: "mi correo", saved: "quedó guardado" }, en: { your: "your email", mine: "my email", saved: "is saved" } },
+  emails: { es: { your: "tus correos", mine: "mis correos", saved: "quedaron guardados" }, en: { your: "your emails", mine: "my emails", saved: "are saved" } },
+  resume: { es: { your: "tu currículum", mine: "mi currículum", saved: "quedó guardado" }, en: { your: "your resume", mine: "my resume", saved: "is saved" } },
+};
+const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
 const IDS = ["w0", "w1", "w2", "w3"];
 /** The "★ Mis frases" tab, after the part tabs. */
 const MINE = 99;
@@ -224,6 +241,9 @@ export function InteractiveWriting(p: Props) {
   const [showParts, setShowParts] = useState(false);
   const [tab, setTab] = useState(0);
   const sentState = status !== "draft";
+  const doc = DOCS[data.emails?.length ? "emails" : /resume|curr[ií]culum/i.test(`${data.example.subject} ${data.hero.title_a} ${data.hero.title_b}`) ? "resume" : "email"];
+  const emailFormat = emailFormatOf(data);
+  const steps = t.steps(doc);
 
   // ---------- autosave (about 600 ms after typing stops), as a draft submission ----------
   const latest = useRef({ subject, body, self });
@@ -285,7 +305,7 @@ export function InteractiveWriting(p: Props) {
   };
 
   // ---------- checks ----------
-  const c = formatChecks(subject, body, data.words);
+  const c = formatChecks(subject, body, data.words, emailFormat);
   const allParts = data.parts.every((_, i) => self.includes(i));
   const canSend = c.subject && c.range && c.clean && allParts;
   const missing = [
@@ -295,7 +315,7 @@ export function InteractiveWriting(p: Props) {
     !allParts && t.miss.parts(data.parts.length - self.length),
   ].filter(Boolean) as string[];
 
-  // ---------- send / improve / Capstone ----------
+  // ---------- save as finished / improve / Capstone ----------
   const send = async () => {
     if (!canSend || busy) return;
     setBusy("send");
@@ -303,7 +323,7 @@ export function InteractiveWriting(p: Props) {
     const ok = await saveNow();
     const nextVersion = history.length + 1;
     const { data: row, error: e } = ok
-      ? await db().from("submissions").update({ status: "submitted", version: nextVersion }).eq("user_id", p.userId).eq("lesson_id", p.lessonId).select("id, submitted_at").single()
+      ? await db().from("submissions").update({ status: "finished", version: nextVersion }).eq("user_id", p.userId).eq("lesson_id", p.lessonId).select("id, submitted_at").single()
       : { data: null, error: true };
     if (e || !row) {
       setBusy(null);
@@ -313,7 +333,7 @@ export function InteractiveWriting(p: Props) {
     setSubId(row.id);
     setVersion(nextVersion);
     setSubmittedAt(row.submitted_at);
-    setStatus("submitted");
+    setStatus("finished");
     setBusy(null);
     requestAnimationFrame(() => window.scrollTo({ top: 0 }));
   };
@@ -333,7 +353,8 @@ export function InteractiveWriting(p: Props) {
       coach_message: p.sub.coach_message ?? p.sub.coach_feedback,
     };
     // reviewed → draft: guard_submission appends the reviewed version to history and clears the coach fields
-    // server side (students can't write them); the returned history replaces the local guess.
+    // server side (students can't write them); the returned history replaces the local guess. finished → draft keeps
+    // the history as it is.
     const { data: row, error: e } = await db()
       .from("submissions")
       .update({ status: "draft" })
@@ -343,7 +364,7 @@ export function InteractiveWriting(p: Props) {
       .maybeSingle();
     setBusy(null);
     if (e || !row) return setError(true);
-    setHistory(Array.isArray(row.history) ? (row.history as unknown as HistoryEntry[]) : [...history, entry]);
+    setHistory(Array.isArray(row.history) ? (row.history as unknown as HistoryEntry[]) : status === "reviewed" ? [...history, entry] : history);
     setStatus("draft");
     setCapSaved(false);
     requestAnimationFrame(() => goTo("w2"));
@@ -352,6 +373,18 @@ export function InteractiveWriting(p: Props) {
     if (busy || !subId) return;
     setBusy("cap");
     setError(false);
+    // The email body goes into the part's Writing field (part 1: "Tu experiencia profesional", fields.bg), keeping what the student
+    // already wrote in the other fields on the Capstone page; body mirrors the fields as plain text.
+    const { data: cur } = await db()
+      .from("capstone_parts")
+      .select("fields, sources")
+      .eq("user_id", p.userId)
+      .eq("course_id", p.courseId)
+      .eq("part", data.capstone_part)
+      .maybeSingle();
+    const obj = (x: unknown) => (x && typeof x === "object" && !Array.isArray(x) ? (x as Record<string, string>) : {});
+    const fields = { ...obj(cur?.fields), [writingFieldKey(data.capstone_part)]: emailToBackground(body) };
+    const def = CAPSTONE_PARTS.find((c) => c.part === data.capstone_part);
     const { error: e } = await db()
       .from("capstone_parts")
       .upsert(
@@ -361,7 +394,9 @@ export function InteractiveWriting(p: Props) {
           part: data.capstone_part,
           source_submission_id: subId,
           title: data.capstone_title.es,
-          body: fullEmail(subject, body),
+          fields,
+          sources: { ...obj(cur?.sources), submission: subId },
+          body: def ? partBody(def, fields) : fullEmail(subject, body),
           updated_at: new Date().toISOString(),
         },
         { onConflict: "user_id,course_id,part" },
@@ -377,10 +412,10 @@ export function InteractiveWriting(p: Props) {
   const visibleIds = sentState ? ["w3"] : IDS;
   const { current: spyIdx } = useScrollSpy(visibleIds);
   const current = sentState ? 3 : spyIdx;
-  const progress = status === "reviewed" ? 1 : status === "submitted" ? 0.85 : Math.min(0.8, (c.words / data.words.min) * 0.5 + self.length * 0.05);
-  const stLabel = status === "draft" ? t.stD : status === "submitted" ? t.stS : t.stR;
-  const stKind = status === "draft" ? "draft" : status === "submitted" ? "sent" : "rev";
-  const stIcon = status === "draft" ? "pen" : status === "submitted" ? "clock" : "check";
+  const progress = sentState ? 1 : Math.min(0.8, (c.words / data.words.min) * 0.5 + self.length * 0.05);
+  const stLabel = status === "draft" ? t.stD : status === "reviewed" ? t.stR : t.stS;
+  const stKind = status === "draft" ? "draft" : "rev";
+  const stIcon = status === "draft" ? "pen" : "check";
 
   const when = useCallback(
     (iso: string | null, withDay = true) => {
@@ -395,6 +430,8 @@ export function InteractiveWriting(p: Props) {
   );
   const coach = p.coachName;
   const reviewer = p.reviewerName ?? null;
+  // The hero chip that used to say "Lo revisa tu coach en 48 h" (week 1's row) now says where the text goes.
+  const chips = (lang === "es" ? data.hero.chips_es : data.hero.chips_en).map((chip) => (/coach/i.test(chip) ? t.savedChip : chip));
 
   return (
     <ShellPage lang={lang} className={s.root}>
@@ -408,7 +445,7 @@ export function InteractiveWriting(p: Props) {
         progress={progress}
         row={
           <>
-            <StepRowText lang={lang} n={current + 1} total={4} name={t.steps[current]} />
+            <StepRowText lang={lang} n={current + 1} total={4} name={steps[current]} />
             <span className={s.stPill} data-k={stKind}>
               {stLabel}
             </span>
@@ -430,9 +467,9 @@ export function InteractiveWriting(p: Props) {
               </h1>
               <p className={sh.heroIntro}>{lang === "es" ? data.hero.intro_es : data.hero.intro_en}</p>
               <ul className={sh.chips} aria-label={t.chipsAria}>
-                {(lang === "es" ? data.hero.chips_es : data.hero.chips_en).map((chip, i) => (
+                {chips.map((chip, i) => (
                   <li key={chip}>
-                    <Icon name={(["clock", "para", "chat", "trophy"] as const)[i] ?? "doc"} size={18} />
+                    <Icon name={chip === t.savedChip ? "check" : ((["clock", "para", "chat", "trophy"] as const)[i] ?? "doc")} size={18} />
                     {chip}
                   </li>
                 ))}
@@ -449,6 +486,12 @@ export function InteractiveWriting(p: Props) {
                     “{data.scenario.quote}”
                   </p>
                   <p className={s.scenE}>{lang === "es" ? data.scenario.es : data.scenario.en}</p>
+                  {data.why_note && (
+                    <p className={s.scenE}>
+                      <b>{t.whyK}: </b>
+                      {data.why_note[lang]}
+                    </p>
+                  )}
                 </div>
               </div>
             </section>
@@ -457,6 +500,7 @@ export function InteractiveWriting(p: Props) {
               <SentView
                 t={t}
                 lang={lang}
+                doc={doc}
                 data={data}
                 status={status}
                 subject={subject}
@@ -477,8 +521,8 @@ export function InteractiveWriting(p: Props) {
               <>
                 {/* ---------- step 1: the parts ---------- */}
                 <section id="w0" className={sh.step} aria-labelledby="wr-s1">
-                  <StepHead kicker={`${t.step} 1`} icon="list" id="wr-s1" title={t.s1} />
-                  <p className={sh.intro}>{t.s1i}</p>
+                  <StepHead kicker={`${t.step} 1`} icon="list" id="wr-s1" title={t.s1(doc)} />
+                  <p className={sh.intro}>{t.s1i(doc, data.parts.length)}</p>
                   <ol className={s.parts}>
                     {data.parts.map((part, i) => (
                       <li key={i} className={s.part} style={{ "--c": part.color } as React.CSSProperties}>
@@ -512,7 +556,7 @@ export function InteractiveWriting(p: Props) {
                 {/* ---------- step 2: the example ---------- */}
                 <section id="w1" className={sh.step} aria-labelledby="wr-s2">
                   <StepHead kicker={`${t.step} 2`} icon="eye" id="wr-s2" title={t.ex} />
-                  <p className={sh.intro}>{t.exi}</p>
+                  <p className={sh.intro}>{t.exi(data.parts.length)}</p>
                   <div className={`${sh.card} ${s.ex}`} data-parts={showParts || undefined}>
                     <div className={s.exHead}>
                       <p className={s.exL}>{t.exL}</p>
@@ -560,8 +604,23 @@ export function InteractiveWriting(p: Props) {
 
                 {/* ---------- step 3: the composer ---------- */}
                 <section id="w2" className={sh.step} aria-labelledby="wr-s3">
-                  <StepHead kicker={`${t.step} 3`} icon="mail" id="wr-s3" title={t.w} />
+                  <StepHead kicker={`${t.step} 3`} icon={doc === DOCS.resume ? "doc" : "mail"} id="wr-s3" title={t.w(doc)} />
                   <p className={sh.intro}>{t.wi}</p>
+                  {data.emails && data.emails.length > 1 && (
+                    <div className={`${sh.card} ${s.two}`}>
+                      <p className={s.exL}>{t.twoK}</p>
+                      <p className={s.twoP}>{t.twoP(data.words_each?.min ?? Math.round(data.words.min / data.emails.length), data.words_each?.max ?? Math.round(data.words.max / data.emails.length))}</p>
+                      <ol className={s.twoList}>
+                        {data.emails.map((m) => (
+                          <li key={m.key} style={{ "--c": data.parts[m.parts[0]]?.color } as React.CSSProperties}>
+                            <b>{lang === "es" ? m.es : m.en}</b>
+                            <span>{lang === "es" ? m.focus_es : m.focus_en}</span>
+                            {m.parts.length > 0 && <small>{t.twoParts(m.parts[0] + 1, m.parts[m.parts.length - 1] + 1)}</small>}
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
                   <div className={`${sh.card} ${s.comp}`}>
                     <div className={s.cm}>
                       <div className={s.fld}>
@@ -580,7 +639,7 @@ export function InteractiveWriting(p: Props) {
                           className={s.subj}
                           value={subject}
                           maxLength={200}
-                          placeholder={t.subjPh}
+                          placeholder={data.week === 1 ? t.subjPh : data.subject_hint}
                           lang="en"
                           onChange={(e) => {
                             setSubject(e.target.value);
@@ -593,8 +652,8 @@ export function InteractiveWriting(p: Props) {
                         id="wr-body"
                         className={s.body}
                         value={body}
-                        placeholder={t.bodyPh}
-                        aria-label={t.body}
+                        placeholder={data.week === 1 ? t.bodyPh : doc === DOCS.resume ? "YOUR NAME\nCity, State · email · LinkedIn\n\n…" : "Hi …,\n\n…"}
+                        aria-label={t.body(doc)}
                         lang="en"
                         maxLength={20000}
                         onChange={(e) => {
@@ -670,12 +729,12 @@ export function InteractiveWriting(p: Props) {
 
                 {/* ---------- step 4: review and submit ---------- */}
                 <section id="w3" className={sh.step} aria-labelledby="wr-s4">
-                  <StepHead kicker={`${t.step} 4`} icon="send" id="wr-s4" title={t.r} />
+                  <StepHead kicker={`${t.step} 4`} icon="check" id="wr-s4" title={t.r} />
                   <div className={sh.card}>
-                    <p className={sh.intro}>{t.ri}</p>
+                    <p className={sh.intro}>{t.ri(doc)}</p>
                     <div className={s.checks}>
                       <div>
-                        <h3 className={s.checksH}>{t.selfH}</h3>
+                        <h3 className={s.checksH}>{t.selfH(doc)}</h3>
                         <ul className={s.self}>
                           {data.parts.map((part, i) => (
                             <li key={i}>
@@ -694,6 +753,8 @@ export function InteractiveWriting(p: Props) {
                         <h3 className={s.checksH}>{t.autoH}</h3>
                         <ul className={s.auto}>
                           {[c.subject, c.range, c.paragraphs, c.clean].map((ok, i) => {
+                            // A resume (week 4) has no paragraph or no-bullets rule: those two checks don't show.
+                            if (!emailFormat && i >= 2) return null;
                             const warn = !ok && ((i === 1 && c.over) || (i === 2 && c.words > 0));
                             const [label, hint] = t.au[i];
                             return (
@@ -712,11 +773,17 @@ export function InteractiveWriting(p: Props) {
                     </div>
                     <div className={s.send}>
                       <button type="button" className={s.btnP} disabled={!canSend || busy === "send"} onClick={() => void send()}>
-                        <Icon name="send" size={18} />
+                        <Icon name="check" size={18} />
                         {busy === "send" ? t.sending : t.sendB}
                       </button>
                       <p aria-live="polite">{canSend ? t.sendOk : `${t.missing} ${missing.join(", ")}.`}</p>
                     </div>
+                    {data.after && (
+                      <p className={s.after}>
+                        <Icon name="mic" size={18} />
+                        <span>{data.after[lang]}</span>
+                      </p>
+                    )}
                     {error && (
                       <p className={s.err} role="alert">
                         {t.err}
@@ -733,14 +800,14 @@ export function InteractiveWriting(p: Props) {
         rail={
           <>
             <RailCard title={t.rail}>
-              <RailSteps steps={t.steps} current={current} done={() => sentState} onGo={(i) => goTo(sentState ? "w3" : IDS[i])} />
+              <RailSteps steps={steps} current={current} done={() => sentState} onGo={(i) => goTo(sentState ? "w3" : IDS[i])} />
             </RailCard>
             <RailCard title={t.stat}>
               <span className={s.stPillBig} data-k={stKind}>
                 <Icon name={stIcon} size={16} />
                 {stLabel}
               </span>
-              <p className={s.stP}>{status === "draft" ? t.stDp : status === "submitted" ? t.stSp : t.stRp}</p>
+              <p className={s.stP}>{status === "draft" ? t.stDp : status === "reviewed" ? t.stRp : t.stSp}</p>
             </RailCard>
           </>
         }
@@ -762,6 +829,7 @@ export function InteractiveWriting(p: Props) {
 function SentView({
   t,
   lang,
+  doc,
   data,
   status,
   subject,
@@ -780,6 +848,7 @@ function SentView({
 }: {
   t: UIT;
   lang: Lang;
+  doc: Doc;
   data: WritingData;
   status: SubmissionStatus;
   subject: string;
@@ -796,18 +865,14 @@ function SentView({
   onRedo: () => void;
   error: boolean;
 }) {
+  // 'finished' (and an older 'submitted' row): saved to the week. 'reviewed': an older row a coach commented on.
   const rev = status === "reviewed";
   const name = reviewer ?? coach;
   const paras = useMemo(() => body.split(/\n\s*\n/).filter((x) => x.trim()), [body]);
   const words = countWords(body);
-  const good = sub?.coach_good;
-  const improve = sub?.coach_improve;
-  const message = sub?.coach_message ?? (!good && !improve ? sub?.coach_feedback : null);
-  const steps = [
-    { label: t.st[0], small: submittedAt },
-    { label: t.st[1], small: coach ?? t.yourCoach },
-    { label: t.st[2], small: rev ? reviewedAt : t.within },
-  ];
+  const good = rev ? sub?.coach_good : null;
+  const improve = rev ? sub?.coach_improve : null;
+  const message = rev ? (sub?.coach_message ?? (!good && !improve ? sub?.coach_feedback : null)) : null;
   return (
     <section id="w3" className={sh.step}>
       {rev ? (
@@ -818,91 +883,84 @@ function SentView({
       ) : (
         <div className={s.banner} role="status">
           <span className={s.bannerI}>
-            <Icon name="send" size={26} />
+            <Icon name="check" size={26} />
           </span>
           <div>
             <h2 className={s.bannerH}>{t.sentH}</h2>
-            <p>{t.sentP(coach ?? t.yourCoach)}</p>
+            <p>{t.sentP(doc, submittedAt)}</p>
           </div>
         </div>
       )}
-      <div className={sh.card}>
-        <ol className={s.track} data-rev={rev || undefined}>
-          <span className={s.trackFill} aria-hidden />
-          {steps.map((st, i) => {
-            const ok = rev || i === 0;
-            return (
-              <li key={i} data-k={ok ? "ok" : i === 1 ? "now" : undefined} aria-current={!rev && i === 1 ? "step" : undefined}>
-                <i aria-hidden>{ok ? <Icon name="check" size={15} /> : i + 1}</i>
-                {st.label}
-                <small>{st.small}</small>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
 
-      {rev && (
-        <div className={`${sh.card} ${s.fbk}`}>
-          <div className={s.coachRow}>
-            <span className={s.coachAv} aria-hidden>
-              {name ? initials(name) : "C"}
-            </span>
-            <div>
-              <strong>{name ?? t.yourCoach}</strong>
-              <span>{t.revWhen(reviewedAt)}</span>
+      <div className={`${sh.card} ${s.fbk}`}>
+        {rev && (
+          <>
+            <div className={s.coachRow}>
+              <span className={s.coachAv} aria-hidden>
+                {name ? initials(name) : "C"}
+              </span>
+              <div>
+                <strong>{name ?? t.yourCoach}</strong>
+                <span>{t.revWhen(reviewedAt)}</span>
+              </div>
+              <span className={s.tag}>
+                <Icon name="check" size={13} /> {t.stR}
+              </span>
             </div>
-            <span className={s.tag}>
-              <Icon name="check" size={13} /> {t.stR}
-            </span>
-          </div>
-          {(good || improve) && (
-            <div className={s.fbgrid}>
-              {good && (
-                <div className={s.good}>
-                  <b>{t.good}</b>
-                  {good}
-                </div>
-              )}
-              {improve && (
-                <div className={s.grow}>
-                  <b>{t.grow}</b>
-                  {improve}
-                </div>
-              )}
-            </div>
-          )}
-          {message && <p className={s.fbmsg}>“{message}”</p>}
-          {capSaved && (
-            <p className={s.capDone}>
-              <Icon name="trophy" size={20} />
-              {t.capDone(data.capstone_part, data.capstone_title[lang])}
-            </p>
-          )}
-          <div className={s.acts}>
-            {!capSaved && (
-              <button type="button" className={s.btnG} onClick={onCap} disabled={busy === "cap"}>
-                <Icon name="trophy" size={18} />
-                {t.capB(data.capstone_part)}
-              </button>
+            {(good || improve) && (
+              <div className={s.fbgrid}>
+                {good && (
+                  <div className={s.good}>
+                    <b>{t.good}</b>
+                    {good}
+                  </div>
+                )}
+                {improve && (
+                  <div className={s.grow}>
+                    <b>{t.grow}</b>
+                    {improve}
+                  </div>
+                )}
+              </div>
             )}
-            <button type="button" className={s.btnO} onClick={onRedo} disabled={busy === "redo"}>
-              <Icon name="redo" size={18} />
-              {t.redo}
+            {message && <p className={s.fbmsg}>“{message}”</p>}
+          </>
+        )}
+        {data.after && (
+          <p className={s.after}>
+            <Icon name="mic" size={18} />
+            <span>{data.after[lang]}</span>
+          </p>
+        )}
+        {capSaved && (
+          <p className={s.capDone}>
+            <Icon name="trophy" size={20} />
+            {t.capDone(data.capstone_part, data.capstone_title[lang])}
+          </p>
+        )}
+        <div className={s.acts}>
+          {!capSaved && (
+            <button type="button" className={s.btnG} onClick={onCap} disabled={busy === "cap"}>
+              <Icon name="trophy" size={18} />
+              {t.capB(data.capstone_part)}
             </button>
-          </div>
-          {error && (
-            <p className={s.err} role="alert">
-              {t.err}
-            </p>
           )}
+          <button type="button" className={s.btnO} onClick={onRedo} disabled={busy === "redo"}>
+            <Icon name="redo" size={18} />
+            {t.redo}
+          </button>
         </div>
-      )}
+        {error && (
+          <p className={s.err} role="alert">
+            {t.err}
+          </p>
+        )}
+      </div>
 
       <div className={`${sh.card} ${s.ex} ${s.sentMail}`}>
         <div className={s.exHead}>
           <h3 className={s.exL}>
-            {t.yourMail}
+            {t.yourMail(doc)}
             {version > 1 ? ` · ${t.version(version)}` : ""}
           </h3>
           <span className={s.exWords}>

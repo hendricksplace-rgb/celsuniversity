@@ -1,0 +1,68 @@
+{
+  "part": 10,
+  "week": 10,
+  "title_es": "Crecimiento profesional y currículum final",
+  "title_en": "Career growth and final resume",
+  "preview_es": [
+    "Tus metas a 1, 3 y 5 años",
+    "Tu currículum final (sube tu PDF)",
+    "Lista para tu entrevista simulada en vivo"
+  ],
+  "preview_en": [
+    "Your 1, 3 and 5-year goals",
+    "Your final resume (upload your PDF)",
+    "Ready for your live mock interview"
+  ],
+  "fields": [
+    {
+      "k": "goals",
+      "label_es": "Tus metas a 1, 3 y 5 años",
+      "label_en": "Your 1, 3 and 5-year goals",
+      "hint_es": "En inglés. Una meta para cada plazo y cómo conecta con la empresa. Puedes partir de tu declaración de Writing.",
+      "hint_en": "In English. One goal for each time frame and how it connects to the company. You can start from your Writing statement.",
+      "type": "textarea",
+      "min": 150,
+      "fill_from": "writing"
+    },
+    {
+      "k": "star",
+      "label_es": "Tu mejor historia STAR",
+      "label_en": "Your best STAR story",
+      "hint_es": "Situación, tarea, acción y resultado, en inglés. Tu guion de la simulación en video ya está aquí. Mejóralo si quieres.",
+      "hint_en": "Situation, task, action and result, in English. Your video simulation script is already here. Improve it if you want.",
+      "type": "textarea",
+      "min": 200,
+      "fill_from": "video"
+    },
+    {
+      "k": "about",
+      "label_es": "Tu respuesta a “Tell me about yourself”",
+      "label_en": "Your answer to “Tell me about yourself”",
+      "hint_es": "Tu mejor intento de Speaking (90 segundos) ya está aquí. Es la primera respuesta de tu entrevista en vivo.",
+      "hint_en": "Your best Speaking try (90 seconds) is already here. It's the first answer in your live interview.",
+      "type": "textarea",
+      "min": 150,
+      "fill_from": "speaking"
+    },
+    {
+      "k": "targets",
+      "label_es": "Tu puesto meta y 2 empresas que admiras",
+      "label_en": "Your target role and 2 companies you admire",
+      "hint_es": "De tu investigación de esta semana. Ej.: Operations Manager · Empresa A, Empresa B.",
+      "hint_en": "From this week's Research. E.g.: Operations Manager · Company A, Company B.",
+      "type": "input",
+      "min": 20,
+      "fill_from": "research"
+    },
+    {
+      "k": "resume",
+      "label_es": "Tu currículum final (PDF)",
+      "label_en": "Your final resume (PDF)",
+      "hint_es": "Tu versión final, al estilo de EE. UU., en inglés, de 1 a 2 páginas. Parte de tu borrador de la Semana 4.",
+      "hint_en": "Your final U.S.-style resume in English, 1–2 pages. Build it from your Week 4 draft.",
+      "type": "file",
+      "min": 0,
+      "fill_from": null
+    }
+  ]
+}

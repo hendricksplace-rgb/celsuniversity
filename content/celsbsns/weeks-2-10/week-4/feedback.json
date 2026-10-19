@@ -1,0 +1,166 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 4",
+      "es": "Tu semana 4"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Take a pause. See everything you did this week, check how you feel about your resume and your pitch, and decide what's next.",
+    "intro_es": "Haz una pausa. Mira todo lo que hiciste esta semana, evalúa cómo te sientes con tu currículum y tu pitch, y decide qué sigue."
+  },
+  "next": {
+    "week": 5,
+    "title": "Organizational Structures & Roles",
+    "bullets": {
+      "en": [
+        "Job titles, departments and reporting lines",
+        "How to read and explain a company's org chart",
+        "Describing your ideal job and department"
+      ],
+      "es": [
+        "Puestos, departamentos y líneas de reporte",
+        "Cómo leer y explicar el organigrama de una empresa",
+        "Describir tu trabajo y departamento ideales"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 5: where you fit (ideal role and skills)",
+      "es": "Capstone · Parte 5: dónde encajas (rol ideal y habilidades)"
+    }
+  },
+  "week": 4,
+  "original": {
+    "goal": "Reflect on your own progress this week and decide what's next.",
+    "time": "1 Hour",
+    "title": "Feedback & Progress",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. The original Kajabi lesson was empty: \"Content pending — this lesson was empty in the original Kajabi course.\"]\n\n📈 Feedback & Progress – Week 4\n\nTitle: Feedback & Progress\nEstimated Time: 1 Hour\nGoal: Reflect on your own progress this week and decide what's next.\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nInstructions (CelsU, same structure as Week 1, without coach review):\nStep 1: self-evaluation checklist. Step 2: short reflection (hardest part, where you feel more confident, what to improve). Step 3: optional AI voice practice with your 1-minute career pitch.",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. La lección original de Kajabi estaba vacía: \"Contenido pendiente: esta lección estaba vacía en el curso original de Kajabi.\"]\n\n📈 Retroalimentación y Progreso – Semana 4\n\nTítulo: Retroalimentación y Progreso\nTiempo Estimado: 1 Hora\nObjetivo: Reflexionar sobre tu propio avance de esta semana y decidir qué sigue.\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nInstrucciones (CelsU, misma estructura que la Semana 1, sin revisión de coach):\nPaso 1: lista de autoevaluación. Paso 2: reflexión corta (lo más difícil, dónde te sientes más seguro, qué mejorar). Paso 3: práctica opcional con IA por voz usando tu pitch profesional de 1 minuto.",
+    "goal_es": "Reflexionar sobre tu propio avance de esta semana y decidir qué sigue.",
+    "title_es": "Retroalimentación y Progreso"
+  },
+  "questions": [
+    {
+      "en": "What was the hardest part of writing your resume this week?",
+      "es": "¿Qué fue lo más difícil de escribir tu currículum esta semana?"
+    },
+    {
+      "en": "Where do you feel more confident now?",
+      "es": "¿En qué te sientes más seguro ahora?"
+    },
+    {
+      "en": "What specific area would you like to improve most?",
+      "es": "¿En qué área específica quieres mejorar más?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I wrote the first draft of my U.S.-style resume",
+      "es": "Escribí el primer borrador de mi currículum al estilo de EE. UU.",
+      "auto": "writing"
+    },
+    {
+      "en": "I recorded my 1-minute career pitch",
+      "es": "Grabé mi pitch profesional de 1 minuto",
+      "auto": "video"
+    },
+    {
+      "en": "I used at least 10 vocabulary words this week",
+      "es": "Usé al menos 10 palabras de vocabulario esta semana",
+      "auto": null,
+      "vocab": true
+    },
+    {
+      "en": "I practiced out loud in all 3 speaking exercises",
+      "es": "Practiqué en voz alta los 3 ejercicios de speaking",
+      "auto": "speaking"
+    },
+    {
+      "en": "I compared real job ads with my own experience",
+      "es": "Comparé anuncios de empleo reales con mi propia experiencia",
+      "auto": null
+    },
+    {
+      "en": "I can describe my work history with results and numbers",
+      "es": "Puedo describir mi historial laboral con resultados y números",
+      "auto": null
+    }
+  ],
+  "ai_practice": {
+    "tip": {
+      "en": "If it understands you the first time, you're probably speaking clearly! If not, slow down and try again.",
+      "es": "Si te entiende a la primera, ¡probablemente estás hablando con claridad! Si no, baja la velocidad y vuelve a intentarlo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Say your 1-minute career pitch (from Video).",
+        "Notice: did it understand you the first time? Did it ask you to repeat anything?",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Di tu pitch profesional de 1 minuto (el de Video).",
+        "Fíjate: ¿te entendió a la primera? ¿Te pidió repetir algo?",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Can you give me feedback on my pronunciation and clarity?",
+      "Does my career pitch sound clear and confident? What would you change?",
+      "Let's practice. Ask me “Can you walk me through your resume?” and give me feedback on my answer."
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "Pronunciation",
+      "Vocabulary",
+      "Writing",
+      "Grammar",
+      "Confidence speaking",
+      "Listening"
+    ],
+    "es": [
+      "Pronunciación",
+      "Vocabulario",
+      "Escritura",
+      "Gramática",
+      "Seguridad al hablar",
+      "Escuchar y entender"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "Add a number to every job on my resume",
+      "Practice my pitch 3 times this week",
+      "Read 2 job ads in my field",
+      "Finish my tasks before Friday"
+    ],
+    "es": [
+      "Agregar un número a cada trabajo de mi currículum",
+      "Practicar mi pitch 3 veces esta semana",
+      "Leer 2 anuncios de empleo de mi campo",
+      "Terminar mis tareas antes del viernes"
+    ]
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "hero": {
+    "title_a": "Clarifying Your Role",
+    "title_b": "by Email",
+    "chips_en": [
+      "1–2 hours",
+      "120–150 words",
+      "Saved to your week",
+      "Capstone · Part 5"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "120–150 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 5"
+    ],
+    "intro_en": "Write a professional email to your manager asking who should receive your weekly progress updates. You practice asking for clarification politely, with initiative, and you prepare your Capstone content about where you fit.",
+    "intro_es": "Escribe un correo profesional a tu jefe para preguntar quién debe recibir tus actualizaciones semanales de avance. Practicas pedir aclaraciones con amabilidad y con iniciativa, y preparas el contenido de tu Capstone sobre dónde encajas."
+  },
+  "week": 5,
+  "parts": [
+    {
+      "en": "A greeting",
+      "es": "Un saludo",
+      "hint": {
+        "en": "Use your manager's name.",
+        "es": "Usa el nombre de tu jefe."
+      },
+      "color": "#2C6BC4",
+      "example": "Hi David,",
+      "phrases": [
+        "Hi David,",
+        "Hello David,",
+        "Good morning, David,"
+      ]
+    },
+    {
+      "en": "Context: your role and why you're writing",
+      "es": "Contexto: tu rol y por qué escribes",
+      "hint": {
+        "en": "One sentence. Remind them who you are and what this is about.",
+        "es": "Una oración. Recuérdale quién eres y de qué se trata."
+      },
+      "color": "#7A4FD6",
+      "example": "Thank you for a great first week on the Operations team…",
+      "phrases": [
+        "Thank you for a great first week on the [team] team.",
+        "As I settle into my new role as [role], I'd like to confirm one thing.",
+        "I'm writing to make sure I'm following the right process for [task]."
+      ]
+    },
+    {
+      "en": "Your question about reporting lines",
+      "es": "Tu pregunta sobre las líneas de reporte",
+      "hint": {
+        "en": "Ask clearly and politely. Name the people involved.",
+        "es": "Pregunta con claridad y amabilidad. Menciona a las personas involucradas."
+      },
+      "color": "#00A3C4",
+      "example": "Should I send them only to you, or also copy…?",
+      "phrases": [
+        "Should I send my weekly updates only to you, or should I also copy [name]?",
+        "Would you like me to send progress updates directly to you, or also to the project lead?",
+        "Could you clarify who should receive my weekly updates?"
+      ]
+    },
+    {
+      "en": "Show initiative",
+      "es": "Muestra iniciativa",
+      "hint": {
+        "en": "Propose what you'll do until you hear back.",
+        "es": "Propón qué vas a hacer mientras te responde."
+      },
+      "color": "#1F7A4D",
+      "example": "Until I hear from you, I'll send this Friday's update to you and copy…",
+      "phrases": [
+        "Until I hear from you, I'll [plan].",
+        "For this week, I plan to [plan], unless you prefer otherwise.",
+        "I've drafted my first update and can send it on [day]."
+      ]
+    },
+    {
+      "en": "Willingness to follow the process",
+      "es": "Disposición a seguir el proceso",
+      "hint": {
+        "en": "Show you want to do things the company's way.",
+        "es": "Muestra que quieres hacer las cosas como se hacen en la empresa."
+      },
+      "color": "#C98A00",
+      "example": "If the team uses a template, I'd be glad to use it.",
+      "phrases": [
+        "If the team uses a template or a shared channel, I'd be glad to use it.",
+        "I want to make sure I follow the team's process.",
+        "I'm happy to adjust to whatever works best for the team."
+      ]
+    },
+    {
+      "en": "A polite closing",
+      "es": "Un cierre cortés",
+      "hint": {
+        "en": "Thank them and sign off.",
+        "es": "Agradece y despídete."
+      },
+      "color": "#C2185B",
+      "example": "Thank you for your help. Best regards,",
+      "phrases": [
+        "Thank you for your help.",
+        "Thanks in advance for your guidance.",
+        "Best regards,",
+        "Kind regards,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "d_en": "Say exactly what the email is about.",
+      "d_es": "Di exactamente de qué trata el correo.",
+      "icon": "star",
+      "t_en": "A clear subject line",
+      "t_es": "Un asunto claro"
+    },
+    {
+      "d_en": "Polite, direct, and ready to act.",
+      "d_es": "Amable, directo y con ganas de actuar.",
+      "icon": "smile",
+      "t_en": "Polite, with initiative",
+      "t_es": "Amable y con iniciativa"
+    },
+    {
+      "d_en": "Paragraph spacing, no bullet points or emojis.",
+      "d_es": "Párrafos separados, sin viñetas ni emojis.",
+      "icon": "nob",
+      "t_en": "Email format",
+      "t_es": "Formato de correo"
+    }
+  ],
+  "words": {
+    "max": 150,
+    "min": 120
+  },
+  "example": {
+    "subject": "Question about my weekly progress updates",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Hi David,"
+        ]
+      ],
+      [
+        [
+          1,
+          "Thank you for a great first week on the Operations team. I'm enjoying learning how the team works and getting to know the warehouse launch project."
+        ],
+        [
+          2,
+          "I have a quick question about my weekly progress updates: should I send them only to you, or should I also copy Maria Lopez, the project manager for the warehouse launch?"
+        ]
+      ],
+      [
+        [
+          4,
+          "I want to make sure I follow the team's process and keep the right people informed."
+        ],
+        [
+          3,
+          "Until I hear from you, I'll send this Friday's update to you and copy Maria, and I'm happy to adjust."
+        ],
+        [
+          4,
+          "If the team uses a template or a shared channel for updates, I'd be glad to use it."
+        ]
+      ],
+      [
+        [
+          5,
+          "Thank you for your help, and have a great weekend."
+        ]
+      ],
+      [
+        [
+          5,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Ana Pérez"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Write a professional email (120–150 words) to your manager asking for clarification on reporting lines.",
+    "time": "1–2 hours",
+    "title": "Clarifying Your Role by Email",
+    "body_en": "✍️ Writing Task\n\nTitle: Clarifying Your Role by Email\nTime: 1–2 hours\n\nScenario:\nYou've just been hired by a U.S. company. During your first week, you're not sure if you should send weekly progress updates to your direct manager only, or copy the project manager as well.\n\nYour Task: Write a professional email (120–150 words) to your manager asking for clarification on reporting lines. Make sure to:\n\nUse a clear subject line.\n\nAsk politely about expectations.\n\nShow initiative and a willingness to follow company processes.\n\nWhy This Matters:\nIn U.S. workplaces, asking for clarification is seen as responsible, not as weakness. It shows you care about doing things the right way.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Aclarando tu Rol por Correo Electrónico\nTiempo: 1–2 horas\n\nEscenario:\nAcabas de ser contratado por una empresa en EE. UU. Durante tu primera semana, no estás seguro si debes enviar actualizaciones semanales de progreso solo a tu gerente directo, o también copiar al gerente de proyecto.\n\nTu Tarea: Escribe un correo electrónico profesional (120–150 palabras) a tu gerente pidiendo aclaración sobre las líneas de reporte. Asegúrate de:\n\nUsar un asunto claro.\n\nPreguntar educadamente sobre las expectativas.\n\nMostrar iniciativa y disposición para seguir los procesos de la empresa.\n\nPor Qué Esto Importa:\nEn los lugares de trabajo en EE. UU., pedir aclaraciones se considera responsable, no una debilidad. Muestra que te importa hacer las cosas de la manera correcta.",
+    "goal_es": "Escribe un correo electrónico profesional (120–150 palabras) a tu gerente pidiendo aclaración sobre las líneas de reporte.",
+    "title_es": "Aclarando tu Rol por Correo Electrónico",
+    "submission": ""
+  },
+  "scenario": {
+    "en": "You've just been hired by a U.S. company. In your first week, you're not sure if you should send weekly progress updates only to your direct manager, or also copy the project manager.",
+    "es": "Acabas de entrar a una empresa en EE. UU. En tu primera semana no sabes si debes enviar tus actualizaciones semanales de avance solo a tu jefe directo o también copiar a la gerente de proyecto.",
+    "from": "David",
+    "quote": "Welcome to the team! Please keep me posted on your progress every week.",
+    "role_en": "your manager",
+    "role_es": "tu jefe directo",
+    "initials": "DK"
+  },
+  "to_label": "David Kim",
+  "to_initials": "DK",
+  "subject_hint": "Question about my weekly progress updates",
+  "capstone_part": 5,
+  "capstone_title": {
+    "en": "Where do you fit? Ideal role and skills",
+    "es": "¿Dónde encajas? Rol ideal y habilidades"
+  }
+}

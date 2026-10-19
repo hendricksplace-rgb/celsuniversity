@@ -97,6 +97,7 @@ const UI = {
     take: "MI CONCLUSIÓN",
     rewriteNote: "MI VERSIÓN DEL CORREO",
     vocabClose: "Cerrar definición",
+    review: "Repaso",
     lang: "Idioma de las instrucciones",
     chipsAria: "Detalles de la lectura",
     learnAria: "Lo que vas a aprender",
@@ -169,6 +170,7 @@ const UI = {
     take: "MY TAKEAWAY",
     rewriteNote: "MY VERSION OF THE EMAIL",
     vocabClose: "Close definition",
+    review: "Review",
     lang: "Language for the instructions",
     chipsAria: "About this reading",
     learnAria: "What you'll learn",
@@ -726,7 +728,14 @@ function VocabCard({ word, el, data, onClose, t, fontClass }: { word: string; el
       <button type="button" className={s.popClose} onClick={() => onClose(true)} aria-label={t.vocabClose}>
         <Icon name="x" size={14} />
       </button>
-      <p className={s.popWord}>{v.word}</p>
+      <p className={s.popWord}>
+        {v.word}
+        {v.review && (
+          <span className={s.popReview} lang={t === UI.es ? "es" : "en"}>
+            {t.review}
+          </span>
+        )}
+      </p>
       <p className={s.popEs} lang="es">
         {v.es}
       </p>

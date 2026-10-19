@@ -1,0 +1,166 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 8",
+      "es": "Tu semana 8"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Representing the brand every day: see everything you did this week, think about your own communication brand, and decide what's next.",
+    "intro_es": "Representar la marca todos los días: mira todo lo que hiciste esta semana, piensa en tu propia marca de comunicación y decide qué sigue."
+  },
+  "next": {
+    "week": 9,
+    "title": "Project Management & Productivity",
+    "bullets": {
+      "en": [
+        "Task tracking, communication tools and timelines",
+        "Research a project management tool like Trello or Asana",
+        "Plan a 2-week project and present it to your team"
+      ],
+      "es": [
+        "Seguimiento de tareas, herramientas de comunicación y plazos",
+        "Investiga una herramienta de gestión de proyectos como Trello o Asana",
+        "Planea un proyecto de 2 semanas y preséntalo a tu equipo"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 9: your personal organization style",
+      "es": "Capstone · Parte 9: tu estilo personal de organización"
+    }
+  },
+  "week": 8,
+  "original": {
+    "goal": "Reflect on how you represent the brand every day and define your personal communication brand.",
+    "time": "1 hour",
+    "title": "Representing the Brand Every Day",
+    "body_en": "📈 Feedback & Progress\n\nTitle: Representing the Brand Every Day\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can define brand, target audience, and value proposition.\n\nI can identify a company's brand voice.\n\nI practiced creating a clear and professional brand message.\n\nI explained brand communication in my own words on video.\n\nI roleplayed situations where consistency builds trust.\n\nStep 2 – Reflection Questions\n\nWhich part of brand communication do you already practice well?\n\nWhich area—clarity, consistency, or emotional appeal—do you need to develop more?\n\nHow can you strengthen your personal brand in the U.S. workplace?\n\nStep 3 – Action Note\nWrite one sentence describing your personal communication brand. Example:\n\n\"I am professional, clear, and consistent in the way I communicate with colleagues and clients.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTítulo: Representando la Marca Todos los Días\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo definir marca, público objetivo y propuesta de valor.\n\nPuedo identificar la voz de marca de una empresa.\n\nPractiqué creando un mensaje de marca claro y profesional.\n\nExpliqué la comunicación de marca con mis propias palabras en video.\n\nHice un juego de roles en situaciones donde la consistencia genera confianza.\n\nPaso 2 – Preguntas de Reflexión\n\n¿Qué parte de la comunicación de marca ya practicas bien?\n\n¿Qué área—claridad, consistencia o atractivo emocional—necesitas desarrollar más?\n\n¿Cómo puedes fortalecer tu marca personal en el entorno laboral de EE.UU.?\n\nPaso 3 – Nota de Acción\nEscribe una oración describiendo tu marca personal de comunicación. Ejemplo:\n\n\"I am professional, clear, and consistent in the way I communicate with colleagues and clients.\" (Soy profesional, claro y consistente en la forma en que me comunico con colegas y clientes.)",
+    "goal_es": "Reflexionar sobre cómo representas la marca todos los días y definir tu marca personal de comunicación.",
+    "title_es": "Representando la Marca Todos los Días"
+  },
+  "questions": [
+    {
+      "en": "Which part of brand communication do you already practice well?",
+      "es": "¿Qué parte de la comunicación de marca ya practicas bien?"
+    },
+    {
+      "en": "Which area (clarity, consistency or emotional appeal) do you need to develop more?",
+      "es": "¿Qué área (claridad, consistencia o atractivo emocional) necesitas desarrollar más?"
+    },
+    {
+      "en": "How can you strengthen your personal brand in the U.S. workplace?",
+      "es": "¿Cómo puedes fortalecer tu marca personal en el entorno laboral de EE. UU.?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can define brand, target audience and value proposition",
+      "es": "Puedo definir marca, público objetivo y propuesta de valor",
+      "auto": null
+    },
+    {
+      "en": "I can identify a company's brand voice",
+      "es": "Puedo identificar la voz de marca de una empresa",
+      "auto": "research"
+    },
+    {
+      "en": "I practiced creating a clear and professional brand message",
+      "es": "Practiqué cómo crear un mensaje de marca claro y profesional",
+      "auto": "writing"
+    },
+    {
+      "en": "I explained brand communication in my own words on video",
+      "es": "Expliqué la comunicación de marca con mis propias palabras en video",
+      "auto": "video"
+    },
+    {
+      "en": "I roleplayed situations where consistency builds trust",
+      "es": "Hice juegos de roles en situaciones donde la consistencia genera confianza",
+      "auto": "speaking"
+    }
+  ],
+  "action_note": {
+    "q_en": "Action note: write one sentence describing your personal communication brand.",
+    "q_es": "Nota de acción: escribe una oración que describa tu marca personal de comunicación.",
+    "example_en": "I am professional, clear, and consistent in the way I communicate with colleagues and clients.",
+    "example_es": "Soy profesional, claro y consistente en la forma en que me comunico con colegas y clientes."
+  },
+  "ai_practice": {
+    "tip": {
+      "en": "If it understands your pitch the first time and can repeat your main value, your message is clear! If not, simplify it and try again.",
+      "es": "Si entiende tu presentación a la primera y puede repetir tu valor principal, ¡tu mensaje es claro! Si no, simplifícalo y vuelve a intentarlo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Say your 30-second elevator pitch (from Speaking).",
+        "Notice: could it repeat your main value back to you? Did it ask you to clarify anything?",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Di tu elevator pitch de 30 segundos (el de Speaking).",
+        "Fíjate: ¿pudo repetir tu valor principal? ¿Te pidió aclarar algo?",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "In one sentence, what is the value of what I just described?",
+      "Was my tone professional, clear and consistent? What would make it stronger?",
+      "Let's roleplay. You are an upset customer, and I'll answer in my company's brand voice. Then give me feedback on my tone."
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "Clarity",
+      "Consistency",
+      "Emotional appeal",
+      "Pronunciation",
+      "Vocabulary",
+      "Confidence speaking"
+    ],
+    "es": [
+      "Claridad",
+      "Consistencia",
+      "Atractivo emocional",
+      "Pronunciación",
+      "Vocabulario",
+      "Seguridad al hablar"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "Update my LinkedIn headline this week",
+      "Practice my 30-second pitch every day",
+      "Answer every work message with a clear next step",
+      "Use 5 new words from this week"
+    ],
+    "es": [
+      "Actualizar mi titular de LinkedIn esta semana",
+      "Practicar mi presentación de 30 segundos cada día",
+      "Responder cada mensaje de trabajo con un siguiente paso claro",
+      "Usar 5 palabras nuevas de esta semana"
+    ]
+  }
+}

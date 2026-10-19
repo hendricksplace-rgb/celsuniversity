@@ -1,0 +1,164 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to think about what you learned and what's next.",
+      "es": "Nadie la califica. Es tu momento para pensar en lo que aprendiste y en lo que sigue."
+    },
+    "title_a": {
+      "en": "Your Week 9",
+      "es": "Tu semana 9"
+    },
+    "title_b": {
+      "en": "at a glance",
+      "es": "en resumen"
+    },
+    "chips_en": [
+      "1 hour",
+      "Personal reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión personal",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "Managing projects and managing your career use the same skills. Take a pause, see everything you did this week, and commit to one productivity habit.",
+    "intro_es": "Gestionar proyectos y gestionar tu carrera usan las mismas habilidades. Haz una pausa, mira todo lo que hiciste esta semana y comprométete con un hábito de productividad."
+  },
+  "next": {
+    "week": 10,
+    "title": "Interview Prep & Career Goals",
+    "bullets": {
+      "en": [
+        "Review the STAR interview method",
+        "Finish all Capstone parts and your final resume",
+        "Your 50-minute live mock interview"
+      ],
+      "es": [
+        "Repaso del método STAR para entrevistas",
+        "Terminar todas las partes del Capstone y tu currículum final",
+        "Tu entrevista de práctica en vivo de 50 minutos"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · Part 10: career growth and your final resume",
+      "es": "Capstone · Parte 10: tu crecimiento profesional y tu currículum final"
+    }
+  },
+  "week": 9,
+  "original": {
+    "goal": "Reflect on how project management skills improve your teamwork, your productivity and your Capstone.",
+    "time": "1 hour",
+    "title": "Managing Projects & Managing Your Career",
+    "body_en": "📈 Feedback & Progress\n\nTitle: Managing Projects & Managing Your Career\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can explain scope, timeline, deliverables, and milestones.\n\nI understand the five stages of the project lifecycle.\n\nI practiced using productivity tools.\n\nI roleplayed project management scenarios.\n\nI know how project management builds efficiency and trust.\n\nStep 2 – Reflection Questions\n\nHow do project management skills improve teamwork?\n\nWhat productivity habit will you start using this week?\n\nHow will you apply project management skills to your Capstone project?\n\nStep 3 – Action Note\nWrite one sentence committing to a productivity habit. Example:\n\n\"I will plan my top three tasks each morning before starting work.\"\n\n\"I will use a project management tool to track deadlines and progress.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTítulo: Managing Projects & Managing Your Career\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo explicar el alcance, la línea de tiempo, los entregables y los hitos.\n\nEntiendo las cinco etapas del ciclo de vida del proyecto.\n\nPractiqué usando herramientas de productividad.\n\nHice un juego de roles en escenarios de gestión de proyectos.\n\nSé cómo la gestión de proyectos construye eficiencia y confianza.\n\nPaso 2 – Preguntas de Reflexión\n\n¿Cómo mejoran las habilidades de gestión de proyectos el trabajo en equipo?\n\n¿Qué hábito de productividad comenzarás a usar esta semana?\n\n¿Cómo aplicarás las habilidades de gestión de proyectos en tu proyecto Capstone?\n\nPaso 3 – Nota de Acción\nEscribe una oración comprometiéndote con un hábito de productividad. Ejemplo:\n\n\"Planificaré mis tres tareas principales cada mañana antes de comenzar a trabajar.\"\n\n\"Usaré una herramienta de gestión de proyectos para seguir los plazos y el progreso.\"",
+    "goal_es": "Reflexionar sobre cómo las habilidades de gestión de proyectos mejoran tu trabajo en equipo, tu productividad y tu Capstone.",
+    "title_es": "Managing Projects & Managing Your Career"
+  },
+  "questions": [
+    {
+      "en": "How do project management skills improve teamwork?",
+      "es": "¿Cómo mejoran las habilidades de gestión de proyectos el trabajo en equipo?"
+    },
+    {
+      "en": "What productivity habit will you start using this week?",
+      "es": "¿Qué hábito de productividad comenzarás a usar esta semana?"
+    },
+    {
+      "en": "How will you apply project management skills to your Capstone project?",
+      "es": "¿Cómo aplicarás las habilidades de gestión de proyectos en tu proyecto Capstone?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can explain scope, timeline, deliverables, and milestones",
+      "es": "Puedo explicar el alcance, el cronograma, los entregables y los hitos",
+      "auto": "writing"
+    },
+    {
+      "en": "I understand the five stages of the project lifecycle",
+      "es": "Entiendo las cinco etapas del ciclo de vida del proyecto",
+      "auto": "video"
+    },
+    {
+      "en": "I practiced using productivity tools",
+      "es": "Practiqué usando herramientas de productividad",
+      "auto": null
+    },
+    {
+      "en": "I roleplayed project management scenarios",
+      "es": "Hice juegos de roles en escenarios de gestión de proyectos",
+      "auto": "speaking"
+    },
+    {
+      "en": "I know how project management builds efficiency and trust",
+      "es": "Sé cómo la gestión de proyectos construye eficiencia y confianza",
+      "auto": null
+    }
+  ],
+  "ai_practice": {
+    "tip": {
+      "en": "If it understands your five stages the first time, your explanation is clear! If not, slow down, use “first, next, then, finally”, and try again.",
+      "es": "Si entiende tus cinco etapas a la primera, ¡tu explicación es clara! Si no, baja la velocidad, usa “first, next, then, finally” y vuelve a intentarlo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Explain your project lifecycle (from your Video task) in about 1 minute.",
+        "Notice: did it understand your example? Did it ask you to repeat anything?",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Explica tu ciclo de vida del proyecto (el de tu tarea de Video) en más o menos 1 minuto.",
+        "Fíjate: ¿entendió tu ejemplo? ¿Te pidió repetir algo?",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Was my explanation clear?",
+      "How could I sound more professional?",
+      "Let's practice a daily stand-up. Ask me what I finished yesterday, what I'm working on today, and if I have any blockers."
+    ]
+  },
+  "action_note": {
+    "en": "Action note: write one sentence committing to a productivity habit.",
+    "es": "Nota de acción: escribe una oración comprometiéndote con un hábito de productividad."
+  },
+  "focus_options": {
+    "en": [
+      "Pronunciation",
+      "Vocabulary",
+      "Writing",
+      "Grammar",
+      "Confidence speaking",
+      "Listening"
+    ],
+    "es": [
+      "Pronunciación",
+      "Vocabulario",
+      "Escritura",
+      "Gramática",
+      "Seguridad al hablar",
+      "Escuchar y entender"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "I will plan my top three tasks each morning before starting work.",
+      "I will use a project management tool to track deadlines and progress.",
+      "I will send myself a short status update every Friday.",
+      "I will give every task a date before I start it."
+    ],
+    "es": [
+      "Planificaré mis tres tareas principales cada mañana antes de comenzar a trabajar.",
+      "Usaré una herramienta de gestión de proyectos para seguir los plazos y el progreso.",
+      "Me enviaré un breve reporte de avance cada viernes.",
+      "Le pondré fecha a cada tarea antes de empezarla."
+    ]
+  }
+}

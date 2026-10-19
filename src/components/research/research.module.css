@@ -907,3 +907,66 @@ textarea.inp {
     stroke-dashoffset: 0;
   }
 }
+
+/* ---------- weeks 2–10 additions ---------- */
+.fic[data-real] {
+  color: #1e5a33;
+  background: #e6f4ea;
+}
+.srcLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--blue2, #1e55a8);
+  text-decoration: underline;
+}
+.fieldEx {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.fieldEx button {
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1.5px solid var(--line, #d8e2f0);
+  border-radius: 999px;
+  background: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink, #1b2945);
+}
+.fieldEx button[aria-pressed="true"] {
+  border-color: var(--blue, #2c6bc4);
+  background: var(--soft, #eef4fd);
+}
+.cmpQ {
+  margin: 18px 0 4px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: var(--soft, #eef4fd);
+}
+.cmpQ ol {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 22px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink, #1b2945);
+}
+.shareNext {
+  margin: 14px 0 0 !important;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fff8e6;
+  color: #4a3a10;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.5;
+}

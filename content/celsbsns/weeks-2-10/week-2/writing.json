@@ -1,0 +1,198 @@
+{
+  "hero": {
+    "title_a": "A Professional Email",
+    "title_b": "That Respects Workplace Culture",
+    "chips_en": [
+      "1–2 hours",
+      "100–150 words",
+      "Saved in your week",
+      "Capstone · Part 2"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "100–150 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 2"
+    ],
+    "intro_en": "Write a short email to your manager to clarify a task. You practice adapting your writing to U.S. business etiquette: respect, clarity and professionalism.",
+    "intro_es": "Escribe un correo corto a tu gerente para aclarar una tarea. Practicas cómo adaptar tu forma de escribir a la etiqueta empresarial de EE. UU.: respeto, claridad y profesionalismo."
+  },
+  "week": 2,
+  "parts": [
+    {
+      "en": "A clear subject line",
+      "es": "Una línea de asunto clara",
+      "hint": {
+        "en": "Say what the email is about in a few words.",
+        "es": "Di de qué trata el correo en pocas palabras."
+      },
+      "color": "#2C6BC4",
+      "example": "Clarification on Project Task",
+      "phrases": [
+        "Clarification on Project Task",
+        "Quick question about [project name]",
+        "Question about the [task] deadline"
+      ]
+    },
+    {
+      "en": "A respectful greeting",
+      "es": "Un saludo respetuoso",
+      "hint": {
+        "en": "In the U.S., first names are normal with your manager.",
+        "es": "En EE. UU. es normal usar el nombre de pila con tu gerente."
+      },
+      "color": "#7A4FD6",
+      "example": "Hi Alex,",
+      "phrases": [
+        "Hi Alex,",
+        "Hello Alex,",
+        "Good morning, Alex,"
+      ]
+    },
+    {
+      "en": "What you need clarified",
+      "es": "Qué necesitas aclarar",
+      "hint": {
+        "en": "Polite and direct: one clear question.",
+        "es": "Con amabilidad y de forma directa: una pregunta clara."
+      },
+      "color": "#00A3C4",
+      "example": "Could you confirm the specific data source I should use…?",
+      "phrases": [
+        "I want to make sure I'm completing the task correctly.",
+        "Could you confirm [detail]?",
+        "Could you clarify whether I should [option A] or [option B]?",
+        "I'd like to double-check [detail] before I start."
+      ]
+    },
+    {
+      "en": "Appreciation for their time",
+      "es": "Agradecimiento por su tiempo",
+      "hint": {
+        "en": "Thank them for their time and guidance.",
+        "es": "Agradece su tiempo y su orientación."
+      },
+      "color": "#1F7A4D",
+      "example": "Thank you again for outlining the project details on Tuesday.",
+      "phrases": [
+        "Thank you again for outlining [the project details] on [day].",
+        "I appreciate your time and guidance.",
+        "Thanks in advance for your help."
+      ]
+    },
+    {
+      "en": "A professional sign-off",
+      "es": "Una despedida profesional",
+      "hint": {
+        "en": "Close politely and sign with your name.",
+        "es": "Cierra con cortesía y firma con tu nombre."
+      },
+      "color": "#C2185B",
+      "example": "Best regards, Daniela",
+      "phrases": [
+        "Best regards,",
+        "Kind regards,",
+        "Thank you,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "chat",
+      "t_en": "Clarity",
+      "t_es": "Claridad",
+      "d_en": "You know how to state your need directly.",
+      "d_es": "Sabes expresar tu necesidad de forma directa."
+    },
+    {
+      "icon": "clock",
+      "t_en": "Tone",
+      "t_es": "Tono",
+      "d_en": "You respect your manager's time: short and polite.",
+      "d_es": "Respetas el tiempo de tu gerente: corto y amable."
+    },
+    {
+      "icon": "star",
+      "t_en": "Confidence",
+      "t_es": "Seguridad",
+      "d_en": "You own your role and ask questions to succeed.",
+      "d_es": "Asumes tu rol y haces preguntas para tener éxito."
+    }
+  ],
+  "words": {
+    "max": 150,
+    "min": 100
+  },
+  "example": {
+    "subject": "Clarification on Project Task",
+    "paragraphs": [
+      [
+        [
+          1,
+          "Hi Alex,"
+        ]
+      ],
+      [
+        [
+          3,
+          "Thank you again for outlining the project details on Tuesday."
+        ],
+        [
+          2,
+          "I want to make sure I'm completing the task correctly."
+        ],
+        [
+          2,
+          "Could you confirm the specific data source I should use for the analysis?"
+        ]
+      ],
+      [
+        [
+          3,
+          "I appreciate your time and guidance—I just want to ensure I deliver the work in line with your expectations."
+        ]
+      ],
+      [
+        [
+          4,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Daniela"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Practice adapting your written communication to U.S. business etiquette by showing respect, clarity, and professionalism.",
+    "time": "1–2 hours",
+    "title": "Writing a Professional Email that Respects Workplace Culture",
+    "body_en": "✍️ Writing Task\n\nTitle: Writing a Professional Email that Respects Workplace Culture\nTime: 1–2 hours\nObjective: Practice adapting your written communication to U.S. business etiquette by showing respect, clarity, and professionalism.\n\nScenario:\n\nYou've started your first week at a U.S. company. On Tuesday, your manager, Alex Johnson, gave you a project task. The instructions were clear at the time, but now you realize you are missing one important detail. Instead of guessing, you decide to write a short, professional email to clarify the task.\n\nYour Task:\n\nWrite a professional email (100–150 words) to your manager, Alex Johnson. Your email should:\n\nUse a clear subject line.\n\nBegin with a respectful greeting.\n\nExplain what you need clarification on—politely and directly.\n\nShow appreciation for their time and guidance.\n\nEnd with a professional sign-off.\n\nWhy This Matters:\n\nIn U.S. workplaces, asking for clarification is seen as responsible and professional, not as weakness. Writing this way shows:\n\n💬 Clarity → You know how to state your need directly.\n\n🎯 Tone → You respect your manager's time.\n\n🚀 Confidence → You own your role and ask questions to succeed.\n\nExample Email:\n\nSubject: Clarification on Project Task\n\nHi Alex,\n\nThank you again for outlining the project details on Tuesday. I want to make sure I'm completing the task correctly. Could you confirm the specific data source I should use for the analysis?\n\nI appreciate your time and guidance—I just want to ensure I deliver the work in line with your expectations.\n\nBest regards,\nDaniela\n\n👉 Your Turn: Write your own email in your notes or course journal. Then, read it out loud to check for clarity and tone.\n\nLINK: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/Nzc0NTEzNDI4ODc0/details",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Escribir un Correo Electrónico Profesional que Respete la Cultura Laboral\nTiempo: 1–2 horas\nObjetivo: Practicar la adaptación de tu comunicación escrita a la etiqueta empresarial de EE.UU. mostrando respeto, claridad y profesionalismo.\n\nEscenario:\n\nHas comenzado tu primera semana en una empresa de EE.UU. El martes, tu gerente, Alex Johnson, te dio una tarea de proyecto. Las instrucciones fueron claras en ese momento, pero ahora te das cuenta de que te falta un detalle importante. En lugar de adivinar, decides escribir un correo electrónico corto y profesional para aclarar la tarea.\n\nTu Tarea:\n\nEscribe un correo electrónico profesional (100–150 palabras) a tu gerente, Alex Johnson. Tu correo debe:\n\nUsar una línea de asunto clara.\n\nComenzar con un saludo respetuoso.\n\nExplicar sobre qué necesitas aclaración—de manera educada y directa.\n\nMostrar agradecimiento por su tiempo y orientación.\n\nTerminar con una despedida profesional.\n\nPor Qué Esto Importa:\n\nEn los lugares de trabajo de EE.UU., pedir aclaraciones se considera responsable y profesional, no una debilidad. Escribir de esta manera muestra:\n\n💬 Claridad → Sabes cómo expresar tu necesidad directamente.\n\n🎯 Tono → Respetas el tiempo de tu gerente.\n\n🚀 Confianza → Asumes tu rol y haces preguntas para tener éxito.\n\nCorreo Electrónico de Ejemplo:\n\nAsunto: Clarification on Project Task\n\nHi Alex,\n\nThank you again for outlining the project details on Tuesday. I want to make sure I'm completing the task correctly. Could you confirm the specific data source I should use for the analysis?\n\nI appreciate your time and guidance—I just want to ensure I deliver the work in line with your expectations.\n\nBest regards,\nDaniela\n\n👉 Tu Turno: Escribe tu propio correo en tus notas o diario del curso. Luego, léelo en voz alta para verificar la claridad y el tono.\n\nENLACE: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/Nzc0NTEzNDI4ODc0/details",
+    "goal_es": "Practicar la adaptación de tu comunicación escrita a la etiqueta empresarial de EE.UU. mostrando respeto, claridad y profesionalismo.",
+    "title_es": "Escribir un Correo Electrónico Profesional que Respete la Cultura Laboral",
+    "submission": "Your Turn: Write your own email in your notes or course journal. Then, read it out loud to check for clarity and tone."
+  },
+  "scenario": {
+    "en": "It's your first week at a U.S. company. On Tuesday, your manager, Alex Johnson, gave you a project task. The instructions were clear at the time, but now you realize you're missing one important detail. Instead of guessing, you write a short, professional email to clarify the task. When you finish, read it out loud to check your clarity and tone.",
+    "es": "Es tu primera semana en una empresa de EE. UU. El martes, tu gerente, Alex Johnson, te dio una tarea de proyecto. Las instrucciones parecían claras, pero ahora te das cuenta de que te falta un detalle importante. En lugar de adivinar, escribes un correo corto y profesional para aclarar la tarea. Cuando termines, léelo en voz alta para revisar tu claridad y tu tono.",
+    "from": "Alex Johnson",
+    "quote": "Here are the details for your first project. Let me know if anything isn't clear.",
+    "role_en": "your manager",
+    "role_es": "tu gerente",
+    "initials": "AJ"
+  },
+  "to_label": "Alex Johnson",
+  "to_initials": "AJ",
+  "subject_hint": "Clarification on Project Task",
+  "capstone_part": 2,
+  "capstone_title": {
+    "en": "Workplace values and experiences",
+    "es": "Valores y experiencias en el trabajo"
+  },
+  "why_note": {
+    "en": "In U.S. workplaces, asking for clarification is seen as responsible and professional, not as weakness.",
+    "es": "En los lugares de trabajo de EE. UU., pedir aclaraciones se considera responsable y profesional, no una debilidad."
+  }
+}

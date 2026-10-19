@@ -1,6 +1,6 @@
 // CelsBSNS week page v2 (celsbsns-semana-v2-mockup.html): the hero with the "Tu semana en breve" glass card, the
-// 10-week route that overlaps it, "Tus pendientes", the 4-phase flow on a dotted spine, and the side column (coach,
-// Capstone, resources). A server component: every action is a link, the hover effects are CSS.
+// 10-week route that overlaps it, "Tus pendientes", the 4-phase flow on a dotted spine, and the side column
+// (Capstone, resources). A server component: every action is a link, the hover effects are CSS.
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Activity, BsnsWeek as Data, Kind, Phase, Resource, Row } from "@/lib/bsns-week";
@@ -12,8 +12,6 @@ import s from "./bsns-week.module.css";
 type T = Dictionary["bsnsWeek"];
 const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 const cx = (...names: (string | false | null | undefined)[]) => names.filter(Boolean).join(" ");
-/** WhatsApp 449 497 5359, as on Mis clases: there is no in-app messaging yet. */
-const WHATSAPP = "https://wa.me/524494975359";
 
 /** "Faltan <b>9 semanas</b> para…" → text with the bold part, without innerHTML. */
 function Rich({ text }: { text: string }) {
@@ -222,7 +220,7 @@ function Card({ t, a, current }: { t: T; a: Activity; current: boolean }) {
   else if (a.goal) fields.push([t.f.goal, a.goal]);
   if (a.time) fields.push([t.f.time, a.time]);
   if (a.kind === "research") fields.push([t.f.deliver, t.researchDeliver]);
-  if (a.kind === "writing" || a.kind === "video_submission") fields.push([t.f.review, t.coachReview]);
+  if (a.kind === "writing" || a.kind === "video_submission") fields.push([t.f.deliver, t.savedWeek]);
   if (a.kind === "speaking") fields.push([t.f.format, t.speakingFormat]);
   if (a.due) fields.push([t.f.date, a.due.label.charAt(0).toUpperCase() + a.due.label.slice(1)]);
   return (
@@ -305,7 +303,6 @@ export function BsnsWeek({
     d.doneRows === 0 ? t.greet.start : d.doneRows >= d.allRows ? t.greet.done : pct <= 3 / 8 ? t.greet.good : pct < 7 / 8 ? t.greet.great : t.greet.almost;
   const curLabel = cur ? (cur.videos ? (videoCount > 1 ? t.rowVideos : t.rowVideo) : rowTitle(t, cur, videoCount)) : null;
   const curCta = cur ? (cur.videos ? t.watch : ctaOf(t, curActivity!)) : null;
-  const message = fill(t.whatsapp, { name: d.firstName ?? t.student, n: d.n });
   const capNode = d.route[d.route.length - 1];
 
   return (
@@ -326,7 +323,7 @@ export function BsnsWeek({
               </span>
               <span>
                 <b>{t.myCapstone}</b>
-                <small>{fill(t.partOf, { n: d.currentWeek })}</small>
+                <small>{fill(d.n === d.currentWeek && d.capDone ? t.partDoneOf : t.partOf, { n: d.currentWeek })}</small>
               </span>
               <Icon id="arrow" />
             </Link>
@@ -624,23 +621,6 @@ export function BsnsWeek({
           </div>
 
           <aside className={s.side}>
-            <section className={s.box} aria-labelledby="bw-coach">
-              <h3 id="bw-coach">{t.coachTitle}</h3>
-              <div className={s.coach}>
-                <span className={s.avatar} aria-hidden="true">
-                  {d.coach ? d.coach.initials : <Icon id="user" />}
-                </span>
-                <div>
-                  <b>{d.coach ? d.coach.name : t.coachDefault}</b>
-                  <span className={s.sub}>{d.coach ? t.coachReplies : t.coachTeam}</span>
-                </div>
-              </div>
-              <a className={cx(s.btn, s.btnS)} href={`${WHATSAPP}?text=${encodeURIComponent(message)}`} target="_blank" rel="noopener noreferrer">
-                <Icon id="chat" />
-                {t.message}
-                <span className={s.srOnly}>{t.messageNew}</span>
-              </a>
-            </section>
             <section className={cx(s.box, s.cap)} aria-labelledby="bw-cap">
               <span className={s.trophy} aria-hidden="true">
                 <Icon id="trophy" />
@@ -650,11 +630,12 @@ export function BsnsWeek({
               <p>{t.capText}</p>
               <ol className={s.ms}>
                 {d.milestones.map((m) => (
-                  <li key={m.part} className={cx(m.now && s.on)}>
-                    <i aria-hidden="true" />
+                  <li key={m.part} className={cx(m.now && s.on, m.done && s.msDone)}>
+                    <i aria-hidden="true">{m.done && <Icon id="check" />}</i>
                     <div>
                       <span>
                         {fill(t.msPart, { n: m.part })} · {m.now ? t.msThisWeek : fill(t.msWeek, { n: m.week })}
+                        {m.done && ` · ${t.msDone}`}
                       </span>
                       {m.label}
                     </div>
