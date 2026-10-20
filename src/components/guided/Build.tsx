@@ -51,6 +51,8 @@ import { Ico, SavedBadge, say, type SaveState, type T } from "./ui";
 import { PrintCopy, downloadDocx, printPdf } from "./ResumeDoc";
 import { InterviewSection } from "./BuildInterview";
 import { FinanceSection, MoneyInput, isFinanceSection } from "./BuildFinance";
+import { EssBlock } from "./Essentials";
+import type { Block } from "@/lib/ebook-format";
 import s from "./guided.module.css";
 
 export type BuildCtx = {
@@ -206,6 +208,7 @@ export function BuildSection({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
       </div>
     );
   if (sec.type === "simulator") return <InterviewSection sec={sec} ctx={ctx} />;
+  if (sec.type === "rights") return <Rights sec={sec} />;
   return (
     <div className={s.card} data-section={sec.key}>
       <div className={s.bhead}>
@@ -268,16 +271,25 @@ function SectionBody({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
     case "toggle":
     case "simulator":
       return <InterviewSection sec={sec} ctx={ctx} />;
+    case "groups":
+      return <Groups sec={sec} ctx={ctx} />;
     case "card":
       return (
         <div className={s.allc}>
           <p>{sec.text}</p>
-          {sec.link && (
-            <a href={sec.link.url} target="_blank" rel="noopener noreferrer" className={`${s.btn} ${s.btnG}`} style={{ marginTop: 14 }}>
-              {sec.link.label}
-              <Ico n="right" />
-            </a>
-          )}
+          {sec.link &&
+            (sec.link.url.startsWith("#mis-libros/") ? (
+              <Link href={`/app/libros/${sec.link.url.slice("#mis-libros/".length)}`} className={`${s.btn} ${s.btnG}`} style={{ marginTop: 14 }}>
+                <Ico n="book" />
+                {sec.link.label}
+                <Ico n="right" />
+              </Link>
+            ) : (
+              <a href={sec.link.url} target="_blank" rel="noopener noreferrer" className={`${s.btn} ${s.btnG}`} style={{ marginTop: 14 }}>
+                {sec.link.label}
+                <Ico n="right" />
+              </a>
+            ))}
         </div>
       );
     default:
@@ -351,6 +363,7 @@ function linkHref(l: NonNullable<Exclude<ChecklistItem, string>["link"]>, slug: 
   if (l.tool === "resume_review") return "/app/herramientas/resume";
   if (l.tool === "interview_practice") return "/app/herramientas/entrevista";
   if (l.course) return `/app/cursos/${l.course}`;
+  if (l.ebook) return `/app/libros/${l.ebook}`;
   return null;
 }
 
@@ -759,19 +772,19 @@ function Chips({ k, min, max, ctx, label, get, put, ph }: { k: string; min?: num
 }
 
 function PickMany({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx }) {
-  if (sec.options?.length) return <PickOptions sec={sec} ctx={ctx} />;
+  if (sec.options?.length && sec.options.every((o) => typeof o === "string")) return <PickOptions sec={sec} ctx={ctx} options={sec.options as string[]} />;
   return <PickPhrases sec={sec} ctx={ctx} />;
 }
 
 /** pick_many from the section's own options: each chosen one can carry a "why" and a start date; the student can add
  *  their own (allow_custom). Stored as { chosen, why, start }. */
-function PickOptions({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx }) {
+function PickOptions({ sec, ctx, options }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx; options: string[] }) {
   const b = useB();
   const [draft, setDraft] = useState("");
   const count = sec.count ?? 3;
   const v = obj(ctx.data[sec.key]) as { chosen?: string[]; why?: Record<string, string>; start?: Record<string, string> };
   const chosen = strs(v.chosen);
-  const custom = chosen.filter((x) => !sec.options!.includes(x));
+  const custom = chosen.filter((x) => !options.includes(x));
   const write = (patch: Partial<typeof v>) => ctx.set(sec.key, { ...v, chosen, ...patch });
   const toggle = (x: string) => write({ chosen: chosen.includes(x) ? chosen.filter((y) => y !== x) : [...chosen, x] });
   const addOwn = () => {
@@ -782,7 +795,7 @@ function PickOptions({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }
   return (
     <>
       <div className={s.pm}>
-        {[...sec.options!, ...custom].map((x) => {
+        {[...options, ...custom].map((x) => {
           const on = chosen.includes(x);
           return (
             <button key={x} type="button" aria-pressed={on} className={on ? s.on : ""} disabled={!on && chosen.length >= count} onClick={() => toggle(x)}>
@@ -847,8 +860,9 @@ function PickPhrases({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }
   const count = sec.count ?? 5;
   const chosen = strs(ctx.data[sec.key]);
   // The phrases of this step (the verbs in step 3, the good questions in step 5), else every step's.
+  const given = (sec.options ?? []).flatMap((o) => (typeof o === "string" ? [] : [o]));
   const own = (ctx.step.essentials ?? []).flatMap((x) => (x.type === "phrases" ? x.items.map((i) => ({ es: i.es, en: i.en })) : []));
-  const list = own.length ? own : ctx.verbs;
+  const list = given.length ? given : own.length ? own : ctx.verbs;
   // English answers (questions to ask) are kept in English; Spanish verbs as the student picks them.
   const keyOf = (v: { es: string; en: string }) => (sec.audio ? v.en : v.es);
   return (
@@ -1506,5 +1520,61 @@ function Export({ ctx }: { sec: Extract<Section, { type: "export" }>; ctx: Build
       </div>
       <p className={s.count}>{b.sendNote}</p>
     </>
+  );
+}
+
+// ---------- groups and rights (Visa TN) ----------
+
+/** Titled groups of tap-to-check items with an x/N count. With `goals`, what's left unchecked becomes the goals. */
+function Groups({ sec, ctx }: { sec: Extract<Section, { type: "groups" }>; ctx: BuildCtx }) {
+  const raw = Array.isArray(ctx.data[sec.key]) ? (ctx.data[sec.key] as unknown[]) : [];
+  const all = sec.groups.reduce((n, g) => n + g.items.length, 0);
+  const vals = Array.from({ length: all }, (_, i) => raw[i] === true);
+  const n = vals.filter(Boolean).length;
+  let k = 0;
+  return (
+    <>
+      <div className={s.grps}>
+        {sec.groups.map((g) => (
+          <div key={g.title}>
+            <h4>{g.title.toUpperCase()}</h4>
+            <ul className={s.tck}>
+              {g.items.map((x) => {
+                const i = k++;
+                return (
+                  <li key={i}>
+                    <button type="button" aria-pressed={vals[i]} onClick={() => ctx.set(sec.key, vals.map((v, j) => (j === i ? !v : v)))} data-group-item={i}>
+                      <i>
+                        <Ico n="check" />
+                      </i>
+                      <div>{x}</div>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className={`${s.gres} ${n === all ? s.gresOk : ""}`} aria-live="polite" data-groups-count={`${n}/${all}`}>
+        <b>
+          {n}/{all}
+        </b>
+        <span>{n === all ? (sec.done_text ?? "¡Completo!") : sec.goals ? (n ? `Te quedan ${all - n} como metas para mejorar.` : "Marca los que ya practicas.") : `Te faltan ${all - n}.`}</span>
+      </div>
+    </>
+  );
+}
+
+function Rights({ sec }: { sec: Extract<Section, { type: "rights" }> }) {
+  const [open, setOpen] = useState<unknown>(null);
+  return (
+    <div className={s.card} data-section={sec.key}>
+      <div className={s.bhead}>
+        <h3>{sec.title}</h3>
+      </div>
+      <EssBlock block={{ type: "expand", items: sec.items } as unknown as Block} value={open as never} onChange={setOpen as never} />
+      {sec.tip && <EssBlock block={{ type: "tip", title: sec.tip.title, text: sec.tip.text } as unknown as Block} value={null as never} onChange={() => {}} />}
+    </div>
   );
 }

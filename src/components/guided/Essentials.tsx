@@ -391,16 +391,30 @@ function Titles({ block }: { block: Extract<Block, { type: "titles" }> }) {
 /** "Para ver más": YouTube thumbnails that play inline (youtube-nocookie) when tapped. */
 export function MoreVideos({ list }: { list: MoreVideo[] }) {
   const [playing, setPlaying] = useState<string | null>(null);
-  const ok = list.filter((m) => /^[A-Za-z0-9_-]{6,}$/.test(m.id));
+  // YouTube by id (youtube-nocookie); Wistia by its delivery file, played in place.
+  const ok = list.flatMap((m) =>
+    m.provider === "wistia"
+      ? m.media_url && /^https:\/\/embed-ssl\.wistia\.com\/deliveries\//.test(m.media_url)
+        ? [{ ...m, key: m.media_url, wistia: true }]
+        : []
+      : m.id && /^[A-Za-z0-9_-]{6,}$/.test(m.id)
+        ? [{ ...m, key: m.id, wistia: false }]
+        : [],
+  );
   if (!ok.length) return null;
+  const anyWistia = ok.some((m) => m.wistia);
   return (
-    <Card title="Para ver más" sub="Videos de YouTube para reforzar el tema. Son opcionales.">
+    <Card title={anyWistia ? "Más videos del paso" : "Para ver más"} sub={anyWistia ? "Los videos de este módulo." : "Videos de YouTube para reforzar el tema. Son opcionales."}>
       <div className={s.mvl}>
         {ok.map((m) =>
-          playing === m.id ? (
-            <div className={`${s.mv} ${s.mvPlay}`} key={m.id} data-block="more_video">
+          playing === m.key ? (
+            <div className={`${s.mv} ${s.mvPlay}`} key={m.key} data-block="more_video">
               <div className={s.th}>
-                <iframe src={`https://www.youtube-nocookie.com/embed/${m.id}?autoplay=1`} title={m.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+                {m.wistia ? (
+                  <video src={m.media_url} controls autoPlay playsInline aria-label={m.title} />
+                ) : (
+                  <iframe src={`https://www.youtube-nocookie.com/embed/${m.id}?autoplay=1`} title={m.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+                )}
               </div>
               <div>
                 <b>{m.title}</b>
@@ -408,10 +422,12 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
               </div>
             </div>
           ) : (
-            <button type="button" className={s.mv} key={m.id} onClick={() => setPlaying(m.id)} data-block="more_video">
+            <button type="button" className={s.mv} key={m.key} onClick={() => setPlaying(m.key)} data-block="more_video">
               <div className={s.th}>
-                {/* eslint-disable-next-line @next/next/no-img-element -- YouTube's own thumbnail, loaded only here */}
-                <img src={`https://i.ytimg.com/vi/${m.id}/hqdefault.jpg`} alt="" loading="lazy" onError={(e) => e.currentTarget.remove()} />
+                {!m.wistia && (
+                  /* eslint-disable-next-line @next/next/no-img-element -- YouTube's own thumbnail, loaded only here */
+                  <img src={`https://i.ytimg.com/vi/${m.id}/hqdefault.jpg`} alt="" loading="lazy" onError={(e) => e.currentTarget.remove()} />
+                )}
                 <i>
                   <Ico n="play" />
                 </i>
@@ -419,7 +435,7 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
               <div style={{ minWidth: 0 }}>
                 <b>{m.title}</b>
                 <span>
-                  {m.channel && m.channel !== "—" ? m.channel : "YouTube"}
+                  {m.channel && m.channel !== "—" ? m.channel : m.wistia ? "CelsGLOBAL" : "YouTube"}
                   <em className={s.lg}>{m.lang === "en" ? "EN INGLÉS" : "EN ESPAÑOL"}</em>
                 </span>
                 {m.about && <p>{m.about}</p>}

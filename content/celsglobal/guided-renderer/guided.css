@@ -19,6 +19,9 @@
 .gcard .qlist{display:grid;gap:8px}
 .gcard .qlist div{display:flex;gap:10px;align-items:center;padding:12px 14px;border-radius:14px;background:#F7F4EC;font-weight:700;font-size:15px;line-height:1.4}
 .gcard .qlist .i{color:var(--acc);flex:none}
+.grps{display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;align-items:start}
+.grps h4{font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--lab);margin:16px 0 8px;line-height:1.4}
+.grps .tck button{min-height:46px;padding:10px 12px;font-size:14.5px}
 /* expand */
 .gx{display:grid;gap:8px}
 .gx>div{border-radius:16px;background:#FBFAF6;box-shadow:inset 0 0 0 1.5px #EEE8DA}
@@ -329,6 +332,7 @@
 @media (max-width:760px){
  .keys.k2,.ggr,.gw,.pm,.two,.mres,.aibox .row,.mini2{grid-template-columns:minmax(0,1fr)}
  .gx p{padding-left:16px}
+ .grps{grid-template-columns:minmax(0,1fr)}
  .gm .dq{grid-template-columns:minmax(0,1fr)}.gm .dq .bin{justify-content:flex-start}
  .tck button{flex-wrap:wrap}.tck button>div{flex:1;min-width:0}.tck .lnk{margin-left:38px;white-space:normal}
  .gquote{font-size:19px;padding:18px 18px 18px 24px}

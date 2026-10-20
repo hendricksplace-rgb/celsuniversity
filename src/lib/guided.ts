@@ -9,7 +9,7 @@ export type Lang = "es" | "en";
 
 export type SortPractice = { kind: "sort"; title: string; intro?: string; labels: { a: string; b: string }; items: { text: string; answer: "a" | "b"; why?: string }[] };
 export type OrderPractice = { kind: "order"; title: string; intro?: string; items: string[]; distractors?: { text: string; why: string }[]; note?: string };
-export type PickPractice = { kind: "pick"; title: string; intro?: string; items: { weak: string; options: string[]; answer: number; why: string }[] };
+export type PickPractice = { kind: "pick"; title: string; intro?: string; items: { weak?: string; q?: string; options: string[]; answer: number; why: string }[] };
 export type SpotPractice = { kind: "spot"; title: string; intro?: string; doc: { text: string; err: string | null }[] };
 export type HighlightPractice = { kind: "highlight"; title: string; intro?: string; ad_title?: string; ad: string; label?: string; keywords: string[]; min_found?: number };
 export type LabelPractice = { kind: "label"; title: string; intro?: string; labels: string[]; items: { text: string; answer: string }[]; done?: string };
@@ -35,21 +35,21 @@ export type Practice =
   | SumPractice
   | MultiplyPractice;
 
-type Base = { key: string; title?: string; hint?: string; optional?: boolean };
+type Base = { key: string; title?: string; hint?: string; optional?: boolean; source?: string; from_ebook?: string };
 export type FieldDef = { k: string; label: string; placeholder?: string; check?: "email" | "phone_cc"; optional?: boolean; input?: "text" | "datetime" | "select" | "day" | "date"; options?: string[]; money?: boolean };
-export type ChecklistItem = string | { text: string; link?: { label: string; step?: number; tool?: string; course?: string } };
+export type ChecklistItem = string | { text: string; link?: { label: string; step?: number; tool?: string; course?: string; ebook?: string } };
 export type AutoItem = { text: string; auto?: AutoRule };
 export type Section =
   | (Base & { type: "fields"; fields: FieldDef[] })
   | (Base & { type: "textarea" })
-  | (Base & { type: "checklist"; items?: ChecklistItem[]; from?: string; result?: { high: string; mid: string; low: string } })
+  | (Base & { type: "checklist"; items?: ChecklistItem[]; from?: string; result?: { high: string; mid: string; low: string }; done_text?: string })
   | (Base & { type: "notes2"; lists: { k: string; label: string }[] })
   | (Base & { type: "reflect"; prompts: string[] })
   | (Base & { type: "template"; template: string; slots?: string[]; example?: string; min_chars?: number; max_chars?: number; lang?: string })
   | (Base & { type: "jobs"; bullets?: { min?: number; max?: number; checks?: string[] } })
   | (Base & { type: "education"; suggest_equivalent?: boolean })
   | (Base & { type: "chips"; min?: number; max?: number })
-  | (Base & { type: "pick_many"; from?: string; count?: number; audio?: boolean; options?: string[]; why_each?: boolean; with_start_date?: boolean; allow_custom?: boolean })
+  | (Base & { type: "pick_many"; from?: string; count?: number; audio?: boolean; options?: (string | { en: string; es: string })[]; why_each?: boolean; with_start_date?: boolean; allow_custom?: boolean })
   | (Base & { type: "list"; min?: number; max?: number; placeholder?: string })
   | (Base & { type: "postings"; count?: number; fields?: string[]; reflect?: string[] })
   | (Base & { type: "autocheck"; groups: { title: string; items: AutoItem[] }[]; done_text?: string; fix_link?: string })
@@ -75,7 +75,9 @@ export type Section =
       chart?: string;
       is_master?: boolean;
     })
-  | (Base & { type: "budget_6m"; currency?: string; note?: string; from_ebook?: string })
+  | (Base & { type: "budget_6m"; currency?: string; note?: string })
+  | (Base & { type: "groups"; groups: { title: string; items: string[] }[]; goals?: boolean; done_text?: string })
+  | (Base & { type: "rights"; items: { title: string; body: string; icon?: string }[]; tip?: { title?: string; text: string } })
   | (Base & { type: "calc"; formula: string; label: string; editable?: boolean; from?: string })
   | (Base & { type: "compare_options"; options: string[]; fields: FieldDef[]; check?: string })
   | (Base & { type: "choice"; writes_to?: string })
@@ -88,7 +90,7 @@ export type Section =
 export type AnswerForm = "star" | "present_past_future" | "strength_weakness" | "five_years" | "free";
 export type AnswerQ = { en: string; es: string; form: AnswerForm; prefill_from?: string };
 export type SimQ = { en: string | null; audio?: string; surprise?: boolean; note?: string };
-export type MoreVideo = { provider: string; id: string; title: string; channel?: string; lang?: string; about?: string };
+export type MoreVideo = { provider: string; id?: string; media_url?: string; title: string; channel?: string; lang?: string; about?: string };
 
 export type GuidedStep = {
   version: number;
@@ -96,6 +98,12 @@ export type GuidedStep = {
   of: number;
   module_id: string;
   video: { media_url: string } | null;
+  /** Shown under the video, e.g. a lesson whose video isn't uploaded yet. */
+  video_note?: string;
+  /** An audio summary at the top of "Lo esencial": `storage` is a course-media ref, signed into `url` by the step page. */
+  audio?: { title: string; storage?: string; media_url?: string; url?: string | null } | null;
+  /** Filled by the loader: the title of the e-book that "Lo esencial" comes from. */
+  ebookTitle?: string;
   more_video?: MoreVideo | null;
   more_videos?: MoreVideo[];
   kicker: string;
@@ -122,11 +130,11 @@ export const visibleSections = (s: GuidedStep) => s.build.sections.filter((x) =>
 
 // ---------- theme and product (courses.theme): the colors, the hero and what the course builds ----------
 
-export type GuidedTheme = "resume" | "interview" | "finanzas";
-export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" || v === "finanzas" ? v : "resume");
+export type GuidedTheme = "resume" | "interview" | "finanzas" | "visa_tn";
+export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" || v === "finanzas" || v === "visa_tn" ? v : "resume");
 /** Each course builds one "product", stored in its own owner-only table. */
 type Bi = { es: string; en: string };
-export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks" | "financial_plans"; path: string; label: Bi; icon: string; build: Bi; rail: Bi; railP: Bi; see: Bi; privacy?: Bi }> = {
+export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks" | "financial_plans" | "tn_plans"; path: string; label: Bi; icon: string; build: Bi; rail: Bi; railP: Bi; see: Bi; privacy?: Bi }> = {
   resume: {
     table: "resumes",
     path: "mi-resume",
@@ -158,6 +166,17 @@ export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks" | 
     railP: { es: "Todo se guarda solo en Mi plan financiero.", en: "Everything saves to My financial plan automatically." },
     see: { es: "Ver mi plan", en: "See my plan" },
     privacy: { es: "Tus números son solo tuyos. Nadie más ve tu presupuesto.", en: "Your numbers are yours only. Nobody else sees your budget." },
+  },
+  visa_tn: {
+    table: "tn_plans",
+    path: "mi-plan",
+    label: { es: "Mi plan TN", en: "My TN plan" },
+    icon: "pass",
+    build: { es: "Construye tu plan TN", en: "Build your TN plan" },
+    rail: { es: "MI PLAN TN", en: "MY TN PLAN" },
+    railP: { es: "Todo se guarda solo en tu plan TN.", en: "Everything saves to your TN plan automatically." },
+    see: { es: "Ver mi plan TN", en: "See my TN plan" },
+    privacy: { es: "Tu plan, tus respuestas y tu carpeta son solo tuyos.", en: "Your plan, your answers and your folder are yours only." },
   },
 };
 

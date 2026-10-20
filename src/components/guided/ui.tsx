@@ -94,6 +94,13 @@ const P: Record<string, React.ReactNode> = {
   trash: <path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" />,
   up: <path d="M12 19V5M6 11l6-6 6 6" />,
   chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
+  pass: (
+    <>
+      <rect x="5" y="3" width="14" height="18" rx="2.5" />
+      <circle cx="12" cy="10" r="3" />
+      <path d="M9 16h6" />
+    </>
+  ),
   shield: <path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" />,
   money: (
     <>
@@ -367,7 +374,7 @@ export function useToast() {
 export type SaveState = "idle" | "saving" | "saved" | "error";
 
 /** resumes.data / answer_banks.data: the whole product, debounced; flushed when the page hides. Owner only (RLS). */
-export function useResume(userId: string, initial: ResumeData, table: "resumes" | "answer_banks" | "financial_plans" = "resumes") {
+export function useResume(userId: string, initial: ResumeData, table: "resumes" | "answer_banks" | "financial_plans" | "tn_plans" = "resumes") {
   const [data, setData] = useState<ResumeData>(initial);
   const [state, setState] = useState<SaveState>("idle");
   const latest = useRef(data);

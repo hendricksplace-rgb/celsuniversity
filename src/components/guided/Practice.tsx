@@ -206,10 +206,16 @@ function Pick({ p, v, set, t }: { p: PickPractice; v: V; set: (v: V) => void; t:
         const ans = answers[i];
         return (
           <div className={s.dq} key={i}>
-            <div className={s.weak}>
-              {t.weak}
-              <b>{d.weak}</b>
-            </div>
+            {d.weak ? (
+              <div className={s.weak}>
+                {t.weak}
+                <b>{d.weak}</b>
+              </div>
+            ) : d.q ? (
+              <div className={s.weak}>
+                <b style={{ margin: 0 }}>{d.q}</b>
+              </div>
+            ) : null}
             <div className={s.dopts}>
               {d.options.map((o, j) => {
                 const c = ans === undefined ? "" : j === d.answer ? s.right : j === ans ? s.wrong : "";

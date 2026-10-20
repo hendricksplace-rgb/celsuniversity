@@ -10,7 +10,8 @@ import { activeWeekOf, weekPath } from "@/lib/bsns";
 import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
 import { loadGuided } from "@/lib/guided-server";
 import { courseCopy } from "@/lib/guided-copy";
-import { STAGES, stageLabel } from "@/lib/route";
+import { ROUTE_CARDS } from "@/lib/my-courses";
+import { guidedStage } from "@/lib/guided-copy";
 import { GuidedCourseView } from "@/components/guided/GuidedCourseView";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -49,7 +50,7 @@ export default async function CoursePage({ params }: Props) {
       supabase.from("ebooks").select("slug, title").eq("course_id", guided.course.id).eq("status", "published").order("created_at"),
       supabase.rpc("can_use_ai_tools"),
     ]);
-    const stage = stageLabel(slug, lang === "en" ? "en" : "es");
+    const stage = guidedStage(slug, lang === "en" ? "en" : "es");
     const copy = courseCopy(slug, guided.course.title, guided.course.description);
     return (
       <GuidedCourseView
@@ -64,7 +65,7 @@ export default async function CoursePage({ params }: Props) {
         tools={!!tools}
         defaultLang={lang === "en" ? "en" : "es"}
         theme={guided.theme}
-        stages={Object.fromEntries(STAGES.map((x) => [x.slug, stageLabel(x.slug, lang === "en" ? "en" : "es") ?? ""]))}
+        stages={Object.fromEntries(ROUTE_CARDS.map((x) => [x, guidedStage(x, lang === "en" ? "en" : "es") ?? ""]))}
       />
     );
   }

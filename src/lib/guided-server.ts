@@ -69,24 +69,50 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
 }
 
 /**
- * "Lo esencial" from the e-book (essentials_from): the listed screens' blocks, without the activity blocks (skip) and
- * without the block the practice already uses (practice.from_ebook, e.g. "m5 myth"). That practice gets its items
- * from the same block, so the book and the course always say the same thing. Read with the student's access.
+ * "Lo esencial" from the e-book (essentials_from): the listed screens' blocks, without the skipped types / title
+ * prefix and without any block a practice or build section takes with `from_ebook` ("m5 myth", "m5 checklist 1" =
+ * the 2nd checklist of m5). Those sections get their items from the same block, so the book and the course always
+ * say the same thing. Links to courses by id become links by slug. Read with the student's access.
  */
 async function withEbookEssentials(supabase: Client, steps: GuidedStep[]) {
   const slugs = [...new Set(steps.flatMap((s) => (s.essentials_from?.ebook ? [s.essentials_from.ebook] : [])))];
   if (!slugs.length) return;
-  const { data: books } = await supabase.from("ebooks").select("slug, screens").in("slug", slugs);
-  const bySlug = new Map((books ?? []).map((b) => [b.slug, (Array.isArray(b.screens) ? b.screens : []) as unknown as Screen[]]));
+  const { data: books } = await supabase.from("ebooks").select("slug, title, screens").in("slug", slugs);
+  const bySlug = new Map((books ?? []).map((b) => [b.slug, { title: b.title, screens: (Array.isArray(b.screens) ? b.screens : []) as unknown as Screen[] }]));
+  type Any = Record<string, unknown>;
   const blockOf = (screens: Screen[], ref: string | undefined) => {
-    const [sid, type] = (ref ?? "").split(" ");
-    return screens.find((x) => x.id === sid)?.blocks.find((b) => b.type === type) as (Block & { items?: unknown[] }) | undefined;
+    const [sid, type, nth] = (ref ?? "").split(" ");
+    const list = screens.find((x) => x.id === sid)?.blocks.filter((b) => b.type === type) ?? [];
+    return (list[Number(nth || 0)] as (Block & Any) | undefined) ?? null;
   };
+  const courseIds = new Set<string>();
   for (const step of steps) {
     const f = step.essentials_from;
-    const screens = f ? bySlug.get(f.ebook) : undefined;
-    if (!f || !screens) continue;
-    const used = step.practice && "from_ebook" in step.practice ? step.practice.from_ebook : undefined;
+    const book = f ? bySlug.get(f.ebook) : undefined;
+    if (!f || !book) continue;
+    const { screens } = book;
+    step.ebookTitle = book.title;
+    const used = new Set<unknown>();
+    const p = step.practice as (Any & { kind: string; items?: unknown[]; from_ebook?: string }) | null;
+    if (p?.from_ebook) {
+      const b = blockOf(screens, p.from_ebook);
+      if (b) used.add(b);
+      if (b && Array.isArray(b.items) && !p.items?.length) p.items = b.items as unknown[];
+    }
+    for (const sec of step.build.sections as (Any & { type: string; from_ebook?: string })[]) {
+      if (!sec.from_ebook) continue;
+      const b = blockOf(screens, sec.from_ebook);
+      if (!b) continue;
+      used.add(b);
+      if (sec.type === "checklist" && !(sec.items as unknown[] | undefined)?.length) {
+        sec.items = b.items;
+        if (!sec.title && b.title) sec.title = b.title;
+        if (!sec.done_text && b.done_text) sec.done_text = b.done_text;
+      }
+      if (sec.type === "reflect" && !(sec.prompts as unknown[] | undefined)?.length) sec.prompts = b.prompts ?? [];
+      if (sec.type === "plan" && !(sec.tabs as unknown[] | undefined)?.length)
+        sec.tabs = ((b.tabs as Any[] | undefined) ?? []).map((t) => ({ label: t.label, suggest: t.suggest ?? t.goals ?? [] }));
+    }
     const skipTypes = f.skip?.types ?? [];
     const prefix = f.skip?.title_prefix;
     step.ebookScreens = f.screens.flatMap((sid) => {
@@ -94,14 +120,27 @@ async function withEbookEssentials(supabase: Client, steps: GuidedStep[]) {
       if (!sc) return [];
       const blocks = sc.blocks.filter((b) => {
         const title = (b as { title?: string }).title ?? "";
-        return !skipTypes.includes(b.type) && !(prefix && title.startsWith(prefix)) && used !== `${sid} ${b.type}`;
+        return !skipTypes.includes(b.type) && !(prefix && title.startsWith(prefix)) && !used.has(b);
       });
       return [{ id: sc.id, title: sc.title, audio: sc.narration?.audio ?? null, blocks }];
     });
-    const p = step.practice;
-    if (p && (p.kind === "myth" || p.kind === "whatif") && !p.items?.length && p.from_ebook) {
-      const items = blockOf(screens, p.from_ebook)?.items;
-      if (Array.isArray(items)) (p as { items?: unknown[] }).items = items;
+  }
+  // Course links by id (the e-book's) → by slug, wherever they are in the step.
+  const walk = (v: unknown, fn: (o: Any) => void) => {
+    if (Array.isArray(v)) v.forEach((x) => walk(x, fn));
+    else if (v && typeof v === "object") {
+      fn(v as Any);
+      Object.values(v).forEach((x) => walk(x, fn));
     }
+  };
+  const isId = (x: unknown) => typeof x === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(x);
+  for (const step of steps) walk([step.ebookScreens, step.build], (o) => isId(o.course) && courseIds.add(o.course as string));
+  if (courseIds.size) {
+    const { data: cs } = await supabase.from("courses").select("id, slug").in("id", [...courseIds]);
+    const slugOf = new Map((cs ?? []).map((c) => [c.id, c.slug]));
+    for (const step of steps)
+      walk([step.ebookScreens, step.build], (o) => {
+        if (isId(o.course)) o.course = slugOf.get(o.course as string) ?? o.course;
+      });
   }
 }

@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer } from "@/lib/access";
 import { loadGuided } from "@/lib/guided-server";
-import { stageLabel } from "@/lib/route";
+import { guidedStage } from "@/lib/guided-copy";
 import { stepPath } from "@/lib/guided";
 import { GuidedStepView } from "@/components/guided/GuidedStepView";
 import { signStorageRefs } from "@/lib/storage";
@@ -27,17 +27,19 @@ export default async function GuidedStepPage({ params }: Props) {
   if (index < 0) notFound();
   const row = g.steps[index]!;
   // The e-book narration of this step's screens ("▶ Escuchar"): short-lived signed URLs from course-media.
-  const refs = (row.step.ebookScreens ?? []).flatMap((x) => (x.audio ? [x.audio] : []));
+  // and the step's audio summary (audio.storage).
+  const refs = [...(row.step.ebookScreens ?? []).flatMap((x) => (x.audio ? [x.audio] : [])), ...(row.step.audio?.storage ? [row.step.audio.storage] : [])];
   if (refs.length) {
     const signed = await signStorageRefs(supabase, refs, { courseId: course.id, viewer, access: true });
-    row.step.ebookScreens = row.step.ebookScreens!.map((x) => ({ ...x, audio: x.audio ? (signed.get(x.audio) ?? null) : null }));
+    if (row.step.ebookScreens) row.step.ebookScreens = row.step.ebookScreens.map((x) => ({ ...x, audio: x.audio ? (signed.get(x.audio) ?? null) : null }));
+    if (row.step.audio?.storage) row.step.audio = { ...row.step.audio, url: signed.get(row.step.audio.storage) ?? null };
   }
   return (
     <GuidedStepView
       userId={viewer.user.id}
       slug={g.course.slug}
       courseTitle={g.course.title}
-      stage={stageLabel(slug, "es") ?? ""}
+      stage={guidedStage(slug, "es") ?? ""}
       steps={g.steps.map((x) => x.step)}
       index={index}
       moduleId={row.moduleId}

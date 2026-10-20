@@ -1,6 +1,13 @@
 // Course-level words of a guided course page (the hero). The steps themselves come from guided_course_steps;
 // a course without an entry here gets a hero built from its own title and description.
 import type { CourseCopy } from "@/components/guided/GuidedCourseView";
+import { ROUTE_CARDS } from "@/lib/my-courses";
+
+/** The guided courses' place in the CelsGLOBAL route as Mis cursos shows it (the month cards): Visa TN is ETAPA 1. */
+export function guidedStage(slug: string, lang: "es" | "en") {
+  const i = (ROUTE_CARDS as readonly string[]).indexOf(slug);
+  return i < 0 ? null : `${lang === "en" ? "STAGE" : "ETAPA"} ${i + 1}`;
+}
 
 const COPY: Record<string, CourseCopy> = {
   "from-cv-to-u-s-resume-a-step-by-step-guide": {
@@ -28,6 +35,15 @@ const COPY: Record<string, CourseCopy> = {
     result: "Resultado: tu plan financiero",
     routeH: "9 pasos hacia tu plan financiero",
     routeI: "Cada paso agrega una parte a tu plan. Ábrelos en el orden que quieras.",
+  },
+  "tu-camino-con-la-visa-tn-empieza-aqui": {
+    kick: "TU VISA",
+    h1a: "Tu camino con la Visa TN:",
+    h1b: "Empieza aquí",
+    text: "Una guía práctica, paso a paso: desde tu perfil en AllcanzaTN hasta tu entrevista en el consulado. En 8 pasos armas tu plan TN para avanzar con seguridad.",
+    result: "Resultado: tu plan TN",
+    routeH: "8 pasos hacia tu Visa TN",
+    routeI: "Cada paso agrega una parte a tu plan TN. Te recomendamos seguir el orden, pero puedes abrir cualquiera.",
   },
 };
 

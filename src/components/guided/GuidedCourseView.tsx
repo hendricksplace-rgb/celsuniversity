@@ -29,6 +29,7 @@ import { Ico, TopBar, UI, useLang } from "./ui";
 
 const RESUME_SLUG = "from-cv-to-u-s-resume-a-step-by-step-guide";
 const VISA_SLUG = "tu-camino-con-la-visa-tn-empieza-aqui";
+const INTERVIEW_SLUG = "crack-the-u-s-interview-code";
 import s from "./guided.module.css";
 
 export type CourseCopy = { kick: string; h1a: string; h1b: string; h1c?: string; text: string; result: string; routeH?: string; routeI?: string };
@@ -77,6 +78,9 @@ export function GuidedCourseView({
   const enDone = resume.en_status === "approved";
   const bank = theme === "interview";
   const fi = theme === "finanzas";
+  const tn = theme === "visa_tn";
+  const listRail = fi || tn;
+  const readyPct = total ? Math.round((doneN / total) * 100) : 0;
   const money$ = fi ? budgetTotals(resume, steps) : null;
   const ef = fi ? emergencyOf(resume, steps) : null;
   const prod = PRODUCT[theme];
@@ -86,7 +90,7 @@ export function GuidedCourseView({
   const readyN = ansVals.filter((a) => a.ready).length;
 
   return (
-    <div className={`${s.page} ${bank ? s.thInterview : ""} ${fi ? s.thFinanzas : ""}`} lang={lang}>
+    <div className={`${s.page} ${bank ? s.thInterview : ""} ${fi ? s.thFinanzas : ""} ${tn ? s.thTn : ""}`} lang={lang}>
       <TopBar
         kicker={stage}
         title={title}
@@ -100,7 +104,7 @@ export function GuidedCourseView({
         t={t}
         row={
           <>
-            <span>{fi ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${lang === "es" ? `tu plan va en ${doneN} de ${total} partes` : `your plan: ${doneN} of ${total} parts`}` : bank ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${readyN} ${lang === "es" ? "de" : "of"} ${ansVals.length} ${lang === "es" ? "respuestas" : "answers"}` : t.mobHome(cur, total, filled.length, PAPER_KEYS.length)}</span>
+            <span>{tn ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${lang === "es" ? `${readyPct}% listo para tu TN` : `${readyPct}% ready for your TN`}` : fi ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${lang === "es" ? `tu plan va en ${doneN} de ${total} partes` : `your plan: ${doneN} of ${total} parts`}` : bank ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${readyN} ${lang === "es" ? "de" : "of"} ${ansVals.length} ${lang === "es" ? "respuestas" : "answers"}` : t.mobHome(cur, total, filled.length, PAPER_KEYS.length)}</span>
             <Link href={prodHref}>
               <Ico n={prod.icon} />
               {prod.label[lang]}
@@ -111,14 +115,14 @@ export function GuidedCourseView({
       <div className={s.wrap}>
         <div className={s.main}>
           {notice}
-          <section className={`${s.hero} ${bank ? s.heroCover : ""} ${fi ? s.heroFi : ""}`}>
+          <section className={`${s.hero} ${bank ? s.heroCover : ""} ${fi ? s.heroFi : ""} ${tn ? s.heroTn : ""}`}>
             <div className={s.hgrid}>
               <div>
                 <span className={s.kick}>
                   <Ico n="globe" />
                   {copy.kick}
                 </span>
-                {bank || fi ? (
+                {bank || fi || tn ? (
                   <h1>
                     {copy.h1a} <small>{copy.h1b}</small>
                     {copy.h1c ? ` ${copy.h1c}` : null}
@@ -140,7 +144,7 @@ export function GuidedCourseView({
                   </span>
                   {copy.result && (
                     <span>
-                      <Ico n={bank ? "mic" : fi ? "chart" : "doc"} />
+                      <Ico n={bank ? "mic" : fi ? "chart" : tn ? "pass" : "doc"} />
                       {copy.result}
                     </span>
                   )}
@@ -150,9 +154,9 @@ export function GuidedCourseView({
                     <Ico n="play" />
                     {doneN === total ? t.review : t.continueStep(cur)}
                   </Link>
-                  {fi ? (
+                  {fi || tn ? (
                     <Link href={prodHref} className={`${s.btn} ${s.btnO}`}>
-                      <Ico n="chart" />
+                      <Ico n={prod.icon} />
                       {prod.see[lang]}
                     </Link>
                   ) : bank ? (
@@ -168,7 +172,29 @@ export function GuidedCourseView({
                   )}
                 </div>
               </div>
-              {fi && money$ ? (
+              {tn ? (
+                <div className={s.tcard} data-tcard>
+                  <small>{prod.label[lang].toUpperCase()}</small>
+                  <div className={s.ring2}>
+                    <i style={{ ["--p" as string]: `${readyPct}%` }}>
+                      <b>{readyPct}%</b>
+                    </i>
+                    <span>
+                      {lang === "es" ? "Listo para tu TN" : "Ready for your TN"}
+                      <br />
+                      <em>{lang === "es" ? `${doneN} de ${total} partes` : `${doneN} of ${total} parts`}</em>
+                    </span>
+                  </div>
+                  <ul className={s.tl2}>
+                    {steps.map((x) => (
+                      <li key={x.step} className={done[x.step] ? s.ok : ""}>
+                        <em>{done[x.step] ? "✓" : x.step}</em>
+                        {x.builds}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : fi && money$ ? (
                 <div className={s.mcard} data-mcard>
                   <small>{lang === "es" ? "MI PLAN FINANCIERO" : "MY FINANCIAL PLAN"}</small>
                   <div className={s.mrow}>
@@ -294,7 +320,7 @@ export function GuidedCourseView({
             </ol>
           </section>
 
-          {(tools || fi || books.length > 0) && (
+          {(tools || fi || tn || books.length > 0) && (
             <section className={s.sec}>
               <div className={s.sh}>
                 <div className={s.ti}>
@@ -361,7 +387,35 @@ export function GuidedCourseView({
                   </div>
                 </div>
               )}
-              {tools && !bank && !fi && (
+              {tn && (
+                <div className={s.tools}>
+                  <div className={s.tool}>
+                    <div className={s.ic}>
+                      <Ico n="doc" />
+                    </div>
+                    {stages[RESUME_SLUG] && <span className={s.chip}>{stages[RESUME_SLUG]}</span>}
+                    <h3>{lang === "es" ? "De CV a Resume" : "From CV to U.S. Resume"}</h3>
+                    <p>{lang === "es" ? "Tu currículum en formato de EE.UU.: lo primero que te piden en tu perfil y en tu carpeta TN." : "Your résumé in U.S. format: the first thing your profile and your TN folder ask for."}</p>
+                    <Link href={`/app/cursos/${RESUME_SLUG}`} className={`${s.btn} ${s.btnG}`}>
+                      {t.open}
+                      <Ico n="right" />
+                    </Link>
+                  </div>
+                  <div className={s.tool}>
+                    <div className={s.ic}>
+                      <Ico n="chat" />
+                    </div>
+                    {stages[INTERVIEW_SLUG] && <span className={s.chip}>{stages[INTERVIEW_SLUG]}</span>}
+                    <h3>Crack the U.S. Interview Code</h3>
+                    <p>{lang === "es" ? "Tus respuestas y un simulacro en inglés antes de hablar con el empleador." : "Your answers and a mock interview in English before you talk to the employer."}</p>
+                    <Link href={`/app/cursos/${INTERVIEW_SLUG}`} className={`${s.btn} ${s.btnO} ${s.btnGlass}`}>
+                      {t.open}
+                      <Ico n="right" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+              {tools && !bank && !fi && !tn && (
                 <div className={s.tools}>
                   <div className={s.tool}>
                     <div className={s.ic}>
@@ -410,11 +464,11 @@ export function GuidedCourseView({
         </div>
 
         <aside className={s.rail}>
-          {fi ? (
+          {listRail ? (
             <>
               <div className={s.box}>
                 <h4>
-                  <Ico n="chart" />
+                  <Ico n={prod.icon} />
                   {prod.rail[lang]}
                 </h4>
                 <ul className={s.mini}>

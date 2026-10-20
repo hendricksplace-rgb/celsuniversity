@@ -4,12 +4,13 @@ import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer } from "@/lib/access";
 import { loadGuided } from "@/lib/guided-server";
 import { MiPlanView } from "@/components/guided/MiPlanView";
+import { MiPlanTNView } from "@/components/guided/MiPlanTNView";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const metadata = { title: "Mi plan financiero · CelsU" };
+export const metadata = { title: "Mi plan · CelsU" };
 
-/** Mi plan financiero (celsu-global-finanzas-brief.md): the Finanzas course's product, owner only (financial_plans). */
+/** "Mi plan" of a guided course: Mi plan financiero (Finanzas, financial_plans) or Mi plan TN (Visa TN, tn_plans). Owner only. */
 export default async function MiPlanPage({ params }: Props) {
   const { slug } = await params;
   const { lang } = await getDictionary();
@@ -20,8 +21,11 @@ export default async function MiPlanPage({ params }: Props) {
   if (!course) notFound();
   if (!(await canAccessCourse(supabase, viewer, course.id))) redirect(`/app/cursos/${slug}`);
   const g = await loadGuided(supabase, slug, viewer.user.id);
-  if (!g || g.theme !== "finanzas") notFound();
+  if (!g || (g.theme !== "finanzas" && g.theme !== "visa_tn")) notFound();
   const steps = g.steps.map((x) => x.step);
+  const disclaimer = steps.find((x) => x.disclaimer)?.disclaimer ?? null;
+  if (g.theme === "visa_tn")
+    return <MiPlanTNView userId={viewer.user.id} slug={g.course.slug} steps={steps} plan={g.resume} name={viewer.displayName ?? ""} defaultLang={lang === "en" ? "en" : "es"} disclaimer={disclaimer} />;
   return (
     <MiPlanView
       userId={viewer.user.id}
@@ -30,7 +34,7 @@ export default async function MiPlanPage({ params }: Props) {
       plan={g.resume}
       name={viewer.displayName ?? ""}
       defaultLang={lang === "en" ? "en" : "es"}
-      disclaimer={steps.find((x) => x.disclaimer)?.disclaimer ?? null}
+      disclaimer={disclaimer}
     />
   );
 }

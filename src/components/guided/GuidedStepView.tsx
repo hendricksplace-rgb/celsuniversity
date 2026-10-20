@@ -50,6 +50,7 @@ export function GuidedStepView(p: StepPageProps) {
   const prodIcon = PRODUCT[p.theme].icon;
   const cover = p.theme === "interview";
   const fi = p.theme === "finanzas";
+  const tn = p.theme === "visa_tn";
   const totals = useMemo(() => (fi ? budgetTotals(data, p.steps) : null), [fi, data, p.steps]);
   const screens = step.ebookScreens ?? [];
   const [st, setSt] = useStepState(p.userId, p.moduleId, p.state);
@@ -178,7 +179,7 @@ export function GuidedStepView(p: StepPageProps) {
   );
 
   return (
-    <div className={`${s.page} ${cover ? s.thInterview : ""} ${fi ? s.thFinanzas : ""}`} lang={lang}>
+    <div className={`${s.page} ${cover ? s.thInterview : ""} ${fi ? s.thFinanzas : ""} ${tn ? s.thTn : ""}`} lang={lang}>
       <TopBar
         kicker={`${t.stepOf(n, step.of)} · ${kickWord.toUpperCase()}`}
         title={step.title}
@@ -202,9 +203,9 @@ export function GuidedStepView(p: StepPageProps) {
       />
       <div className={s.wrap}>
         <div className={s.main}>
-          <section className={`${s.hero} ${s.heroStep} ${cover ? s.heroCover : ""} ${fi ? s.heroFi : ""}`}>
+          <section className={`${s.hero} ${s.heroStep} ${cover ? s.heroCover : ""} ${fi ? s.heroFi : ""} ${tn ? s.heroTn : ""}`}>
             <span className={s.kick}>
-              <Ico n={cover ? "chat" : fi ? "money" : "brief"} />
+              <Ico n={cover ? "chat" : fi ? "money" : tn ? "pass" : "brief"} />
               {t.stepOf(n, step.of)}
             </span>
             <h1>{step.title}</h1>
@@ -224,6 +225,12 @@ export function GuidedStepView(p: StepPageProps) {
           <section className={s.sec} id="vid">
             <Head n={partNo(parts, "vid")} small={step.video?.media_url ? t.parts.vid : t.parts.nutshell} h={step.video?.media_url ? step.title : t.partH.nutshell} />
             {step.video?.media_url && <StepVideo url={step.video.media_url} title={step.title} n={n} minutes={step.minutes} />}
+            {step.video_note && (
+              <div className={s.gdisc} data-video-note>
+                <Ico n="alert" />
+                <div>{step.video_note}</div>
+              </div>
+            )}
             <Keys keys={step.keys} first={!step.video?.media_url} />
           </section>
 
@@ -231,8 +238,25 @@ export function GuidedStepView(p: StepPageProps) {
             <Head n={partNo(parts, "ess")} small={t.parts.ess} h={screens[0]?.title ?? t.partH.ess} />
             {screens.length > 0 && (
               <p className={`${s.intro} ${s.introIco}`}>
-                <Ico n="book" style={{ width: 16, height: 16 }} /> {lang === "es" ? "Del e-book de este curso. Es el mismo texto que en Mis libros." : "From this course's e-book: the same text as in My books."}
+                <Ico n="book" style={{ width: 16, height: 16 }} /> {step.ebookTitle
+                  ? lang === "es"
+                    ? `Del e-book «${step.ebookTitle}». Es el mismo texto que en Mis libros.`
+                    : `From the e-book “${step.ebookTitle}”: the same text as in My books.`
+                  : lang === "es"
+                    ? "Del e-book de este curso. Es el mismo texto que en Mis libros."
+                    : "From this course's e-book: the same text as in My books."}
               </p>
+            )}
+            {step.audio?.url && (
+              <div className={`${s.gtip} ${s.gtipAct}`} data-step-audio>
+                <span className={s.gi}>
+                  <Ico n="vol" />
+                </span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <b>{step.audio.title}</b>
+                  <audio controls preload="none" src={step.audio.url} style={{ width: "100%", marginTop: 8 }} />
+                </div>
+              </div>
             )}
             {screens.map((sc, si) => (
               <div key={sc.id} className={s.essScr} data-screen={sc.id}>

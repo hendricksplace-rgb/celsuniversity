@@ -1,0 +1,1629 @@
+[
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 1,
+    "of": 8,
+    "module_id": "575de2d6-538f-4b39-8d18-f6aa202e5ff2",
+    "kicker": "Paso 1 · Bienvenida: tu camino empieza aquí",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/62e3bea9c4c71ea6376edd335262c265b37913b2/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m1"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Bienvenida: tu camino empieza aquí",
+    "minutes": 25,
+    "builds": "Tu punto de partida y tu cita con tu IG",
+    "intro": "Has tomado una decisión valiente: invertir en tu futuro. Aquí entiendes qué es la Visa TN, cómo funciona este curso y dónde vas tú en tu camino.",
+    "keys": [
+      {
+        "t": "T-MEC",
+        "d": "La Visa TN es parte del tratado entre México, Estados Unidos y Canadá."
+      },
+      {
+        "t": "Oferta y profesión",
+        "d": "Necesitas una oferta real y una profesión de la lista del tratado."
+      },
+      {
+        "t": "Temporal y renovable",
+        "d": "No tienes que cambiar tu residencia permanente."
+      }
+    ],
+    "more_videos": [],
+    "video_note": "El video «Un mensaje del fundador de Allcanza — Michael Hendricks» no tiene archivo cargado; se agrega aquí cuando esté.",
+    "practice": {
+      "kind": "myth",
+      "title": "¿Verdadero o falso?",
+      "intro": "Lo que dice el e-book sobre la Visa TN. Toca tu respuesta.",
+      "labels": {
+        "true": "Verdadero",
+        "false": "Falso"
+      },
+      "items": [
+        {
+          "q": "La Visa TN es parte del T-MEC, el tratado entre México, Estados Unidos y Canadá.",
+          "real": true,
+          "a": "Verdadero. Por eso su trámite es más sencillo que el de otras visas."
+        },
+        {
+          "q": "Cualquier profesión califica para la Visa TN.",
+          "real": false,
+          "a": "Falso. Tu profesión debe estar en la lista autorizada del tratado."
+        },
+        {
+          "q": "Necesitas una oferta de empleo real de una empresa en Estados Unidos.",
+          "real": true,
+          "a": "Verdadero. Sin una oferta válida no hay Visa TN."
+        },
+        {
+          "q": "Con la Visa TN tienes que cambiar tu residencia permanente.",
+          "real": false,
+          "a": "Falso. Es temporal y renovable, y no requiere cambiar tu residencia permanente."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu punto de partida",
+      "intro": "Agenda tu cita con tu IG asignado y comienza tu perfil en allcanzatn.com. Antes, mira dónde vas en tu camino.",
+      "sections": [
+        {
+          "key": "where",
+          "type": "checklist",
+          "title": "¿Dónde vas en tu camino?",
+          "source": "el-camino-empieza-aqui s2",
+          "result": {
+            "high": "¡Estás listo para el siguiente paso!",
+            "mid": "Vas avanzando. Este curso te ayuda con lo que falta.",
+            "low": "Es tu punto de partida. Paso a paso lo vas a completar."
+          },
+          "items": [
+            {
+              "text": "He creado y completado mi perfil en allcanzatn.com",
+              "link": {
+                "label": "Paso 2",
+                "step": 2
+              }
+            },
+            {
+              "text": "He subido mi CV o currículum actualizado"
+            },
+            {
+              "text": "He tomado el curso introductorio sobre la Visa TN"
+            },
+            {
+              "text": "He revisado los requisitos generales para calificar a una Visa TN"
+            },
+            {
+              "text": "He consultado con mi familia sobre la posibilidad de trabajar en EE.UU.",
+              "link": {
+                "label": "Paso 5",
+                "step": 5
+              }
+            },
+            {
+              "text": "He identificado mis metas profesionales para los próximos 2 años"
+            },
+            {
+              "text": "He comenzado a preparar mis documentos personales (pasaporte, título, etc.)"
+            },
+            {
+              "text": "He comenzado a mejorar mi nivel de inglés (si es necesario)",
+              "link": {
+                "label": "Paso 4",
+                "step": 4
+              }
+            },
+            {
+              "text": "Estoy listo para ser contactado por reclutadores a través de Allcanza"
+            },
+            {
+              "text": "Tengo una actitud positiva y estoy comprometido con este proceso"
+            },
+            {
+              "text": "Me comunico con mi IG asignado y organizo mis papeles según sus instrucciones"
+            }
+          ]
+        },
+        {
+          "key": "ig",
+          "type": "fields",
+          "title": "Tu cita con tu IG",
+          "hint": "Tu IG es la persona de Allcanza que te acompaña en tu proceso.",
+          "fields": [
+            {
+              "k": "name",
+              "label": "Nombre de tu IG"
+            },
+            {
+              "k": "when",
+              "label": "Fecha y hora de tu cita",
+              "input": "datetime"
+            }
+          ]
+        },
+        {
+          "key": "profile_started",
+          "type": "toggle",
+          "title": "Ya comencé mi perfil en allcanzatn.com",
+          "text": "Lo terminas en el paso 2, sección por sección."
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué tratado hace posible la Visa TN?",
+        "o": [
+          "El T-MEC",
+          "El Acuerdo de París",
+          "El programa Visa Waiver"
+        ],
+        "a": 0,
+        "why": "La Visa TN es parte del T-MEC, por eso su trámite es más sencillo que el de otras visas."
+      },
+      {
+        "q": "¿Qué necesitas para solicitar la Visa TN?",
+        "o": [
+          "Solo tu pasaporte",
+          "Una oferta de empleo válida y una profesión autorizada",
+          "Vivir en EE.UU. un año antes"
+        ],
+        "a": 1,
+        "why": "Necesitas una oferta real y una profesión de la lista autorizada del tratado."
+      },
+      {
+        "q": "¿Cómo te recomienda el curso avanzar?",
+        "o": [
+          "A tu ritmo, en el orden sugerido",
+          "Solo el último módulo",
+          "Todo en un día"
+        ],
+        "a": 0,
+        "why": "Avanza a tu ritmo, pero sigue el orden sugerido: cada módulo es breve."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 2,
+    "of": 8,
+    "module_id": "dbcf4cbc-aadf-4d67-b87a-454832b011e6",
+    "kicker": "Paso 2 · Tu perfil en AllcanzaTN",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/dc7ea943ec9bf7172f313abc2c09ca625d0c5c11/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m2"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Tu perfil en AllcanzaTN",
+    "minutes": 35,
+    "builds": "Tu perfil completo en allcanzatn.com",
+    "intro": "Tu perfil te conecta directamente con empleadores interesados en tu talento. Es la primera impresión que tendrán de ti: hazlo con cuidado, atención y orgullo.",
+    "keys": [
+      {
+        "t": "Primera impresión",
+        "d": "Es lo primero que ven los empleadores."
+      },
+      {
+        "t": "Vacantes reales",
+        "d": "Allcanza cruza tus datos con vacantes compatibles."
+      },
+      {
+        "t": "Más rápido",
+        "d": "Un perfil completo aumenta tus probabilidades de ser seleccionado."
+      }
+    ],
+    "more_videos": [
+      {
+        "provider": "wistia",
+        "media_url": "https://embed-ssl.wistia.com/deliveries/7316f6f4aa6649877b9b25f20dcd584b57d32e20/file.mp4",
+        "title": "Tutorial en video: tu perfil paso a paso",
+        "channel": "Allcanza",
+        "lang": "es"
+      }
+    ],
+    "practice": {
+      "kind": "order",
+      "title": "Ordena los pasos",
+      "intro": "Toca los pasos para completar tu perfil, en el orden del tutorial.",
+      "items": [
+        "Entra a allcanzatn.com y haz clic en «Sign In Aplicante»",
+        "Inicia sesión con el usuario y la contraseña de tu correo",
+        "Abre «Perfil» en la esquina superior derecha",
+        "Llena tu información personal, profesional y académica",
+        "Sube tu título y tu cédula profesional",
+        "Guarda y confirma que tu perfil se actualizó"
+      ]
+    },
+    "build": {
+      "title": "Tu perfil, sección por sección",
+      "intro": "Revisa cada sección de tu perfil. Si ya lo comenzaste, mejora lo que sea necesario. Si no lo has hecho, inicia hoy mismo. Marca cada dato cuando lo tengas en tu perfil.",
+      "sections": [
+        {
+          "key": "need",
+          "type": "checklist",
+          "title": "Lo que necesitas",
+          "from_ebook": "m2 checklist"
+        },
+        {
+          "key": "profile",
+          "type": "groups",
+          "title": "Tu perfil en allcanzatn.com",
+          "source": "tutorial-perfil-plataforma-tn s2–s3",
+          "done_text": "¡Tu perfil está completo! Guárdalo y mantenlo al día.",
+          "groups": [
+            {
+              "title": "Información básica",
+              "items": [
+                "Nombre completo",
+                "Género",
+                "Fecha de nacimiento",
+                "Nacionalidad",
+                "Teléfono de contacto",
+                "Correo electrónico",
+                "Dirección actual"
+              ]
+            },
+            {
+              "title": "Información profesional",
+              "items": [
+                "Profesión",
+                "Área de especialización",
+                "Años de experiencia laboral",
+                "Idiomas y nivel: básico, intermedio o avanzado",
+                "Disponibilidad para viajar (sí / no)",
+                "Disponibilidad para reubicarte (sí / no)"
+              ]
+            },
+            {
+              "title": "Formación académica",
+              "items": [
+                "Nivel académico alcanzado",
+                "Nombre de la institución",
+                "País de estudios",
+                "Año de graduación"
+              ]
+            },
+            {
+              "title": "Documentación obligatoria (PDF o JPG, nítidos y vigentes)",
+              "items": [
+                "Título universitario (grado académico)",
+                "Cédula profesional"
+              ]
+            },
+            {
+              "title": "Experiencia laboral (puedes añadir varias)",
+              "items": [
+                "Nombre del empleador",
+                "Puesto ocupado",
+                "Fechas de inicio y término",
+                "Responsabilidades principales",
+                "Motivo de salida"
+              ]
+            },
+            {
+              "title": "Habilidades y certificaciones",
+              "items": [
+                "Habilidades técnicas (por ejemplo: manejo de software, procedimientos médicos)",
+                "Certificaciones o diplomados relevantes",
+                "Cursos de actualización o formación continua"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "tip",
+          "type": "tip",
+          "title": "Consejo final",
+          "text": "Mantén tu perfil siempre actualizado. Esto aumenta tus posibilidades de ser seleccionado para futuras oportunidades del programa TN."
+        },
+        {
+          "key": "link",
+          "type": "card",
+          "title": "Abre tu perfil",
+          "text": "Tu perfil se llena en la plataforma de Allcanza. Aquí solo llevas la cuenta de lo que ya tienes.",
+          "link": {
+            "label": "Ir a allcanzatn.com",
+            "url": "https://www.allcanzatn.com"
+          }
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Para qué sirve tu perfil en AllcanzaTN?",
+        "o": [
+          "Solo para recibir correos",
+          "Para que Allcanza te conecte con vacantes reales",
+          "Para pagar la visa"
+        ],
+        "a": 1,
+        "why": "Tu perfil es tu carta de presentación: permite cruzar tus datos con vacantes reales y compatibles."
+      },
+      {
+        "q": "¿En qué formato subes tus documentos?",
+        "o": [
+          "PDF o imágenes de buena calidad",
+          "Fotos borrosas, da igual",
+          "No se suben"
+        ],
+        "a": 0,
+        "why": "Sube documentos en PDF o imágenes de buena calidad, nítidos y vigentes."
+      },
+      {
+        "q": "¿Qué documentos son obligatorios en tu perfil?",
+        "o": [
+          "Tu acta de nacimiento",
+          "Título universitario y cédula profesional",
+          "Tu licencia de manejo"
+        ],
+        "a": 1,
+        "why": "Son la documentación obligatoria del paso 7 del tutorial."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 3,
+    "of": 8,
+    "module_id": "214ae068-db84-4504-a181-f4a98961d236",
+    "kicker": "Paso 3 · Prepárate con nuestros cursos",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/906abed7af577cd729d9a5a35b1226c14872e414/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m3"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Prepárate con nuestros cursos",
+    "minutes": 25,
+    "builds": "Tu plan semanal de cursos",
+    "intro": "Prepararte es invertir en ti. Los cursos de CelsUniversity te dan herramientas prácticas que aumentan tu valor profesional frente a candidatos que no se han preparado.",
+    "keys": [
+      {
+        "t": "Te diferencian",
+        "d": "Destacas ante los reclutadores."
+      },
+      {
+        "t": "Compromiso",
+        "d": "Demuestran tu preparación."
+      },
+      {
+        "t": "Sin errores",
+        "d": "Evitas errores comunes en currículum, entrevista y cultura."
+      }
+    ],
+    "more_videos": [],
+    "practice": {
+      "kind": "sort",
+      "title": "¿Qué curso te ayuda?",
+      "intro": "Toca el curso que resuelve cada situación.",
+      "labels": {
+        "a": "De CV a Resume",
+        "b": "Entrevista",
+        "c": "Finanzas"
+      },
+      "items": [
+        {
+          "text": "Mi currículum tiene 3 páginas y foto.",
+          "answer": "a",
+          "why": "En EE.UU. se usa un resume de una página, sin foto."
+        },
+        {
+          "text": "Me pongo nervioso cuando me preguntan «Tell me about yourself».",
+          "answer": "b",
+          "why": "Crack the U.S. Interview Code te prepara para las preguntas clásicas."
+        },
+        {
+          "text": "No sé cuánto voy a gastar en renta y comida los primeros meses.",
+          "answer": "c",
+          "why": "Finanzas personales te ayuda a armar tu presupuesto en EE.UU."
+        },
+        {
+          "text": "No sé cómo describir mis logros con números.",
+          "answer": "a",
+          "why": "En De CV a Resume aprendes a escribir logros medibles."
+        },
+        {
+          "text": "Quiero saber qué preguntarle al entrevistador al final.",
+          "answer": "b",
+          "why": "Es uno de los pasos del curso de entrevista."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu plan semanal de cursos",
+      "intro": "Haz una lista de los cursos que aún no has tomado. Organiza un plan semanal con metas claras y empieza por el que más te sirva hoy (te recomendamos currículum y entrevista).",
+      "sections": [
+        {
+          "key": "taken",
+          "type": "checklist",
+          "title": "¿Cuáles ya tomaste?",
+          "from_ebook": "m3 checklist"
+        },
+        {
+          "key": "weekly",
+          "type": "list",
+          "title": "Tu plan semanal",
+          "hint": "Un día y un curso por línea.",
+          "min": 3,
+          "max": 7,
+          "placeholder": "Ej. Lunes y miércoles: De CV a Resume, pasos 1 y 2"
+        },
+        {
+          "key": "first",
+          "type": "textarea",
+          "title": "¿Por cuál empiezas y por qué?",
+          "hint": "Una o dos frases.",
+          "optional": true
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Con qué cursos te recomiendan empezar?",
+        "o": [
+          "Currículum y entrevista",
+          "Finanzas y cultura",
+          "Ninguno"
+        ],
+        "a": 0,
+        "why": "Currículum y entrevista te dan una base firme para todo el proceso."
+      },
+      {
+        "q": "¿Por qué tomar estos cursos?",
+        "o": [
+          "Porque son obligatorios para la visa",
+          "Porque te diferencian ante los reclutadores",
+          "Para llenar tu perfil"
+        ],
+        "a": 1,
+        "why": "Te diferencian, demuestran tu compromiso y te enseñan a evitar errores comunes."
+      },
+      {
+        "q": "¿Cuánto dura la sesión personalizada de preparación para entrevista?",
+        "o": [
+          "50 minutos",
+          "10 minutos",
+          "3 horas"
+        ],
+        "a": 0,
+        "why": "Es una sesión personalizada de 50 minutos."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 4,
+    "of": 8,
+    "module_id": "9b3da52d-23ef-4e2d-91d0-134045f80086",
+    "kicker": "Paso 4 · Mejora tu inglés",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/2c83ac41c5e0a6db09a7201f9170bad2bed9a9ce/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m4"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Mejora tu inglés",
+    "minutes": 30,
+    "builds": "Tu nivel, tu plan de inglés y tus frases",
+    "intro": "El inglés es una herramienta, no una barrera. No necesitas hablar perfecto: necesitas comunicarte con claridad y seguir mejorando.",
+    "keys": [
+      {
+        "t": "Tu trabajo",
+        "d": "Es esencial para hacer tu trabajo correctamente."
+      },
+      {
+        "t": "Tus entrevistas",
+        "d": "Participas con seguridad."
+      },
+      {
+        "t": "Tu vida diaria",
+        "d": "Transporte, salud, compras y relaciones."
+      }
+    ],
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "Dcoxfpb3S8Y",
+        "title": "Importancia de Inglés en el desarrollo profesional",
+        "channel": "Northbridge University - Estudios Online",
+        "lang": "es",
+        "about": "Por qué el inglés abre oportunidades profesionales."
+      }
+    ],
+    "practice": {
+      "kind": "listen_pick",
+      "title": "¿Qué dices?",
+      "intro": "Del Mini Diccionario TN: escucha y elige la frase para cada momento.",
+      "items": [
+        {
+          "situation": "No entendiste la pregunta del reclutador.",
+          "options": [
+            "Could you repeat the question?",
+            "I'm willing to relocate.",
+            "Thank you for your time."
+          ],
+          "answer": 0
+        },
+        {
+          "situation": "Te preguntan si puedes mudarte a otra ciudad.",
+          "options": [
+            "What would my schedule be?",
+            "I'm willing to relocate.",
+            "Where can I send my documents?"
+          ],
+          "answer": 1
+        },
+        {
+          "situation": "El reclutador habla muy rápido.",
+          "options": [
+            "Could you speak more slowly, please?",
+            "I'm available immediately.",
+            "I have experience in…"
+          ],
+          "answer": 0
+        },
+        {
+          "situation": "Terminó la entrevista y quieres saber qué sigue.",
+          "options": [
+            "I'm willing to learn.",
+            "What is the next step?",
+            "I consider myself a responsible person."
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu plan de inglés",
+      "intro": "Agenda tu evaluación gratuita de inglés (25 minutos) para saber tu punto de partida. Luego elige un curso o tutoría para comenzar cuanto antes.",
+      "sections": [
+        {
+          "key": "level",
+          "type": "fields",
+          "title": "Tu punto de partida",
+          "fields": [
+            {
+              "k": "level",
+              "label": "Tu nivel de inglés hoy",
+              "input": "select",
+              "options": [
+                "Básico",
+                "Intermedio",
+                "Avanzado",
+                "Todavía no sé: haré la evaluación"
+              ]
+            },
+            {
+              "k": "eval_date",
+              "label": "Fecha de tu evaluación gratuita (25 min)",
+              "input": "date"
+            }
+          ]
+        },
+        {
+          "key": "option",
+          "type": "pick_many",
+          "title": "Elige con qué empiezas",
+          "hint": "Una o dos opciones.",
+          "count": 2,
+          "options": [
+            "Intro a Inglés (10 semanas)",
+            "Inglés para Negocios",
+            "Tutorías en vivo (25 minutos)"
+          ]
+        },
+        {
+          "key": "phrases",
+          "type": "pick_many",
+          "title": "Tus 5 frases para la entrevista",
+          "hint": "Del Mini Diccionario TN. Toca para escucharlas en inglés.",
+          "count": 5,
+          "audio": true,
+          "source": "mini-diccionario-tn s3",
+          "options": [
+            {
+              "en": "I'm available immediately.",
+              "es": "Estoy disponible de inmediato"
+            },
+            {
+              "en": "I have experience in…",
+              "es": "Tengo experiencia en…"
+            },
+            {
+              "en": "I consider myself a responsible person.",
+              "es": "Me considero una persona responsable"
+            },
+            {
+              "en": "I'm interested in this opportunity.",
+              "es": "Estoy interesado/a en esta oportunidad"
+            },
+            {
+              "en": "I'm willing to relocate.",
+              "es": "Estoy dispuesto/a a reubicarme"
+            },
+            {
+              "en": "I'm willing to learn.",
+              "es": "Estoy dispuesto/a a aprender"
+            },
+            {
+              "en": "Thank you for your time.",
+              "es": "Gracias por su tiempo"
+            },
+            {
+              "en": "Could you repeat the question?",
+              "es": "¿Podría repetir la pregunta?"
+            },
+            {
+              "en": "Could you speak more slowly, please?",
+              "es": "¿Puede hablar más despacio, por favor?"
+            },
+            {
+              "en": "What is the next step?",
+              "es": "¿Cuál es el siguiente paso?"
+            },
+            {
+              "en": "I'm excited about this opportunity.",
+              "es": "Estoy emocionado/a por esta oportunidad"
+            },
+            {
+              "en": "I look forward to your response.",
+              "es": "Quedo atento/a a su respuesta"
+            }
+          ]
+        },
+        {
+          "key": "dict",
+          "type": "card",
+          "title": "Mini Diccionario TN",
+          "text": "60 palabras de tu proceso en 4 temas (perfil, contratación, entrevistas y trámites), con audio. Está en Mis libros.",
+          "link": {
+            "label": "Abrir el Mini Diccionario",
+            "url": "#mis-libros/mini-diccionario-tn"
+          }
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué significa dominar el inglés para este proceso?",
+        "o": [
+          "Hablarlo perfecto",
+          "Tener acento nativo",
+          "Comunicarte con claridad y seguir mejorando"
+        ],
+        "a": 2,
+        "why": "No se trata de hablar perfecto, sino de comunicarte con claridad y mostrar esfuerzo y constancia."
+      },
+      {
+        "q": "¿Cuánto dura la evaluación gratuita de inglés?",
+        "o": [
+          "25 minutos",
+          "2 horas",
+          "Una semana"
+        ],
+        "a": 0,
+        "why": "Es una evaluación gratuita de 25 minutos."
+      },
+      {
+        "q": "No entiendes una pregunta en la entrevista. ¿Qué dices?",
+        "o": [
+          "Nada, adivinas",
+          "Could you repeat the question?",
+          "I'm available immediately."
+        ],
+        "a": 1,
+        "why": "Si no entiendes algo, es válido pedir que lo repitan."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 5,
+    "of": 8,
+    "module_id": "bf50064c-0250-4d6c-a0ad-5d8091f9381b",
+    "kicker": "Paso 5 · Preparación profesional y familiar",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/5f8f05c9824f8a2a27ef506e4b7671f4bf0a78b9/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m5"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Preparación profesional y familiar",
+    "minutes": 40,
+    "builds": "Tu por qué y tu conversación en familia",
+    "intro": "Este cambio no lo vives en solitario. Tu preparación profesional va de la mano con una preparación emocional y familiar: si se preparan juntos, también avanzarán juntos.",
+    "keys": [
+      {
+        "t": "Tu familia",
+        "d": "Hablen, escuchen y planeen cómo mantenerse conectados."
+      },
+      {
+        "t": "Tus metas",
+        "d": "A 6, 12 y 24 meses."
+      },
+      {
+        "t": "Tu por qué",
+        "d": "Compartirlo convierte a tu familia en tu apoyo."
+      }
+    ],
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "dbtyoNPFfp0",
+        "title": "Dos preguntas para tomar buenas decisiones",
+        "channel": "AprendemosJuntos · José Carlos Ruiz",
+        "lang": "es",
+        "about": "Dos preguntas para decidir con calma una decisión importante."
+      },
+      {
+        "provider": "youtube",
+        "id": "kLPmJbeLAE8",
+        "title": "La diferencia entre «hablar» y «comunicar»",
+        "channel": "Mario Alonso Puig",
+        "lang": "es",
+        "about": "Comunicación asertiva: cómo decir lo importante y escuchar."
+      },
+      {
+        "provider": "youtube",
+        "id": "dgcBuAVkTBk",
+        "title": "Cómo planificar el futuro de nuestras familias",
+        "channel": "CSUN Family Focus Resource Center",
+        "lang": "es",
+        "about": "Planear en familia los cambios que vienen."
+      }
+    ],
+    "audio": {
+      "title": "Resumen del curso TN (audio)",
+      "media_url": "https://embed-ssl.wistia.com/deliveries/42252fa4002c9f8a5a067d0ee6cc75c2/file.mp3",
+      "storage": "storage://course-media/78e640f6-fc48-4659-8db0-8ce01381caba/audio/2ba1e477-9f35-4653-911b-5156ebd37013.mp3"
+    },
+    "practice": {
+      "kind": "pick",
+      "title": "¿Qué le respondes?",
+      "intro": "Tu familia tiene dudas. Elige la respuesta que habla con el corazón (de la Guía de conversaciones en familia).",
+      "items": [
+        {
+          "q": "Tu mamá: «¿Y por qué te tienes que ir?»",
+          "options": [
+            "«Porque sí, ya lo decidí.»",
+            "«Quiero crecer profesionalmente y tener una mejor calidad de vida. Este paso es por mí, pero también por nosotros.»",
+            "«No te preocupes, no es nada.»"
+          ],
+          "answer": 1,
+          "why": "Comparte tu «por qué» con tus propias palabras."
+        },
+        {
+          "q": "Tu pareja: «Me da miedo que esto nos separe.»",
+          "options": [
+            "«Entiendo que estés preocupado. Yo también lo estoy un poco, pero me estoy preparando bien.»",
+            "«Es tu problema.»",
+            "«Ya veremos.»"
+          ],
+          "answer": 0,
+          "why": "Escucha sus dudas con paciencia y apertura, y reafirma que siguen siendo parte de tu vida."
+        },
+        {
+          "q": "Tu papá: «¿Y eso es legal? ¿Es seguro?»",
+          "options": [
+            "«No sé bien.»",
+            "«Esta visa me permite trabajar legalmente y aplicar lo que estudié.»",
+            "«Mejor no hablemos de eso.»"
+          ],
+          "answer": 1,
+          "why": "Involucra a tu familia: muéstrales el sitio de Allcanza y tu plan."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu por qué y tu conversación en familia",
+      "intro": "Invita a tu familia a una conversación sincera: una comida, un café, una caminata. Cuéntales tu decisión, escúchalos y hazlos parte del proceso. Antes, aclara tus ideas.",
+      "sections": [
+        {
+          "key": "why",
+          "type": "reflect",
+          "title": "Tu por qué",
+          "from_ebook": "m5 reflect"
+        },
+        {
+          "key": "me",
+          "type": "reflect",
+          "title": "Preguntas para ti",
+          "source": "guia-conversaciones-en-familia-tn s1",
+          "prompts": [
+            "¿Qué espero lograr a nivel profesional y personal?",
+            "¿Qué me emociona y qué me preocupa?",
+            "¿Cómo imagino mi vida en 6 meses o un año?"
+          ]
+        },
+        {
+          "key": "family",
+          "type": "checklist",
+          "title": "Prepárate con tu familia",
+          "from_ebook": "m5 checklist 0"
+        },
+        {
+          "key": "pro",
+          "type": "checklist",
+          "title": "Prepárate como profesional en movimiento",
+          "from_ebook": "m5 checklist 1"
+        },
+        {
+          "key": "talk",
+          "type": "fields",
+          "title": "Tu conversación",
+          "fields": [
+            {
+              "k": "when",
+              "label": "¿Cuándo?",
+              "input": "date"
+            },
+            {
+              "k": "where",
+              "label": "¿Dónde? (una comida, un café, una caminata)"
+            },
+            {
+              "k": "who",
+              "label": "¿Con quién?"
+            }
+          ]
+        },
+        {
+          "key": "after",
+          "type": "textarea",
+          "title": "¿Cómo te fue?",
+          "hint": "Escríbelo después de hablar con tu familia: qué dudas salieron y qué acordaron.",
+          "optional": true
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué conviene organizar con tu familia antes de irte?",
+        "o": [
+          "Pasaportes vigentes y cómo se comunicarán",
+          "Nada, se resuelve después",
+          "Solo la fiesta de despedida"
+        ],
+        "a": 0,
+        "why": "Organiza la documentación clave y planeen cómo mantenerse conectados."
+      },
+      {
+        "q": "¿A cuánto tiempo defines tus metas?",
+        "o": [
+          "Solo para mañana",
+          "6, 12 y 24 meses",
+          "10 años"
+        ],
+        "a": 1,
+        "why": "Define tus metas para los próximos 6, 12 y 24 meses."
+      },
+      {
+        "q": "Cuando tu familia entiende tu meta…",
+        "o": [
+          "Se preocupa más",
+          "Puede convertirse en tu mayor apoyo",
+          "No cambia nada"
+        ],
+        "a": 1,
+        "why": "Comparte con ellos tu visión y tu por qué."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 6,
+    "of": 8,
+    "module_id": "5f806c78-c1bb-4548-b584-c181a4eaac7d",
+    "kicker": "Paso 6 · Mercado laboral y expectativas en EE.UU.",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/55bbd74b637e6d029fd676546f9ebf16800ee1f9/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m6"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Mercado laboral y expectativas en EE.UU.",
+    "minutes": 35,
+    "builds": "Tus 3 hábitos y tus derechos",
+    "intro": "Cada país tiene su propio estilo de trabajo. Mientras más entiendas cómo se hacen las cosas en EE.UU. y cuáles son tus derechos, más seguro te sentirás.",
+    "keys": [
+      {
+        "t": "Lo que valoran",
+        "d": "Puntualidad, compromiso, iniciativa, comunicación y respeto por las reglas."
+      },
+      {
+        "t": "Tus derechos",
+        "d": "Pago justo, seguridad, igualdad y conservar tus documentos."
+      },
+      {
+        "t": "Tus hábitos",
+        "d": "Elige tres para mejorar desde el inicio."
+      }
+    ],
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "-1Y8bBZNe8I",
+        "title": "La cultura del trabajo en los Estados Unidos",
+        "channel": "Mercedes Cano | Going Home",
+        "lang": "es",
+        "about": "Cómo se trabaja en EE.UU. y qué diferencias notarás."
+      }
+    ],
+    "practice": {
+      "kind": "myth",
+      "title": "¿Mito o realidad?",
+      "labels": {
+        "true": "Realidad",
+        "false": "Mito"
+      },
+      "from_ebook": "m6 myth"
+    },
+    "build": {
+      "title": "Tus hábitos y tus derechos",
+      "intro": "Compara lo que sabías sobre trabajar en México con lo que aprendiste de Estados Unidos. Elige tres hábitos que puedes mejorar desde el inicio.",
+      "sections": [
+        {
+          "key": "compare",
+          "type": "notes2",
+          "title": "México y EE.UU.",
+          "lists": [
+            {
+              "k": "mx",
+              "label": "Así se trabaja donde trabajo hoy"
+            },
+            {
+              "k": "us",
+              "label": "Lo que cambia en EE.UU."
+            }
+          ]
+        },
+        {
+          "key": "habits",
+          "type": "groups",
+          "title": "¿Qué hábitos ya practicas?",
+          "source": "mercado-laboral-expectativas-y-derechos s2",
+          "hint": "Marca los que ya practicas. Los que no marques quedan como tus metas para mejorar.",
+          "goals": true,
+          "groups": [
+            {
+              "title": "Profesionalismo y actitud",
+              "items": [
+                "Llego a tiempo todos los días",
+                "Mantengo una actitud positiva y colaborativa",
+                "Acepto la retroalimentación con disposición",
+                "Cumplo con mis responsabilidades sin que me lo recuerden",
+                "Me visto de forma adecuada al entorno laboral"
+              ]
+            },
+            {
+              "title": "Comunicación efectiva",
+              "items": [
+                "Uso un tono respetuoso con todos",
+                "Hago preguntas cuando no entiendo algo",
+                "Escucho antes de responder",
+                "Me comunico con claridad, sin rodeos",
+                "Respondo correos y mensajes a tiempo"
+              ]
+            },
+            {
+              "title": "Trabajo en equipo",
+              "items": [
+                "Ofrezco ayuda cuando alguien la necesita",
+                "Aporto ideas de forma respetuosa",
+                "Reconozco los logros de otros",
+                "Sigo las instrucciones y políticas del equipo"
+              ]
+            },
+            {
+              "title": "Organización y seguimiento",
+              "items": [
+                "Hago listas o uso herramientas para organizar mi trabajo",
+                "Anoto fechas y tareas importantes",
+                "Respeto las fechas límite",
+                "Pido ayuda si sé que no voy a poder cumplir algo a tiempo"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "three",
+          "type": "list",
+          "title": "Tus 3 hábitos para mejorar",
+          "min": 3,
+          "max": 3,
+          "placeholder": "Ej. Llegar 10 minutos antes"
+        },
+        {
+          "key": "rights",
+          "type": "rights",
+          "title": "Tus derechos como trabajador TN",
+          "source": "mercado-laboral-expectativas-y-derechos s1",
+          "items": [
+            {
+              "icon": "money",
+              "title": "Pago justo",
+              "body": "Debes recibir el salario ofrecido en tu oferta de trabajo, en tiempo y forma según lo acordado."
+            },
+            {
+              "icon": "shield",
+              "title": "Ambiente de trabajo seguro",
+              "body": "Tu lugar de trabajo debe cumplir normas de salud y seguridad. Puedes reportar condiciones peligrosas sin temor a represalias."
+            },
+            {
+              "icon": "user",
+              "title": "Igualdad de trato",
+              "body": "Nadie puede tratarte distinto por tu nacionalidad, religión, sexo o raza. La igualdad de trato está protegida por la ley."
+            },
+            {
+              "icon": "clock",
+              "title": "Descansos y horarios razonables",
+              "body": "En muchos estados se requieren descansos para comer y pausas. Tienes derecho a que se respeten los horarios acordados."
+            },
+            {
+              "icon": "doc",
+              "title": "Conservar tus documentos",
+              "body": "Tu empleador no puede quedarse con tu pasaporte, tu visa ni otros documentos. Puedes llevarlos contigo."
+            },
+            {
+              "icon": "door",
+              "title": "Salir del trabajo voluntariamente",
+              "body": "Puedes renunciar o cambiar de empleo respetando los procesos legales. Nadie puede obligarte a seguir en un empleo contra tu voluntad."
+            }
+          ],
+          "tip": {
+            "title": "Si algo no está bien en tu trabajo",
+            "text": "Puedes contactar al Departamento de Trabajo de EE.UU. o pedir apoyo a través de Allcanza."
+          }
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "En el trabajo en EE.UU., la comunicación directa…",
+        "o": [
+          "Es una falta de respeto",
+          "Se valora: es clara y eficiente",
+          "Está prohibida"
+        ],
+        "a": 1,
+        "why": "El trato directo no es grosero: la claridad y la eficiencia se valoran más que la cortesía excesiva."
+      },
+      {
+        "q": "¿Tu empleador puede guardar tu pasaporte?",
+        "o": [
+          "Sí, mientras trabajes con él",
+          "No: tus documentos son tuyos",
+          "Solo el primer mes"
+        ],
+        "a": 1,
+        "why": "Tu empleador no puede quedarse con tu pasaporte, tu visa ni otros documentos."
+      },
+      {
+        "q": "¿Qué es un signo clave de respeto en el trabajo?",
+        "o": [
+          "Llegar a tiempo",
+          "Interrumpir para saludar",
+          "Esperar a que te digan qué hacer"
+        ],
+        "a": 0,
+        "why": "La puntualidad es un signo clave de respeto y responsabilidad."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 7,
+    "of": 8,
+    "module_id": "20419acf-4841-4972-911e-860873e71f4e",
+    "kicker": "Paso 7 · Cuando recibes una oferta",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/192e96c0760aeaa78d77c09b57c7b4f646458476/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m7"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Cuando recibes una oferta",
+    "minutes": 45,
+    "builds": "La revisión de tu oferta y tu carpeta TN",
+    "intro": "Una oferta de trabajo es el reconocimiento a tu esfuerzo. Revísala bien, confirma con Allcanza, reúne tus documentos y prepárate para el trámite de la visa.",
+    "keys": [
+      {
+        "t": "Revisa",
+        "d": "Puesto, salario, ciudad, horarios y condiciones."
+      },
+      {
+        "t": "Confirma",
+        "d": "Avisa a Allcanza para que te guíe."
+      },
+      {
+        "t": "Prepárate",
+        "d": "Documentos y entrevista en el consulado o la frontera."
+      }
+    ],
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "iXZMzcm0f8I",
+        "title": "6 consejos para negociar un mejor salario",
+        "channel": "Virna Vitteri - Coach de Carrera",
+        "lang": "es",
+        "about": "Cómo hablar de salario con seguridad cuando recibes una oferta."
+      }
+    ],
+    "practice": {
+      "kind": "spot",
+      "title": "Revisa esta oferta",
+      "intro": "Esta oferta es un ejemplo. Tiene 4 puntos que debes aclarar antes de aceptar. Tócalos para encontrarlos.",
+      "doc": [
+        {
+          "text": "OFERTA DE TRABAJO · Midwest Parts LLC (ejemplo)",
+          "err": null
+        },
+        {
+          "text": "Contacto: Laura Méndez, HR Manager · laura.mendez@midwestparts.com",
+          "err": null
+        },
+        {
+          "text": "Puesto: Ayudante general de almacén",
+          "err": "El título debe estar dentro de las ocupaciones TN permitidas y coincidir con tu carrera o experiencia."
+        },
+        {
+          "text": "Lugar de trabajo: «te lo confirmamos al llegar»",
+          "err": "Necesitas la dirección física del lugar donde trabajarás y saber si es presencial, híbrido o remoto."
+        },
+        {
+          "text": "Salario: «a definir según desempeño»",
+          "err": "Debes saber si el salario es mensual, anual o por hora, qué beneficios incluye y si cubre tus gastos."
+        },
+        {
+          "text": "Duración: 3 años, con posibilidad de renovación",
+          "err": null
+        },
+        {
+          "text": "Carta para la visa: en español y sin la categoría TN",
+          "err": "La carta TN debe estar en inglés y detallar empresa, tu nombre, puesto, duración, salario y categoría TN."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu oferta y tu carpeta TN",
+      "intro": "Revisa tu oferta en detalle (o prepárate leyendo los materiales). Haz una lista de preguntas y compártela con tu asesor de Allcanza antes del trámite oficial.",
+      "sections": [
+        {
+          "key": "offer",
+          "type": "groups",
+          "title": "Qué revisar en tu oferta",
+          "source": "la-oferta-y-visita-al-consulado s1",
+          "hint": "Marca cada punto mientras revisas tu oferta.",
+          "done_text": "Revisaste toda tu oferta. Si algo no está claro, pregúntalo antes de aceptar.",
+          "groups": [
+            {
+              "title": "1 · Empresa y contacto directo",
+              "items": [
+                "Verifica que la empresa sea legítima y esté registrada",
+                "El nombre debe coincidir con el que aparece en la carta TN",
+                "Confirma el nombre y el puesto del supervisor o reclutador"
+              ]
+            },
+            {
+              "title": "2 · Ubicación del empleo",
+              "items": [
+                "Dirección física del lugar donde trabajarás",
+                "Si el empleo es presencial, híbrido o remoto",
+                "El costo de vida en esa ciudad o zona"
+              ]
+            },
+            {
+              "title": "3 · Título del puesto y funciones",
+              "items": [
+                "El título está dentro de las ocupaciones TN permitidas",
+                "Las funciones coinciden con tu carrera o experiencia",
+                "Entiendes claramente lo que harás"
+              ]
+            },
+            {
+              "title": "4 · Sueldo y beneficios",
+              "items": [
+                "Si el salario es mensual, anual o por hora",
+                "Si hay beneficios (seguro médico, días libres, etc.)",
+                "Si el sueldo cubre tus gastos estimados"
+              ]
+            },
+            {
+              "title": "5 · Duración del empleo",
+              "items": [
+                "Si el contrato es por tiempo determinado o indefinido",
+                "Si hay periodo de prueba",
+                "Si existe posibilidad de renovación o extensión"
+              ]
+            },
+            {
+              "title": "6 · Carta TN",
+              "items": [
+                "Está escrita en inglés",
+                "Detalla: empresa, tu nombre, puesto, duración, salario y categoría TN",
+                "Su contenido es claro, profesional y sin errores"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "docs",
+          "type": "groups",
+          "title": "Tu carpeta TN",
+          "source": "la-oferta-y-visita-al-consulado s2",
+          "hint": "Tu IG te ayudará a confirmar que todo esté completo y listo para avanzar.",
+          "done_text": "Tu carpeta está completa.",
+          "groups": [
+            {
+              "title": "Documentación personal",
+              "items": [
+                "Pasaporte válido (vigencia mínima de 6 meses)",
+                "Visa TN (cuando ya esté emitida)",
+                "Identificación oficial mexicana (INE o CURP)"
+              ]
+            },
+            {
+              "title": "Documentos académicos",
+              "items": [
+                "Título universitario (traducido si es necesario)",
+                "Certificado de materias (si aplica)",
+                "Evaluación de equivalencia (WES u otra, si la pide el empleador)"
+              ]
+            },
+            {
+              "title": "Experiencia y empleo",
+              "items": [
+                "CV / Resume en formato estadounidense",
+                "Cartas de recomendación (opcional pero útil)",
+                "Oferta de empleo firmada con descripción del puesto",
+                "Carta del empleador para la visa (con detalles del empleo y categoría TN)"
+              ]
+            },
+            {
+              "title": "Idioma y comunicación",
+              "items": [
+                "Evaluación de inglés completada",
+                "Comprobantes o certificados de cursos de inglés (si los tienes)",
+                "Teléfono y correo electrónico actualizados"
+              ]
+            },
+            {
+              "title": "Organización",
+              "items": [
+                "Copia digital de todos los documentos",
+                "Carpeta física ordenada para la entrevista consular o la frontera",
+                "Checklist impresa para verificar antes de tu cita"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "consul",
+          "type": "reflect",
+          "title": "Prepara tus respuestas para el consulado",
+          "source": "la-oferta-y-visita-al-consulado s3",
+          "hint": "Responde con seguridad y honestidad. No hace falta memorizar: solo prepárate.",
+          "prompts": [
+            "¿A qué te vas a dedicar en EE.UU.?",
+            "¿Qué experiencia tienes en este campo?",
+            "¿Cuál es tu título y por qué aplica para esta visa?",
+            "¿Conoces a tu empleador? ¿Dónde está ubicado?",
+            "¿Planeas quedarte permanentemente en EE.UU.?"
+          ]
+        },
+        {
+          "key": "day",
+          "type": "checklist",
+          "title": "El día de tu cita",
+          "source": "la-oferta-y-visita-al-consulado s3",
+          "items": [
+            "Llega al menos 30 minutos antes",
+            "Usa ropa formal o profesional",
+            "Lleva todos los documentos impresos y organizados",
+            "No lleves objetos electrónicos ni mochilas grandes",
+            "Recibo de pago de la visa (MRV)",
+            "Hoja de confirmación del formulario DS-160"
+          ]
+        },
+        {
+          "key": "questions",
+          "type": "list",
+          "title": "Tus preguntas para tu asesor de Allcanza",
+          "min": 3,
+          "max": 8,
+          "placeholder": "Ej. ¿Mi título necesita traducción?"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "Recibiste una oferta de trabajo. ¿Qué haces primero?",
+        "o": [
+          "Renuncias hoy a tu empleo actual",
+          "Revisas bien la oferta y avisas a Allcanza",
+          "Vas directo al consulado"
+        ],
+        "a": 1,
+        "why": "Primero entiende el puesto, el salario y las condiciones, y confirma con Allcanza para que te guíen."
+      },
+      {
+        "q": "¿En qué idioma debe estar la carta TN?",
+        "o": [
+          "En español",
+          "En inglés",
+          "En cualquiera"
+        ],
+        "a": 1,
+        "why": "La carta TN debe estar escrita en inglés."
+      },
+      {
+        "q": "¿Cuánto antes llegas a tu cita en el consulado?",
+        "o": [
+          "Justo a la hora",
+          "Al menos 30 minutos antes",
+          "Una hora después"
+        ],
+        "a": 1,
+        "why": "Llega al menos 30 minutos antes de tu cita."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "tu-camino-con-la-visa-tn-empieza-aqui",
+    "product": {
+      "key": "tn_plan",
+      "title": "Mi plan TN"
+    },
+    "step": 8,
+    "of": 8,
+    "module_id": "a31877c9-788c-4361-80ca-b16d7a7cefcd",
+    "kicker": "Paso 8 · Cierre y próximos pasos",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/d8a5a114ef971fa7775abf1b11eaa97cfede092a/file.mp4"
+    },
+    "essentials_from": {
+      "ebook": "ebook-tu-camino-visa-tn",
+      "screens": [
+        "m8"
+      ],
+      "skip": {
+        "types": [
+          "activity"
+        ],
+        "used_elsewhere": true,
+        "note": "The e-book's activity becomes the intro of 'Construye'. Blocks that a practice or build section takes with from_ebook are not repeated in 'Lo esencial'."
+      }
+    },
+    "disclaimer": "Esta guía es informativa y no sustituye asesoría legal. Tu IG y el equipo de Allcanza revisan tu caso en particular.",
+    "title": "Cierre y próximos pasos",
+    "minutes": 30,
+    "builds": "Tu plan de 30, 60 y 90 días",
+    "intro": "Llegaste al final de este curso, pero no al final del camino. Ahora tienes una base sólida para continuar: organiza tus próximos 90 días y avanza con intención.",
+    "keys": [
+      {
+        "t": "30 días",
+        "d": "Cursos clave, perfil completo y evaluación de inglés."
+      },
+      {
+        "t": "60 días",
+        "d": "Documentos, práctica diaria y tu familia."
+      },
+      {
+        "t": "90 días",
+        "d": "Preguntas para tu asesor y perfil al día."
+      }
+    ],
+    "more_videos": [],
+    "audio": {
+      "title": "Resumen del curso TN (audio)",
+      "media_url": "https://embed-ssl.wistia.com/deliveries/a837089af6e225ae292647963eeec4db/file.mp3",
+      "storage": "storage://course-media/78e640f6-fc48-4659-8db0-8ce01381caba/audio/b6a0839d-7343-442b-b960-27b50960ebab.mp3"
+    },
+    "practice": null,
+    "build": {
+      "title": "Tu plan de acción personal",
+      "intro": "Usa la Guía de Plan de Acción para organizar tus próximos 30, 60 y 90 días. Luego elige una frase que te inspire y colócala en un lugar visible.",
+      "sections": [
+        {
+          "key": "goals",
+          "type": "notes2",
+          "title": "Mis objetivos para los próximos 6 a 12 meses",
+          "source": "guia-plan-de-accion-personal s1",
+          "lists": [
+            {
+              "k": "personal",
+              "label": "Metas personales (al menos 2)"
+            },
+            {
+              "k": "pro",
+              "label": "Metas profesionales (al menos 2)"
+            }
+          ]
+        },
+        {
+          "key": "plan90",
+          "type": "plan",
+          "title": "Elige tus metas",
+          "from_ebook": "m8 plan",
+          "per_tab": 3
+        },
+        {
+          "key": "next",
+          "type": "checklist",
+          "title": "Tus próximos pasos",
+          "from_ebook": "m8 checklist"
+        },
+        {
+          "key": "support",
+          "type": "fields",
+          "title": "¿Quién me apoya en este proceso?",
+          "source": "guia-plan-de-accion-personal s3",
+          "fields": [
+            {
+              "k": "family",
+              "label": "Familia"
+            },
+            {
+              "k": "friends",
+              "label": "Amigos"
+            },
+            {
+              "k": "ig",
+              "label": "Allcanza (mi IG)"
+            },
+            {
+              "k": "employer",
+              "label": "Empleador"
+            },
+            {
+              "k": "mentor",
+              "label": "Mentor"
+            }
+          ]
+        },
+        {
+          "key": "date",
+          "type": "fields",
+          "title": "Mi fecha",
+          "source": "guia-plan-de-accion-personal s4",
+          "fields": [
+            {
+              "k": "ready",
+              "label": "Fecha objetivo para estar listo(a)",
+              "input": "date"
+            }
+          ]
+        },
+        {
+          "key": "phrase",
+          "type": "textarea",
+          "title": "Tu frase",
+          "hint": "Una frase que te inspire. Ponla en un lugar visible. Ej. «Hoy no termina mi proceso. Hoy comienza mi futuro.»"
+        }
+      ]
+    },
+    "check": null,
+    "finish": {
+      "title": "¡Terminaste Tu Camino con la Visa TN!",
+      "text": "Tu plan TN está listo. Siguiente paso de tu ruta: De CV a Resume.",
+      "cta": {
+        "label": "Ver mi plan TN",
+        "view": "plan"
+      }
+    }
+  }
+]
