@@ -7,18 +7,36 @@ export type Lang = "es" | "en";
 
 // ---------- step content (guided_course_steps.data) ----------
 
-export type SortPractice = { kind: "sort"; title: string; intro?: string; labels: { a: string; b: string }; items: { text: string; answer: "a" | "b"; why: string }[] };
-export type OrderPractice = { kind: "order"; title: string; intro?: string; items: string[]; distractors?: { text: string; why: string }[] };
+export type SortPractice = { kind: "sort"; title: string; intro?: string; labels: { a: string; b: string }; items: { text: string; answer: "a" | "b"; why?: string }[] };
+export type OrderPractice = { kind: "order"; title: string; intro?: string; items: string[]; distractors?: { text: string; why: string }[]; note?: string };
 export type PickPractice = { kind: "pick"; title: string; intro?: string; items: { weak: string; options: string[]; answer: number; why: string }[] };
 export type SpotPractice = { kind: "spot"; title: string; intro?: string; doc: { text: string; err: string | null }[] };
 export type HighlightPractice = { kind: "highlight"; title: string; intro?: string; ad_title?: string; ad: string; label?: string; keywords: string[]; min_found?: number };
 export type LabelPractice = { kind: "label"; title: string; intro?: string; labels: string[]; items: { text: string; answer: string }[]; done?: string };
-export type MythPractice = { kind: "myth"; title: string; intro?: string; labels?: { true: string; false: string }; items: { q: string; real: boolean; a: string }[] };
+export type MythPractice = { kind: "myth"; title: string; intro?: string; labels?: { true: string; false: string }; items?: { q: string; real: boolean; a: string }[]; from_ebook?: string };
+export type WhatIfPractice = { kind: "whatif"; title: string; intro?: string; items?: { q: string; a: string }[]; from_ebook?: string };
+export type GuessPractice = { kind: "guess"; title: string; intro?: string; min: number; max: number; step: number; answer: number; tolerance: number; reveal: { rows: string[]; total: string } };
+export type EstimatePractice = { kind: "estimate"; title: string; intro?: string; items: { text: string; options: string[]; answer: number }[] };
+export type SumPractice = { kind: "sum"; title: string; intro?: string; rows: [string, number][]; answer: number; options: number[]; why?: string };
+export type MultiplyPractice = { kind: "multiply"; title: string; intro?: string; items: [string, number, number][] };
 export type ListenPickPractice = { kind: "listen_pick"; title: string; intro?: string; items: { situation: string; options: string[]; answer: number; why?: string }[] };
-export type Practice = SortPractice | OrderPractice | PickPractice | SpotPractice | HighlightPractice | LabelPractice | MythPractice | ListenPickPractice;
+export type Practice =
+  | SortPractice
+  | OrderPractice
+  | PickPractice
+  | SpotPractice
+  | HighlightPractice
+  | LabelPractice
+  | MythPractice
+  | ListenPickPractice
+  | WhatIfPractice
+  | GuessPractice
+  | EstimatePractice
+  | SumPractice
+  | MultiplyPractice;
 
 type Base = { key: string; title?: string; hint?: string; optional?: boolean };
-export type FieldDef = { k: string; label: string; placeholder?: string; check?: "email" | "phone_cc"; optional?: boolean; input?: "text" | "datetime" | "select"; options?: string[] };
+export type FieldDef = { k: string; label: string; placeholder?: string; check?: "email" | "phone_cc"; optional?: boolean; input?: "text" | "datetime" | "select" | "day" | "date"; options?: string[]; money?: boolean };
 export type ChecklistItem = string | { text: string; link?: { label: string; step?: number; tool?: string; course?: string } };
 export type AutoItem = { text: string; auto?: AutoRule };
 export type Section =
@@ -31,8 +49,8 @@ export type Section =
   | (Base & { type: "jobs"; bullets?: { min?: number; max?: number; checks?: string[] } })
   | (Base & { type: "education"; suggest_equivalent?: boolean })
   | (Base & { type: "chips"; min?: number; max?: number })
-  | (Base & { type: "pick_many"; from?: string; count?: number; audio?: boolean })
-  | (Base & { type: "list"; min?: number; max?: number })
+  | (Base & { type: "pick_many"; from?: string; count?: number; audio?: boolean; options?: string[]; why_each?: boolean; with_start_date?: boolean; allow_custom?: boolean })
+  | (Base & { type: "list"; min?: number; max?: number; placeholder?: string })
   | (Base & { type: "postings"; count?: number; fields?: string[]; reflect?: string[] })
   | (Base & { type: "autocheck"; groups: { title: string; items: AutoItem[] }[]; done_text?: string; fix_link?: string })
   | (Base & { type: "versions"; count?: number; help?: Record<string, string>; file_name?: string })
@@ -46,6 +64,25 @@ export type Section =
   | (Base & { type: "rubric"; scale: string[]; groups: { title: string; items: string[] }[]; comments_per_group?: boolean })
   | (Base & { type: "toggle"; text: string })
   | (Base & { type: "tip"; text: string })
+  | (Base & {
+      type: "budget";
+      currency?: "USD" | "MXN";
+      income_label?: string;
+      income?: { annual_to_net?: { divide: number; tax_pct: number; note?: string } };
+      categories: [string, string, (string | null)?][];
+      rules?: { k: string; pct?: number; text: string; fail?: string }[];
+      show_balance?: boolean;
+      chart?: string;
+      is_master?: boolean;
+    })
+  | (Base & { type: "budget_6m"; currency?: string; note?: string; from_ebook?: string })
+  | (Base & { type: "calc"; formula: string; label: string; editable?: boolean; from?: string })
+  | (Base & { type: "compare_options"; options: string[]; fields: FieldDef[]; check?: string })
+  | (Base & { type: "choice"; writes_to?: string })
+  | (Base & { type: "checklist_amounts"; items: string[]; writes_to?: string[] })
+  | (Base & { type: "savings_plan"; fields: FieldDef[]; writes_to?: string; result?: string })
+  | (Base & { type: "spend_log"; days: number; mark_reducible?: boolean; totals?: string[] })
+  | (Base & { type: "plan"; tabs: { label: string; suggest: string[] }[]; per_tab: number })
   | (Base & { type: "simulator"; modes?: string[]; interviewer?: { name: string; role_from?: string; company_from?: string }; questions: SimQ[]; audio_base?: string; max_s?: number; eval: { k: string; label: string; o: string[] }[]; comments?: boolean; before?: string[] });
 
 export type AnswerForm = "star" | "present_past_future" | "strength_weakness" | "five_years" | "free";
@@ -67,11 +104,17 @@ export type GuidedStep = {
   intro: string;
   builds: string;
   keys: { t: string; d: string }[];
-  essentials: Block[];
+  essentials?: Block[];
+  /** Finanzas: "Lo esencial" is the e-book's own screens (without its activity blocks). */
+  essentials_from?: { ebook: string; screens: string[]; skip?: { types?: string[]; title_prefix?: string } };
+  /** Filled by the loader from essentials_from: the e-book's screens, without the skipped blocks. */
+  ebookScreens?: { id: string; title: string; audio?: string | null; blocks: Block[] }[];
+  disclaimer?: string;
+  example?: { title: string; net: number; items: Record<string, number>; balance?: number; button?: string };
   practice: Practice | null;
-  build: { title: string; intro?: string; sections: Section[] };
+  build: { title: string; intro?: string; sections: Section[]; commitment?: string };
   check?: { q: string; o: string[]; a: number; why: string }[];
-  finish?: { title: string; text: string; cta?: { label: string; course?: string } };
+  finish?: { title: string; text: string; cta?: { label: string; course?: string; view?: "plan" } };
 };
 
 /** A section is shown unless it waits for Matt (needs_matt_confirm: hidden until he confirms). */
@@ -79,11 +122,11 @@ export const visibleSections = (s: GuidedStep) => s.build.sections.filter((x) =>
 
 // ---------- theme and product (courses.theme): the colors, the hero and what the course builds ----------
 
-export type GuidedTheme = "resume" | "interview";
-export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" ? "interview" : "resume");
+export type GuidedTheme = "resume" | "interview" | "finanzas";
+export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" || v === "finanzas" ? v : "resume");
 /** Each course builds one "product", stored in its own owner-only table. */
 type Bi = { es: string; en: string };
-export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks"; path: string; label: Bi; icon: string; build: Bi; rail: Bi; railP: Bi; see: Bi; privacy?: Bi }> = {
+export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks" | "financial_plans"; path: string; label: Bi; icon: string; build: Bi; rail: Bi; railP: Bi; see: Bi; privacy?: Bi }> = {
   resume: {
     table: "resumes",
     path: "mi-resume",
@@ -104,6 +147,17 @@ export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks"; p
     railP: { es: "Todo se guarda solo en tu banco de respuestas.", en: "Everything saves to your answer bank automatically." },
     see: { es: "Ver mis respuestas", en: "See my answers" },
     privacy: { es: "Tus respuestas y grabaciones son solo tuyas.", en: "Your answers and recordings are yours only." },
+  },
+  finanzas: {
+    table: "financial_plans",
+    path: "mi-plan",
+    label: { es: "Mi plan", en: "My plan" },
+    icon: "chart",
+    build: { es: "Construye tu plan", en: "Build your plan" },
+    rail: { es: "MI PLAN", en: "MY PLAN" },
+    railP: { es: "Todo se guarda solo en Mi plan financiero.", en: "Everything saves to My financial plan automatically." },
+    see: { es: "Ver mi plan", en: "See my plan" },
+    privacy: { es: "Tus números son solo tuyos. Nadie más ve tu presupuesto.", en: "Your numbers are yours only. Nobody else sees your budget." },
   },
 };
 
@@ -219,7 +273,7 @@ const stem = (s: string) =>
     .map((w) => w.replace(/(as|os|es|a|o|e)$/, ""));
 
 export function titlesOf(steps: GuidedStep[]): TitleItem[] {
-  return steps.flatMap((s) => s.essentials.flatMap((b) => (b.type === "titles" ? (b.items as TitleItem[]) : [])));
+  return steps.flatMap((s) => (s.essentials ?? []).flatMap((b) => (b.type === "titles" ? (b.items as TitleItem[]) : [])));
 }
 /** The U.S. options for a Spanish job title or degree: a `titles` entry it matches, else a degree rule. */
 export function equivalents(text: string, titles: TitleItem[], kind: "job" | "degree"): string[] {

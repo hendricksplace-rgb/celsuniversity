@@ -6,6 +6,7 @@ import { loadGuided } from "@/lib/guided-server";
 import { stageLabel } from "@/lib/route";
 import { stepPath } from "@/lib/guided";
 import { GuidedStepView } from "@/components/guided/GuidedStepView";
+import { signStorageRefs } from "@/lib/storage";
 
 type Props = { params: Promise<{ slug: string; n: string }> };
 
@@ -25,6 +26,12 @@ export default async function GuidedStepPage({ params }: Props) {
   const index = g.steps.findIndex((x) => x.step.step === Number(n));
   if (index < 0) notFound();
   const row = g.steps[index]!;
+  // The e-book narration of this step's screens ("▶ Escuchar"): short-lived signed URLs from course-media.
+  const refs = (row.step.ebookScreens ?? []).flatMap((x) => (x.audio ? [x.audio] : []));
+  if (refs.length) {
+    const signed = await signStorageRefs(supabase, refs, { courseId: course.id, viewer, access: true });
+    row.step.ebookScreens = row.step.ebookScreens!.map((x) => ({ ...x, audio: x.audio ? (signed.get(x.audio) ?? null) : null }));
+  }
   return (
     <GuidedStepView
       userId={viewer.user.id}

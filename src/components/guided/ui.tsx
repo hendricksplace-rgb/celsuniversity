@@ -93,6 +93,22 @@ const P: Record<string, React.ReactNode> = {
   ),
   trash: <path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" />,
   up: <path d="M12 19V5M6 11l6-6 6 6" />,
+  chart: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
+  shield: <path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z" />,
+  money: (
+    <>
+      <rect x="3" y="6" width="18" height="12" rx="2.5" />
+      <circle cx="12" cy="12" r="2.6" />
+      <path d="M6.5 9.5v5M17.5 9.5v5" />
+    </>
+  ),
+  home: <path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />,
+  calendar: (
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2.5" />
+      <path d="M3 10h18M8 3v4M16 3v4" />
+    </>
+  ),
   book: (
     <>
       <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z" />
@@ -188,6 +204,7 @@ export const UI = {
     of: (a: number, b: number) => `✓ ${a} de ${b}`,
     weak: "Línea débil",
     saved: "Guardado en Mi resume",
+    savedIn: (w: string) => `Guardado en ${w}`,
     saving: "Guardando…",
     saveErr: "No se pudo guardar. Revisa tu conexión.",
     privateNote: "Solo tú ves tus respuestas.",
@@ -258,6 +275,7 @@ export const UI = {
     of: (a: number, b: number) => `✓ ${a} of ${b}`,
     weak: "Weak line",
     saved: "Saved to My resume",
+    savedIn: (w: string) => `Saved to ${w}`,
     saving: "Saving…",
     saveErr: "Couldn't save. Check your connection.",
     privateNote: "Only you can see your answers.",
@@ -349,7 +367,7 @@ export function useToast() {
 export type SaveState = "idle" | "saving" | "saved" | "error";
 
 /** resumes.data / answer_banks.data: the whole product, debounced; flushed when the page hides. Owner only (RLS). */
-export function useResume(userId: string, initial: ResumeData, table: "resumes" | "answer_banks" = "resumes") {
+export function useResume(userId: string, initial: ResumeData, table: "resumes" | "answer_banks" | "financial_plans" = "resumes") {
   const [data, setData] = useState<ResumeData>(initial);
   const [state, setState] = useState<SaveState>("idle");
   const latest = useRef(data);
@@ -423,7 +441,7 @@ export function useStepState(userId: string, moduleId: string, initial: StepStat
   return [state, update] as const;
 }
 
-export function SavedBadge({ state, t }: { state: SaveState; t: T }) {
+export function SavedBadge({ state, t, where }: { state: SaveState; t: T; where?: string }) {
   if (state === "error")
     return (
       <span className={`${s.saved} ${s.savedErr}`} role="alert">
@@ -434,7 +452,7 @@ export function SavedBadge({ state, t }: { state: SaveState; t: T }) {
   return (
     <span className={s.saved} aria-live="polite">
       <Ico n="check" />
-      {state === "saving" ? t.saving : t.saved}
+      {state === "saving" ? t.saving : where ? t.savedIn(where) : t.saved}
     </span>
   );
 }

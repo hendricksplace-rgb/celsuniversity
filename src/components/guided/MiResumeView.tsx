@@ -104,7 +104,7 @@ export function MiResumeView({
   const src = docLang === "es" ? applyVersion(resume, version) : resume;
   const m = docModel(src, docLang);
   const [fits, measure] = useFitsOnePage(docModel(applyVersion(resume, version), "es"), "es");
-  const verbs = useMemo(() => steps.flatMap((x) => x.essentials.flatMap((b) => (b.type === "phrases" ? b.items.flatMap((i) => [i.es, i.en]) : []))), [steps]);
+  const verbs = useMemo(() => steps.flatMap((x) => (x.essentials ?? []).flatMap((b) => (b.type === "phrases" ? b.items.flatMap((i) => [i.es, i.en]) : []))), [steps]);
   const rules = runRules(applyVersion(resume, version), fits, verbs);
   const ready = enReady(resume);
   const stepOf = (k: string) => stepOfKey(steps, k) ?? 1;

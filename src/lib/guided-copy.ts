@@ -20,6 +20,15 @@ const COPY: Record<string, CourseCopy> = {
     routeH: "7 pasos hacia tu entrevista",
     routeI: "Cada paso suma algo a tu banco de respuestas. Ábrelos en el orden que quieras.",
   },
+  "finanzas-personales-en-estados-unidos": {
+    kick: "TU DINERO",
+    h1a: "Finanzas personales",
+    h1b: "en Estados Unidos",
+    text: "Aquí no se trata solo de cuánto ganas, sino de cómo lo administras. En 9 pasos armas tu presupuesto real, tu plan de crédito, tu fondo de emergencia y tu plan para los primeros 90 días.",
+    result: "Resultado: tu plan financiero",
+    routeH: "9 pasos hacia tu plan financiero",
+    routeI: "Cada paso agrega una parte a tu plan. Ábrelos en el orden que quieras.",
+  },
 };
 
 export function courseCopy(slug: string, title: string, description: string | null): CourseCopy {

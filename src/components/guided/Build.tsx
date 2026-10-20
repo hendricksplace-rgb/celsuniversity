@@ -10,6 +10,7 @@ import {
   EN_SECTIONS,
   HANDOFF_KEY,
   PAPER_KEYS,
+  PRODUCT,
   applyVersion,
   bulletChecks,
   contactOf,
@@ -49,6 +50,7 @@ import {
 import { Ico, SavedBadge, say, type SaveState, type T } from "./ui";
 import { PrintCopy, downloadDocx, printPdf } from "./ResumeDoc";
 import { InterviewSection } from "./BuildInterview";
+import { FinanceSection, MoneyInput, isFinanceSection } from "./BuildFinance";
 import s from "./guided.module.css";
 
 export type BuildCtx = {
@@ -74,6 +76,10 @@ const B = {
     email: "Revisa el formato: nombre@dominio.com",
     phone: "Empieza con + y la clave de país, por ejemplo +52 …",
     addLine: "Agregar línea",
+    dayN: (n: number) => `Día ${n} de cada mes`,
+    ownOption: "Escribe tu propia opción y presiona Enter",
+    whyThis: "¿Por qué esta opción?",
+    startOn: "¿Cuándo empiezas?",
     usEq: "En EE.UU.:",
     listen: (w: string) => `Escuchar ${w}`,
     job: "Puesto",
@@ -186,7 +192,7 @@ const useB = () => B;
 
 export function BuildSection({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
   const b = useB();
-  const hideSave = sec.type === "export" || sec.type === "card" || sec.type === "tip" || sec.type === "self_video" || sec.type === "simulator";
+  const hideSave = sec.type === "export" || sec.type === "card" || sec.type === "tip" || sec.type === "self_video" || sec.type === "simulator" || (sec.type === "calc" && !sec.editable);
   if (sec.type === "tip")
     return (
       <div className={s.gtip} data-section={sec.key}>
@@ -207,7 +213,7 @@ export function BuildSection({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
           {sec.title}
           {sec.optional && sec.type !== "card" && !/opcional/i.test(sec.title ?? "") ? ` ${b.optional}` : ""}
         </h3>
-        {!hideSave && <SavedBadge state={ctx.save} t={ctx.t} />}
+        {!hideSave && <SavedBadge state={ctx.save} t={ctx.t} where={PRODUCT[ctx.theme].label[ctx.lang]} />}
       </div>
       {sec.hint && <p className={s.sub}>{sec.hint}</p>}
       <SectionBody sec={sec} ctx={ctx} />
@@ -242,7 +248,7 @@ function SectionBody({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
     case "pick_many":
       return <PickMany sec={sec} ctx={ctx} />;
     case "list":
-      return <Lines k={sec.key} min={sec.min ?? 1} max={sec.max ?? 10} ctx={ctx} label={sec.title ?? ""} />;
+      return <Lines k={sec.key} min={sec.min ?? 1} max={sec.max ?? 10} ctx={ctx} label={sec.title ?? ""} ph={sec.placeholder} />;
     case "postings":
       return <Postings sec={sec} ctx={ctx} />;
     case "autocheck":
@@ -275,7 +281,7 @@ function SectionBody({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
         </div>
       );
     default:
-      return null;
+      return isFinanceSection(sec) ? <FinanceSection sec={sec} ctx={ctx} /> : null;
   }
 }
 
@@ -296,7 +302,18 @@ function Fields({ sec, ctx }: { sec: Extract<Section, { type: "fields" }>; ctx: 
               {f.label}
               {f.optional ? ` ${b.optional}` : ""}
             </label>
-            {f.input === "select" ? (
+            {f.money ? (
+              <MoneyInput id={id} label={f.label} value={val} onChange={(x) => ctx.set(sec.key, { ...v, [f.k]: x })} />
+            ) : f.input === "day" ? (
+              <select id={id} value={val} onChange={(e) => ctx.set(sec.key, { ...v, [f.k]: e.target.value })}>
+                <option value="">—</option>
+                {Array.from({ length: 31 }, (_, i) => (
+                  <option key={i} value={String(i + 1)}>
+                    {b.dayN(i + 1)}
+                  </option>
+                ))}
+              </select>
+            ) : f.input === "select" ? (
               <select id={id} value={val} onChange={(e) => ctx.set(sec.key, { ...v, [f.k]: e.target.value })}>
                 <option value="">—</option>
                 {(f.options ?? []).map((o) => (
@@ -310,7 +327,7 @@ function Fields({ sec, ctx }: { sec: Extract<Section, { type: "fields" }>; ctx: 
               id={id}
               value={val}
               placeholder={f.placeholder}
-              type={f.input === "datetime" ? "datetime-local" : f.check === "email" ? "email" : f.check === "phone_cc" ? "tel" : "text"}
+              type={f.input === "datetime" ? "datetime-local" : f.input === "date" ? "date" : f.check === "email" ? "email" : f.check === "phone_cc" ? "tel" : "text"}
               inputMode={f.check === "phone_cc" ? "tel" : undefined}
               aria-invalid={bad || undefined}
               aria-describedby={bad ? `${id}-m` : undefined}
@@ -341,7 +358,7 @@ function linkHref(l: NonNullable<Exclude<ChecklistItem, string>["link"]>, slug: 
 function checklistItems(sec: Extract<Section, { type: "checklist" }>, step: GuidedStep): ChecklistItem[] {
   if (sec.items?.length) return sec.items;
   const m = /^essentials\[(\d+)\]$/.exec(sec.from ?? "");
-  const b = m ? step.essentials[Number(m[1])] : null;
+  const b = m ? (step.essentials ?? [])[Number(m[1])] : null;
   return b && b.type === "checklist" ? b.items : [];
 }
 
@@ -382,7 +399,7 @@ function Checklist({ sec: raw0, ctx }: { sec: Extract<Section, { type: "checklis
   );
 }
 
-function Lines({ k, min, max, ctx, label, get, put }: { k: string; min: number; max: number; ctx: BuildCtx; label: string; get?: () => string[]; put?: (v: string[]) => void }) {
+function Lines({ k, min, max, ctx, label, get, put, ph }: { k: string; min: number; max: number; ctx: BuildCtx; label: string; get?: () => string[]; put?: (v: string[]) => void; ph?: string }) {
   const b = useB();
   const cur = get ? get() : strs(ctx.data[k]);
   const lines = cur.length >= Math.max(min, 1) ? cur : [...cur, ...Array(Math.max(min, 1) - cur.length).fill("")];
@@ -391,7 +408,7 @@ function Lines({ k, min, max, ctx, label, get, put }: { k: string; min: number; 
     <div className={s.stack}>
       {lines.map((x, i) => (
         <div key={i} className={s.fld} style={{ display: "flex", gap: 8 }}>
-          <input aria-label={`${label} ${i + 1}`} value={x} onChange={(e) => write(lines.map((y, j) => (j === i ? e.target.value : y)))} />
+          <input aria-label={`${label} ${i + 1}`} value={x} placeholder={i === 0 ? ph : undefined} onChange={(e) => write(lines.map((y, j) => (j === i ? e.target.value : y)))} />
           {lines.length > Math.max(min, 1) && (
             <button type="button" className={s.rm} aria-label={b.rmEdu} onClick={() => write(lines.filter((_, j) => j !== i))}>
               <Ico n="x" />
@@ -742,11 +759,95 @@ function Chips({ k, min, max, ctx, label, get, put, ph }: { k: string; min?: num
 }
 
 function PickMany({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx }) {
+  if (sec.options?.length) return <PickOptions sec={sec} ctx={ctx} />;
+  return <PickPhrases sec={sec} ctx={ctx} />;
+}
+
+/** pick_many from the section's own options: each chosen one can carry a "why" and a start date; the student can add
+ *  their own (allow_custom). Stored as { chosen, why, start }. */
+function PickOptions({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx }) {
+  const b = useB();
+  const [draft, setDraft] = useState("");
+  const count = sec.count ?? 3;
+  const v = obj(ctx.data[sec.key]) as { chosen?: string[]; why?: Record<string, string>; start?: Record<string, string> };
+  const chosen = strs(v.chosen);
+  const custom = chosen.filter((x) => !sec.options!.includes(x));
+  const write = (patch: Partial<typeof v>) => ctx.set(sec.key, { ...v, chosen, ...patch });
+  const toggle = (x: string) => write({ chosen: chosen.includes(x) ? chosen.filter((y) => y !== x) : [...chosen, x] });
+  const addOwn = () => {
+    const x = draft.trim();
+    setDraft("");
+    if (x && !chosen.includes(x) && chosen.length < count) write({ chosen: [...chosen, x] });
+  };
+  return (
+    <>
+      <div className={s.pm}>
+        {[...sec.options!, ...custom].map((x) => {
+          const on = chosen.includes(x);
+          return (
+            <button key={x} type="button" aria-pressed={on} className={on ? s.on : ""} disabled={!on && chosen.length >= count} onClick={() => toggle(x)}>
+              <i>
+                <Ico n="check" />
+              </i>
+              <div>{x}</div>
+            </button>
+          );
+        })}
+      </div>
+      {sec.allow_custom && chosen.length < count && (
+        <div className={s.fld} style={{ marginTop: 10 }}>
+          <input
+            aria-label={b.ownOption}
+            value={draft}
+            placeholder={b.ownOption}
+            enterKeyHint="done"
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                addOwn();
+              }
+            }}
+            onBlur={addOwn}
+          />
+        </div>
+      )}
+      <p className={s.count}>
+        <span className={chosen.length === count ? s.countOk : ""}>{b.pickCount(chosen.length, count)}</span>
+      </p>
+      {(sec.why_each || sec.with_start_date) && chosen.length > 0 && (
+        <div className={s.pmsel}>
+          {chosen.map((x) => (
+            <div key={x} className={s.fld}>
+              <b style={{ display: "block", marginBottom: 6 }}>{x}</b>
+              {sec.why_each && (
+                <>
+                  <label htmlFor={`pw-${sec.key}-${x}`}>{b.whyThis}</label>
+                  <textarea id={`pw-${sec.key}-${x}`} rows={2} value={str(v.why?.[x])} onChange={(e) => write({ why: { ...(v.why ?? {}), [x]: e.target.value } })} />
+                </>
+              )}
+              {sec.with_start_date && (
+                <>
+                  <label htmlFor={`pd-${sec.key}-${x}`} style={{ marginTop: sec.why_each ? 8 : 0 }}>
+                    {b.startOn}
+                  </label>
+                  <input id={`pd-${sec.key}-${x}`} type="date" value={str(v.start?.[x])} onChange={(e) => write({ start: { ...(v.start ?? {}), [x]: e.target.value } })} />
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+function PickPhrases({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; ctx: BuildCtx }) {
   const b = useB();
   const count = sec.count ?? 5;
   const chosen = strs(ctx.data[sec.key]);
   // The phrases of this step (the verbs in step 3, the good questions in step 5), else every step's.
-  const own = ctx.step.essentials.flatMap((x) => (x.type === "phrases" ? x.items.map((i) => ({ es: i.es, en: i.en })) : []));
+  const own = (ctx.step.essentials ?? []).flatMap((x) => (x.type === "phrases" ? x.items.map((i) => ({ es: i.es, en: i.en })) : []));
   const list = own.length ? own : ctx.verbs;
   // English answers (questions to ask) are kept in English; Spanish verbs as the student picks them.
   const keyOf = (v: { es: string; en: string }) => (sec.audio ? v.en : v.es);

@@ -4,6 +4,7 @@ import "server-only";
 // return the student's own rows only (RLS).
 import type { Client } from "@/lib/supabase/types";
 import { PRODUCT, themeOf, type GuidedStep, type GuidedTheme, type ResumeData, type StepState } from "@/lib/guided";
+import type { Block, Screen } from "@/lib/ebook-format";
 
 export type StepRow = {
   step: GuidedStep;
@@ -55,6 +56,7 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
       };
     })
     .sort((a, b) => a.step.step - b.step.step);
+  await withEbookEssentials(supabase, steps.map((x) => x.step));
   const data = resume?.data && typeof resume.data === "object" && !Array.isArray(resume.data) ? (resume.data as ResumeData) : {};
   return {
     course: { id: course.id, slug: course.slug ?? slug, title: course.title, description: course.description },
@@ -64,4 +66,42 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
     resumeAt: resume?.updated_at ?? null,
     done: steps.filter((s) => s.completedAt).length,
   };
+}
+
+/**
+ * "Lo esencial" from the e-book (essentials_from): the listed screens' blocks, without the activity blocks (skip) and
+ * without the block the practice already uses (practice.from_ebook, e.g. "m5 myth"). That practice gets its items
+ * from the same block, so the book and the course always say the same thing. Read with the student's access.
+ */
+async function withEbookEssentials(supabase: Client, steps: GuidedStep[]) {
+  const slugs = [...new Set(steps.flatMap((s) => (s.essentials_from?.ebook ? [s.essentials_from.ebook] : [])))];
+  if (!slugs.length) return;
+  const { data: books } = await supabase.from("ebooks").select("slug, screens").in("slug", slugs);
+  const bySlug = new Map((books ?? []).map((b) => [b.slug, (Array.isArray(b.screens) ? b.screens : []) as unknown as Screen[]]));
+  const blockOf = (screens: Screen[], ref: string | undefined) => {
+    const [sid, type] = (ref ?? "").split(" ");
+    return screens.find((x) => x.id === sid)?.blocks.find((b) => b.type === type) as (Block & { items?: unknown[] }) | undefined;
+  };
+  for (const step of steps) {
+    const f = step.essentials_from;
+    const screens = f ? bySlug.get(f.ebook) : undefined;
+    if (!f || !screens) continue;
+    const used = step.practice && "from_ebook" in step.practice ? step.practice.from_ebook : undefined;
+    const skipTypes = f.skip?.types ?? [];
+    const prefix = f.skip?.title_prefix;
+    step.ebookScreens = f.screens.flatMap((sid) => {
+      const sc = screens.find((x) => x.id === sid);
+      if (!sc) return [];
+      const blocks = sc.blocks.filter((b) => {
+        const title = (b as { title?: string }).title ?? "";
+        return !skipTypes.includes(b.type) && !(prefix && title.startsWith(prefix)) && used !== `${sid} ${b.type}`;
+      });
+      return [{ id: sc.id, title: sc.title, audio: sc.narration?.audio ?? null, blocks }];
+    });
+    const p = step.practice;
+    if (p && (p.kind === "myth" || p.kind === "whatif") && !p.items?.length && p.from_ebook) {
+      const items = blockOf(screens, p.from_ebook)?.items;
+      if (Array.isArray(items)) (p as { items?: unknown[] }).items = items;
+    }
+  }
 }
