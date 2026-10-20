@@ -91,7 +91,23 @@ export function currentWeekOf(weeks: { n: number; done: boolean[] }[]) {
   return weeks.length ? Math.min(weeks[weeks.length - 1].n, BSNS_WEEKS) : 1;
 }
 
-/** Where "English For Business" opens from Mis cursos and the route cards: the current week, from course stats. */
-export function bsnsHomeHref(c: { slug: string; modules: { complete: boolean }[] }) {
-  return weekPath(c.slug, currentWeekOf(c.modules.slice(0, BSNS_WEEKS).map((m, i) => ({ n: i + 1, done: [m.complete] }))));
+/**
+ * The week the student is on, for Progreso, Inicio, Mis cursos and the course's redirect
+ * (content/fixes/celsbsns-recording-progress-fix.md): the week of the most recent activity (progress.last_activity of
+ * that week's lessons); if that week is complete, the next one; week 1 with no activity. Students who work out of
+ * order (weeks 7–9 first) see where they really are, not the first week they skipped. The week page's own route
+ * map keeps currentWeekOf (the lowest week with incomplete lessons).
+ */
+export function activeWeekOf(weeks: { n: number; done: boolean[]; last: string | null }[]) {
+  const latest = weeks.filter((w) => w.last).sort((a, b) => (a.last! < b.last! ? 1 : a.last! > b.last! ? -1 : a.n - b.n))[0];
+  if (!latest) return Math.min(weeks[0]?.n ?? 1, BSNS_WEEKS);
+  const complete = latest.done.length > 0 && latest.done.every(Boolean);
+  if (!complete) return Math.min(latest.n, BSNS_WEEKS);
+  const next = weeks.find((w) => w.n > latest.n);
+  return Math.min(next?.n ?? latest.n, BSNS_WEEKS);
+}
+
+/** Where "English For Business" opens from Inicio, Mis cursos and the route cards: the active week, from course stats. */
+export function bsnsHomeHref(c: { slug: string; modules: { complete: boolean; lastActivity?: string | null }[] }) {
+  return weekPath(c.slug, activeWeekOf(c.modules.slice(0, BSNS_WEEKS).map((m, i) => ({ n: i + 1, done: [m.complete], last: m.lastActivity ?? null }))));
 }

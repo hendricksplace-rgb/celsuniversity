@@ -21,7 +21,7 @@ export async function afterPartFinished(
   let s = await episodeStatus(supabase, viewer.user.id, courseSlug, n, viewer.isStaff);
   if (!s) return { complete: false, href: "/app/cursos", done: 0, total: 0, next: null };
   const quiz = s.parts.find((p) => p.role === "quiz");
-  if (quiz && !quiz.done) {
+  if (quiz && !quiz.done && !quiz.draft) {
     const { data: me } = await supabase.from("profiles").select("civics_track").eq("id", viewer.user.id).maybeSingle();
     if (me?.civics_track === "C") {
       const { error } = await supabase.rpc("record_lesson_progress", { p_lesson: quiz.id, p_finish: true });

@@ -29,7 +29,7 @@ export default async function LessonPage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/lecciones/${id}`);
 
   // RLS: students only see published, non-teacher lessons.
-  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, module:modules(id, title, kind, course:courses(id, slug, title, layout))").eq("id", id).maybeSingle();
+  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, status, teacher_only, module:modules(id, title, kind, course:courses(id, slug, title, layout))").eq("id", id).maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   if (!lesson || !lessonModule || !course) notFound();
@@ -44,6 +44,9 @@ export default async function LessonPage({ params }: Props) {
   // CelsBSNS: "Course Dictionary" (and the old "Course Dictionary (2)" note) open the Dictionary page.
   if (theme === "celsbsns" && course.slug && isDictionaryLesson(lesson.id)) redirect(dictionaryPath(course.slug));
   const access = await canAccessCourse(supabase, viewer, course.id);
+  // Staff can open drafts and teacher-only lessons (the Teacher's Guide): they're shown, never recorded, because
+  // record_lesson_progress refuses them ("no access", a 400 on every visit).
+  const track = lesson.status === "published" && !lesson.teacher_only;
 
   // CelsUS core parts: the Tarjetas, CelsBook and quiz have their own screens; the video, audio and class stay
   // here and report to the episode's completion flow when finished (afterPartFinished).
@@ -79,7 +82,7 @@ export default async function LessonPage({ params }: Props) {
     const bsns = themeForCourse(course) === "celsbsns" && weekN > 0;
     const link = (l: (typeof list)[number] | undefined) =>
       l ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` } : null;
-    const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en", track };
     const feedback =
       ty === "feedback" && weekN > 0
         ? await loadFeedback(supabase, viewer.user.id, lesson.id, course.id, weekN, list.map((l) => ({ id: l.id, type: l.lesson_type, title: l.title, href: link(l)!.href })))
@@ -90,6 +93,7 @@ export default async function LessonPage({ params }: Props) {
           backHref={nav.backHref}
           prev={nav.prev}
           defaultLang={nav.defaultLang}
+          track={track}
           data={feedback.data}
           lessonId={lesson.id}
           courseId={course.id}
@@ -181,6 +185,25 @@ export default async function LessonPage({ params }: Props) {
 
       {!access ? (
         <p className="t-card t-card-accent">{t.lesson.noAccess}</p>
+      ) : !track ? (
+        <div className="space-y-5">
+          {visible.map((block) => (
+            <div key={block.id}>
+              <LessonBlock
+                block={block}
+                signed={signed}
+                t={t.lesson}
+                activityT={t.activity}
+                civicsT={t.civics}
+                isStaff={viewer.isStaff}
+                readers={readers}
+                readLabel={t.reader.interactive}
+                books={books}
+                answers={answers}
+              />
+            </div>
+          ))}
+        </div>
       ) : (
         <LessonProgress
           lessonId={lesson.id}

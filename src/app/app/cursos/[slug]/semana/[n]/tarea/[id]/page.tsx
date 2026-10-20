@@ -58,13 +58,14 @@ export default async function BsnsTaskPage({ params }: Props) {
   if (reading || writing || research || video || speaking || feedback) {
     const at = week.parts.findIndex((x) => x.id === id);
     const link = (x: (typeof week.parts)[number] | undefined) => (x ? { title: x.title, href: x.href } : null);
-    const nav = { backHref: weekPath(slug, week.n), prev: link(week.parts[at - 1]), next: link(week.parts[at + 1]), defaultLang: (lang === "en" ? "en" : "es") as "es" | "en" };
+    const nav = { backHref: weekPath(slug, week.n), prev: link(week.parts[at - 1]), next: link(week.parts[at + 1]), defaultLang: (lang === "en" ? "en" : "es") as "es" | "en", track: !part.draft };
     if (feedback)
       return (
         <InteractiveFeedback
           backHref={nav.backHref}
           prev={nav.prev}
           defaultLang={nav.defaultLang}
+          track={nav.track}
           data={feedback.data}
           lessonId={id}
           courseId={page.course.id}
@@ -170,6 +171,7 @@ export default async function BsnsTaskPage({ params }: Props) {
       en={en}
       es={es}
       done={part.done}
+      track={!part.draft}
       sub={sub ? { ...sub, media_url: media?.signedUrl ?? null } : null}
       feedback={(weekSubs ?? []).map((s) => ({ task: titleOf.get(s.lesson_id) ?? "", text: s.coach_feedback ?? "", at: s.reviewed_at }))}
     />

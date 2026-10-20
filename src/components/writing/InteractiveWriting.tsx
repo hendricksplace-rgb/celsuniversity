@@ -30,6 +30,8 @@ type Props = {
   reviewerName: string | null;
   myPhrases: string[];
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 
 const UI = {
@@ -218,8 +220,9 @@ export function InteractiveWriting(p: Props) {
   // Opening the task counts as studying today and marks the lesson "in progress".
   useEffect(() => {
     // Query builders only run when awaited or then()-ed.
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+    if (p.track !== false) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, p.track]);
 
   // Dates are formatted after mount (the student's own time zone; no server/client mismatch).
   const [mounted, setMounted] = useState(false);
@@ -329,7 +332,7 @@ export function InteractiveWriting(p: Props) {
       setBusy(null);
       return setError(true);
     }
-    await finishLesson(db(), p.userId, p.lessonId);
+    if (p.track !== false) await finishLesson(db(), p.userId, p.lessonId);
     setSubId(row.id);
     setVersion(nextVersion);
     setSubmittedAt(row.submitted_at);

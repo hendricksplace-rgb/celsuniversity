@@ -2,6 +2,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { loadProgress } from "@/lib/progress-page";
 import { Progreso } from "@/components/progreso/Progreso";
+import { FreshOnReturn } from "@/components/progreso/FreshOnReturn";
+
+// Always the latest numbers (never a cached render).
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata() {
   const { t } = await getDictionary();
@@ -15,5 +19,10 @@ export default async function ProgresoPage() {
     data: { user },
   } = await supabase.auth.getUser();
   const d = await loadProgress(supabase, user!.id); // the /app shell already sent signed-out visitors to /entrar
-  return <Progreso t={t.progreso} d={d} lang={lang} />;
+  return (
+    <>
+      <FreshOnReturn renderedAt={Date.now()} />
+      <Progreso t={t.progreso} d={d} lang={lang} />
+    </>
+  );
 }

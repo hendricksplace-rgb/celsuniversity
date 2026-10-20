@@ -6,7 +6,7 @@ import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { listExams } from "@/lib/civics-server";
 import { loadCoursePage } from "@/lib/course-page";
-import { currentWeekOf, weekPath } from "@/lib/bsns";
+import { activeWeekOf, weekPath } from "@/lib/bsns";
 import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
 import { loadGuided } from "@/lib/guided-server";
 import { courseCopy } from "@/lib/guided-copy";
@@ -26,7 +26,20 @@ export default async function CoursePage({ params }: Props) {
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   if (!page) notFound();
   // CelsBSNS: the old week-list page is gone; old links and bookmarks land on the student's current week.
-  if (theme === "celsbsns") redirect(weekPath(page.course.slug, currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.map((p) => p.done) })))));
+  // The week of the latest activity (the next one once it's complete), like Progreso, Inicio and Mis cursos.
+  if (theme === "celsbsns")
+    redirect(
+      weekPath(
+        page.course.slug,
+        activeWeekOf(
+          page.episodes.map((e) => ({
+            n: e.n,
+            done: e.parts.map((p) => p.done),
+            last: e.parts.reduce<string | null>((a, p) => (p.lastActivity && (!a || p.lastActivity > a) ? p.lastActivity : a), null),
+          })),
+        ),
+      ),
+    );
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   // Guided courses (CelsGLOBAL step template): one page per step and Mi resume. Without access the steps aren't
   // readable (RLS), so the old page with its access notice shows instead.

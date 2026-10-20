@@ -52,20 +52,23 @@ function Trail({ icon, color, stops }: { icon: string; color: string; stops: [st
 /** Where the pin sits on the drawn road (0–1): stops are evenly spaced, units move it within a stretch. */
 function roadFraction(r: RoadData) {
   const n = r.at.length;
-  if (r.units >= r.at[n - 1]) return 1;
+  const u = r.pin ?? r.units;
+  if (u >= r.at[n - 1]) return 1;
   let i = 0;
-  while (i < n - 1 && r.at[i + 1] <= r.units) i++;
+  while (i < n - 1 && r.at[i + 1] <= u) i++;
   const span = r.at[i + 1] - r.at[i];
-  return (i + (span > 0 ? (r.units - r.at[i]) / span : 0)) / (n - 1);
+  return (i + (span > 0 ? (u - r.at[i]) / span : 0)) / (n - 1);
 }
 
 function RoadMap({ t, p }: { t: T; p: ProgramView }) {
   const m = t.maps[p.brand];
   const r = p.road;
-  const reached = r.at.map((a, i) => (i === r.at.length - 1 ? r.units >= r.total : r.units >= a));
+  // The pin (and "Siguiente") follow `pin` where the program sets one; the % stays the share of the course.
+  const u = r.pin ?? r.units;
+  const reached = r.at.map((a, i) => (i === r.at.length - 1 ? u >= r.total : u >= a));
   const nextIdx = reached.indexOf(false);
   const stops: RoadStop[] = m.stops.map(([label, sub], i) => ({ label, sub, state: reached[i] ? "done" : i === nextIdx ? "cur" : "todo" }));
-  const percent = Math.min(100, Math.round((r.units / Math.max(r.total, 1)) * 100));
+  const percent = Math.min(100, r.pct ?? Math.round((r.units / Math.max(r.total, 1)) * 100));
   const next = nextIdx >= 0 ? m.stops[nextIdx][0] : null;
   return (
     <Road
