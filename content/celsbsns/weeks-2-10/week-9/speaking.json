@@ -1,0 +1,285 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Roleplay:",
+    "title_b": "Productivity in Action",
+    "chips_en": [
+      "2 hours",
+      "3 situations",
+      "9 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 situaciones",
+      "9 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Practice 3 moments that happen every week on U.S. project teams: the daily stand-up, a deadline that moves, and a bottleneck. Speak out loud, see what you said, and repeat until it sounds clear and calm.",
+    "intro_es": "Practica 3 momentos que pasan cada semana en los equipos de proyecto en EE. UU.: la reunión diaria, una fecha límite que cambia y un cuello de botella. Habla en voz alta, mira lo que dijiste y repite hasta que suene claro y tranquilo."
+  },
+  "week": 9,
+  "bonus": {
+    "options": {
+      "en": [
+        "Stand-up",
+        "Deadline",
+        "Bottleneck"
+      ],
+      "es": [
+        "Reunión diaria",
+        "Plazo",
+        "Cuello de botella"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Which situation required the most problem-solving?",
+        "Which required the clearest communication?"
+      ],
+      "es": [
+        "¿Cuál situación requirió más resolución de problemas?",
+        "¿Cuál requirió la comunicación más clara?"
+      ]
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta",
+      "d_en": "Several times, even if it feels strange.",
+      "d_es": "Varias veces, aunque te sientas raro."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "people",
+      "t_en": "With a partner if you can",
+      "t_es": "Con alguien si puedes",
+      "d_en": "They read the manager's lines; you answer.",
+      "d_es": "Esa persona lee lo que dice el jefe; tú respondes."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 9: scope, milestone, blocker…",
+      "d_es": "Las palabras de la Semana 9: scope, milestone, blocker…"
+    }
+  ],
+  "original": {
+    "goal": "Practice structured, solution-focused speaking in three everyday project situations.",
+    "time": "2 hours",
+    "title": "Roleplay: Productivity in Action",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplay: Productivity in Action\nTime: 2 hours\n\nActivity 1 – Daily Stand-Up\nPartner plays manager: \"What did you finish yesterday? What are you working on today? Any blockers?\"\nYou respond in a structured update.\n\nActivity 2 – Deadline Challenge\nPartner: \"The project deadline moved up by one week.\"\nYou propose adjustments to timeline, resources, or scope.\n\nActivity 3 – Bottleneck Scenario\nPartner: \"The IT system is slowing down our work.\"\nYou suggest solutions to remove the bottleneck.\n\nReflection:\nWhich situation required the most problem-solving? Which required the clearest communication?",
+    "body_es": "🤝 Práctica de Conversación\n\nTítulo: Juego de Roles: Productividad en Acción\nTiempo: 2 horas\n\nActividad 1 – Reunión Diaria\nEl compañero juega el papel de gerente: \"What did you finish yesterday? What are you working on today? Any blockers?\" \nResponde con una actualización estructurada.\n\nActividad 2 – Desafío de Plazos\nCompañero: \"The project deadline moved up by one week.\"\nPropones ajustes al cronograma, recursos o alcance.\n\nActividad 3 – Escenario de Cuello de Botella\nCompañero: \"The IT system is slowing down our work.\"\nSugieres soluciones para eliminar el cuello de botella.\n\nReflexión:\n¿Cuál situación requirió más resolución de problemas? ¿Cuál requirió la comunicación más clara?",
+    "goal_es": "Practicar hablar de forma estructurada y enfocada en soluciones en tres situaciones cotidianas de proyecto.",
+    "title_es": "Juego de Roles: Productividad en Acción"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Practice 3 times. Answer the three questions in order: yesterday, today, blockers.",
+        "es": "Practica 3 veces. Responde las tres preguntas en orden: ayer, hoy, obstáculos."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Teams · Daily Stand-Up",
+          "es": "Teams · Daily Stand-Up"
+        },
+        "kind": "zoom",
+        "line": "What did you finish yesterday? What are you working on today? Any blockers?",
+        "meta": {
+          "en": "15 min",
+          "es": "15 min"
+        },
+        "tile": {
+          "name": "Diane · Manager",
+          "initials": "DM"
+        },
+        "speaker": {
+          "en": "DIANE · MANAGER",
+          "es": "DIANE · MANAGER"
+        }
+      },
+      "title": {
+        "en": "Daily Stand-Up",
+        "es": "Reunión diaria (stand-up)"
+      },
+      "points": {
+        "en": [
+          "What you finished yesterday",
+          "What you are working on today",
+          "Any blockers (or “no blockers”)"
+        ],
+        "es": [
+          "Lo que terminaste ayer",
+          "En qué trabajas hoy",
+          "Obstáculos (o “no blockers”)"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: just the facts",
+          "Try 2: add one number or date",
+          "Try 3: under 45 seconds"
+        ],
+        "es": [
+          "Intento 1: solo los hechos",
+          "Intento 2: agrega un número o una fecha",
+          "Intento 3: en menos de 45 segundos"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "situation": {
+        "en": "Your partner plays the manager in the daily stand-up and asks the three classic questions. You respond with a structured update.",
+        "es": "Tu compañero hace de jefe en la reunión diaria y te hace las tres preguntas clásicas. Respondes con una actualización estructurada."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times. Each time, propose a different adjustment: timeline, resources or scope.",
+        "es": "Practica 3 veces. Cada vez propón un ajuste distinto: cronograma, recursos o alcance."
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Project Meeting · Office Move",
+          "es": "Project Meeting · Office Move"
+        },
+        "kind": "meeting",
+        "line": "The project deadline moved up by one week.",
+        "meta": {
+          "en": "5 people",
+          "es": "5 personas"
+        },
+        "speaker": {
+          "en": "DIANE · MANAGER",
+          "es": "DIANE · MANAGER"
+        }
+      },
+      "title": {
+        "en": "Deadline Challenge",
+        "es": "Desafío de plazos"
+      },
+      "points": {
+        "en": [
+          "Show you understand the change",
+          "Propose an adjustment to timeline, resources or scope",
+          "Say what you need to make it work"
+        ],
+        "es": [
+          "Muestra que entiendes el cambio",
+          "Propón un ajuste al cronograma, los recursos o el alcance",
+          "Di qué necesitas para lograrlo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: adjust the timeline",
+          "Try 2: ask for more resources",
+          "Try 3: reduce the scope"
+        ],
+        "es": [
+          "Intento 1: ajusta el cronograma",
+          "Intento 2: pide más recursos",
+          "Intento 3: reduce el alcance"
+        ]
+      },
+      "limit_s": [
+        45,
+        75
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "Your partner tells you: “The project deadline moved up by one week.” You stay calm and propose adjustments to the timeline, resources or scope.",
+        "es": "Tu compañero te dice: “The project deadline moved up by one week.” Mantienes la calma y propones ajustes al cronograma, los recursos o el alcance."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times. Give at least two solutions and suggest a next step with a time.",
+        "es": "Practica 3 veces. Da al menos dos soluciones y propón un siguiente paso con hora."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Teams · Quick Call",
+          "es": "Teams · Quick Call"
+        },
+        "kind": "zoom",
+        "line": "The IT system is slowing down our work.",
+        "meta": {
+          "en": "Now",
+          "es": "Ahora"
+        },
+        "tile": {
+          "name": "Marcus · Team Lead",
+          "initials": "MK"
+        },
+        "speaker": {
+          "en": "MARCUS · TEAM LEAD",
+          "es": "MARCUS · TEAM LEAD"
+        }
+      },
+      "title": {
+        "en": "Bottleneck Scenario",
+        "es": "Escenario de cuello de botella"
+      },
+      "points": {
+        "en": [
+          "Name the bottleneck and its impact",
+          "Suggest at least two solutions",
+          "Propose a next step and when"
+        ],
+        "es": [
+          "Nombra el cuello de botella y su impacto",
+          "Sugiere al menos dos soluciones",
+          "Propón un siguiente paso y cuándo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: a quick fix for today",
+          "Try 2: a long-term solution",
+          "Try 3: your best version"
+        ],
+        "es": [
+          "Intento 1: una solución rápida para hoy",
+          "Intento 2: una solución a largo plazo",
+          "Intento 3: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        45,
+        75
+      ],
+      "situation": {
+        "en": "Your partner says: “The IT system is slowing down our work.” You suggest solutions to remove the bottleneck.",
+        "es": "Tu compañero dice: “The IT system is slowing down our work.” Sugieres soluciones para eliminar el cuello de botella."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "459cd207-b273-40a9-9855-d286974a76c9"
+}

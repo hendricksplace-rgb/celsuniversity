@@ -1,0 +1,248 @@
+{
+  "tip": {
+    "en": "You don't need to create an account or pay for anything. The official features page, a short demo video and the help center are enough. Many of these tools also offer a free plan or a free trial if you want to try them later.",
+    "es": "No necesitas crear una cuenta ni pagar nada. La página oficial de funciones, un video corto de demostración y el centro de ayuda son suficientes. Muchas de estas herramientas también tienen un plan gratis o una prueba gratuita, por si quieres probarlas después."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already written your project plan.",
+      "es": "Ya escribiste tu plan de proyecto."
+    },
+    "link_p": {
+      "en": "Now explore the digital tools U.S. teams use to run plans like yours, and pick the one that fits you.",
+      "es": "Ahora explora las herramientas digitales que usan los equipos en EE. UU. para llevar planes como el tuyo y elige la que te queda mejor."
+    },
+    "title_a": "Exploring",
+    "title_b": "Productivity Tools",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 tools",
+      "5–7 sentences each",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 herramientas",
+      "5–7 oraciones cada una",
+      "Mis frases"
+    ],
+    "intro_en": "Many U.S. companies organize their work in digital tools like Trello, Asana, Microsoft Teams or Slack. Choose two, visit their official websites, identify their main features, and compare them: which one is more useful for you, and how could you apply it?",
+    "intro_es": "Muchas empresas en EE. UU. organizan su trabajo en herramientas digitales como Trello, Asana, Microsoft Teams o Slack. Elige dos, visita sus sitios oficiales, identifica sus funciones principales y compáralas: ¿cuál te sirve más y cómo podrías aplicarla?"
+  },
+  "week": 9,
+  "model": {
+    "name": "Trello",
+    "role": "Project boards · by Atlassian",
+    "about": "Trello organizes work on boards. Each task is a card that you move forward as the work progresses. On a card, you can add a due date with reminders, a checklist with a progress bar, and attachments. Built-in automation can handle repeated actions, and Power-Ups connect Trello with tools like Slack, Microsoft Teams and Gmail. There is a free plan for individuals and small teams.",
+    "answers": {
+      "en": [
+        "Organizing tasks visually, so a team can see who is doing what and how far each task has moved.",
+        "Boards, task cards, deadlines with reminders, checklists, automation and connections with other apps.",
+        "Small teams and visual planning. It also works for personal use.",
+        "“Split larger tasks into smaller steps and track progress.”",
+        "I could create a board for my office-move plan, with one card per milestone and a due date on each card."
+      ],
+      "es": [
+        "Organizar tareas de forma visual, para que el equipo vea quién hace qué y cuánto ha avanzado cada tarea.",
+        "Tableros, tarjetas de tareas, fechas límite con recordatorios, checklists, automatización y conexión con otras apps.",
+        "Equipos pequeños y planeación visual. También sirve para uso personal.",
+        "“Split larger tasks into smaller steps and track progress.”",
+        "Podría crear un tablero para mi plan de mudanza, con una tarjeta por hito y una fecha límite en cada tarjeta."
+      ]
+    },
+    "initials": "TR"
+  },
+  "model_is_real": true,
+  "types": [
+    {
+      "en": "Official website",
+      "es": "Sitio oficial",
+      "key": "web"
+    },
+    {
+      "en": "Features page",
+      "es": "Página de funciones",
+      "key": "features"
+    },
+    {
+      "en": "Help center / guide",
+      "es": "Centro de ayuda / guía",
+      "key": "help"
+    },
+    {
+      "en": "Official demo video",
+      "es": "Video oficial de demostración",
+      "key": "yt"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "What the tool is for",
+      "es": "Para qué sirve",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Its main features",
+      "es": "Sus funciones principales",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Who it's best for",
+      "es": "Para quién es mejor",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A phrase for your Capstone",
+      "es": "Una frase para tu Capstone",
+      "color": "#C98A00"
+    },
+    {
+      "en": "How you could apply it",
+      "es": "Cómo podrías aplicarla",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "trello",
+      "mark": "T",
+      "color": "#0079BF",
+      "desc_en": "Boards and cards to organize tasks visually.",
+      "desc_es": "Tableros y tarjetas para organizar tareas de forma visual.",
+      "label_en": "Trello",
+      "label_es": "Trello",
+      "query_template": "site:trello.com {field}",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "asana",
+      "mark": "A",
+      "color": "#F06A6A",
+      "desc_en": "Projects in list, board, timeline or calendar view.",
+      "desc_es": "Proyectos en vista de lista, tablero, cronograma o calendario.",
+      "label_en": "Asana",
+      "label_es": "Asana",
+      "query_template": "site:asana.com {field}",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "teams",
+      "mark": "MT",
+      "color": "#5059C9",
+      "desc_en": "Chat, meetings and files in one place.",
+      "desc_es": "Chat, reuniones y archivos en un solo lugar.",
+      "label_en": "Microsoft Teams",
+      "label_es": "Microsoft Teams",
+      "query_template": "site:microsoft.com Microsoft Teams {field}",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "slack",
+      "mark": "S",
+      "color": "#4A154B",
+      "desc_en": "Team messaging organized in channels.",
+      "desc_es": "Mensajería de equipo organizada en canales.",
+      "label_en": "Slack",
+      "label_es": "Slack",
+      "query_template": "site:slack.com {field}",
+      "search_template": "https://www.google.com/search?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "Understanding digital tools helps you adapt quickly when U.S. companies introduce them—and shows you're proactive in learning.",
+    "time": "1–1.5 hours",
+    "title": "Exploring Productivity Tools",
+    "body_en": "🧠 Research Task\n\nTitle: Exploring Productivity Tools\nTime: 1–1.5 hours\n\nTask:\n\nChoose two productivity tools (e.g., Trello, Asana, Microsoft Teams, Slack).\n\nVisit their official websites.\n\nIdentify their main features (task lists, dashboards, deadlines, communication tools).\n\nCompare:\n\nWhich tool seems more useful to you?\n\nHow could you apply it in your own work or studies?\n\nWhy This Matters:\nUnderstanding digital tools helps you adapt quickly when U.S. companies introduce them—and shows you're proactive in learning.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Explorando Herramientas de Productividad\nTiempo: 1–1.5 horas\n\nTarea:\n\nElige dos herramientas de productividad (por ejemplo, Trello, Asana, Microsoft Teams, Slack).\n\nVisita sus sitios web oficiales.\n\nIdentifica sus características principales (listas de tareas, paneles de control, fechas límite, herramientas de comunicación).\n\nCompara:\n\n¿Cuál herramienta te parece más útil?\n\n¿Cómo podrías aplicarla en tu propio trabajo o estudios?\n\nPor qué Esto Importa:\nEntender las herramientas digitales te ayuda a adaptarte rápidamente cuando las empresas de EE. UU. las introducen—y demuestra que eres proactivo en el aprendizaje.",
+    "goal_es": "Entender las herramientas digitales te ayuda a adaptarte rápidamente cuando las empresas de EE. UU. las introducen—y demuestra que eres proactivo en el aprendizaje.",
+    "title_es": "Explorando Herramientas de Productividad"
+  },
+  "patterns": {
+    "en": [
+      "Both tools have task lists or boards",
+      "Both show deadlines or a calendar",
+      "One is stronger for tasks, the other for communication",
+      "Both connect with other apps",
+      "One looks easier to learn",
+      "I could start using one of them this week"
+    ],
+    "es": [
+      "Las dos tienen listas de tareas o tableros",
+      "Las dos muestran fechas límite o un calendario",
+      "Una es mejor para tareas y la otra para comunicación",
+      "Las dos se conectan con otras apps",
+      "Una se ve más fácil de aprender",
+      "Podría empezar a usar una de ellas esta semana"
+    ]
+  },
+  "questions": {
+    "en": [
+      "What is the tool for?",
+      "Which main features does it have? (tap all that apply)",
+      "Who is it best for? (tap one or more)",
+      "One phrase you could use in your Capstone",
+      "How could you apply it in your own work or studies?"
+    ],
+    "es": [
+      "¿Para qué sirve la herramienta?",
+      "¿Qué funciones principales tiene? (toca todo lo que aplique)",
+      "¿Para quién es mejor? (toca una o más)",
+      "Una frase que podrías usar en tu Capstone",
+      "¿Cómo podrías aplicarla en tu propio trabajo o estudios?"
+    ]
+  },
+  "sentences": {
+    "max": 7,
+    "min": 5
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Small teams",
+      "Large companies",
+      "Visual planning",
+      "Team communication",
+      "Personal use"
+    ],
+    "es": [
+      "Equipos pequeños",
+      "Empresas grandes",
+      "Planeación visual",
+      "Comunicación del equipo",
+      "Uso personal"
+    ]
+  },
+  "default_field": "project management",
+  "share_options": {
+    "en": [
+      "Task lists",
+      "Boards",
+      "Dashboards",
+      "Deadlines & calendar",
+      "Chat & messages",
+      "Video meetings",
+      "Automation",
+      "Integrations"
+    ],
+    "es": [
+      "Listas de tareas",
+      "Tableros",
+      "Paneles de control",
+      "Fechas límite y calendario",
+      "Chat y mensajes",
+      "Videollamadas",
+      "Automatización",
+      "Integraciones"
+    ]
+  },
+  "compare_q": {
+    "en": [
+      "Which tool seems more useful to you?",
+      "How could you apply it in your own work or studies?"
+    ],
+    "es": [
+      "¿Cuál herramienta te parece más útil?",
+      "¿Cómo podrías aplicarla en tu propio trabajo o estudios?"
+    ]
+  }
+}

@@ -1,35 +1,54 @@
 "use client";
 
-// CelsUS episode (board "Cada programa, su propia experiencia", phones 1–2): formal and calm. Navy and gold,
-// serif titles, a vertical timeline of the 6 core parts with gold seals, "Continúa" on top and the extra
-// material apart. When all 6 are done, the seal screen shows once (no confetti), then stays reachable.
-import Image from "next/image";
+// CelsUS episode page (celsus-episodio-mockup.html v2): navy hero with the episode switcher and the gold seal,
+// "Continúa donde te quedaste", the 6-part path as a timeline of cards with labeled buttons, and the side column
+// (this week's questions, extra material, next episode). Big type and buttons: most students are 45 to 65.
+import "./celsus-episode.css";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Episode, Part, UsRole } from "@/lib/course-page";
+import { IconAudio, IconBook, IconCards, IconLive, IconPrinter, IconQuiz, IconReview, IconVideo, IconWriting } from "@/components/icons/celsus";
 import { fill } from "./kit";
 
 type T = Dictionary["us"];
-export type UsExtra = { href: string; label: string; tag: string; icon: string; external?: boolean };
+export type UsExtra = { href: string; label: string; tag: string; icon: "video" | "writing" | "review" | "print-en" | "print-es"; external?: boolean };
+export type UsTrack = "A" | "B" | "C" | null;
 
-function Seal({ size, children }: { size: number; children: React.ReactNode }) {
-  return (
-    <span
-      className="relative grid shrink-0 place-items-center rounded-full text-[#0E2A4F]"
-      style={{
-        width: size,
-        height: size,
-        background: "radial-gradient(circle at 35% 30%, #FFE89A 0%, #FFD24D 45%, #D9A514 100%)",
-        boxShadow: `0 0 0 ${Math.max(2, size / 22)}px rgba(255,210,77,.35), inset 0 -${size / 18}px ${size / 9}px rgba(150,100,0,.35)`,
-      }}
-    >
-      {children}
-    </span>
-  );
+const PART_ICON: Record<UsRole, (p: { className?: string }) => React.ReactNode> = {
+  video: IconVideo,
+  cards: IconCards,
+  book: IconBook,
+  audio: IconAudio,
+  live: IconLive,
+  quiz: IconQuiz,
+};
+const PART_TILE: Record<UsRole, string> = { video: "#E8F0FB", cards: "#FFF4D6", book: "#FDE8EC", audio: "#E8F0FB", live: "#FFF4D6", quiz: "#FDE8EC" };
+const EXTRA_TILE: Record<UsExtra["icon"], string> = { video: "#E8F0FB", writing: "#FFF4D6", review: "#FFF4D6", "print-en": "#FDE8EC", "print-es": "#E8F7EE" };
+
+function ExtraIcon({ icon }: { icon: UsExtra["icon"] }) {
+  if (icon === "video") return <IconVideo />;
+  if (icon === "review") return <IconReview />;
+  if (icon === "print-en") return <IconPrinter lang="EN" />;
+  if (icon === "print-es") return <IconPrinter lang="ES" />;
+  return <IconWriting />;
 }
 
-const sealKey = (id: string) => `celsu:seal:${id}`;
+// useLayoutEffect warns on the server; this page renders there first.
+const useIsoLayout = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+const STARS: [number, number, number, number][] = [
+  [40, 40, 2, 0],
+  [90, 70, 1.5, 1],
+  [150, 30, 2, 2],
+  [210, 90, 1.5, 0.5],
+  [60, 140, 1.5, 1.5],
+  [130, 170, 2, 2.5],
+  [260, 40, 1.5, 3],
+  [300, 120, 2, 0.8],
+  [30, 230, 1.5, 2.2],
+  [200, 220, 1.5, 1.2],
+];
 
 export function CelsusEpisode({
   t,
@@ -37,219 +56,334 @@ export function CelsusEpisode({
   title,
   sub,
   courseHref,
-  nextHref,
+  next,
   examHref,
+  completionHref,
   extras,
   subs,
-  episodesDone,
-  episodesTotal,
+  episodes,
+  questions,
+  questionCount,
+  questionsHref,
+  track,
+  trackHref,
+  resumeMeta,
+  xp,
 }: {
   t: T;
   episode: Episode;
   title: string;
   sub: string;
   courseHref: string;
-  nextHref: string | null;
+  next: { n: number; href: string; title: string } | null;
   examHref: string;
+  completionHref: string;
   extras: UsExtra[];
   subs: Partial<Record<UsRole, string>>;
-  episodesDone: number;
-  episodesTotal: number;
+  episodes: { n: number; href: string; done: boolean }[];
+  questions: { en: string; es: string; no: number | null }[];
+  questionCount: number;
+  questionsHref: string;
+  track: UsTrack;
+  trackHref: string;
+  resumeMeta: { done: number; total: number; text: string } | null;
+  xp: number;
 }) {
   const parts = episode.parts;
+  /** Track C doesn't need the quiz: it never blocks them, and shows as "not needed" until it is recorded. */
+  const skipped = (p: Part) => track === "C" && p.role === "quiz" && !p.done;
   const done = parts.filter((p) => p.done).length;
   const complete = parts.length > 0 && done === parts.length;
-  const current = complete ? null : episode.next;
-  const [seal, setSeal] = useState(false);
+  const current = complete ? null : (parts.find((p) => !p.done && !skipped(p)) ?? null);
+  const total = parts.length;
+  const role = (p: Part) => p.role!;
+  const roleName = (p: Part) => fill(t.roles[role(p)], { n: episode.n });
 
-  // The seal screen the first time the student comes back with all 6 done.
+  // The seal's ring fills to done/total once the page is on screen.
+  const [ring, setRing] = useState(0);
   useEffect(() => {
-    if (!complete) return;
-    try {
-      if (!localStorage.getItem(sealKey(episode.id))) {
-        localStorage.setItem(sealKey(episode.id), "1");
-        setSeal(true);
-      }
-    } catch {
-      /* private mode: no automatic seal screen */
-    }
-  }, [complete, episode.id]);
+    const id = requestAnimationFrame(() => setRing(total ? done / total : 0));
+    return () => cancelAnimationFrame(id);
+  }, [done, total]);
 
-  const shell = "-mx-4 -mt-6 overflow-hidden sm:mx-auto sm:mt-0 sm:max-w-[560px] sm:rounded-[28px] md:-mt-2";
-  if (seal) {
-    const xp = [...parts, ...episode.extra].reduce((s, p) => s + p.xpEarned, 0);
-    return (
-      <div
-        className={`${shell} flex min-h-[calc(100dvh-7.5rem)] flex-col items-center px-6 pb-10 pt-12 text-center text-white`}
-        style={{ background: "radial-gradient(420px 320px at 50% 18%, rgba(255,210,77,.22), rgba(255,210,77,0) 70%), linear-gradient(180deg, #194876 0%, #0E2A4F 100%)" }}
-      >
-        <Seal size={150}>
-          <span className="flex flex-col items-center">
-            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-            <span className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.16em]">{fill(t.kicker, { n: episode.n })}</span>
-          </span>
-        </Seal>
-        <p className="mt-8 text-xs font-extrabold uppercase tracking-[0.18em] text-[#FFD24D]">{t.completedKicker}</p>
-        <h1 className="mt-3 font-serif text-[30px] font-semibold leading-tight" role="status">
-          {t.completedTitle}
-        </h1>
-        <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-white/85">{t.completedText}</p>
-        <div className="mt-7 grid w-full max-w-sm grid-cols-2 gap-3">
-          <div className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-4">
-            <p className="font-serif text-3xl font-semibold text-[#FFD24D]">+{xp}</p>
-            <p className="mt-1 text-xs text-white/80">{t.xpEarned}</p>
-          </div>
-          <div className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-4">
-            <p className="font-serif text-3xl font-semibold text-[#FFD24D]">{fill(t.episodesOf, { n: episodesDone, total: episodesTotal })}</p>
-            <p className="mt-1 text-xs text-white/80">{t.episodes}</p>
-          </div>
-        </div>
-        <div className="mt-auto flex w-full max-w-sm flex-col gap-3 pt-8">
-          {nextHref && (
-            <Link href={nextHref} className="kit-focus-light rounded-xl bg-[#FFD24D] py-3.5 font-bold text-[#0E2A4F]">
-              {fill(t.next, { n: episode.n + 1 })}
-            </Link>
-          )}
-          <Link href={examHref} className="kit-focus-light rounded py-1 text-sm font-semibold text-white/90 underline-offset-4 hover:underline">
-            {t.practiceExam}
-          </Link>
-          <button type="button" onClick={() => setSeal(false)} className="kit-focus-light rounded py-1 text-sm text-white/70 underline">
-            {t.backEpisode}
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // The gold line runs from part 1's node to the current part's node (or the last done one).
+  const listRef = useRef<HTMLDivElement>(null);
+  const [line, setLine] = useState<{ top: number; height: number } | null>(null);
+  useIsoLayout(() => {
+    const measure = () => {
+      const list = listRef.current;
+      if (!list) return;
+      const nodes = [...list.querySelectorAll<HTMLElement>(".node")];
+      const target = list.querySelector<HTMLElement>(".part.now .node") ?? [...list.querySelectorAll<HTMLElement>(".part.done .node")].pop();
+      if (!nodes.length || !target) return setLine(null);
+      const lr = list.getBoundingClientRect();
+      const a = nodes[0].getBoundingClientRect();
+      const b = target.getBoundingClientRect();
+      setLine({ top: a.top + a.height / 2 - lr.top, height: Math.max(0, b.top - a.top) });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [current?.id, done]);
 
-  const row = (p: Part, i: number) => {
-    const isNow = current?.id === p.id;
-    const last = i === parts.length - 1;
-    return (
-      <li key={p.id} className="relative flex gap-3.5 pb-5">
-        {!last && (
-          <span aria-hidden className="absolute left-[16px] top-[34px] h-[calc(100%-34px)] w-0.5" style={{ background: p.done && parts[i + 1]?.done ? "#E8B931" : "#D9DEE7" }} />
-        )}
-        {p.done ? (
-          <Seal size={34}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0E2A4F" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          </Seal>
-        ) : (
-          <span
-            className={`grid size-[34px] shrink-0 place-items-center rounded-full font-serif text-[15px] font-semibold ${isNow ? "bg-[#0E2A4F] text-white shadow-[0_0_0_3px_#FFD24D]" : "bg-white text-[#4A5A75] shadow-[inset_0_0_0_2px_#D9DEE7]"}`}
-          >
-            {i + 1}
-          </span>
-        )}
-        <Link href={p.href} className="kit-focus -my-1 flex min-w-0 flex-1 items-center gap-3 rounded-lg py-1">
-          <span className="min-w-0 flex-1">
-            <span className="block font-serif text-[17px] font-semibold leading-snug text-[#0E2A4F]">{t.roles[p.role!]}</span>
-            <span className="mt-0.5 block text-xs text-[#4A5A75]">{subs[p.role!]}</span>
-          </span>
-          {p.done ? (
-            <span className="shrink-0 text-xs font-bold text-[#7A5C00]">{t.done}</span>
-          ) : isNow ? (
-            <span className="shrink-0 rounded-lg bg-[#FFD24D] px-3 py-2 text-xs font-bold text-[#0E2A4F]">{t.continue}</span>
-          ) : (
-            <span aria-hidden className="shrink-0 text-lg text-[#8A94A6]">
-              ›
-            </span>
-          )}
-        </Link>
-      </li>
-    );
-  };
+  const C = 289;
+  const trackName = track ? t.trackNames[track] : null;
 
   return (
-    <div className={`${shell} bg-[#F7F5EF] pb-8`}>
-      <header
-        className="relative px-5 pb-6 pt-4 text-[#F4F1E8]"
-        style={{ background: "radial-gradient(300px 200px at 90% 70%, rgba(255,210,77,.25), rgba(255,210,77,0) 70%), linear-gradient(160deg, #194876 0%, #0E2A4F 100%)" }}
-      >
-        <div className="flex items-center justify-between">
-          <Link href={courseHref} aria-label={t.back} className="kit-focus-light grid size-9 place-items-center rounded-full bg-white/10">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </Link>
-          <Image src="/brand/celsus.jpg" alt="CelsUS" width={64} height={26} className="rounded" />
-        </div>
-        <div className="mt-4 flex items-end gap-4">
-          <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#FFD24D]">{fill(t.kicker, { n: episode.n })}</p>
-            <h1 className="mt-1.5 font-serif text-[28px] font-semibold leading-tight">{title}</h1>
-            <p className="mt-1.5 text-[13px] text-white/80">{sub}</p>
+    <div className="use">
+      <header className="hero">
+        <svg className="stars" viewBox="0 0 400 300" preserveAspectRatio="xMinYMin slice" aria-hidden fill="#FFE27A">
+          {STARS.map(([cx, cy, r, d]) => (
+            <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={r} style={{ animationDelay: `${d}s` }} />
+          ))}
+        </svg>
+        <span className="glow" aria-hidden style={{ right: -140, top: -200, background: "rgba(242,194,48,.22)" }} />
+        <span className="glow" aria-hidden style={{ left: "20%", bottom: -320, background: "rgba(200,16,46,.20)" }} />
+        <span className="us" aria-hidden>
+          US
+        </span>
+        <div className="wrap">
+          <div className="htop">
+            <Link className="back" href={courseHref}>
+              <i aria-hidden>‹</i>
+              {t.backCourses}
+            </Link>
+            {/* eslint-disable-next-line @next/next/no-img-element -- small static logo */}
+            <img className="logo" src="/brand/celsus.jpg" alt="CelsUS" width={100} height={40} />
           </div>
-          <Seal size={64}>
-            <span className="font-serif text-lg font-bold" aria-label={`${done}/${parts.length}`}>
-              {done}/{parts.length}
-            </span>
-          </Seal>
+          <nav className="eps" aria-label={t.episodesNav}>
+            {episodes.map((e) => (
+              <Link key={e.n} href={e.href} className={e.n === episode.n ? "on" : ""} aria-current={e.n === episode.n ? "page" : undefined}>
+                {e.done && (
+                  <span className="ck" aria-label={t.pillDone}>
+                    ✓
+                  </span>
+                )}
+                {fill(t.pill, { n: e.n })}
+              </Link>
+            ))}
+            <Link className="ex" href={examHref}>
+              🎓 {t.finalExam}
+            </Link>
+          </nav>
+          <div className="hgrid">
+            <div>
+              <p className="kick">{fill(t.kickerOf, { n: episode.n, total: episodes.length })}</p>
+              <h1>{title}</h1>
+              <p className="hsub">{sub}</p>
+              <div className="chips">
+                {t.chips.map((c) => (
+                  <span key={c}>{c}</span>
+                ))}
+                {trackName && <span>🎯 {trackName}</span>}
+              </div>
+            </div>
+            <div className="seal" role="img" aria-label={fill(t.sealLabel, { n: done, total })}>
+              <svg viewBox="0 0 100 100" aria-hidden>
+                <defs>
+                  <linearGradient id="use-sg" x1="0" x2="1">
+                    <stop offset="0" stopColor="#FFE27A" />
+                    <stop offset="1" stopColor="#F2C230" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="6" />
+                <circle
+                  className="arc"
+                  cx="50"
+                  cy="50"
+                  r="46"
+                  fill="none"
+                  stroke="url(#use-sg)"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray={C}
+                  strokeDashoffset={C * (1 - ring)}
+                />
+              </svg>
+              <div className="in" aria-hidden>
+                <b>
+                  {done}/{total}
+                </b>
+                <span>{t.sealParts}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div className="space-y-6 px-5 pt-5">
-        {current ? (
-          <Link href={current.href} className="kit-focus flex items-center gap-3 rounded-xl border-2 border-[#FFD24D] bg-white px-4 py-3.5">
-            <span className="min-w-0 flex-1">
-              <span className="block text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#7A5C00]">{done === 0 ? t.start : t.resume}</span>
-              <span className="mt-0.5 block font-serif text-[17px] font-semibold text-[#0E2A4F]">
-                {t.roles[current.role!]} · {fill(t.partOf, { n: parts.indexOf(current) + 1, total: parts.length })}
-              </span>
-            </span>
-            <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-full bg-[#0E2A4F]">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="#FFD24D">
-                <path d="M7 4.5v15l13-7.5z" />
-              </svg>
-            </span>
-          </Link>
-        ) : (
-          complete && (
-            <button
-              type="button"
-              onClick={() => setSeal(true)}
-              className="kit-focus flex w-full items-center gap-3 rounded-xl border-2 border-[#FFD24D] bg-white px-4 py-3.5 text-left"
-            >
-              <Seal size={36}>
-                <span className="text-sm font-bold">✓</span>
-              </Seal>
-              <span className="font-serif text-[17px] font-semibold text-[#0E2A4F]">{t.completedKicker}</span>
-            </button>
-          )
-        )}
+      <div className="main">
+        <div>
+          {current ? (
+            <div className="cont">
+              <div className="in">
+                <div className="ic" aria-hidden>
+                  {PART_ICON[role(current)]({})}
+                </div>
+                <div>
+                  <p className="k">{done === 0 && !current.started ? t.start : t.resume}</p>
+                  <h2>
+                    {roleName(current)} · {fill(t.partOf, { n: parts.indexOf(current) + 1, total })}
+                  </h2>
+                  {resumeMeta && resumeMeta.total > 0 && (
+                    <div className="bar" aria-hidden>
+                      <i style={{ width: `${Math.max(4, Math.round((resumeMeta.done / resumeMeta.total) * 100))}%` }} />
+                    </div>
+                  )}
+                  <p className="meta">{resumeMeta?.text ?? subs[role(current)]}</p>
+                </div>
+                <Link className="play" href={current.href}>
+                  <i aria-hidden>▶</i>
+                  {t.continue}
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="cont">
+              <div className="in">
+                <div className="ic" aria-hidden>
+                  🏅
+                </div>
+                <div>
+                  <p className="k">{t.completedKicker}</p>
+                  <h2>{t.completedTitle}</h2>
+                  <p className="meta">{fill(t.partsXp, { n: done, total, xp })}</p>
+                </div>
+                <Link className="play" href={complete ? completionHref : courseHref}>
+                  <i aria-hidden>▶</i>
+                  {t.sealOpen}
+                </Link>
+              </div>
+            </div>
+          )}
 
-        <section aria-labelledby="us-journey">
-          <h2 id="us-journey" className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#4A5A75]">
-            {t.journey}
-          </h2>
-          <ol className="mt-3">{parts.map(row)}</ol>
-        </section>
-
-        {extras.length > 0 && (
-          <section aria-labelledby="us-extra">
-            <h2 id="us-extra" className="text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#4A5A75]">
-              {t.extra}
-            </h2>
-            <ul className="mt-3 space-y-2">
-              {extras.map((x) => (
-                <li key={x.href + x.label}>
-                  <a
-                    href={x.href}
-                    {...(x.external ? { target: "_blank", rel: "noopener" } : {})}
-                    className="kit-focus flex items-center gap-3 rounded-[10px] bg-white px-4 py-3 shadow-[0_0_0_1px_#E3E0D4] transition hover:bg-[#FBF8EE]"
+          <div className="sech">
+            <h2 id="use-journey">{t.journey}</h2>
+            <span>{fill(t.partsXp, { n: done, total, xp })}</span>
+          </div>
+          <div className="journey" ref={listRef}>
+            {line && <span className="fillline" aria-hidden style={{ top: line.top, height: line.height }} />}
+            <ol className="plist" aria-labelledby="use-journey">
+            {parts.map((p, i) => {
+              const isNow = current?.id === p.id;
+              const skip = skipped(p);
+              const cls = p.done ? "done" : isNow ? "now" : "";
+              return (
+                <li key={p.id} style={{ animationDelay: `${i * 0.06}s` }} className={`part ${cls}`}>
+                  <span className="node" aria-hidden>
+                    {p.done ? "✓" : i + 1}
+                  </span>
+                  <div className="pi">
+                    <span className="tile" aria-hidden style={{ ["--tb" as string]: PART_TILE[role(p)] }}>
+                      {PART_ICON[role(p)]({})}
+                    </span>
+                    <div className="pt">
+                      <p className="n">{fill(t.partKicker, { n: i + 1, type: t.types[role(p)] })}</p>
+                      <h3>{roleName(p)}</h3>
+                      <p>{skip ? t.quizNotForC : subs[role(p)]}</p>
+                    </div>
+                  </div>
+                  <Link
+                    href={p.href}
+                    className={`st ${p.done ? "ok" : isNow ? "go" : skip ? "ok" : "todo"}`}
+                    aria-label={`${roleName(p)}: ${p.done ? t.done : isNow ? t.continueBtn : skip ? t.notNeeded : t.startBtn}`}
                   >
-                    <span aria-hidden>{x.icon}</span>
-                    <span className="min-w-0 flex-1 text-sm font-semibold text-[#0E2A4F]">{x.label}</span>
-                    <span className="text-xs text-[#5B6880]">{x.tag}</span>
-                  </a>
+                    {p.done ? (
+                      <>
+                        <em>✓ {t.done}</em>
+                        {role(p) === "audio" ? t.againAudio : t.again}
+                      </>
+                    ) : isNow ? (
+                      t.continueBtn
+                    ) : skip ? (
+                      <>
+                        <em>{t.notNeeded}</em>
+                        {t.seeWhy}
+                      </>
+                    ) : (
+                      t.startBtn
+                    )}
+                  </Link>
                 </li>
-              ))}
-            </ul>
-          </section>
-        )}
+              );
+            })}
+            </ol>
+          </div>
+        </div>
+
+        <aside className="side">
+          {questions.length > 0 && (
+            <section className="scard navyc" aria-labelledby="use-qs">
+              <h2 id="use-qs">{t.weekQs}</h2>
+              <ul className="qs">
+                {questions.map((q, i) => (
+                  <li className="q" key={i}>
+                    <b>{q.no ?? "•"}</b>
+                    <div>
+                      <span lang="en">{q.en}</span>
+                      {q.es && <em lang="es">{q.es}</em>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <Link className="lnk" href={questionsHref}>
+                {fill(t.seeAllQs, { n: questionCount })}
+              </Link>
+              <div className="trk">
+                <span>{trackName ? `${t.yourExam}: ${trackName}` : t.noTrack}</span>
+                <Link href={trackHref}>{trackName ? t.changeTrack : t.chooseTrack}</Link>
+              </div>
+            </section>
+          )}
+          {extras.length > 0 && (
+            <section className="scard" aria-labelledby="use-extra">
+              <h2 id="use-extra">{t.extra}</h2>
+              <ul className="extra">
+                {extras.map((x) => (
+                  <li key={x.href + x.label}>
+                    <a className="ex" href={x.href} {...(x.external ? { target: "_blank", rel: "noopener" } : {})}>
+                      <span className="i" aria-hidden style={{ ["--tb" as string]: EXTRA_TILE[x.icon] }}>
+                        <ExtraIcon icon={x.icon} />
+                      </span>
+                      <span className="et">
+                        <b>{x.label}</b>
+                        {x.tag && <small>{x.tag}</small>}
+                      </span>
+                      <span className="open" aria-hidden>
+                        {t.open} ›
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {next ? (
+            <section className="scard nextep">
+              <span className="mark" aria-hidden>
+                {next.n}
+              </span>
+              <p className="k">{t.nextKicker}</p>
+              <h3>{next.title}</h3>
+              <p>{fill(t.nextSub, { n: next.n })}</p>
+              <Link className="go" href={next.href}>
+                {fill(t.nextBtn, { n: next.n })}
+              </Link>
+            </section>
+          ) : (
+            <section className="scard nextep">
+              <span className="mark" aria-hidden>
+                🎓
+              </span>
+              <p className="k">{t.examKicker}</p>
+              <h3>{t.examTitle}</h3>
+              <p>{t.examSub}</p>
+              <Link className="go" href={examHref}>
+                {t.examBtn}
+              </Link>
+            </section>
+          )}
+          <p className="disc">{t.disclaimer}</p>
+        </aside>
       </div>
     </div>
   );

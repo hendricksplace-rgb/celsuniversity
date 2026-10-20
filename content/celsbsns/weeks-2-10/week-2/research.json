@@ -1,0 +1,249 @@
+{
+  "tip": {
+    "en": "You can use the companies from the original task (Google, Starbucks, Deloitte or Walmart) or a company in your field. Choose U.S. companies you might really apply to.",
+    "es": "Puedes usar las empresas de la tarea original (Google, Starbucks, Deloitte o Walmart) o una empresa de tu campo. Elige empresas de EE. UU. a las que de verdad podrías aplicar."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've read about U.S. workplace culture.",
+      "es": "Ya leíste sobre la cultura laboral en EE. UU."
+    },
+    "link_p": {
+      "en": "Now see how real companies describe their own culture, just like you would before an interview.",
+      "es": "Ahora mira cómo describen su cultura empresas reales, tal como lo harías antes de una entrevista."
+    },
+    "title_a": "Discovering",
+    "title_b": "U.S. Workplace Culture",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 U.S. companies",
+      "2–3 sentences each",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 empresas de EE. UU.",
+      "2–3 oraciones de cada una",
+      "Mis frases"
+    ],
+    "intro_en": "Imagine you've been invited to an interview with a U.S. company. Visit the careers pages of two U.S. companies, find how they describe their values and culture, and compare them. Keep the phrases that work for you.",
+    "intro_es": "Imagina que te invitaron a una entrevista con una empresa de EE. UU. Visita la página de empleos de dos empresas, encuentra cómo describen sus valores y su cultura, y compáralas. Quédate con las frases que te sirvan."
+  },
+  "week": 2,
+  "model": {
+    "name": "Brightwater Health",
+    "role": "Careers page · “Our culture” · Hospital network",
+    "about": "At Brightwater, we put patients first in every decision. We work as one team, we speak up when something isn't right, and we treat every person with respect. We never stop learning, and we celebrate the people who help others grow.",
+    "answers": {
+      "en": [
+        "Healthcare: a network of hospitals and clinics.",
+        "Customer (patient) focus, collaboration, respect, and learning and growth.",
+        "Warm and inspiring. It speaks as “we” and uses action verbs (put, work, speak up, treat).",
+        "“We speak up when something isn't right.”",
+        "Respect and speaking up. I want a team where I can ask questions without fear."
+      ],
+      "es": [
+        "Salud: una red de hospitales y clínicas.",
+        "Enfoque en el cliente (el paciente), colaboración, respeto, y aprendizaje y crecimiento.",
+        "Cálido e inspirador. Habla como “we” y usa verbos de acción (put, work, speak up, treat).",
+        "“We speak up when something isn't right.”",
+        "El respeto y alzar la voz. Quiero un equipo donde pueda hacer preguntas sin miedo."
+      ]
+    },
+    "initials": "BH"
+  },
+  "types": [
+    {
+      "en": "Careers page",
+      "es": "Página de empleos",
+      "key": "careers"
+    },
+    {
+      "en": "Values / culture page",
+      "es": "Página de valores / cultura",
+      "key": "values"
+    },
+    {
+      "en": "LinkedIn company page",
+      "es": "Página de empresa en LinkedIn",
+      "key": "in"
+    },
+    {
+      "en": "Job posting",
+      "es": "Oferta de empleo",
+      "key": "job"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "The company and its field",
+      "es": "La empresa y su campo",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Values or behaviors they highlight",
+      "es": "Valores o comportamientos que destacan",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Tone and language",
+      "es": "Tono y lenguaje",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A sentence to borrow",
+      "es": "Una oración para tu Capstone",
+      "color": "#C98A00"
+    },
+    {
+      "en": "Values that connect with you",
+      "es": "Valores que conectan contigo",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "careers",
+      "mark": "C",
+      "color": "#1F7A4D",
+      "desc_en": "The “Careers” or “Life at…” page of U.S. companies.",
+      "desc_es": "La página “Careers” o “Life at…” de empresas de EE. UU.",
+      "label_en": "Careers pages",
+      "label_es": "Páginas de empleos",
+      "query_template": "{field} company careers \"our culture\"",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "values",
+      "mark": "V",
+      "color": "#7A4FD6",
+      "desc_en": "Pages where companies list their values.",
+      "desc_es": "Páginas donde las empresas presentan sus valores.",
+      "label_en": "Values and culture pages",
+      "label_es": "Páginas de valores y cultura",
+      "query_template": "\"our values\" {field} company USA",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "The “About” and “Life” tabs of company pages.",
+      "desc_es": "Las pestañas “About” y “Life” de las páginas de empresas.",
+      "label_en": "LinkedIn: company pages",
+      "label_es": "LinkedIn: páginas de empresas",
+      "query_template": "{field}",
+      "search_template": "https://www.linkedin.com/search/results/companies/?keywords={q}"
+    },
+    {
+      "key": "jobs",
+      "mark": "J",
+      "color": "#D32F2F",
+      "desc_en": "Job ads often list the soft skills they want.",
+      "desc_es": "Las ofertas de empleo suelen mencionar las habilidades blandas que buscan.",
+      "label_en": "Job postings",
+      "label_es": "Ofertas de empleo",
+      "query_template": "{field}",
+      "search_template": "https://www.indeed.com/jobs?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "Research real-world examples of how U.S. companies describe their workplace culture and expectations.",
+    "time": "1–1.5 hours",
+    "title": "Discovering U.S. Workplace Culture",
+    "body_en": "🧠 Research Task\n\nTitle: Discovering U.S. Workplace Culture\nTime: 1–1.5 hours\nObjective: Research real-world examples of how U.S. companies describe their workplace culture and expectations.\n\nScenario:\n\nImagine you've just received an invitation to interview with a U.S. company. Before the interview, you want to understand the company's culture—what they value, how they expect employees to act, and what kind of \"soft skills\" they highlight.\n\nYour Task:\n\nGo to the careers page of two different U.S. companies. (Examples: Google, Starbucks, Deloitte, Walmart, or a company in your field.)\n\nFind a section that describes their values, culture, or workplace expectations.\n\nCopy 2–3 sentences from each company into your notes.\n\nAnswer these questions:\n\nWhat values or behaviors do they highlight?\n\nHow are these similar or different between the two companies?\n\nWhich values connect most with you personally?\n\nWhy This Matters:\n\nU.S. companies often decide who to hire not just on skills, but on whether a candidate will fit the culture. By researching this, you'll:\n\nUnderstand the language of culture used in U.S. workplaces.\n\nBe better prepared to answer questions like:\n\"Why do you want to work here?\" or \"How do you fit into our culture?\"\n\nPractice analyzing real-world material, just like you would before an interview.\n\nExample:\n\nCompany 1 (Google): \"We value innovation, collaboration, and respect for the user. Our teams thrive when people feel safe to take risks and share ideas.\"\n\nCompany 2 (Starbucks): \"We create a culture of warmth and belonging, where everyone is welcome, and act with courage to challenge the status quo.\"\n\nReflection: Google focuses on innovation and risk-taking, while Starbucks emphasizes belonging and courage. Both value collaboration but describe it differently.\n\n👉 Your Turn: Research two companies, take notes, and compare. Be ready to share one takeaway during your Speaking Practice this week.\n\n👉 https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/Nzk5MTg4MDMwODM1/details",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Descubriendo la Cultura Laboral en EE.UU.\nTiempo: 1–1.5 horas\nObjetivo: Investigar ejemplos reales de cómo las empresas de EE.UU. describen su cultura laboral y expectativas.\n\nEscenario:\n\nImagina que acabas de recibir una invitación para una entrevista con una empresa de EE.UU. Antes de la entrevista, quieres entender la cultura de la empresa: qué valoran, cómo esperan que actúen los empleados y qué tipo de \"habilidades blandas\" destacan.\n\nTu Tarea:\n\nVe a la página de carreras de dos empresas diferentes de EE.UU. (Ejemplos: Google, Starbucks, Deloitte, Walmart, o una empresa de tu campo).\n\nEncuentra una sección que describa sus valores, cultura o expectativas laborales.\n\nCopia 2–3 oraciones de cada empresa en tus notas.\n\nResponde a estas preguntas:\n\n¿Qué valores o comportamientos destacan?\n\n¿Cómo son similares o diferentes entre las dos empresas?\n\n¿Qué valores conectan más contigo personalmente?\n\nPor Qué Esto Importa:\n\nLas empresas de EE.UU. a menudo deciden a quién contratar no solo por habilidades, sino por si un candidato encajará en la cultura. Al investigar esto, tú:\n\nEntenderás el lenguaje de la cultura utilizado en los lugares de trabajo de EE.UU.\n\nEstarás mejor preparado para responder preguntas como:\n\"¿Por qué quieres trabajar aquí?\" o \"¿Cómo encajas en nuestra cultura?\"\n\nPracticarás analizando material del mundo real, tal como lo harías antes de una entrevista.\n\nEjemplo:\n\nEmpresa 1 (Google): \"We value innovation, collaboration, and respect for the user. Our teams thrive when people feel safe to take risks and share ideas.\"\n\nEmpresa 2 (Starbucks): \"We create a culture of warmth and belonging, where everyone is welcome, and act with courage to challenge the status quo.\"\n\nReflexión: Google se enfoca en la innovación y la toma de riesgos, mientras que Starbucks enfatiza la pertenencia y el coraje. Ambos valoran la colaboración, pero la describen de manera diferente.\n\n👉 Tu Turno: Investiga dos empresas, toma notas y compara. Prepárate para compartir una conclusión durante tu Práctica de Conversación esta semana.\n\n👉 https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/Nzk5MTg4MDMwODM1/details",
+    "goal_es": "Investigar ejemplos reales de cómo las empresas de EE.UU. describen su cultura laboral y expectativas.",
+    "title_es": "Descubriendo la Cultura Laboral en EE.UU."
+  },
+  "patterns": {
+    "en": [
+      "They name 3–5 core values",
+      "They speak as “we”",
+      "They use action verbs (we build, we act…)",
+      "They mention teamwork or collaboration",
+      "They connect values to customers",
+      "They invite you to “join us”"
+    ],
+    "es": [
+      "Nombran de 3 a 5 valores principales",
+      "Hablan como “we” (nosotros)",
+      "Usan verbos de acción (we build, we act…)",
+      "Mencionan el trabajo en equipo o la colaboración",
+      "Conectan sus valores con los clientes",
+      "Te invitan a unirte (“join us”)"
+    ]
+  },
+  "questions": {
+    "en": [
+      "What is the company, and what is its field?",
+      "What values or behaviors do they highlight? (tap all that apply)",
+      "What tone do they use? (tap one or more)",
+      "Copy 2–3 sentences from their page, or one phrase you could borrow",
+      "Which values connect most with you personally?"
+    ],
+    "es": [
+      "¿Qué empresa es y a qué se dedica?",
+      "¿Qué valores o comportamientos destacan? (toca todo lo que aplique)",
+      "¿Qué tono usan? (toca uno o más)",
+      "Copia 2–3 oraciones de su página, o una frase que podrías usar",
+      "¿Qué valores conectan más contigo personalmente?"
+    ]
+  },
+  "sentences": {
+    "max": 6,
+    "min": 3
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Formal",
+      "Warm",
+      "Inspiring",
+      "Clear",
+      "Casual"
+    ],
+    "es": [
+      "Formal",
+      "Cálido",
+      "Inspirador",
+      "Claro",
+      "Casual"
+    ]
+  },
+  "default_field": "business",
+  "share_options": {
+    "en": [
+      "Innovation",
+      "Collaboration",
+      "Respect",
+      "Belonging",
+      "Customer focus",
+      "Integrity",
+      "Courage",
+      "Learning and growth"
+    ],
+    "es": [
+      "Innovación",
+      "Colaboración",
+      "Respeto",
+      "Pertenencia",
+      "Enfoque en el cliente",
+      "Integridad",
+      "Valentía",
+      "Aprendizaje y crecimiento"
+    ]
+  },
+  "share_next": {
+    "en": "Be ready to share one takeaway in your Video and Speaking Practice this week.",
+    "es": "Prepárate para compartir una conclusión en tu Video y tu Práctica de Conversación de esta semana."
+  },
+  "compare_q": {
+    "en": [
+      "How are the values of the two companies similar or different?"
+    ],
+    "es": [
+      "¿En qué se parecen o se diferencian los valores de las dos empresas?"
+    ]
+  }
+}

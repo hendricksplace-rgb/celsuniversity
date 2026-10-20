@@ -1060,3 +1060,64 @@
     margin-left: 0;
   }
 }
+
+/* ---------- weeks 2–10 additions ---------- */
+.fbk > :first-child {
+  margin-top: 0 !important;
+}
+/* Week 3: two emails in one composer. */
+.two {
+  margin-bottom: 16px;
+}
+.twoP {
+  margin: 6px 0 12px;
+  color: var(--mut);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.twoList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.twoList li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border-left: 4px solid var(--c, var(--blue));
+  background: var(--soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.twoList b {
+  color: var(--ink);
+  font-size: 15px;
+}
+.twoList small {
+  color: var(--mut);
+  font-weight: 700;
+  font-size: 12px;
+}
+/* Week 3: "read both emails out loud". */
+.after {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.after svg {
+  flex: none;
+  margin-top: 2px;
+  color: var(--blue);
+}

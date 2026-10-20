@@ -1,6 +1,6 @@
 "use client";
 
-// CelsBSNS Speaking Practice (celsu-celsbsns-speaking-brief.md, celsbsns-speaking-semana1-mockup.html): 3 situations,
+// CelsBSNS Speaking Practice (celsu-celsbsns-speaking-brief.md, celsbsns-speaking-semana1-mockup.html): 3 or 4 situations,
 // practice out loud, see the transcript of what you said, check the 3 points yourself, keep your best try.
 // Matt's decisions: no AI feedback, no coach review, no grade. Audio is NEVER stored (not in Storage, IndexedDB or
 // localStorage). The browser's Web Speech API gives the live words; only where it's missing, the audio of one try is
@@ -11,7 +11,7 @@ import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
 import { countWordsSimple, fmtSecs, vocabCount, vocabRegex, type SpeakingBest, type SpeakingData, type SpeakingExercise, type VocabWord } from "@/lib/speaking";
-import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
+import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, iconOr, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./speaking.module.css";
 
 type Props = {
@@ -33,13 +33,20 @@ type Try = { text: string; dur: number; self: number[]; manual?: boolean; failed
 const UI = {
   es: {
     kick: "SPEAKING PRACTICE",
-    steps: ["Antes de empezar", "Ejercicio 1 · Zoom", "Ejercicio 2 · Reunión", "Ejercicio 3 · Elevador", "Cierre"],
+    first: "Antes de empezar",
+    last: "Cierre",
+    exStep: (n: number, kind: string) => `Ejercicio ${n} · ${kind}`,
+    kinds: { zoom: "Zoom", meeting: "Reunión", elevator: "Elevador" } as Record<string, string>,
     s0k: "ANTES DE EMPEZAR",
     s0: "Cómo practicar",
-    vocH: "TU VOCABULARIO DE LA SEMANA 1",
+    vocH: (w: number) => `TU VOCABULARIO DE LA SEMANA ${w}`,
     exk: (n: number) => `EJERCICIO ${n}`,
     scK: "LA SITUACIÓN",
     say: "DI ESTO",
+    prompts: "PARA EMPEZAR LA CONVERSACIÓN",
+    dont: "No digas",
+    doSay: "Mejor di",
+    model: "FRASE MODELO",
     reps: (a: number, b: number) => `${a} de ${b}`,
     pk: "PRACTICA",
     tapMic: "Toca el micrófono y habla en inglés. Toca otra vez para terminar.",
@@ -62,8 +69,8 @@ const UI = {
     short: "Muy corto",
     long: "Un poco largo",
     words: (n: number) => `${n} ${n === 1 ? "palabra" : "palabras"}`,
-    vocab: (n: number) => `${n} ${n === 1 ? "palabra" : "palabras"} de la semana`,
-    selfH: "¿DIJISTE LOS 3 PUNTOS?",
+    vocab: (n: number, w: number) => `${n} ${n === 1 ? "palabra" : "palabras"} de la Semana ${w}`,
+    selfH: (n: number) => `¿DIJISTE LOS ${n} PUNTOS?`,
     best: "Guardar como mi mejor intento",
     bestOn: "Mi mejor intento",
     saved: "MI MEJOR INTENTO GUARDADO",
@@ -71,15 +78,19 @@ const UI = {
     bonusK: "RETO EXTRA · OPCIONAL",
     bonus: "Pide la opinión de tu compañero",
     bonusI: "Si practicaste con alguien, pídele que conteste esto después de escucharte.",
+    reflK: "REFLEXIÓN · OPCIONAL",
+    reflI: "Piénsalo o dilo en voz alta. No se guarda: es solo para ti.",
+    reflT: (a: number, b: number) => `Meta: ${a}–${b} s`,
     cmpB: "Guardamos el texto de tu mejor intento de cada ejercicio.",
     cmpP: "En la Semana 10 lo vas a leer junto al nuevo para ver cuánto avanzaste.",
+    cmpP10: "Compáralo con lo que dijiste en la Semana 1 para ver cuánto avanzaste.",
     finish: "Terminar la práctica",
     finishing: "Guardando…",
-    finN: "Completa los intentos de los 3 ejercicios (3 + 2 + 5).",
+    finN: (n: number, reps: number[]) => `Completa los intentos de los ${n} ejercicios (${reps.join(" + ")}).`,
     finOk: "¡Todo listo!",
     doneK: "PRÁCTICA COMPLETA",
     doneH: "¡Gran trabajo hablando!",
-    doneP: "Completaste los 3 ejercicios. Estos son tus mejores intentos; los verás otra vez en la Semana 10.",
+    doneP: (n: number, last: boolean) => `Completaste los ${n} ejercicios. Estos son tus mejores intentos${last ? "." : "; los verás otra vez en la Semana 10."}`,
     noBest: "(Sin intento guardado)",
     rail: "TU AVANCE",
     privH: "PRIVACIDAD",
@@ -93,13 +104,20 @@ const UI = {
   },
   en: {
     kick: "SPEAKING PRACTICE",
-    steps: ["Before you start", "Exercise 1 · Zoom", "Exercise 2 · Meeting", "Exercise 3 · Elevator", "Wrap-up"],
+    first: "Before you start",
+    last: "Wrap-up",
+    exStep: (n: number, kind: string) => `Exercise ${n} · ${kind}`,
+    kinds: { zoom: "Zoom", meeting: "Meeting", elevator: "Elevator" } as Record<string, string>,
     s0k: "BEFORE YOU START",
     s0: "How to practice",
-    vocH: "YOUR WEEK 1 VOCABULARY",
+    vocH: (w: number) => `YOUR WEEK ${w} VOCABULARY`,
     exk: (n: number) => `EXERCISE ${n}`,
     scK: "THE SITUATION",
     say: "SAY THIS",
+    prompts: "TO START THE CONVERSATION",
+    dont: "Don't say",
+    doSay: "Say",
+    model: "MODEL ANSWER",
     reps: (a: number, b: number) => `${a} of ${b}`,
     pk: "PRACTICE",
     tapMic: "Tap the mic and speak in English. Tap again to finish.",
@@ -122,8 +140,8 @@ const UI = {
     short: "Too short",
     long: "A bit long",
     words: (n: number) => `${n} ${n === 1 ? "word" : "words"}`,
-    vocab: (n: number) => `${n} Week 1 ${n === 1 ? "word" : "words"}`,
-    selfH: "DID YOU SAY THE 3 POINTS?",
+    vocab: (n: number, w: number) => `${n} Week ${w} ${n === 1 ? "word" : "words"}`,
+    selfH: (n: number) => `DID YOU SAY THE ${n} POINTS?`,
     best: "Save as my best try",
     bestOn: "My best try",
     saved: "MY SAVED BEST TRY",
@@ -131,15 +149,19 @@ const UI = {
     bonusK: "BONUS CHALLENGE · OPTIONAL",
     bonus: "Ask your partner for feedback",
     bonusI: "If you practiced with someone, ask them to answer this after they listen to you.",
+    reflK: "REFLECTION · OPTIONAL",
+    reflI: "Think about it or say it out loud. It isn't saved: it's just for you.",
+    reflT: (a: number, b: number) => `Goal: ${a}–${b} s`,
     cmpB: "We save the text of your best try for each exercise.",
     cmpP: "In Week 10 you'll read it next to your new one to see how far you've come.",
+    cmpP10: "Compare it with what you said in Week 1 to see how far you've come.",
     finish: "Finish the practice",
     finishing: "Saving…",
-    finN: "Complete the tries for all 3 exercises (3 + 2 + 5).",
+    finN: (n: number, reps: number[]) => `Complete the tries for all ${n} exercises (${reps.join(" + ")}).`,
     finOk: "All set!",
     doneK: "PRACTICE COMPLETE",
     doneH: "Great speaking work!",
-    doneP: "You completed all 3 exercises. These are your best tries; you'll see them again in Week 10.",
+    doneP: (n: number, last: boolean) => `You completed all ${n} exercises. These are your best tries${last ? "." : "; you'll see them again in Week 10."}`,
     noBest: "(No try saved)",
     rail: "YOUR PROGRESS",
     privH: "PRIVACY",
@@ -153,8 +175,7 @@ const UI = {
   },
 };
 type UIT = (typeof UI)["es"];
-const IDS = ["s0", "s1", "s2", "s3", "s4"];
-const POINT_COLORS = ["#7A4FD6", "#00A3C4", "#C98A00"];
+const POINT_COLORS = ["#7A4FD6", "#00A3C4", "#C98A00", "#1F7A4D", "#C2185B", "#2C6BC4"];
 const BARS = 28;
 const MAX_UPLOAD = 3_000_000;
 
@@ -179,6 +200,10 @@ export function InteractiveSpeaking(p: Props) {
   const ex = data.exercises;
   const [lang, chooseLang] = useLangPref(p.userId, p.defaultLang);
   const t = UI[lang];
+  // "Antes de empezar", one step per exercise (3 or 4), "Cierre".
+  const IDS = ["s0", ...ex.map((_, i) => `s${i + 1}`), `s${ex.length + 1}`];
+  const steps = [t.first, ...ex.map((e, i) => t.exStep(i + 1, t.kinds[e.scene.kind] ?? e.scene.kind)), t.last];
+  const lastWeek = data.week >= 10;
   const sb = useRef<ReturnType<typeof createClient> | null>(null);
   const db = useCallback(() => (sb.current ??= createClient()), []);
   const [saveError, setSaveError] = useState(false);
@@ -190,7 +215,8 @@ export function InteractiveSpeaking(p: Props) {
   // ---------- state: tries live only in this page; counts and best texts are saved ----------
   const [tries, setTries] = useState<Try[][]>(ex.map(() => []));
   const [reps, setReps] = useState<number[]>(ex.map((_, i) => p.reps[i] ?? 0));
-  const [partner, setPartner] = useState<number[]>(ex.map((_, i) => p.partner[i] ?? 0));
+  // One answer per partner question (the bonus has 2 or 3); the reps array has one count per exercise.
+  const [partner, setPartner] = useState<number[]>(data.bonus.questions.en.map((_, i) => p.partner[i] ?? 0));
   const [bestIdx, setBestIdx] = useState<(number | null)[]>(ex.map(() => null));
   const [savedBest, setSavedBest] = useState<(SpeakingBest | null)[]>(ex.map((_, i) => p.best.find((b) => b.exercise === i + 1) ?? null));
   const [completedAt, setCompletedAt] = useState(p.completedAt);
@@ -497,7 +523,7 @@ export function InteractiveSpeaking(p: Props) {
         progress={progress}
         row={
           <>
-            <StepRowText lang={lang} n={current + 1} total={IDS.length} name={t.steps[current]} />
+            <StepRowText lang={lang} n={current + 1} total={IDS.length} name={steps[current]} />
             {completedAt && (
               <span className={s.donePill}>
                 <Icon name="check" size={14} />
@@ -556,7 +582,7 @@ export function InteractiveSpeaking(p: Props) {
                 <div className={s.vocab}>
                   <h3 className={s.vocabH}>
                     <Icon name="book" size={16} />
-                    {t.vocH}
+                    {t.vocH(data.week)}
                   </h3>
                   <ul className={s.vchips}>
                     {p.vocab.map((v) => (
@@ -570,12 +596,13 @@ export function InteractiveSpeaking(p: Props) {
               )}
             </section>
 
-            {/* ---------- the 3 exercises ---------- */}
+            {/* ---------- the exercises (3 or 4) ---------- */}
             {ex.map((e, i) => (
               <ExerciseCard
                 key={i}
                 e={e}
                 i={i}
+                week={data.week}
                 t={t}
                 lang={lang}
                 reps={reps[i]}
@@ -605,7 +632,8 @@ export function InteractiveSpeaking(p: Props) {
             ))}
 
             {/* ---------- wrap-up ---------- */}
-            <section id="s4" className={sh.step} aria-labelledby="sp-s4">
+            <section id={IDS[IDS.length - 1]} className={sh.step} aria-labelledby="sp-s4">
+              {data.reflection && <Reflection r={data.reflection} t={t} lang={lang} />}
               <StepHead kicker={t.bonusK} icon="flag" id="sp-s4" title={t.bonus} />
               <div className={sh.card}>
                 {completedAt ? (
@@ -617,7 +645,7 @@ export function InteractiveSpeaking(p: Props) {
                     </span>
                     <p className={s.doneK}>{t.doneK}</p>
                     <h3 className={s.doneH}>{t.doneH}</h3>
-                    <p className={s.doneP}>{t.doneP}</p>
+                    <p className={s.doneP}>{t.doneP(ex.length, lastWeek)}</p>
                     <ul className={s.bests}>
                       {ex.map((e, i) => (
                         <li key={i}>
@@ -656,12 +684,18 @@ export function InteractiveSpeaking(p: Props) {
                         </li>
                       ))}
                     </ul>
+                    {data.bonus.reflect && (
+                      <p className={s.reflect}>
+                        <Icon name="bulb" size={18} />
+                        <span>{data.bonus.reflect[lang]}</span>
+                      </p>
+                    )}
                     <div className={s.cmp10}>
                       <span className={s.ci}>
                         <Icon name="cal" size={20} />
                       </span>
                       <p>
-                        <strong>{t.cmpB}</strong> {t.cmpP}
+                        <strong>{t.cmpB}</strong> {lastWeek ? t.cmpP10 : t.cmpP}
                       </p>
                     </div>
                     <div className={s.finish}>
@@ -669,7 +703,7 @@ export function InteractiveSpeaking(p: Props) {
                         <Icon name="check" size={18} />
                         {finishing ? t.finishing : t.finish}
                       </button>
-                      <p aria-live="polite">{all ? t.finOk : t.finN}</p>
+                      <p aria-live="polite">{all ? t.finOk : t.finN(ex.length, ex.map((e) => e.reps))}</p>
                     </div>
                   </>
                 )}
@@ -688,7 +722,7 @@ export function InteractiveSpeaking(p: Props) {
           <>
             <RailCard title={t.rail}>
               <RailSteps
-                steps={t.steps}
+                steps={steps}
                 current={current}
                 done={seen}
                 onGo={(i) => goTo(IDS[i])}
@@ -773,6 +807,7 @@ function Scene({ e, t, lang }: { e: SpeakingExercise; t: UIT; lang: Lang }) {
 function ExerciseCard({
   e,
   i,
+  week,
   t,
   lang,
   reps,
@@ -798,6 +833,7 @@ function ExerciseCard({
 }: {
   e: SpeakingExercise;
   i: number;
+  week: number;
   t: UIT;
   lang: Lang;
   reps: number;
@@ -832,7 +868,7 @@ function ExerciseCard({
       <div className={`${sh.card} ${s.ex}`} data-done={done || undefined}>
         <div className={s.exhd}>
           <span className={s.n}>
-            <Icon name={done ? "check" : e.icon} size={24} />
+            <Icon name={done ? "check" : iconOr(e.icon, "people")} size={24} />
           </span>
           <div>
             <p className={sh.stepK}>{t.exk(i + 1)}</p>
@@ -869,6 +905,36 @@ function ExerciseCard({
                 ))}
               </ol>
             </div>
+            {e.prompts && e.prompts.length > 0 && (
+              <div>
+                <p className={s.lab}>{t.prompts}</p>
+                <ul className={s.prompts} lang="en">
+                  {e.prompts.map((x) => (
+                    <li key={x}>“{x}”</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {e.avoid_say && (
+              <div className={s.avoid}>
+                <p data-k="no">
+                  <b>❌ {t.dont}:</b> <span lang="en">“{e.avoid_say.dont}”</span>
+                </p>
+                <p data-k="ok">
+                  <b>✅ {t.doSay}:</b> <span lang="en">“{e.avoid_say.do}”</span>
+                </p>
+              </div>
+            )}
+            {e.model && (
+              <div className={s.model}>
+                <p className={s.lab}>{t.model}</p>
+                {e.model.split("\n").map((line) => (
+                  <p key={line} lang="en">
+                    {line}
+                  </p>
+                ))}
+              </div>
+            )}
             <p className={s.howto}>
               <Icon name="repeat" size={18} />
               <span>{e.how[lang]}</span>
@@ -942,6 +1008,8 @@ function ExerciseCard({
                 key={k}
                 tr={tr}
                 k={k}
+                i={i}
+                week={week}
                 e={e}
                 t={t}
                 lang={lang}
@@ -956,6 +1024,28 @@ function ExerciseCard({
         </div>
       </div>
     </section>
+  );
+}
+
+/** The original's closing reflection questions (not saved). */
+function Reflection({ r, t, lang }: { r: NonNullable<SpeakingData["reflection"]>; t: UIT; lang: Lang }) {
+  const qs = "questions" in r ? r.questions[lang] : r[lang];
+  const intro = "questions" in r ? (lang === "es" ? r.intro_es : r.intro_en) : null;
+  const limit = "questions" in r ? r.limit_s : undefined;
+  if (!qs?.length) return null;
+  return (
+    <div className={`${sh.card} ${s.refl}`}>
+      <p className={s.lab}>
+        <Icon name="mirror" size={15} /> {t.reflK}
+      </p>
+      <p className={s.reflI}>{intro ?? t.reflI}</p>
+      <ol className={s.reflQ}>
+        {qs.map((q) => (
+          <li key={q}>{q}</li>
+        ))}
+      </ol>
+      {limit && <p className={s.reflI}>{t.reflT(limit[0], limit[1])}</p>}
+    </div>
   );
 }
 
@@ -978,6 +1068,8 @@ function TypedTry({ t, onSave }: { t: UIT; onSave: (text: string) => void }) {
 function TryCard({
   tr,
   k,
+  i,
+  week,
   e,
   t,
   lang,
@@ -990,6 +1082,8 @@ function TryCard({
 }: {
   tr: Try;
   k: number;
+  i: number;
+  week: number;
   e: SpeakingExercise;
   t: UIT;
   lang: Lang;
@@ -1033,7 +1127,7 @@ function TryCard({
         {vc > 0 && (
           <span className={s.chip} data-k="ok">
             <Icon name="book" size={13} />
-            {t.vocab(vc)}
+            {t.vocab(vc, week)}
           </span>
         )}
       </div>
@@ -1052,10 +1146,10 @@ function TryCard({
       )}
       {tr.text && (
         <>
-          <p className={s.lab} id={`sp-self-${e.icon}-${k}`} style={{ marginTop: 14 }}>
-            {t.selfH}
+          <p className={s.lab} id={`sp-self-${i}-${k}`} style={{ marginTop: 14 }}>
+            {t.selfH(e.points[lang].length)}
           </p>
-          <ul className={s.selfp} aria-labelledby={`sp-self-${e.icon}-${k}`}>
+          <ul className={s.selfp} aria-labelledby={`sp-self-${i}-${k}`}>
             {e.points[lang].map((pt, j) => (
               <li key={j}>
                 <button type="button" aria-pressed={tr.self.includes(j)} onClick={() => onSelf(j)}>

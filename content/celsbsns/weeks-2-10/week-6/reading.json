@@ -1,0 +1,583 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Honesty",
+        "t_es": "Honestidad",
+        "d_en": "Why the truth, even about mistakes, protects your career.",
+        "d_es": "Por qué decir la verdad, incluso sobre tus errores, protege tu carrera."
+      },
+      {
+        "t_en": "Confidentiality",
+        "t_es": "Confidencialidad",
+        "d_en": "What information you must protect, and how.",
+        "d_es": "Qué información debes proteger y cómo."
+      },
+      {
+        "t_en": "Responsibility",
+        "t_es": "Responsabilidad",
+        "d_en": "How to report a problem clearly, calmly and with facts.",
+        "d_es": "Cómo reportar un problema con claridad, calma y hechos."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "1 case in 3 steps",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "1 caso en 3 pasos",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover why ethics matter so much in U.S. companies: honesty, confidentiality and responsibility. You read a short article, watch a video, and follow Angela's case step by step.",
+    "intro_es": "En esta lectura descubres por qué la ética importa tanto en las empresas de EE. UU.: honestidad, confidencialidad y responsabilidad. Lees un artículo corto, ves un video y sigues el caso de Angela paso a paso."
+  },
+  "week": 6,
+  "video": {
+    "slug": "margaret_heffernan_dare_to_disagree",
+    "event": "TED",
+    "title": "Dare to disagree",
+    "source": 5,
+    "minutes": 13,
+    "speaker": "Margaret Heffernan",
+    "provider": "ted",
+    "extra": {
+      "slug": "dan_ariely_our_buggy_moral_code",
+      "event": "TED",
+      "title": "Our buggy moral code",
+      "source": 6,
+      "minutes": 16,
+      "speaker": "Dan Ariely",
+      "provider": "ted"
+    },
+    "intro_en": "Watch the full talk inside the app. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Mientras la ves, apunta tus ideas.",
+    "prompts_en": [
+      "Why does the speaker say that disagreement can protect an organization?",
+      "In what situation at work would it be hard for you to speak up? What would help you?"
+    ],
+    "prompts_es": [
+      "¿Por qué dice la oradora que estar en desacuerdo puede proteger a una organización?",
+      "¿En qué situación del trabajo te costaría alzar la voz? ¿Qué te ayudaría?"
+    ]
+  },
+  "vocab": {
+    "misconduct": {
+      "d": "Behavior at work that breaks the law or the company's rules.",
+      "es": "conducta indebida, mala conducta",
+      "ex": "Reporting misconduct is part of every employee's job."
+    },
+    "code of conduct": {
+      "d": "A company document that explains the rules and values employees must follow.",
+      "es": "código de conducta",
+      "ex": "Read the code of conduct before your first day."
+    },
+    "integrity": {
+      "d": "Being honest and doing the right thing, even when nobody is watching.",
+      "es": "integridad",
+      "ex": "Her integrity made her the person everyone trusted."
+    },
+    "speak up": {
+      "d": "Say something when you see a problem, instead of staying quiet.",
+      "es": "alzar la voz, decir algo",
+      "ex": "If something doesn't feel right, speak up."
+    },
+    "retaliation": {
+      "d": "Punishing someone because they reported a problem or complained.",
+      "es": "represalias",
+      "ex": "The company does not allow retaliation against people who report concerns."
+    },
+    "in good faith": {
+      "d": "Honestly, with good intentions, believing that what you say is true.",
+      "es": "de buena fe",
+      "ex": "She reported the problem in good faith."
+    },
+    "confidential": {
+      "d": "Private information that must not be shared with people who are not authorized.",
+      "es": "confidencial",
+      "ex": "Salary information is confidential."
+    },
+    "conflict of interest": {
+      "d": "A situation where your personal interest could affect a decision you make for your company.",
+      "es": "conflicto de intereses",
+      "ex": "Accepting expensive gifts from a supplier can create a conflict of interest."
+    },
+    "falsifying": {
+      "d": "Changing information on purpose so that it is not true.",
+      "es": "falsificar, alterar",
+      "ex": "Falsifying records is a serious offense."
+    },
+    "timesheets": {
+      "d": "Records of the hours an employee worked.",
+      "es": "hojas de horas trabajadas",
+      "ex": "Please submit your timesheets every Friday."
+    },
+    "red flag": {
+      "d": "A warning sign that something may be wrong.",
+      "es": "señal de alerta, “bandera roja”",
+      "ex": "A request to keep something secret from HR is a red flag."
+    },
+    "accountability": {
+      "d": "Accepting responsibility for your actions and their results.",
+      "es": "responsabilidad, rendición de cuentas",
+      "ex": "Accountability means owning your mistakes."
+    }
+  },
+  "warmup": {
+    "title_en": "Before you read: what would you do?",
+    "title_es": "Antes de leer: ¿qué harías?",
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "q_en": "A coworker asks you not to mention that he left work two hours early, but he recorded a full day. You usually…",
+    "q_es": "Un compañero te pide que no digas que salió dos horas antes, pero registró el día completo. Normalmente tú…",
+    "poll_en": [
+      "Say nothing. It's not my business, and I don't want problems with the team.",
+      "Cover for him this time, but tell him it's the last time.",
+      "Tell him politely that I can't cover for him, and follow the company's process."
+    ],
+    "poll_es": [
+      "No digo nada. No es asunto mío y no quiero problemas con el equipo.",
+      "Lo cubro esta vez, pero le digo que es la última.",
+      "Le digo con amabilidad que no puedo cubrirlo y sigo el proceso de la empresa."
+    ],
+    "feedback_en": [
+      "This is a very human reaction: nobody wants to look like a “snitch.” In the U.S., though, staying quiet can make you part of the problem. Today you'll see why.",
+      "Loyalty to your team is a good value. The challenge is that “just this once” is still a false record. The article shows how to be loyal and honest at the same time.",
+      "Great starting point! This is what most U.S. codes of conduct expect. This reading helps you do it with the right words and tone."
+    ],
+    "feedback_es": [
+      "Es una reacción muy humana: nadie quiere parecer “soplón”. Pero en EE. UU., quedarte callado puede hacerte parte del problema. Hoy vas a ver por qué.",
+      "La lealtad a tu equipo es un buen valor. El reto es que “solo esta vez” sigue siendo un registro falso. El artículo muestra cómo ser leal y honesto al mismo tiempo.",
+      "¡Excelente punto de partida! Es lo que esperan la mayoría de los códigos de conducta en EE. UU. Esta lectura te ayuda a hacerlo con las palabras y el tono correctos."
+    ],
+    "note_q_en": "What do you already know about ethics rules in U.S. companies?",
+    "note_q_es": "¿Qué sabes ya sobre las reglas de ética en las empresas de EE. UU.?"
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Ethics & Compliance Initiative (ECI), 2023 (data collected Aug 2022 – Jan 2023)",
+      "url": "https://ethics.org/gbes-2023",
+      "who": "Ethics & Compliance Initiative",
+      "what": "2023 Global Business Ethics Survey (GBES)"
+    },
+    {
+      "id": 2,
+      "pub": "SHRM, December 6, 2018",
+      "url": "https://www.shrm.org/topics-tools/news/employee-relations/educate-entry-level-workers-workplace-ethics",
+      "who": "Paul Falcone",
+      "what": "“Educate Entry-Level Workers on Workplace Ethics”"
+    },
+    {
+      "id": 3,
+      "pub": "Alphabet Investor Relations (updated July 16, 2026)",
+      "url": "https://abc.xyz/investor/board-and-governance/google-code-of-conduct/",
+      "who": "Google",
+      "what": "Google Code of Conduct"
+    },
+    {
+      "id": 4,
+      "pub": "Walmart Ethics & Compliance",
+      "url": "https://www.walmartethics.com/content/walmartethics/en_us/faqs/conflicts-of-interest/gifts-and-entertainment.html",
+      "who": "Walmart",
+      "what": "“Gifts & Entertainment” — Code of Conduct FAQ"
+    },
+    {
+      "id": 5,
+      "pub": "TEDGlobal 2012 · TED.com",
+      "url": "https://www.ted.com/talks/margaret_heffernan_dare_to_disagree",
+      "who": "Margaret Heffernan",
+      "what": "“Dare to disagree”"
+    },
+    {
+      "id": 6,
+      "pub": "TED2009 · TED.com",
+      "url": "https://www.ted.com/talks/dan_ariely_our_buggy_moral_code",
+      "who": "Dan Ariely",
+      "what": "“Our buggy moral code”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 1,
+        "q": {
+          "en": "In ECI's 2023 survey, what did most employees who saw misconduct do?",
+          "es": "En la encuesta de ECI de 2023, ¿qué hizo la mayoría de los empleados que vieron una mala conducta?"
+        },
+        "o": {
+          "en": [
+            "They ignored it",
+            "They reported it",
+            "They quit their job"
+          ],
+          "es": [
+            "La ignoraron",
+            "La reportaron",
+            "Renunciaron a su trabajo"
+          ]
+        },
+        "why": {
+          "en": "Right: 72% of the employees who saw misconduct reported it.",
+          "es": "Así es: el 72 % de los empleados que vieron una mala conducta la reportaron."
+        }
+      },
+      {
+        "a": 2,
+        "q": {
+          "en": "A supplier offers you free concert tickets. The best first step is to…",
+          "es": "Un proveedor te ofrece boletos gratis para un concierto. El mejor primer paso es…"
+        },
+        "o": {
+          "en": [
+            "Accept them if they aren't too expensive",
+            "Accept them and share them with your team",
+            "Thank them and check your company's gift policy first"
+          ],
+          "es": [
+            "Aceptarlos si no son muy caros",
+            "Aceptarlos y compartirlos con tu equipo",
+            "Agradecer y revisar primero la política de regalos de tu empresa"
+          ]
+        },
+        "why": {
+          "en": "Exactly: rules are different in each company. Walmart, for example, doesn't allow tickets from suppliers at all.",
+          "es": "Exacto: las reglas cambian en cada empresa. Walmart, por ejemplo, no permite aceptar boletos de proveedores."
+        }
+      },
+      {
+        "a": 0,
+        "q": {
+          "en": "In Case 2, Angela's better message to HR is professional because it…",
+          "es": "En el caso 2, el mejor mensaje de Angela a Recursos Humanos es profesional porque…"
+        },
+        "o": {
+          "en": [
+            "Shares specific facts without labels or gossip",
+            "Asks HR to keep her name secret",
+            "Says that everybody knows about the problem"
+          ],
+          "es": [
+            "Comparte hechos concretos, sin etiquetas ni chismes",
+            "Le pide a Recursos Humanos que no diga su nombre",
+            "Dice que todos saben del problema"
+          ]
+        },
+        "why": {
+          "en": "Yes: what, when and where, with no accusations. That makes the report useful and protects her reputation.",
+          "es": "Sí: qué, cuándo y dónde, sin acusaciones. Así el reporte es útil y protege su reputación."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: one ethical “red flag” I will watch for at work is…",
+      "es": "Mi conclusión: una “bandera roja” ética que voy a vigilar en el trabajo es…"
+    }
+  },
+  "cases_intro": {
+    "en": "Follow Angela's case in three steps. Do each activity and, if you like, write down your ideas. The messages are in English, as you would see them at work.",
+    "es": "Sigue el caso de Angela en tres pasos. Haz cada actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los verías en el trabajo."
+  },
+  "article": {
+    "title": "Doing the Right Thing: Why Ethics Matter in U.S. Workplaces",
+    "dek": "What U.S. companies expect, why small decisions shape your reputation, and three habits that protect you and your team.",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "Most people think ethics problems are rare at work. The data says otherwise. In the Ethics & Compliance Initiative's 2023 Global Business Ethics Survey, which collected answers from employees in 42 countries, 65% said they had seen at least one act of [[misconduct]] in the past 12 months. The good news: 72% of the people who saw something reported it.{1}",
+        "es": "Mucha gente piensa que los problemas éticos en el trabajo son raros. Los datos dicen otra cosa. En la Encuesta Global de Ética Empresarial 2023 del Ethics & Compliance Initiative, que recogió respuestas de empleados en 42 países, el 65 % dijo que había visto al menos un acto de mala conducta en los últimos 12 meses. La buena noticia: el 72 % de quienes vieron algo lo reportaron."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Ethics vs. professional conduct",
+        "en": "Ethics are the principles that tell you what is right: honesty, fairness and respect. Professional conduct is how those principles show up in your daily work: how you record your hours, how you treat information, and what you do when you see a problem. U.S. companies usually write these expectations in a [[code of conduct]]. Google's code, for example, asks employees to raise concerns with a manager, HR or an ethics helpline, and it prohibits [[retaliation]] against anyone who reports a possible violation.{3}",
+        "es": "La ética son los principios que te dicen qué es lo correcto: honestidad, justicia y respeto. La conducta profesional es cómo esos principios se ven en tu trabajo diario: cómo registras tus horas, cómo tratas la información y qué haces cuando ves un problema. Las empresas de EE. UU. normalmente escriben estas expectativas en un código de conducta. El código de Google, por ejemplo, pide a los empleados plantear sus dudas a un gerente, a Recursos Humanos o a una línea de ética, y prohíbe las represalias contra cualquier persona que reporte una posible violación."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "en": "Why does this matter so much for your career? In the U.S., most performance problems are handled step by step, with warnings first. But SHRM explains that serious conduct problems, such as theft, fraud, [[falsifying]] [[timesheets]] or harassment, can lead to termination on the first offense. Your reputation also travels with you: coworkers notice how you behave, and they remember it.{2}",
+        "es": "¿Por qué importa tanto para tu carrera? En EE. UU., la mayoría de los problemas de desempeño se manejan paso a paso, primero con advertencias. Pero SHRM explica que los problemas graves de conducta, como el robo, el fraude, falsificar hojas de horas o el acoso, pueden llevar al despido desde la primera vez. Además, tu reputación viaja contigo: tus compañeros notan cómo te comportas y lo recuerdan."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think about your own work experience. Have you ever seen something that didn't feel right? What did you do?",
+        "q_es": "Piensa en tu propia experiencia de trabajo. ¿Alguna vez viste algo que no te pareció correcto? ¿Qué hiciste?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits that protect your reputation",
+        "items": [
+          {
+            "h": "1 · Honesty: tell the truth, even about mistakes",
+            "icon": "target",
+            "en": "Record your hours and results exactly as they happened. If you make a mistake, say so early and suggest a fix. SHRM's advice to new employees is simple: be honest and reliable, and tell your supervisor about conflicts or problems, especially when you're not sure what to do.{2} That is [[integrity]] and [[accountability]] in action.",
+            "es": "Registra tus horas y resultados exactamente como sucedieron. Si cometes un error, dilo pronto y propón una solución. El consejo de SHRM para empleados nuevos es sencillo: sé honesto y confiable, y avísale a tu supervisor sobre conflictos o problemas, sobre todo cuando no estés seguro de qué hacer. Eso es integridad y responsabilidad en acción."
+          },
+          {
+            "h": "2 · Confidentiality: protect information",
+            "icon": "shield",
+            "en": "Some information is [[confidential]]: salaries, client data, future plans and rumors about layoffs. Codes of conduct like Google's include whole sections on protecting confidential information, including information from partners and former employers.{3} If someone shares a secret with you, you don't have to pass it on.",
+            "es": "Cierta información es confidencial: salarios, datos de clientes, planes futuros y rumores de despidos. Códigos de conducta como el de Google tienen secciones completas sobre cómo proteger la información confidencial, incluida la de socios y de empleadores anteriores. Si alguien te cuenta un secreto, no tienes que pasarlo a otros."
+          },
+          {
+            "h": "3 · Speak up: report facts, through the right channel",
+            "icon": "mega",
+            "en": "When you see a problem, [[speak up]] calmly and stick to the facts: what, when and where. Use the official channels: your manager, HR or the ethics helpline. Reporting is not always easy: in the same ECI survey, 46% of people who reported misconduct said they experienced retaliation.{1} That is why good codes promise to protect people who report [[in good faith]].{3}",
+            "es": "Cuando veas un problema, dilo con calma y quédate en los hechos: qué, cuándo y dónde. Usa los canales oficiales: tu gerente, Recursos Humanos o la línea de ética. Reportar no siempre es fácil: en la misma encuesta de ECI, el 46 % de quienes reportaron una mala conducta dijo que sufrió represalias. Por eso los buenos códigos prometen proteger a quienes reportan de buena fe."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: answering a client's gift",
+        "h_es": "Antes y después: responder al regalo de un cliente",
+        "intro_en": "A supplier sends Ana two expensive concert tickets. Tap “After” to see a reply that protects her and her company.",
+        "intro_es": "Un proveedor le envía a Ana dos boletos caros para un concierto. Toca “Después” para ver una respuesta que la protege a ella y a su empresa.",
+        "before": {
+          "to": "Tom Reed",
+          "subject": "Re: A small thank-you",
+          "body": [
+            "Hi Tom,\n",
+            {
+              "m": 1,
+              "t": "Wow, thank you so much! I'll definitely use them this weekend"
+            },
+            ". ",
+            {
+              "m": 2,
+              "t": "I don't think anyone here will mind"
+            },
+            ", ",
+            {
+              "m": 3,
+              "t": "and I'll make sure your proposal gets a good look next week"
+            },
+            " :)\nAna"
+          ],
+          "marks": [
+            {
+              "en": "She accepts before checking the company's gift policy.",
+              "es": "Acepta antes de revisar la política de regalos de la empresa."
+            },
+            {
+              "en": "She guesses instead of checking the code of conduct.",
+              "es": "Supone en lugar de revisar el código de conducta."
+            },
+            {
+              "en": "She links the gift to a business decision: a conflict of interest.",
+              "es": "Relaciona el regalo con una decisión de negocio: un conflicto de intereses."
+            }
+          ]
+        },
+        "after": {
+          "to": "Tom Reed",
+          "subject": "Re: A small thank-you",
+          "body": [
+            "Hi Tom,\n",
+            {
+              "m": 1,
+              "t": "Thank you so much for thinking of me. It's a very kind gesture."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "Before I can accept, I need to check our company's gift policy, and I'll get back to you by Thursday."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "Either way, I'm looking forward to reviewing your proposal with the team next week."
+            },
+            "\nBest regards,\nAna"
+          ],
+          "marks": [
+            {
+              "en": "She thanks him warmly, so the relationship stays positive.",
+              "es": "Le agradece con calidez: la relación sigue siendo positiva."
+            },
+            {
+              "en": "She checks the policy first and gives a clear date.",
+              "es": "Primero revisa la política y da una fecha clara."
+            },
+            {
+              "en": "She keeps the gift separate from the business decision.",
+              "es": "Mantiene el regalo separado de la decisión de negocio."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Gifts: check before you accept",
+        "en": "Gift rules are a good example of how specific codes can be. Walmart's ethics guidance tells employees not to accept gifts that come from a business relationship with a supplier, not even a promotional T-shirt or discounted tickets. Coffee or small snacks during a supplier meeting are fine.{4} Other companies allow small gifts, so always check your own company's policy. Ethics is not only about big scandals. It's about small, daily decisions that show people they can trust you.",
+        "es": "Las reglas sobre regalos son un buen ejemplo de qué tan específicos pueden ser los códigos. La guía de ética de Walmart indica a los empleados que no acepten regalos que vengan de una relación de negocios con un proveedor, ni siquiera una camiseta promocional o boletos con descuento. Un café o un refrigerio pequeño durante una reunión con un proveedor sí está bien. Otras empresas permiten regalos pequeños, así que siempre revisa la política de tu propia empresa. La ética no se trata solo de grandes escándalos. Se trata de decisiones pequeñas y diarias que le muestran a la gente que puede confiar en ti."
+      },
+      {
+        "id": "a5",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You will meet Angela, an employee who must decide whether to report a coworker. As you read her case, think about three things: the risks of staying quiet, the effect on her reputation, and how ethics protects both the company and its people. Then you'll practice the same skills in your email, your video and your speaking roleplays.",
+        "es": "Vas a conocer a Angela, una empleada que debe decidir si reporta a un compañero. Mientras lees su caso, piensa en tres cosas: los riesgos de quedarse callada, el efecto en su reputación y cómo la ética protege tanto a la empresa como a su gente. Después practicarás estas mismas habilidades en tu correo, tu video y tus juegos de roles."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on ECI, SHRM, Google and Walmart",
+    "based_es": "Basado en ECI, SHRM, Google y Walmart",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Questions while reading",
+    "title": "Why Ethics Matter in the Workplace",
+    "title_es": "Por qué la ética importa en el lugar de trabajo",
+    "summary": "Angela works at a U.S. company and must decide whether to report a coworker who has been falsifying timesheets.",
+    "instructions": "Answer the questions while reading: the risks if Angela says nothing, the effect on her reputation, and what the case teaches about ethics protecting both the company and employees.",
+    "article_ref": "SHRM – Why Ethics Matter in the Workplace",
+    "video_ref": "TED – The Psychology of Ethics in the Workplace | Christopher Adkins — https://www.youtube.com/watch?v=1ZwlaOYj3a0",
+    "body_en": "📚 Reading Assignment\n\nTitle: Why Ethics Matter in the Workplace\nTime: ~1 hour\n\nCase Study:\nAngela works at a U.S. company and faces a decision: should she report her coworker who has been falsifying timesheets? She worries about being disliked, but HR has made it clear that reporting misconduct is part of her responsibility.\n\nQuestions while reading:\n\nWhat are the risks if Angela says nothing?\n\nHow could her reputation be affected by reporting or not reporting?\n\nWhat does this case teach about the role of ethics in protecting both the company and employees?\n\nArticle Reference:\n🔗 SHRM – Why Ethics Matter in the Workplace\n\nVideo Reference:\n🎥 TED – The Psychology of Ethics in the Workplace | Christopher Adkins — https://www.youtube.com/watch?v=1ZwlaOYj3a0",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Por qué la ética importa en el lugar de trabajo\nTiempo: ~1 hora\n\nEstudio de Caso:\nAngela trabaja en una empresa de EE. UU. y enfrenta una decisión: ¿debería reportar a su compañero de trabajo que ha estado falsificando hojas de tiempo? Le preocupa ser rechazada, pero Recursos Humanos ha dejado claro que reportar conductas indebidas es parte de su responsabilidad.\n\nPreguntas mientras lees:\n\n¿Cuáles son los riesgos si Angela no dice nada?\n\n¿Cómo podría verse afectada su reputación al reportar o no reportar?\n\n¿Qué enseña este caso sobre el papel de la ética en la protección tanto de la empresa como de los empleados?\n\nReferencia del Artículo:\n🔗 SHRM – Por qué la ética importa en el lugar de trabajo\n\nReferencia del Video:\n🎥 TED – La psicología de la ética en el lugar de trabajo | Christopher Adkins — https://www.youtube.com/watch?v=1ZwlaOYj3a0"
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "title_en": "Saying Nothing Has a Cost",
+      "title_es": "Quedarse callada tiene un costo",
+      "scene": "Angela works at a U.S. company. She notices that a coworker has been [[falsifying]] his [[timesheets]]: he records hours he did not work. She worries about being disliked, but HR has made it clear that reporting misconduct is part of her responsibility.",
+      "activity": {
+        "kind": "choose",
+        "prompt_en": "Tap the answer you would choose.",
+        "prompt_es": "Toca la respuesta que elegirías.",
+        "options": [
+          {
+            "lead": "Angela could think:",
+            "text": "It's not my problem. If I say something, nobody on the team will like me.",
+            "correct": false,
+            "label_en": "Option A",
+            "label_es": "Opción A"
+          },
+          {
+            "lead": "Or she could think:",
+            "text": "HR was clear that reporting [[misconduct]] is part of my job. I'll report what I saw, calmly and with facts.",
+            "correct": true,
+            "label_en": "Option B",
+            "label_es": "Opción B"
+          }
+        ],
+        "why": {
+          "en": "Option B protects Angela and the company. If she says nothing, the company keeps paying for hours nobody worked, the problem can grow, and if it comes out later, people may ask why she knew and stayed quiet. Following HR's instructions is part of her job.",
+          "es": "La opción B protege a Angela y a la empresa. Si no dice nada, la empresa sigue pagando horas que nadie trabajó, el problema puede crecer y, si se descubre después, la gente puede preguntarse por qué ella lo sabía y se quedó callada. Seguir las instrucciones de Recursos Humanos es parte de su trabajo."
+        }
+      },
+      "questions": [
+        "What are the risks if Angela says nothing?"
+      ],
+      "questions_es": [
+        "¿Cuáles son los riesgos si Angela no dice nada?"
+      ]
+    },
+    {
+      "id": "c2",
+      "title_en": "Reporting Without Gossip",
+      "title_es": "Reportar sin chismes",
+      "scene": "Angela decides to tell HR. Her first draft sounds like this:",
+      "message": {
+        "from": "Angela → HR",
+        "text": "Hi, I don't want to get anyone in trouble, but I think Kevin is kind of lying about his hours all the time and honestly everybody knows it. Please don't tell him it was me!!"
+      },
+      "outcome": "The message sounds emotional and vague. HR can't act on it, and it could make Angela look like she is spreading gossip.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "prompt_en": "Write a clear, objective version of Angela's message to HR.",
+        "prompt_es": "Escribe una versión clara y objetiva del mensaje de Angela a Recursos Humanos.",
+        "label_en": "My version of the message",
+        "label_es": "Mi versión del mensaje",
+        "hints_en": [
+          "Say why you are writing",
+          "Give facts: what, when, where",
+          "No labels like “lying”",
+          "Offer to give more details"
+        ],
+        "hints_es": [
+          "Di por qué escribes",
+          "Da hechos: qué, cuándo, dónde",
+          "Sin etiquetas como “miente”",
+          "Ofrece dar más detalles"
+        ],
+        "model": "Hi Ms. Lopez,\nI'd like to report a concern about timesheets. On March 4, 6 and 11, a coworker on my team recorded eight hours, but I saw him leave the office around 2 PM on those days. I'm sharing only what I observed, and I'm available to meet if you need more details.\nThank you,\nAngela"
+      },
+      "questions": [
+        "How could her reputation be affected by reporting or not reporting?"
+      ],
+      "questions_es": [
+        "¿Cómo podría verse afectada su reputación al reportar o no reportar?"
+      ]
+    },
+    {
+      "id": "c3",
+      "title_en": "Ethics Protects Everyone",
+      "title_es": "La ética protege a todos",
+      "scene": "HR answers Angela the same day:",
+      "message": {
+        "from": "HR → Angela",
+        "text": "Thank you for raising this. We will look into it confidentially. Our policy protects employees who report concerns in good faith, and we'll contact you if we need more information."
+      },
+      "outcome": "Angela feels protected, her coworker gets a fair process, and the company can fix the problem before it grows.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "prompt_en": "Tap the three parts of HR's answer that protect people.",
+        "prompt_es": "Toca las tres partes de la respuesta de Recursos Humanos que protegen a las personas.",
+        "parts": [
+          {
+            "t": "Thank you for raising this.",
+            "why": {
+              "en": "It shows that reporting is valued, not punished.",
+              "es": "Muestra que reportar se valora, no se castiga."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "We will look into it confidentially.",
+            "why": {
+              "en": "It protects everyone's privacy, including the coworker's, while the facts are checked.",
+              "es": "Protege la privacidad de todos, también la del compañero, mientras se revisan los hechos."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "Our policy protects employees who report concerns in good faith,",
+            "why": {
+              "en": "A promise of no retaliation: Angela is safe for speaking up.",
+              "es": "Una promesa de no represalias: Angela está protegida por hablar."
+            }
+          },
+          {
+            "t": " and we'll contact you if we need more information."
+          }
+        ]
+      },
+      "questions": [
+        "What does this case teach about the role of ethics in protecting both the company and employees?"
+      ],
+      "questions_es": [
+        "¿Qué enseña este caso sobre el papel de la ética en la protección tanto de la empresa como de los empleados?"
+      ]
+    }
+  ]
+}

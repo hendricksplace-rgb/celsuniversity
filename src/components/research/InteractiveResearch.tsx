@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
-import { countSentences, draftAnalysis, entryComplete, searchFor, type Phrase, type ResearchData, type ResearchEntry } from "@/lib/research";
+import { countSentences, draftAnalysis, entryComplete, modelIsReal, searchFor, type Phrase, type ResearchData, type ResearchEntry } from "@/lib/research";
 import { Icon, Layout, Pager, RailCard, RailSteps, Sheet, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./research.module.css";
 
@@ -31,6 +31,7 @@ const UI = {
   es: {
     kick: "TAREA DE INVESTIGACIÓN",
     linkB: "Ver mi correo",
+    linkBn: "Ver mi Writing",
     steps: ["Dónde buscar", "Cómo analizar", "Ejemplo 1", "Ejemplo 2", "Lo que aprendí"],
     step: "PASO",
     s1: "Dónde buscar",
@@ -38,13 +39,18 @@ const UI = {
     field: "Tu campo o puesto",
     fieldPh: "Ej.: logistics coordinator",
     fieldP: "Busca profesionales de tu campo: así te acostumbras al vocabulario y al tono de tu carrera.",
+    fieldEx: "Ejemplos:",
+    fieldPh2: (x: string) => `Ej.: ${x}`,
     search: "BÚSQUEDA",
     open: "Buscar",
     newTab: "(se abre en otra pestaña)",
     tipK: "CONSEJO",
     s2: "Cómo analizar un ejemplo",
     s2i: "Para cada ejemplo vas a fijarte en estas 5 cosas. Mira cómo se hace con un perfil de práctica.",
+    s2in: (n: number) => `Para cada ejemplo vas a fijarte en estas ${n} cosas. Mira cómo se hace con un ejemplo de práctica.`,
     fic: "EJEMPLO FICTICIO",
+    real: "EJEMPLO REAL",
+    srcL: "Ver la fuente",
     about: "ABOUT",
     modelK: "ANÁLISIS DE PRÁCTICA",
     showM: "Ver el análisis",
@@ -57,28 +63,33 @@ const UI = {
     url: "Enlace al ejemplo",
     urlPh: "https://…",
     who: "Nombre y cargo",
+    whoN: "Nombre",
     whoPh: "Ej.: Jordan Lee, Supply Chain Manager",
     qPh: ["Ej.: logística, gerente de operaciones", "", "", "Copia una frase corta en inglés", "Escribe en inglés o en español"],
     star: "Guardar en Mis frases",
     starred: "Guardada",
     cK: "TU ANÁLISIS",
-    cH: "Escribe tu análisis en 5–7 oraciones completas, en inglés. Toca “Armar un borrador” y usamos tus respuestas para empezar; después, edítalo con tus palabras.",
+    cH: (a: number, b: number) => `Escribe tu análisis en ${a}–${b} oraciones completas, en inglés. Toca “Armar un borrador” y usamos tus respuestas para empezar; después, edítalo con tus palabras.`,
     build: "Armar un borrador",
     sent: (n: number, a: number, b: number) => `${n} ${n === 1 ? "oración" : "oraciones"} · meta ${a}–${b}`,
     s5: "Lo que aprendí",
     s5i: "Compara tus 2 ejemplos. ¿Qué patrones viste en los dos?",
     change: "¿Qué vas a cambiar en tu propia presentación?",
+    changeN: "¿Qué vas a aplicar de lo que encontraste?",
+    cmpK: "COMPARA TUS 2 EJEMPLOS",
+    cmpA: "Tu respuesta",
     opt: "OPCIONAL",
     bank: "MIS FRASES",
     bankE: "Todavía no guardas frases. Toca la estrella en cada ejemplo.",
     from: "De",
     finish: "Terminar mi investigación",
     finishing: "Guardando…",
-    finN: "Completa los 2 ejemplos: tipo, enlace y un análisis de 5–7 oraciones (sin espacios [entre corchetes] por llenar).",
+    finN: (a: number, b: number) => `Completa los 2 ejemplos: tipo, enlace y un análisis de ${a}–${b} oraciones (sin espacios [entre corchetes] por llenar).`,
     finOk: "Todo listo para terminar.",
     doneK: "INVESTIGACIÓN COMPLETA",
     doneH: "¡Excelente trabajo!",
     doneP: (n: number) => `Analizaste 2 presentaciones reales y guardaste ${n} ${n === 1 ? "frase" : "frases"} en Mis frases. Las verás en tu Writing y en tu Capstone.`,
+    donePn: (n: number) => `Analizaste tus 2 ejemplos y guardaste ${n} ${n === 1 ? "frase" : "frases"} en Mis frases. Las verás en tu Writing y en tu Capstone.`,
     doneB: "Ver Mis frases",
     rail: "TU AVANCE",
     bankR: "MIS FRASES",
@@ -92,6 +103,7 @@ const UI = {
   en: {
     kick: "RESEARCH TASK",
     linkB: "See my email",
+    linkBn: "See my Writing",
     steps: ["Where to look", "How to analyze", "Example 1", "Example 2", "What I learned"],
     step: "STEP",
     s1: "Where to look",
@@ -99,13 +111,18 @@ const UI = {
     field: "Your field or job",
     fieldPh: "E.g. logistics coordinator",
     fieldP: "Look for professionals in your field so you get used to the vocabulary and tone of your career.",
+    fieldEx: "Examples:",
+    fieldPh2: (x: string) => `E.g. ${x}`,
     search: "SEARCH",
     open: "Search",
     newTab: "(opens in a new tab)",
     tipK: "TIP",
     s2: "How to analyze an example",
     s2i: "For each example, you'll look at these 5 things. See how it's done with a practice profile.",
+    s2in: (n: number) => `For each example, you'll look at these ${n} things. See how it's done with a practice example.`,
     fic: "FICTIONAL EXAMPLE",
+    real: "REAL EXAMPLE",
+    srcL: "See the source",
     about: "ABOUT",
     modelK: "PRACTICE ANALYSIS",
     showM: "See the analysis",
@@ -118,28 +135,33 @@ const UI = {
     url: "Link to the example",
     urlPh: "https://…",
     who: "Name and title",
+    whoN: "Name",
     whoPh: "E.g. Jordan Lee, Supply Chain Manager",
     qPh: ["E.g. logistics, operations manager", "", "", "Copy a short phrase in English", "Write in English or Spanish"],
     star: "Save to My phrases",
     starred: "Saved",
     cK: "YOUR ANALYSIS",
-    cH: "Write your analysis in 5–7 complete sentences, in English. Tap “Build a draft” and we'll use your answers to get you started; then edit it in your own words.",
+    cH: (a: number, b: number) => `Write your analysis in ${a}–${b} complete sentences, in English. Tap “Build a draft” and we'll use your answers to get you started; then edit it in your own words.`,
     build: "Build a draft",
     sent: (n: number, a: number, b: number) => `${n} ${n === 1 ? "sentence" : "sentences"} · goal ${a}–${b}`,
     s5: "What I learned",
     s5i: "Compare your 2 examples. Which patterns did you see in both?",
     change: "What will you change in your own introduction?",
+    changeN: "What will you apply from what you found?",
+    cmpK: "COMPARE YOUR 2 EXAMPLES",
+    cmpA: "Your answer",
     opt: "OPTIONAL",
     bank: "MY PHRASES",
     bankE: "You haven't saved any phrases yet. Tap the star in each example.",
     from: "From",
     finish: "Finish my research",
     finishing: "Saving…",
-    finN: "Complete both examples: type, link and a 5–7 sentence analysis (with no [bracket] blanks left).",
+    finN: (a: number, b: number) => `Complete both examples: type, link and a ${a}–${b} sentence analysis (with no [bracket] blanks left).`,
     finOk: "All set to finish.",
     doneK: "RESEARCH COMPLETE",
     doneH: "Excellent work!",
     doneP: (n: number) => `You analyzed 2 real introductions and saved ${n} ${n === 1 ? "phrase" : "phrases"} to My phrases. You'll see them in your Writing and your Capstone.`,
+    donePn: (n: number) => `You analyzed your 2 examples and saved ${n} ${n === 1 ? "phrase" : "phrases"} to My phrases. You'll see them in your Writing and your Capstone.`,
     doneB: "See My phrases",
     rail: "YOUR PROGRESS",
     bankR: "MY PHRASES",
@@ -158,6 +180,7 @@ export function InteractiveResearch(p: Props) {
   const { data } = p;
   const [lang, chooseLang] = useLangPref(p.userId, p.defaultLang);
   const t = UI[lang];
+  const w1 = data.week === 1;
   const sb = useRef<ReturnType<typeof createClient> | null>(null);
   const db = useCallback(() => (sb.current ??= createClient()), []);
   const [saveError, setSaveError] = useState(false);
@@ -404,7 +427,7 @@ export function InteractiveResearch(p: Props) {
                 {p.writingHref && (
                   <Link href={p.writingHref} className={s.btnGl}>
                     <Icon name="eye" size={18} />
-                    {t.linkB}
+                    {w1 ? t.linkB : t.linkBn}
                   </Link>
                 )}
               </div>
@@ -417,12 +440,12 @@ export function InteractiveResearch(p: Props) {
               <div className={sh.card}>
                 <div className={s.fieldbox}>
                   <div>
-                    <label htmlFor="rs-field">{t.field}</label>
+                    <label htmlFor="rs-field">{data.field_label ? data.field_label[lang] : t.field}</label>
                     <input
                       id="rs-field"
                       value={field}
                       maxLength={200}
-                      placeholder={t.fieldPh}
+                      placeholder={w1 ? t.fieldPh : t.fieldPh2(data.field_examples?.join(", ") ?? data.default_field)}
                       lang="en"
                       onChange={(e) => {
                         setField(e.target.value);
@@ -430,7 +453,27 @@ export function InteractiveResearch(p: Props) {
                       }}
                     />
                   </div>
-                  <p>{t.fieldP}</p>
+                  {w1 ? (
+                    <p>{t.fieldP}</p>
+                  ) : data.field_examples?.length ? (
+                    <p className={s.fieldEx}>
+                      {t.fieldEx}
+                      {data.field_examples.map((x) => (
+                        <button
+                          key={x}
+                          type="button"
+                          lang="en"
+                          aria-pressed={field === x}
+                          onClick={() => {
+                            setField(x);
+                            scheduleRefl();
+                          }}
+                        >
+                          {x}
+                        </button>
+                      ))}
+                    </p>
+                  ) : null}
                 </div>
                 <ul className={s.srcs}>
                   {data.sources.map((src) => {
@@ -506,7 +549,8 @@ export function InteractiveResearch(p: Props) {
                     </span>
                     <p className={s.doneK}>{t.doneK}</p>
                     <h3 className={s.doneH}>{t.doneH}</h3>
-                    <p className={s.doneP}>{t.doneP(thisLesson)}</p>
+                    <p className={s.doneP}>{w1 ? t.doneP(thisLesson) : t.donePn(thisLesson)}</p>
+                    {data.share_next && <p className={s.shareNext}>{data.share_next[lang]}</p>}
                     <button type="button" className={s.btnG} onClick={openSheet} aria-haspopup="dialog">
                       <Icon name="star" size={18} />
                       {t.doneB}
@@ -534,9 +578,19 @@ export function InteractiveResearch(p: Props) {
                         </li>
                       ))}
                     </ul>
+                    {data.compare_q && data.compare_q[lang].length > 0 && (
+                      <div className={s.cmpQ}>
+                        <p className={s.lb}>{t.cmpK}</p>
+                        <ol>
+                          {data.compare_q[lang].map((q) => (
+                            <li key={q}>{q}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
                     <div className={s.grp}>
                       <label htmlFor="rs-change" className={s.lb}>
-                        {t.change} <span className={s.optB}>{t.opt}</span>
+                        {data.compare_q ? t.cmpA : w1 ? t.change : t.changeN} <span className={s.optB}>{t.opt}</span>
                       </label>
                       <textarea
                         id="rs-change"
@@ -549,13 +603,14 @@ export function InteractiveResearch(p: Props) {
                         }}
                       />
                     </div>
+                    {data.share_next && <p className={s.shareNext}>{data.share_next[lang]}</p>}
                     {bankList}
                     <div className={s.finish}>
                       <button type="button" className={s.btnP} disabled={!both || finishing} onClick={() => void finish()}>
                         <Icon name="check" size={18} />
                         {finishing ? t.finishing : t.finish}
                       </button>
-                      <p aria-live="polite">{both ? t.finOk : t.finN}</p>
+                      <p aria-live="polite">{both ? t.finOk : t.finN(data.sentences.min, data.sentences.max)}</p>
                     </div>
                   </>
                 )}
@@ -601,7 +656,7 @@ function ModelSection({ data, lang, t }: { data: ResearchData; lang: Lang; t: UI
   return (
     <section id="r1" className={sh.step} aria-labelledby="rs-s2">
       <StepHead kicker={`${t.step} 2`} icon="book" id="rs-s2" title={t.s2} />
-      <p className={sh.intro}>{t.s2i}</p>
+      <p className={sh.intro}>{data.week === 1 ? t.s2i : t.s2in(data.lenses.length)}</p>
       <ol className={s.lenses}>
         {data.lenses.map((l, i) => (
           <li key={i} className={s.lens} style={{ "--c": l.color } as React.CSSProperties}>
@@ -618,13 +673,21 @@ function ModelSection({ data, lang, t }: { data: ResearchData; lang: Lang; t: UI
           <div className={s.profTxt}>
             <p className={s.nm}>
               {data.model.name}
-              <span className={s.fic}>{t.fic}</span>
+              <span className={s.fic} data-real={modelIsReal(data) || undefined}>
+                {modelIsReal(data) ? t.real : t.fic}
+              </span>
             </p>
             <p className={s.rl}>{data.model.role}</p>
             <div className={s.about}>
               <small>{t.about}</small>
               <p lang="en">{data.model.about}</p>
             </div>
+            {data.model.source_url && (
+              <a className={s.srcLink} href={data.model.source_url} target="_blank" rel="noopener noreferrer">
+                <Icon name="link" size={15} />
+                {t.srcL}
+              </a>
+            )}
           </div>
         </div>
         <div className={s.mrow}>
@@ -723,9 +786,9 @@ function ExampleCard({
           </div>
           <div className={s.grp}>
             <label htmlFor={id("who")} className={s.lb}>
-              {t.who}
+              {data.week === 1 ? t.who : t.whoN}
             </label>
-            <input id={id("who")} className={s.inp} value={e.who} placeholder={t.whoPh} maxLength={200} onChange={(x) => onPatch({ who: x.target.value })} />
+            <input id={id("who")} className={s.inp} value={e.who} placeholder={data.week === 1 ? t.whoPh : ""} maxLength={200} onChange={(x) => onPatch({ who: x.target.value })} />
           </div>
         </div>
         <div className={s.grp} style={lens(0)}>
@@ -733,7 +796,7 @@ function ExampleCard({
             <i aria-hidden>1</i>
             {q[0]}
           </label>
-          <input id={id("field")} className={s.inp} value={e.field} placeholder={t.qPh[0]} maxLength={200} onChange={(x) => onPatch({ field: x.target.value })} />
+          <input id={id("field")} className={s.inp} value={e.field} placeholder={data.week === 1 ? t.qPh[0] : ""} maxLength={200} onChange={(x) => onPatch({ field: x.target.value })} />
         </div>
         <div className={s.grp} style={lens(1)} role="group" aria-labelledby={id("share")}>
           <p id={id("share")} className={s.lb}>
@@ -786,7 +849,7 @@ function ExampleCard({
             <Icon name="pen" size={16} /> {t.cK}
           </p>
           <p className={s.h} id={id("ah")}>
-            {t.cH}
+            {t.cH(data.sentences.min, data.sentences.max)}
           </p>
           <textarea
             id={id("analysis")}

@@ -1,0 +1,243 @@
+{
+  "hero": {
+    "title_a": "Your First",
+    "title_b": "U.S.-Style Resume",
+    "chips_en": [
+      "1–2 hours",
+      "150–350 words",
+      "Saved in your week",
+      "Capstone · Part 4"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "150–350 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 4"
+    ],
+    "intro_en": "Write the first draft of your resume in U.S. format: clear sections, your most recent job first, and achievements with numbers. It becomes Part 4 of your Capstone.",
+    "intro_es": "Escribe el primer borrador de tu currículum en formato de EE. UU.: secciones claras, tu trabajo más reciente primero y logros con números. Se convierte en la Parte 4 de tu Capstone."
+  },
+  "week": 4,
+  "parts": [
+    {
+      "en": "Your name and contact information",
+      "es": "Tu nombre y datos de contacto",
+      "hint": {
+        "en": "City and state, phone, email and LinkedIn. No photo or date of birth.",
+        "es": "Ciudad y estado, teléfono, correo y LinkedIn. Sin foto ni fecha de nacimiento."
+      },
+      "color": "#2C6BC4",
+      "example": "ANA PÉREZ · Houston, TX · ana.perez@email.com",
+      "phrases": [
+        "[FULL NAME]",
+        "[City, State] · [Phone] · [Email]",
+        "linkedin.com/in/[your-name]"
+      ]
+    },
+    {
+      "en": "A short professional summary",
+      "es": "Un breve resumen profesional",
+      "hint": {
+        "en": "2 lines: who you are, your years of experience and your strengths. No “I”.",
+        "es": "2 líneas: quién eres, tus años de experiencia y tus fortalezas. Sin “I”."
+      },
+      "color": "#7A4FD6",
+      "example": "Bilingual HR professional with 6 years of experience in recruiting…",
+      "phrases": [
+        "[Job title] with [number] years of experience in [field].",
+        "Skilled in [skill], [skill] and [skill].",
+        "Bilingual in English and Spanish."
+      ]
+    },
+    {
+      "en": "Your recent jobs",
+      "es": "Tus trabajos recientes",
+      "hint": {
+        "en": "Title, company, city and dates. Most recent job first.",
+        "es": "Cargo, empresa, ciudad y fechas. El trabajo más reciente primero."
+      },
+      "color": "#00A3C4",
+      "example": "HR Coordinator | Grupo Industrial Bajío | Aguascalientes, MX | 2021–2025",
+      "phrases": [
+        "[Job Title] | [Company] | [City, Country] | [Year]–[Year]",
+        "[Job Title] | [Company] | [City, State] | [Year]–Present"
+      ]
+    },
+    {
+      "en": "2 achievements per job",
+      "es": "2 logros por trabajo",
+      "hint": {
+        "en": "Start with an action verb and add a result, with a number if you can.",
+        "es": "Empieza con un verbo de acción y agrega un resultado, con un número si puedes."
+      },
+      "color": "#1F7A4D",
+      "example": "• Hired 120+ production employees and cut time to hire…",
+      "phrases": [
+        "• Led [project] that [result].",
+        "• Increased [metric] by [number]%.",
+        "• Reduced [problem] by [number].",
+        "• Trained [number] [people] on [topic]."
+      ]
+    },
+    {
+      "en": "Education and certifications",
+      "es": "Educación y certificaciones",
+      "hint": {
+        "en": "Degree, school, city and year. Add certifications if you have them.",
+        "es": "Título, escuela, ciudad y año. Agrega certificaciones si las tienes."
+      },
+      "color": "#C98A00",
+      "example": "B.A. in Business Administration, Universidad Autónoma de Aguascalientes – 2019",
+      "phrases": [
+        "[Degree] in [Field], [School], [City, Country] – [Year]",
+        "Certification: [Name], [Organization] – [Year]"
+      ]
+    },
+    {
+      "en": "Skills and languages",
+      "es": "Habilidades e idiomas",
+      "hint": {
+        "en": "Languages with level, software and key skills from the job ad.",
+        "es": "Idiomas con nivel, software y habilidades clave del anuncio de empleo."
+      },
+      "color": "#C2185B",
+      "example": "Languages: Spanish (native), English (professional)",
+      "phrases": [
+        "Languages: Spanish (native), English (professional)",
+        "Software: [Excel, Google Workspace, …]",
+        "Skills: [skill], [skill], [skill]"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "t_en": "Clear and easy to scan",
+      "t_es": "Claro y fácil de leer",
+      "d_en": "Section headings, short bullets, one or two pages.",
+      "d_es": "Títulos por sección, viñetas cortas, una o dos páginas.",
+      "icon": "smile"
+    },
+    {
+      "t_en": "Results, not duties",
+      "t_es": "Resultados, no funciones",
+      "d_en": "Start each bullet with an action verb; add a number.",
+      "d_es": "Empieza cada viñeta con un verbo de acción; agrega un número.",
+      "icon": "star"
+    },
+    {
+      "t_en": "U.S. resume format",
+      "t_es": "Formato de currículum de EE. UU.",
+      "d_en": "No photo, age, marital status or “I”.",
+      "d_es": "Sin foto, edad, estado civil ni “I”.",
+      "icon": "nob"
+    }
+  ],
+  "words": {
+    "min": 150,
+    "max": 350
+  },
+  "example": {
+    "subject": "Resume – Ana Pérez",
+    "paragraphs": [
+      [
+        [
+          0,
+          "ANA PÉREZ"
+        ],
+        [
+          0,
+          "Houston, TX · ana.perez@email.com · linkedin.com/in/anaperez"
+        ]
+      ],
+      [
+        [
+          1,
+          "Bilingual HR professional with 6 years of experience in recruiting and onboarding for manufacturing companies. Skilled in high-volume hiring, employee records and benefits enrollment."
+        ]
+      ],
+      [
+        [
+          null,
+          "EXPERIENCE"
+        ],
+        [
+          2,
+          "HR Coordinator | Grupo Industrial Bajío | Aguascalientes, MX | 2021–2025"
+        ],
+        [
+          3,
+          "• Hired 120+ production employees in one year and cut the average time to hire from 30 to 18 days"
+        ],
+        [
+          3,
+          "• Designed a 5-day onboarding program for new hires"
+        ]
+      ],
+      [
+        [
+          2,
+          "Recruiting Assistant | Talento Norte | Monterrey, MX | 2019–2021"
+        ],
+        [
+          3,
+          "• Screened 50+ resumes a week and scheduled interviews for 8 hiring managers"
+        ],
+        [
+          3,
+          "• Digitized 900 employee files and cut search time by half"
+        ]
+      ],
+      [
+        [
+          null,
+          "EDUCATION"
+        ],
+        [
+          4,
+          "B.A. in Business Administration, Universidad Autónoma de Aguascalientes – 2019"
+        ]
+      ],
+      [
+        [
+          null,
+          "SKILLS"
+        ],
+        [
+          5,
+          "Languages: Spanish (native), English (professional)"
+        ],
+        [
+          5,
+          "Software: Excel, Google Workspace, Workday"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Turn your work history into a clear, results-focused U.S.-style resume and prepare Capstone Part 4.",
+    "time": "1–2 Hours",
+    "title": "First Draft of Your U.S.-Style Resume",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. Original Kajabi content (only this, no instructions):\nGoogle Classroom assignment:\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/NzgwNTA2MjA3MzY1/details]\n\n✍️ Writing Task – Week 4\n\nTitle: First Draft of Your U.S.-Style Resume\nEstimated Time: 1–2 Hours\nGoal: Turn your work history into a clear, results-focused U.S.-style resume and prepare Capstone Part 4.\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nInstructions (CelsU):\nWrite the first draft of your resume with: your name and contact information, a short professional summary, your recent jobs (title, company, city, dates) in reverse chronological order, 2 achievements per job (action verb + result, with numbers if you can), your education and certifications, and your skills and languages. 150–350 words. No photo, age, marital status or “I”.",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. Contenido original de Kajabi (solo esto, sin instrucciones):\nAsignación de Google Classroom:\nhttps://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/NzgwNTA2MjA3MzY1/details]\n\n✍️ Tarea de Escritura – Semana 4\n\nTítulo: Primer borrador de tu currículum al estilo de EE. UU.\nTiempo Estimado: 1–2 Horas\nObjetivo: Convertir tu historial laboral en un currículum claro, enfocado en resultados y al estilo de EE. UU., y preparar la Parte 4 del Capstone.\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nInstrucciones (CelsU):\nEscribe el primer borrador de tu currículum con: tu nombre y datos de contacto, un breve resumen profesional, tus trabajos recientes (cargo, empresa, ciudad, fechas) en orden cronológico inverso, 2 logros por trabajo (verbo de acción + resultado, con números si puedes), tu educación y certificaciones, y tus habilidades e idiomas. 150–350 palabras. Sin foto, edad, estado civil ni “I”.",
+    "goal_es": "Convertir tu historial laboral en un currículum claro, enfocado en resultados y al estilo de EE. UU., y preparar la Parte 4 del Capstone.",
+    "title_es": "Primer borrador de tu currículum al estilo de EE. UU.",
+    "submission": "Your draft is saved in your week and becomes Capstone Part 4. You will finish and upload your final resume in Week 10."
+  },
+  "scenario": {
+    "en": "A recruiter in the U.S. likes your profile and asks for your resume in U.S. format. Write your first draft: it becomes Part 4 of your Capstone.",
+    "es": "Una reclutadora en EE. UU. ve tu perfil y te pide tu currículum en formato de EE. UU. Escribe tu primer borrador: se convierte en la Parte 4 de tu Capstone.",
+    "from": "Laura",
+    "quote": "Thanks for your interest! Please send me your resume in U.S. format, and I'll share it with the hiring manager.",
+    "role_en": "a recruiter",
+    "role_es": "una reclutadora",
+    "initials": "LG"
+  },
+  "to_label": "Talent Acquisition Team",
+  "to_initials": "TA",
+  "subject_hint": "Resume – Ana Pérez",
+  "capstone_part": 4,
+  "capstone_title": {
+    "en": "Your work history in resume form",
+    "es": "Tu historial laboral en forma de currículum"
+  }
+}

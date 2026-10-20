@@ -46,8 +46,8 @@ export async function CelsusQuizRoute({
         courseSlug={courseSlug}
         lessonId={role("quiz")?.id ?? null}
         videoHref={role("video")?.href ?? null}
-        // The flashcards' starred (65/20) deck isn't on main yet: the episode's Tarjetas part until it merges.
-        starredHref={role("cards")?.href ?? null}
+        // "Practicar mis 20 preguntas": the 65/20 deck of all 20 starred questions.
+        starredHref={`/app/cursos/${courseSlug}/mis-20-preguntas?ep=${episode.n}`}
         userId={viewer.user.id}
         sound={prefs?.sound_effects ?? true}
       />

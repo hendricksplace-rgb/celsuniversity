@@ -1,0 +1,235 @@
+{
+  "tip": {
+    "en": "Go beyond the homepage: look for the company's “Careers”, “Life at…” or “Our culture” page. That's where they talk about values and growth.",
+    "es": "Ve más allá de la página principal: busca la página “Careers”, “Life at…” u “Our culture” de la empresa. Ahí es donde hablan de valores y crecimiento."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already written your career goals.",
+      "es": "Ya escribiste tus objetivos profesionales."
+    },
+    "link_p": {
+      "en": "Now find two U.S. companies where those goals fit, and learn the words they use about culture and growth.",
+      "es": "Ahora encuentra dos empresas de EE. UU. donde esas metas encajen y aprende las palabras que usan sobre cultura y crecimiento."
+    },
+    "title_a": "Exploring",
+    "title_b": "Employer Brands",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 U.S. companies",
+      "3 key notes each",
+      "My target companies"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 empresas de EE. UU.",
+      "3 notas clave por empresa",
+      "Mis empresas meta"
+    ],
+    "intro_en": "Choose two U.S. companies you admire and research their employer brand: what they say about culture, growth and career opportunities. Note one value, one growth opportunity, and where you could contribute.",
+    "intro_es": "Elige dos empresas de EE. UU. que admires e investiga su marca de empleador: qué dicen sobre cultura, crecimiento y oportunidades de carrera. Anota un valor, una oportunidad de crecimiento y dónde podrías contribuir."
+  },
+  "week": 10,
+  "model": {
+    "name": "Brightline Logistics (example)",
+    "role": "Careers page · Houston, TX",
+    "about": "At Brightline, we move what matters. Our people are curious, reliable and always looking for a better way. We invest in you: every new team member gets a mentor, and our Brightline Academy offers paid certifications in supply chain and leadership. Many of our managers started on the warehouse floor. Join a team that grows together.",
+    "answers": {
+      "en": [
+        "Brightline Logistics: a transportation and logistics company in Texas.",
+        "Values: reliability and continuous improvement (“always looking for a better way”).",
+        "Friendly and inspiring. Uses “we” and “you” to sound like a team.",
+        "Growth: a mentor for every new hire and paid certifications through their academy.",
+        "I could contribute to their cross-border shipments with Mexico, using my bilingual experience."
+      ],
+      "es": [
+        "Brightline Logistics: una empresa de transporte y logística en Texas.",
+        "Valores: confiabilidad y mejora continua (“always looking for a better way”).",
+        "Amigable e inspirador. Usa “we” y “you” para sonar como un equipo.",
+        "Crecimiento: un mentor para cada persona nueva y certificaciones pagadas en su academia.",
+        "Podría contribuir en sus envíos transfronterizos con México, gracias a mi experiencia bilingüe."
+      ]
+    },
+    "initials": "BL"
+  },
+  "types": [
+    {
+      "en": "Careers page",
+      "es": "Página de empleos",
+      "key": "careers"
+    },
+    {
+      "en": "LinkedIn company page",
+      "es": "Página de empresa en LinkedIn",
+      "key": "in"
+    },
+    {
+      "en": "Employee reviews",
+      "es": "Opiniones de empleados",
+      "key": "rev"
+    },
+    {
+      "en": "“Life at…” video",
+      "es": "Video “Life at…”",
+      "key": "yt"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "The company and its industry",
+      "es": "La empresa y su industria",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "One value they promote",
+      "es": "Un valor que promueven",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "How they talk about culture",
+      "es": "Cómo hablan de su cultura",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "One growth opportunity they highlight",
+      "es": "Una oportunidad de crecimiento que destacan",
+      "color": "#C98A00"
+    },
+    {
+      "en": "Where you could contribute",
+      "es": "Dónde podrías contribuir",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "careers",
+      "mark": "C",
+      "color": "#1F7A4D",
+      "desc_en": "Their “Careers” or “Life at…” page: culture, values and benefits.",
+      "desc_es": "Su página “Careers” o “Life at…”: cultura, valores y beneficios.",
+      "label_en": "Company careers pages",
+      "label_es": "Páginas de empleo de empresas",
+      "query_template": "best {field} companies to work for careers culture",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "linkedin",
+      "mark": "in",
+      "color": "#0A66C2",
+      "desc_en": "The company page and its “Life” tab, with posts from employees.",
+      "desc_es": "La página de la empresa y su pestaña “Life”, con publicaciones de empleados.",
+      "label_en": "LinkedIn: company pages",
+      "label_es": "LinkedIn: páginas de empresas",
+      "query_template": "{field}",
+      "search_template": "https://www.linkedin.com/search/results/companies/?keywords={q}"
+    },
+    {
+      "key": "reviews",
+      "mark": "★",
+      "color": "#C98A00",
+      "desc_en": "What employees say about growth and culture (compare it with what the company says).",
+      "desc_es": "Lo que dicen los empleados sobre crecimiento y cultura (compáralo con lo que dice la empresa).",
+      "label_en": "Employee reviews",
+      "label_es": "Opiniones de empleados",
+      "query_template": "{field} company reviews culture career growth",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "youtube",
+      "mark": "▶",
+      "color": "#D32F2F",
+      "desc_en": "“Life at…” and “Meet our team” videos made by companies.",
+      "desc_es": "Videos “Life at…” y “Meet our team” hechos por las empresas.",
+      "label_en": "YouTube: life at the company",
+      "label_es": "YouTube: la vida en la empresa",
+      "query_template": "life at {field} company careers",
+      "search_template": "https://www.youtube.com/results?search_query={q}"
+    }
+  ],
+  "original": {
+    "goal": "Understanding employer brands helps you choose companies aligned with your values and present yourself as the right cultural fit.",
+    "time": "1–1.5 hours",
+    "title": "Exploring Employer Brands",
+    "body_en": "🧠 Research Task\n\nTitle: Exploring Employer Brands\nTime: 1–1.5 hours\n\nTask:\n\nChoose two U.S. companies you admire.\n\nResearch their employer brand—what do they say about culture, growth, and career opportunities?\n\nWrite down:\n\nOne value they promote.\n\nOne opportunity for growth they highlight.\n\nOne area where you could see yourself contributing.\n\nWhy This Matters:\nUnderstanding employer brands helps you choose companies aligned with your values and present yourself as the right cultural fit.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Explorando las Marcas de Empleador\nTiempo: 1–1.5 horas\n\nTarea:\n\nElige dos empresas de EE. UU. que admires.\n\nInvestiga su marca de empleador: ¿qué dicen sobre cultura, crecimiento y oportunidades de carrera?\n\nEscribe:\n\nUn valor que promueven.\n\nUna oportunidad de crecimiento que destacan.\n\nUn área en la que podrías verte contribuyendo.\n\nPor qué Esto Importa:\nEntender las marcas de empleador te ayuda a elegir empresas alineadas con tus valores y a presentarte como el candidato adecuado para su cultura.",
+    "goal_es": "Entender las marcas de empleador te ayuda a elegir empresas alineadas con tus valores y a presentarte como el candidato adecuado para su cultura.",
+    "title_es": "Explorando las Marcas de Empleador"
+  },
+  "patterns": {
+    "en": [
+      "They name their values clearly",
+      "They show real employees and their stories",
+      "They describe growth paths and promotions",
+      "They mention training, mentors or certifications",
+      "They connect daily work to a bigger mission",
+      "They invite you to grow with them"
+    ],
+    "es": [
+      "Nombran sus valores con claridad",
+      "Muestran a empleados reales y sus historias",
+      "Describen caminos de crecimiento y ascensos",
+      "Mencionan capacitación, mentores o certificaciones",
+      "Conectan el trabajo diario con una misión más grande",
+      "Te invitan a crecer con ellos"
+    ]
+  },
+  "questions": {
+    "en": [
+      "Which company is it, and what industry is it in?",
+      "Which values do they promote? (tap all that apply)",
+      "How do they talk about their culture? (tap one or more)",
+      "One growth opportunity they highlight",
+      "One area where you could see yourself contributing"
+    ],
+    "es": [
+      "¿Qué empresa es y en qué industria está?",
+      "¿Qué valores promueven? (toca todo lo que aplique)",
+      "¿Cómo hablan de su cultura? (toca uno o más)",
+      "Una oportunidad de crecimiento que destacan",
+      "Un área en la que podrías verte contribuyendo"
+    ]
+  },
+  "sentences": {
+    "max": 5,
+    "min": 3
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Formal",
+      "Friendly",
+      "Inspiring",
+      "Practical",
+      "Confident"
+    ],
+    "es": [
+      "Formal",
+      "Amigable",
+      "Inspirador",
+      "Práctico",
+      "Seguro"
+    ]
+  },
+  "default_field": "business",
+  "share_options": {
+    "en": [
+      "Teamwork",
+      "Innovation",
+      "Customer focus",
+      "Integrity",
+      "Diversity and inclusion",
+      "Learning and development",
+      "Work-life balance"
+    ],
+    "es": [
+      "Trabajo en equipo",
+      "Innovación",
+      "Enfoque en el cliente",
+      "Integridad",
+      "Diversidad e inclusión",
+      "Aprendizaje y desarrollo",
+      "Equilibrio vida-trabajo"
+    ]
+  }
+}

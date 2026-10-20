@@ -1,0 +1,247 @@
+{
+  "hero": {
+    "title_a": "Writing Like a Manager",
+    "title_b": "and Like a Leader",
+    "chips_en": [
+      "1–2 hours",
+      "2 emails · 120–150 words each",
+      "Saved to your week",
+      "Capstone · Part 3"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "2 correos · 120–150 palabras cada uno",
+      "Se guarda en tu semana",
+      "Capstone · Parte 3"
+    ],
+    "intro_en": "Your project is behind schedule and you need to email your team. Write the same update twice: first as a manager (tasks and deadlines), then as a leader (vision and motivation). Write both emails in the composer, the Manager email first.",
+    "intro_es": "Tu proyecto va atrasado y necesitas escribirle a tu equipo. Escribe la misma actualización dos veces: primero como gerente (tareas y fechas) y luego como líder (visión y motivación). Escribe los dos correos en el editor, primero el del gerente."
+  },
+  "week": 3,
+  "parts": [
+    {
+      "en": "Manager · What and by when",
+      "es": "Gerente · Qué y para cuándo",
+      "hint": {
+        "en": "Be clear about what needs to be done and the deadline.",
+        "es": "Di con claridad qué hay que hacer y la fecha límite."
+      },
+      "color": "#2C6BC4",
+      "example": "The client report must be finalized by Friday at 3 PM.",
+      "phrases": [
+        "Team, the [project] must be finalized by [day] at [time].",
+        "Our deadline for [task] is [day] at [time].",
+        "Here is what we need to finish by [date]:"
+      ]
+    },
+    {
+      "en": "Manager · Who does what",
+      "es": "Gerente · Quién hace qué",
+      "hint": {
+        "en": "Assign responsibilities directly, by name.",
+        "es": "Asigna responsabilidades de forma directa, con nombres."
+      },
+      "color": "#7A4FD6",
+      "example": "Ana, please complete the financial section.",
+      "phrases": [
+        "[Name], please complete [task] by [day].",
+        "[Name] will take care of [task].",
+        "I'd like [name] to own [task]."
+      ]
+    },
+    {
+      "en": "Manager · Accountability and check-in",
+      "es": "Gerente · Seguimiento y revisión",
+      "hint": {
+        "en": "Say when you will review the work.",
+        "es": "Di cuándo vas a revisar el trabajo."
+      },
+      "color": "#00A3C4",
+      "example": "I'll review the draft Thursday morning so we can submit on time.",
+      "phrases": [
+        "I'll review the draft on [day] at [time].",
+        "Please send me your update by [time] on [day].",
+        "Let me know right away if anything is blocking you."
+      ]
+    },
+    {
+      "en": "Leader · Why it matters",
+      "es": "Líder · Por qué importa",
+      "hint": {
+        "en": "Explain why this project matters to the company.",
+        "es": "Explica por qué este proyecto es importante para la empresa."
+      },
+      "color": "#1F7A4D",
+      "example": "This report will show the client that we deliver quality and reliability.",
+      "phrases": [
+        "This project matters because [reason].",
+        "This will show the client that we [value].",
+        "Our work here helps the company [goal]."
+      ]
+    },
+    {
+      "en": "Leader · Recognize the effort",
+      "es": "Líder · Reconoce el esfuerzo",
+      "hint": {
+        "en": "Thank the team for the work so far.",
+        "es": "Agradece al equipo el trabajo que ya hizo."
+      },
+      "color": "#C98A00",
+      "example": "I know this deadline is tough, but your hard work matters.",
+      "phrases": [
+        "I know this deadline is tough, but your hard work matters.",
+        "Thank you for the effort you've put in so far.",
+        "I've noticed how hard everyone has been working on [task]."
+      ]
+    },
+    {
+      "en": "Leader · Encourage and close",
+      "es": "Líder · Anima y cierra",
+      "hint": {
+        "en": "Help them stay focused and motivated, then sign off.",
+        "es": "Ayúdalos a mantenerse enfocados y motivados, y despídete."
+      },
+      "color": "#C2185B",
+      "example": "Let's give it our best push this week…",
+      "phrases": [
+        "Let's give it our best push this week.",
+        "I believe in what we can accomplish together.",
+        "I'm here if you need anything.",
+        "Best regards,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Manager email: clear and direct",
+      "t_es": "Correo del gerente: claro y directo",
+      "d_en": "Short sentences, names, days and times.",
+      "d_es": "Oraciones cortas, nombres, días y horas."
+    },
+    {
+      "icon": "star",
+      "t_en": "Leader email: warm and motivating",
+      "t_es": "Correo del líder: cálido y motivador",
+      "d_en": "Positive and specific, not over the top.",
+      "d_es": "Positivo y concreto, sin exagerar."
+    },
+    {
+      "icon": "nob",
+      "t_en": "Email format",
+      "t_es": "Formato de correo",
+      "d_en": "Greeting, paragraphs, sign-off. No bullet points or emojis.",
+      "d_es": "Saludo, párrafos y despedida. Sin viñetas ni emojis."
+    }
+  ],
+  "words": {
+    "max": 300,
+    "min": 240
+  },
+  "words_each": {
+    "max": 150,
+    "min": 120
+  },
+  "emails": [
+    {
+      "key": "manager",
+      "en": "Manager email",
+      "es": "Correo del gerente",
+      "parts": [
+        0,
+        1,
+        2
+      ],
+      "focus_en": "Focus on tasks and deadlines.",
+      "focus_es": "Enfócate en las tareas y los plazos."
+    },
+    {
+      "key": "leader",
+      "en": "Leader email",
+      "es": "Correo del líder",
+      "parts": [
+        3,
+        4,
+        5
+      ],
+      "focus_en": "Focus on vision and motivation.",
+      "focus_es": "Enfócate en la visión y la motivación."
+    }
+  ],
+  "after": {
+    "en": "After finishing, read both emails out loud. Notice how the tone and focus shift. Which style feels more natural to you? Which one do you need to practice more?",
+    "es": "Después de terminar, lee ambos correos en voz alta. Nota cómo cambian el tono y el enfoque. ¿Qué estilo te resulta más natural? ¿Cuál necesitas practicar más?"
+  },
+  "example": {
+    "subject": "Client report – plan for Friday",
+    "paragraphs": [
+      [
+        [
+          null,
+          "MANAGER EMAIL (excerpt)"
+        ]
+      ],
+      [
+        [
+          0,
+          "Team, the client report must be finalized by Friday at 3 PM."
+        ],
+        [
+          1,
+          "Ana, please complete the financial section. Jorge, finalize the design updates."
+        ],
+        [
+          2,
+          "I'll review the draft Thursday morning so we can submit on time."
+        ]
+      ],
+      [
+        [
+          null,
+          "LEADER EMAIL (excerpt)"
+        ]
+      ],
+      [
+        [
+          4,
+          "Team, I know this deadline is tough, but your hard work matters."
+        ],
+        [
+          3,
+          "This report will show the client that we deliver quality and reliability."
+        ],
+        [
+          5,
+          "Let's give it our best push this week—I believe in what we can accomplish together."
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Practice adapting your written communication style to show both management skills (clarity, structure, accountability) and leadership skills (vision, motivation, inspiration).",
+    "time": "1–2 hours",
+    "title": "Writing Like a Manager and Like a Leader",
+    "body_en": "✍️ Writing Task\n\nTitle: Writing Like a Manager and Like a Leader\nTime: 1–2 hours\nObjective: Practice adapting your written communication style to show both management skills (clarity, structure, accountability) and leadership skills (vision, motivation, inspiration).\n\nScenario:\n\nYou are supervising a small project team at a U.S. company. The deadline is coming up, but progress is slower than expected. You need to send an email to your team.\n\nYour Task:\n\nWrite two short emails (120–150 words each):\n\nManager Email – Focus on tasks and deadlines.\n\nBe clear about what needs to be done and by when.\n\nAssign responsibilities directly.\n\nEmphasize accountability and structure.\n\nLeader Email – Focus on vision and motivation.\n\nExplain why this project matters to the company.\n\nRecognize the team's effort so far.\n\nEncourage them to stay focused and motivated.\n\nWhy This Matters:\n\nIn U.S. workplaces, professionals who can switch between manager and leader styles are highly valued. Managers keep things running. Leaders inspire people to do their best. You'll need both to advance in your career.\n\nExample (shortened):\n\nManager Email (sample excerpt):\n\"Team, the client report must be finalized by Friday at 3 PM. Ana, please complete the financial section. Jorge, finalize the design updates. I'll review the draft Thursday morning so we can submit on time.\"\n\nLeader Email (sample excerpt):\n\"Team, I know this deadline is tough, but your hard work matters. This report will show the client that we deliver quality and reliability. Let's give it our best push this week—I believe in what we can accomplish together.\"\n\n👉 After finishing, read both emails out loud. Notice how the tone and focus shift. Which style feels more natural to you? Which one do you need to practice more?\n\nUpload your example to the following link: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTU1MjgzNDU2/details",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Escribir como un Gerente y como un Líder\nTiempo: 1–2 horas\nObjetivo: Practicar la adaptación de tu estilo de comunicación escrita para mostrar tanto habilidades de gestión (claridad, estructura, responsabilidad) como habilidades de liderazgo (visión, motivación, inspiración).\n\nEscenario:\n\nEstás supervisando un pequeño equipo de proyecto en una empresa de EE. UU. La fecha límite se acerca, pero el progreso es más lento de lo esperado. Necesitas enviar un correo electrónico a tu equipo.\n\nTu Tarea:\n\nEscribe dos correos electrónicos cortos (120–150 palabras cada uno):\n\nCorreo del Gerente – Enfócate en las tareas y los plazos.\n\nSé claro sobre lo que se necesita hacer y para cuándo.\n\nAsigna responsabilidades directamente.\n\nEnfatiza la responsabilidad y la estructura.\n\nCorreo del Líder – Enfócate en la visión y la motivación.\n\nExplica por qué este proyecto es importante para la empresa.\n\nReconoce el esfuerzo del equipo hasta ahora.\n\nAnímalos a mantenerse enfocados y motivados.\n\nPor Qué Esto Importa:\n\nEn los lugares de trabajo de EE. UU., los profesionales que pueden alternar entre los estilos de gerente y líder son muy valorados. Los gerentes mantienen las cosas funcionando. Los líderes inspiran a las personas a dar lo mejor de sí. Necesitarás ambos para avanzar en tu carrera.\n\nEjemplo (resumido):\n\nCorreo del Gerente (fragmento de ejemplo):\n\"Team, the client report must be finalized by Friday at 3 PM. Ana, please complete the financial section. Jorge, finalize the design updates. I'll review the draft Thursday morning so we can submit on time.\"\n\nCorreo del Líder (fragmento de ejemplo):\n\"Team, I know this deadline is tough, but your hard work matters. This report will show the client that we deliver quality and reliability. Let's give it our best push this week—I believe in what we can accomplish together.\"\n\n👉 Después de terminar, lee ambos correos en voz alta. Nota cómo cambian el tono y el enfoque. ¿Qué estilo te resulta más natural? ¿Cuál necesitas practicar más?\n\nSube tu ejemplo al siguiente enlace: https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODAyNTU1MjgzNDU2/details",
+    "goal_es": "Practicar la adaptación de tu estilo de comunicación escrita para mostrar tanto habilidades de gestión (claridad, estructura, responsabilidad) como habilidades de liderazgo (visión, motivación, inspiración).",
+    "title_es": "Escribir como un Gerente y como un Líder",
+    "submission": "Upload your example to Google Classroom (link kept in body_en; no longer used: the student writes and finishes the emails in the app)."
+  },
+  "scenario": {
+    "en": "You are supervising a small project team at a U.S. company. The deadline is coming up, but progress is slower than expected. You need to send an email to your team.",
+    "es": "Estás supervisando un pequeño equipo de proyecto en una empresa de EE. UU. La fecha límite se acerca, pero el avance es más lento de lo esperado. Necesitas enviarle un correo a tu equipo.",
+    "from": "David",
+    "quote": "Heads up: the client report is behind schedule. Please send the team an update today.",
+    "role_en": "your director",
+    "role_es": "tu director",
+    "initials": "DK"
+  },
+  "to_label": "Project Team",
+  "to_initials": "PT",
+  "subject_hint": "Client report – our plan for this week",
+  "capstone_part": 3,
+  "capstone_title": {
+    "en": "Your leadership traits",
+    "es": "Tus rasgos de liderazgo"
+  }
+}

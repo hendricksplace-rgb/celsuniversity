@@ -1,0 +1,252 @@
+{
+  "tip": {
+    "en": "Search for the company's “Investor Relations” page. Look for the annual report (Form 10-K) or the latest full-year results, and find the lines “Total revenue” (or “Net sales”) and “Net income” (or “Net earnings”).",
+    "es": "Busca la página de “Investor Relations” de la empresa. Ahí encuentras el informe anual (Form 10-K) o los resultados del último año completo. Busca las líneas “Total revenue” (o “Net sales”) y “Net income” (o “Net earnings”)."
+  },
+  "hero": {
+    "link_b": {
+      "en": "You've already explained ROI in an email.",
+      "es": "Ya explicaste el ROI en un correo."
+    },
+    "link_p": {
+      "en": "Now see how real U.S. companies report their revenue and profit, and what that means for your role.",
+      "es": "Ahora mira cómo reportan sus ingresos y ganancias empresas reales de EE. UU., y qué significa eso para tu puesto."
+    },
+    "title_a": "Financial Health",
+    "title_b": "of U.S. Companies",
+    "chips_en": [
+      "1–1.5 hours",
+      "2 real companies",
+      "4–6 sentences each",
+      "My phrases"
+    ],
+    "chips_es": [
+      "1–1.5 horas",
+      "2 empresas reales",
+      "4–6 oraciones cada una",
+      "Mis frases"
+    ],
+    "intro_en": "Choose two U.S. companies, find a summary of their P&L or annual report, and write down their revenue, net income and any growth or challenges. Then compare them and find lessons for your own role.",
+    "intro_es": "Elige dos empresas de EE. UU., busca un resumen de su estado de resultados (P&L) o de su informe anual y anota sus ingresos, su utilidad neta y cualquier crecimiento o desafío. Luego compáralas y encuentra lecciones para tu propio puesto."
+  },
+  "week": 7,
+  "field_label": {
+    "en": "Company name",
+    "es": "Nombre de la empresa"
+  },
+  "model": {
+    "name": "Starbucks · Fiscal year 2025",
+    "role": "Coffeehouse chain · Seattle, WA · Real example",
+    "about": "Starbucks reported total net revenues of $37.2 billion for fiscal year 2025 (ended September 28, 2025), up 3% from the year before. Net earnings were about $1.9 billion, and earnings per share fell 51%. Global comparable store sales fell 1% because of fewer transactions. The company says it is in a multi-year “Back to Starbucks” turnaround: it closed some coffeehouses, simplified its support teams and invested in more labor hours in its stores. It ended the year with 40,990 stores.",
+    "answers": {
+      "en": [
+        "Revenue: $37.2 billion (+3%). Net income: about $1.9 billion.",
+        "Revenue growth, lower profit, restructuring costs (store closures) and investment in store labor.",
+        "Profitable, but under pressure. It is investing in a turnaround.",
+        "“a multi-year turnaround”",
+        "Revenue can grow while profit falls. In my role, I should watch costs, not only sales."
+      ],
+      "es": [
+        "Ingresos: $37.2 mil millones (+3 %). Utilidad neta: alrededor de $1.9 mil millones.",
+        "Crecimiento de ingresos, menor ganancia, costos de reestructuración (cierre de tiendas) e inversión en personal de tienda.",
+        "Rentable, pero bajo presión. Está invirtiendo en un plan de recuperación.",
+        "“a multi-year turnaround” (un plan de recuperación de varios años)",
+        "Los ingresos pueden crecer mientras la ganancia baja. En mi puesto debo cuidar los costos, no solo las ventas."
+      ]
+    },
+    "initials": "SB",
+    "source_url": "https://www.sec.gov/Archives/edgar/data/829224/000082922425000074/sbux-09282025xexhibit991.htm"
+  },
+  "types": [
+    {
+      "en": "Annual report (10-K)",
+      "es": "Informe anual (10-K)",
+      "key": "ar"
+    },
+    {
+      "en": "Earnings press release",
+      "es": "Comunicado de resultados",
+      "key": "pr"
+    },
+    {
+      "en": "Finance website",
+      "es": "Sitio de finanzas",
+      "key": "fin"
+    },
+    {
+      "en": "Business news",
+      "es": "Noticias de negocios",
+      "key": "news"
+    }
+  ],
+  "lenses": [
+    {
+      "en": "Revenue and net income",
+      "es": "Ingresos y utilidad neta",
+      "color": "#2C6BC4"
+    },
+    {
+      "en": "Growth or challenges mentioned",
+      "es": "Crecimiento o desafíos mencionados",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "Financial health",
+      "es": "Salud financiera",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A finance phrase for your Capstone",
+      "es": "Una frase de finanzas para tu Capstone",
+      "color": "#C98A00"
+    },
+    {
+      "en": "A lesson for your role",
+      "es": "Una lección para tu puesto",
+      "color": "#1F7A4D"
+    }
+  ],
+  "sources": [
+    {
+      "key": "sec",
+      "mark": "S",
+      "color": "#0B3D91",
+      "label_en": "SEC EDGAR: annual reports",
+      "label_es": "SEC EDGAR: informes anuales",
+      "desc_en": "Official 10-K annual reports filed by U.S. public companies.",
+      "desc_es": "Informes anuales oficiales (10-K) de empresas públicas de EE. UU.",
+      "query_template": "{field}",
+      "search_template": "https://www.sec.gov/cgi-bin/browse-edgar?company={q}&type=10-K&action=getcompany"
+    },
+    {
+      "key": "ir",
+      "mark": "IR",
+      "color": "#1F7A4D",
+      "label_en": "Investor Relations page",
+      "label_es": "Página de Investor Relations",
+      "desc_en": "The company's own results and annual report.",
+      "desc_es": "Los resultados y el informe anual de la propia empresa.",
+      "query_template": "{field} investor relations annual results",
+      "search_template": "https://www.google.com/search?q={q}"
+    },
+    {
+      "key": "yahoo",
+      "mark": "Y",
+      "color": "#6001D2",
+      "label_en": "Yahoo Finance: financials",
+      "label_es": "Yahoo Finance: finanzas",
+      "desc_en": "A quick summary of revenue and net income by year.",
+      "desc_es": "Un resumen rápido de ingresos y utilidad neta por año.",
+      "query_template": "{field}",
+      "search_template": "https://finance.yahoo.com/lookup?s={q}"
+    },
+    {
+      "key": "news",
+      "mark": "N",
+      "color": "#D32F2F",
+      "label_en": "Business news",
+      "label_es": "Noticias de negocios",
+      "desc_en": "Articles about the company's latest results, growth and challenges.",
+      "desc_es": "Artículos sobre los últimos resultados, el crecimiento y los desafíos de la empresa.",
+      "query_template": "{field} full year results revenue net income",
+      "search_template": "https://news.google.com/search?q={q}"
+    }
+  ],
+  "original": {
+    "goal": "Understanding financial reports—even at a basic level—helps you see how companies succeed or struggle, and how your role connects to that bigger picture.",
+    "time": "1–1.5 hours",
+    "title": "Financial Health of U.S. Companies",
+    "body_en": "🧠 Research Task\n\nTitle: Financial Health of U.S. Companies\nTime: 1–1.5 hours\n\nTask:\n\nSelect two U.S. companies (for example, Apple, Starbucks, or a company in your industry).\n\nSearch online for a summary of their P&L (Profit and Loss) or Annual Report.\n\nWrite down:\n\nRevenue (money earned).\n\nNet income or profit (money left after expenses).\n\nAny mention of growth or challenges.\n\nCompare:\n\nWhich company is more profitable?\n\nWhich one is investing in growth?\n\nWhat lessons can you apply to your own role?\n\nWhy This Matters:\nUnderstanding financial reports—even at a basic level—helps you see how companies succeed or struggle, and how your role connects to that bigger picture.",
+    "body_es": "🧠 Tarea de Investigación\n\nTítulo: Salud Financiera de Empresas de EE.UU.\nTiempo: 1–1.5 horas\n\nTarea:\n\nSelecciona dos empresas de EE.UU. (por ejemplo, Apple, Starbucks, o una empresa de tu industria).\n\nBusca en línea un resumen de su P&L (Estado de Resultados) o Informe Anual.\n\nAnota:\n\nIngresos (dinero ganado).\n\nIngreso neto o ganancia (dinero restante después de gastos).\n\nCualquier mención de crecimiento o desafíos.\n\nCompara:\n\n¿Cuál empresa es más rentable?\n\n¿Cuál está invirtiendo en crecimiento?\n\n¿Qué lecciones puedes aplicar a tu propio rol?\n\nPor qué es importante:\nEntender los informes financieros, incluso a un nivel básico, te ayuda a ver cómo las empresas tienen éxito o enfrentan dificultades, y cómo tu rol se conecta con ese panorama más amplio.",
+    "goal_es": "Entender los informes financieros, incluso a un nivel básico, te ayuda a ver cómo las empresas tienen éxito o enfrentan dificultades, y cómo tu rol se conecta con ese panorama más amplio.",
+    "title_es": "Salud Financiera de Empresas de EE.UU."
+  },
+  "patterns": {
+    "en": [
+      "Revenue is the top line; net income is the bottom line",
+      "Revenue can grow while profit goes down",
+      "They compare this year with last year (in %)",
+      "They explain their challenges and a plan",
+      "They invest in growth (stores, products, R&D)",
+      "They put the key numbers first, in simple words"
+    ],
+    "es": [
+      "Los ingresos son la primera línea; la utilidad neta, la última",
+      "Los ingresos pueden crecer mientras la ganancia baja",
+      "Comparan este año con el anterior (en %)",
+      "Explican sus desafíos y un plan",
+      "Invierten en crecimiento (tiendas, productos, I+D)",
+      "Ponen primero los números clave, en palabras sencillas"
+    ]
+  },
+  "questions": {
+    "en": [
+      "What are their revenue and net income? (latest full year)",
+      "What growth or challenges do they mention? (tap all that apply)",
+      "How healthy are they? (tap one or more)",
+      "One finance phrase you could borrow",
+      "What lesson can you apply to your own role?"
+    ],
+    "es": [
+      "¿Cuáles son sus ingresos y su utilidad neta? (último año completo)",
+      "¿Qué crecimiento o desafíos mencionan? (toca todo lo que aplique)",
+      "¿Qué tan sana está? (toca una o más)",
+      "Una frase de finanzas que podrías usar",
+      "¿Qué lección puedes aplicar a tu propio puesto?"
+    ]
+  },
+  "sentences": {
+    "max": 6,
+    "min": 4
+  },
+  "min_examples": 2,
+  "tone_options": {
+    "en": [
+      "Profitable",
+      "Growing",
+      "Investing in growth",
+      "Under pressure",
+      "Stable"
+    ],
+    "es": [
+      "Rentable",
+      "En crecimiento",
+      "Invirtiendo para crecer",
+      "Bajo presión",
+      "Estable"
+    ]
+  },
+  "default_field": "Starbucks",
+  "share_options": {
+    "en": [
+      "Revenue growth",
+      "Profit growth",
+      "Lower profit",
+      "New stores or products",
+      "R&D / technology",
+      "Cost cutting / restructuring",
+      "Dividends"
+    ],
+    "es": [
+      "Crecimiento de ingresos",
+      "Crecimiento de ganancias",
+      "Menor ganancia",
+      "Nuevas tiendas o productos",
+      "I+D / tecnología",
+      "Recorte de costos / reestructuración",
+      "Dividendos"
+    ]
+  },
+  "compare_q": {
+    "en": [
+      "Which company is more profitable?",
+      "Which one is investing in growth?",
+      "What lessons can you apply to your own role?"
+    ],
+    "es": [
+      "¿Cuál empresa es más rentable?",
+      "¿Cuál está invirtiendo en crecimiento?",
+      "¿Qué lecciones puedes aplicar a tu propio rol?"
+    ]
+  }
+}

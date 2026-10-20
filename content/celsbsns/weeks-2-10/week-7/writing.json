@@ -1,0 +1,215 @@
+{
+  "hero": {
+    "title_a": "Explaining ROI",
+    "title_b": "in an Email",
+    "chips_en": [
+      "1–2 hours",
+      "120–150 words",
+      "Saved to your week",
+      "Capstone · Part 7"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "120–150 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 7"
+    ],
+    "intro_en": "Write a professional email to your manager that explains the ROI of a marketing campaign in simple terms. You practice connecting actions to financial results, the language of business in the U.S.",
+    "intro_es": "Escribe un correo profesional a tu jefe que explique el ROI de una campaña de marketing en términos simples. Practicas conectar acciones con resultados financieros: el lenguaje de los negocios en EE. UU."
+  },
+  "week": 7,
+  "parts": [
+    {
+      "en": "A greeting",
+      "es": "Un saludo",
+      "color": "#2C6BC4",
+      "hint": {
+        "en": "Short and professional.",
+        "es": "Corto y profesional."
+      },
+      "example": "Hi David,",
+      "phrases": [
+        "Hi David,",
+        "Hello David,",
+        "Good morning, David,"
+      ]
+    },
+    {
+      "en": "The result first",
+      "es": "El resultado primero",
+      "color": "#7A4FD6",
+      "hint": {
+        "en": "Your bottom line in one sentence.",
+        "es": "Tu conclusión principal en una oración."
+      },
+      "example": "Here's a quick update: the campaign was a success.",
+      "phrases": [
+        "Here's a quick update on the [name] campaign.",
+        "Good news: the campaign exceeded our goal.",
+        "In short, the campaign more than paid for itself."
+      ]
+    },
+    {
+      "en": "The ROI in simple terms",
+      "es": "El ROI en términos simples",
+      "color": "#00A3C4",
+      "hint": {
+        "en": "Cost, sales and the ROI, with numbers.",
+        "es": "Costo, ventas y ROI, con números."
+      },
+      "example": "We spent $5,000 and brought in $12,500 in new sales…",
+      "phrases": [
+        "We invested $[cost] and generated $[sales] in new sales.",
+        "That's a return of [X]% on our investment.",
+        "For every dollar we spent, we brought in $[X]."
+      ]
+    },
+    {
+      "en": "The positive results",
+      "es": "Los resultados positivos",
+      "color": "#1F7A4D",
+      "hint": {
+        "en": "Highlight what went well, clearly.",
+        "es": "Resalta con claridad lo que salió bien."
+      },
+      "example": "We also gained 300 new subscribers…",
+      "phrases": [
+        "The strongest results came from [channel].",
+        "We also gained [number] new customers.",
+        "This was our best-performing campaign this year."
+      ]
+    },
+    {
+      "en": "An idea for the next campaign",
+      "es": "Una idea para la próxima campaña",
+      "color": "#C98A00",
+      "hint": {
+        "en": "One suggestion based on this success.",
+        "es": "Una sugerencia basada en este éxito."
+      },
+      "example": "For the next campaign, I suggest…",
+      "phrases": [
+        "For the next campaign, I suggest we [idea].",
+        "Based on these results, I recommend investing more in [channel].",
+        "I'd like to test [idea] with a small budget first."
+      ]
+    },
+    {
+      "en": "A polite closing",
+      "es": "Un cierre cortés",
+      "color": "#C2185B",
+      "hint": {
+        "en": "Offer details and sign off.",
+        "es": "Ofrece más detalles y despídete."
+      },
+      "example": "I'm happy to share the full numbers… Best regards,",
+      "phrases": [
+        "I'm happy to walk you through the numbers.",
+        "Let me know if you have any questions.",
+        "Best regards,",
+        "Thank you,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Simple and clear",
+      "t_es": "Simple y claro",
+      "d_en": "Main result first, short sentences, no jargon.",
+      "d_es": "Resultado principal primero, oraciones cortas, sin tecnicismos."
+    },
+    {
+      "icon": "star",
+      "t_en": "Numbers that tell a story",
+      "t_es": "Números que cuentan una historia",
+      "d_en": "Cost, sales and ROI, rounded and easy to read.",
+      "d_es": "Costo, ventas y ROI, redondeados y fáciles de leer."
+    },
+    {
+      "icon": "nob",
+      "t_en": "Email format",
+      "t_es": "Formato de correo",
+      "d_en": "Subject line, paragraph spacing, no emojis.",
+      "d_es": "Línea de asunto, párrafos separados, sin emojis."
+    }
+  ],
+  "words": {
+    "max": 150,
+    "min": 120
+  },
+  "example": {
+    "subject": "Email campaign results: 150% ROI",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Hi David,"
+        ]
+      ],
+      [
+        [
+          1,
+          "Here's a quick update on our spring email campaign: it was a success, and it more than paid for itself."
+        ],
+        [
+          2,
+          "We spent $5,000 and brought in $12,500 in new sales. In simple terms, that's a return on investment of 150%: for every dollar we spent, we got back $2.50."
+        ]
+      ],
+      [
+        [
+          3,
+          "The strongest results came from our loyalty customers, and we also gained 300 new subscribers who can buy from us again. It was our best-performing campaign this year."
+        ],
+        [
+          4,
+          "For the next campaign, I suggest we send a special offer to these new subscribers and test it with a small budget first."
+        ]
+      ],
+      [
+        [
+          5,
+          "I'm happy to walk you through the full numbers at our meeting on Thursday. Please let me know if you have any questions."
+        ]
+      ],
+      [
+        [
+          5,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Ana Pérez"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Showing you can connect actions to financial results proves you understand the language of business—something U.S. employers value highly.",
+    "time": "1–2 hours",
+    "title": "Explaining ROI in an Email",
+    "body_en": "✍️ Writing Task\n\nTitle: Explaining ROI in an Email\nTime: 1–2 hours\n\nScenario:\nYou are in marketing and ran a campaign that cost $8,000. The campaign brought in $24,000 in new sales. Your manager asks for an update.\n\nYour Task: Write a professional email (120–150 words) to your manager that:\n\nExplains the ROI in simple terms.\n\nHighlights the positive results clearly.\n\nSuggests one idea for the next campaign based on this success.\n\nWhy This Matters:\nShowing you can connect actions to financial results proves you understand the language of business—something U.S. employers value highly.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Explicando el ROI en un Correo Electrónico\nTiempo: 1–2 horas\n\nEscenario:\nEstás en marketing y realizaste una campaña que costó $8,000. La campaña generó $24,000 en nuevas ventas. Tu gerente solicita una actualización.\n\nTu tarea: Escribe un correo electrónico profesional (120–150 palabras) a tu gerente que:\n\nExplique el ROI en términos simples.\n\nResalte claramente los resultados positivos.\n\nSugiera una idea para la próxima campaña basada en este éxito.\n\nPor qué es importante:\nDemostrar que puedes conectar acciones con resultados financieros prueba que entiendes el lenguaje de los negocios, algo que los empleadores en EE. UU. valoran mucho.",
+    "goal_es": "Demostrar que puedes conectar acciones con resultados financieros prueba que entiendes el lenguaje de los negocios, algo que los empleadores en EE. UU. valoran mucho.",
+    "title_es": "Explicando el ROI en un Correo Electrónico",
+    "submission": "Not specified in the original lesson."
+  },
+  "scenario": {
+    "en": "You are in marketing and ran a campaign that cost $8,000. The campaign brought in $24,000 in new sales. Your manager asks for an update.",
+    "es": "Estás en marketing y realizaste una campaña que costó $8,000. La campaña generó $24,000 en nuevas ventas. Tu gerente te pide una actualización.",
+    "from": "David",
+    "quote": "Hi! How did the campaign do? Can you send me a quick update with the numbers?",
+    "role_en": "your manager",
+    "role_es": "tu gerente",
+    "initials": "DM"
+  },
+  "to_label": "David Miller · Marketing Manager",
+  "to_initials": "DM",
+  "subject_hint": "Campaign update – ROI results",
+  "capstone_part": 7,
+  "capstone_title": {
+    "en": "Your understanding of basic finance",
+    "es": "Tu comprensión de las finanzas básicas"
+  }
+}

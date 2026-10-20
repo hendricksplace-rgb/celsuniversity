@@ -6,7 +6,8 @@ export type Bi = { es: string; en: string };
 export type BiList = { es: string[]; en: string[] };
 
 export type SpeakingExercise = {
-  icon: "video" | "people" | "elev";
+  /** An icon name from the shell set; unknown names fall back to the mic. */
+  icon: string;
   scene: {
     kind: "zoom" | "meeting" | "elevator";
     /** The call or place label ("Zoom · Weekly Sync"), and its right-hand meta ("Empieza en 0:30"). */
@@ -28,7 +29,17 @@ export type SpeakingExercise = {
   limit_s: [number, number];
   /** Reps done away from the app ("Lo hice sin grabar"). */
   manual_ok?: boolean;
+  /** Week 2: lines to start the conversation with. */
+  prompts?: string[];
+  /** Week 2: the original "❌ don't say / ✅ say" pair. */
+  avoid_say?: { dont: string; do: string };
+  /** Week 3: a model answer (English; lines may be separated by \n). */
+  model?: string;
 };
+
+/** The original's closing reflection questions: a plain list (weeks 2, 6, 8, 10) or, in week 3, a short recorded
+ *  reflection with an intro and a time goal. */
+export type SpeakingReflection = BiList | { intro_en: string; intro_es: string; questions: BiList; limit_s?: [number, number] };
 
 export type SpeakingData = {
   week: number;
@@ -39,9 +50,16 @@ export type SpeakingData = {
   /** The Reading lesson whose vocab list is the week's vocabulary. */
   vocab_from_lesson_id: string;
   exercises: SpeakingExercise[];
-  bonus: { questions: BiList; options: BiList };
+  /** The partner questions; `reflect` (week 5) is one more open question to think about. */
+  bonus: { questions: BiList; options: BiList; reflect?: Bi };
+  reflection?: SpeakingReflection;
   max_s: number;
 };
+
+/** speaking_progress arrays: one rep count per exercise and one partner answer per bonus question (the database
+ *  allows 1–6 of each). */
+export const repsLength = (d: SpeakingData) => Math.min(6, Math.max(1, d.exercises.length));
+export const partnerLength = (d: SpeakingData) => Math.min(6, Math.max(1, d.bonus.questions.en.length));
 
 export type SpeakingBest = { exercise: number; text: string; duration_s: number | null; points: number[] };
 export type VocabWord = { word: string; es: string };

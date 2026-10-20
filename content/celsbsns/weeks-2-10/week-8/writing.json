@@ -1,0 +1,211 @@
+{
+  "hero": {
+    "title_a": "Creating a",
+    "title_b": "Brand Message",
+    "chips_en": [
+      "1–2 hours",
+      "120–150 words",
+      "Saved in your week",
+      "Capstone · Part 8"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "120–150 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 8"
+    ],
+    "intro_en": "Your team is launching eco-friendly office supplies for small businesses. Write a short brand message that defines the audience, communicates the value, and uses a clear, professional voice. Then use what you learned for your own personal brand line.",
+    "intro_es": "Tu equipo va a lanzar suministros de oficina ecológicos para pequeñas empresas. Escribe un mensaje de marca breve que defina el público, comunique el valor y use una voz clara y profesional. Luego usa lo que aprendiste para tu propia frase de marca personal."
+  },
+  "week": 8,
+  "parts": [
+    {
+      "en": "A short opening line",
+      "es": "Una frase de apertura corta",
+      "hint": {
+        "en": "One line that captures the idea.",
+        "es": "Una línea que resuma la idea."
+      },
+      "color": "#2C6BC4",
+      "example": "Good for your budget. Good for the planet.",
+      "phrases": [
+        "Good for your [benefit]. Good for the [benefit].",
+        "Smarter supplies for [audience].",
+        "[Benefit] without [problem]."
+      ]
+    },
+    {
+      "en": "Your target audience",
+      "es": "Tu público objetivo",
+      "hint": {
+        "en": "Who exactly the product is for.",
+        "es": "Para quién es exactamente el producto."
+      },
+      "color": "#7A4FD6",
+      "example": "…is made for small businesses with 5 to 50 employees…",
+      "phrases": [
+        "[Product] is made for [audience] who want to [goal].",
+        "We help [audience] [do something better]."
+      ]
+    },
+    {
+      "en": "The problem you solve",
+      "es": "El problema que resuelves",
+      "hint": {
+        "en": "What worries your customer today.",
+        "es": "Qué le preocupa hoy a tu cliente."
+      },
+      "color": "#00A3C4",
+      "example": "Many owners want to reduce waste, but think green products cost too much.",
+      "phrases": [
+        "Many [audience] want to [goal], but [obstacle].",
+        "We know that [problem] is a real challenge for [audience]."
+      ]
+    },
+    {
+      "en": "Your value proposition",
+      "es": "Tu propuesta de valor",
+      "hint": {
+        "en": "Eco-friendly + cost savings, in plain words.",
+        "es": "Ecológico + ahorro, en palabras sencillas."
+      },
+      "color": "#1F7A4D",
+      "example": "…cost the same as standard brands, and our refills help you buy less.",
+      "phrases": [
+        "With [product], you get [benefit 1] and [benefit 2].",
+        "[Product] costs the same as [alternative], and [extra benefit].",
+        "That means [result for the customer]."
+      ]
+    },
+    {
+      "en": "One concrete detail",
+      "es": "Un detalle concreto",
+      "hint": {
+        "en": "A fact that proves your promise.",
+        "es": "Un dato que demuestre tu promesa."
+      },
+      "color": "#C98A00",
+      "example": "Every order ships in recycled packaging…",
+      "phrases": [
+        "Every order [concrete fact].",
+        "Our [feature] shows you [result]."
+      ]
+    },
+    {
+      "en": "A call to action",
+      "es": "Una llamada a la acción",
+      "hint": {
+        "en": "Tell the reader what to do next.",
+        "es": "Dile al lector qué hacer después."
+      },
+      "color": "#C2185B",
+      "example": "Switch your next order to LeafLine…",
+      "phrases": [
+        "Switch your next order to [brand].",
+        "Try [product] today and see the difference.",
+        "Visit [website] to learn more."
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Clear and customer-focused",
+      "t_es": "Claro y enfocado en el cliente",
+      "d_en": "Talk to “you”, the customer. Short sentences.",
+      "d_es": "Háblale a “you”, el cliente. Oraciones cortas."
+    },
+    {
+      "icon": "star",
+      "t_en": "One consistent voice",
+      "t_es": "Una sola voz, consistente",
+      "d_en": "Professional and positive from start to end.",
+      "d_es": "Profesional y positiva de principio a fin."
+    },
+    {
+      "icon": "nob",
+      "t_en": "No hype",
+      "t_es": "Sin exagerar",
+      "d_en": "No emojis, no “best in the world”, no invented numbers.",
+      "d_es": "Sin emojis, sin “el mejor del mundo”, sin números inventados."
+    }
+  ],
+  "words": {
+    "max": 150,
+    "min": 120
+  },
+  "example": {
+    "subject": "Brand message – LeafLine Office Supplies",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Good for your budget. Good for the planet."
+        ]
+      ],
+      [
+        [
+          1,
+          "LeafLine Office Supplies is made for small businesses with 5 to 50 employees that want a greener office without paying more."
+        ],
+        [
+          2,
+          "Many owners we talk to want to reduce waste, but they believe eco-friendly products are always too expensive for a small team."
+        ]
+      ],
+      [
+        [
+          3,
+          "Our recycled paper, refillable pens and plant-based cleaning products cost the same as standard brands, and our refill system means you buy less over time."
+        ],
+        [
+          4,
+          "Every order ships in recycled packaging, and a simple online dashboard shows how much you save each month, in dollars and in waste."
+        ]
+      ],
+      [
+        [
+          5,
+          "Switch your next order to LeafLine today and see the difference in your costs, and in your office, in your first three months."
+        ]
+      ],
+      [
+        [
+          5,
+          "Simple. Sustainable. Smart for business."
+        ],
+        [
+          null,
+          "The LeafLine Team"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Practice clarity, consistency, and customer focus by crafting a short brand message.",
+    "time": "1–2 hours",
+    "title": "Creating a Brand Message",
+    "body_en": "✍️ Writing Task\n\nTitle: Creating a Brand Message\nTime: 1–2 hours\n\nScenario:\nYou are part of a team launching a new product. The product is eco-friendly office supplies designed for small businesses.\n\nYour Task: Write a short brand message (120–150 words) that:\n\nDefines the target audience.\n\nCommunicates the value proposition (eco-friendly + cost savings).\n\nUses a clear, professional brand voice.\n\nWhy This Matters:\nCrafting a brand message helps you practice clarity, consistency, and customer focus—the same skills U.S. companies expect across departments.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Creando un Mensaje de Marca\nTiempo: 1–2 horas\n\nEscenario:\nEres parte de un equipo que está lanzando un nuevo producto. El producto son suministros de oficina ecológicos diseñados para pequeñas empresas.\n\nTu Tarea: Escribe un breve mensaje de marca (120–150 palabras) que:\n\nDefina el público objetivo.\n\nComunique la propuesta de valor (ecológico + ahorro de costos).\n\nUtilice un tono de marca claro y profesional.\n\nPor Qué Esto Importa:\nCrear un mensaje de marca te ayuda a practicar la claridad, la consistencia y el enfoque en el cliente, las mismas habilidades que las empresas de EE. UU. esperan en todos los departamentos.",
+    "goal_es": "Practicar la claridad, la consistencia y el enfoque en el cliente creando un breve mensaje de marca.",
+    "title_es": "Creando un Mensaje de Marca",
+    "submission": "Write a short brand message (120–150 words) that defines the target audience, communicates the value proposition (eco-friendly + cost savings), and uses a clear, professional brand voice."
+  },
+  "scenario": {
+    "en": "You are part of a team launching a new product: eco-friendly office supplies designed for small businesses. Your manager asks you to draft the brand message.",
+    "es": "Eres parte de un equipo que está lanzando un nuevo producto: suministros de oficina ecológicos diseñados para pequeñas empresas. Tu gerente te pide que escribas el mensaje de marca.",
+    "from": "Daniel",
+    "quote": "We launch our eco-friendly office supplies next month. Can you draft a short brand message for small business owners? Around 120–150 words.",
+    "role_en": "your marketing manager",
+    "role_es": "tu gerente de marketing",
+    "initials": "DM"
+  },
+  "to_label": "Marketing Team",
+  "to_initials": "MK",
+  "subject_hint": "Brand message – LeafLine Office Supplies",
+  "capstone_part": 8,
+  "capstone_title": {
+    "en": "How you represent yourself professionally",
+    "es": "Cómo te representas profesionalmente"
+  }
+}
