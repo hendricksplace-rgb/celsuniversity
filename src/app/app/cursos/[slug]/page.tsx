@@ -28,9 +28,11 @@ export default async function CoursePage({ params }: Props) {
   const theme = themeForCourse({ slug });
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   if (!page) notFound();
+  const access = await canAccessCourse(supabase, viewer, page.course.id);
   // CelsBSNS: the old week-list page is gone; old links and bookmarks land on the student's current week.
   // The week of the latest activity (the next one once it's complete), like Progreso, Inicio and Mis cursos.
-  if (theme === "celsbsns")
+  // Without access the week list below shows with the access notice (the week pages send them back here).
+  if (theme === "celsbsns" && access)
     redirect(
       weekPath(
         page.course.slug,
@@ -43,7 +45,6 @@ export default async function CoursePage({ params }: Props) {
         ),
       ),
     );
-  const access = await canAccessCourse(supabase, viewer, page.course.id);
   // Guided courses (CelsGLOBAL step template): one page per step and Mi resume. Without access the steps aren't
   // readable (RLS), so the old page with its access notice shows instead.
   const guided = theme === "celsglobal" && access ? await loadGuided(supabase, slug, viewer.user.id) : null;

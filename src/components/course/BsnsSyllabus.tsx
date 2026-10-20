@@ -557,7 +557,12 @@ export function BsnsSyllabus(p: SyllabusProps) {
           </section>
         )}
 
-        <Commitment lang={lang} courseId={p.courseId} prefillName={p.prefillName} signed={p.signed} onSigned={() => setGlow(true)} />
+        <Commitment lang={lang} courseId={p.courseId} prefillName={p.prefillName} signed={p.signed} onSigned={() => {
+            setGlow(true);
+            // Signing is the syllabus's real action: it counts as read even if the student goes back instead of "Next".
+            if (!p.done) void finishLesson(createClient(), p.userId, p.lessonId).then(() => router.refresh());
+          }}
+        />
 
         <nav className={s.pn} aria-label={T.nav}>
           <Link prefetch={false} className={s.prev} href={p.prev?.href ?? p.weekHref}>

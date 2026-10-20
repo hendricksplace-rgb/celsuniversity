@@ -346,6 +346,25 @@
         "nombre",
         "privacidad_url"
       ]
+    },
+    {
+      "id": "invite-celsglobal",
+      "file": "app/invite-celsglobal.html",
+      "program": "CelsGLOBAL",
+      "trigger": "Admin → Estudiantes → «Enviar invitación» (alumnos importados de la plataforma anterior)",
+      "subject": "Tu nueva plataforma CelsU ya está lista, {{nombre}}",
+      "preheader": "Tu acceso a CelsGLOBAL ya está activo. Crea tu contraseña y entra.",
+      "from_name": "CelsGLOBAL · CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "app_url",
+        "ayuda_url",
+        "boton_url",
+        "nombre",
+        "privacidad_url"
+      ]
     }
   ]
 }
