@@ -1,6 +1,6 @@
 # Pre-invitation logged-in test pass — 2026-10-20
 
-Checklist: `content/fixes/pre-invitation-2026-10-20.md`, section A. Branch `invite-qa` (main b59c8b2, then main cd9a526 merged in).
+Checklist: `content/fixes/pre-invitation-2026-10-20.md`, section A. Branch `invite-qa` (tested on main b59c8b2 + cd9a526; main 1eaeb32 merged before push, no overlap with these fixes, tsc/lint/build re-run).
 
 **How it was tested.** I ran a local production build (`next build` + `next start -p 3600`) against the live database. Three throwaway students were created through the admin API, with access granted the same way "Dar acceso" grants it: an `enrollments` row (source `manual`, status `active`, `individual`, length from the products' grants) plus an `admin_audit_log` insert.
 
