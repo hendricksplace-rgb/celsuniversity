@@ -6,6 +6,9 @@ import { LEVELS, SECTIONS, type Goal, type Product } from "@/lib/eval-engine";
 import { InstallLink } from "@/components/install/InstallApp";
 import { BigButton, C, Pill, fill, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
 import { SITE_URL } from "@/lib/site";
+import { planHref, plansHref, recommendedPlan } from "@/lib/enroll";
+import type { EnrollT } from "@/lib/i18n/enroll-copy";
+import { PROGRAMS, type ProgramKey } from "@/lib/purchase-programs";
 
 export type FinalResult = {
   g: number;
@@ -17,7 +20,55 @@ export type FinalResult = {
 };
 export type LockedInfo = { retake_on: string; cefr_level?: string | null; skill_levels?: Record<string, string> | null; lead?: boolean };
 
-const PRICE: Record<Product, number> = { celstv: 99, celsbsns: 120, bundle: 150 };
+/** Active products by code, from public.products (the evaluation page reads them on the server). */
+export type OfferProducts = Record<string, { name: string; cents: number; installments: number[] | null }>;
+
+/** Without a program, the engine's recommendation shows its entry plan's price. */
+const ENTRY_PLAN: Record<Product, string> = { celstv: "celstv_standard", celsbsns: "celsbsns_standard", bundle: "bundle_tv_bsns" };
+const usd = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: cents % 100 ? 2 : 0 })}`;
+
+/** The offer after an evaluation started from /inscribirme?programa=…: that program's recommended plan. */
+function ProgramOffer({ t, enrollT, programa, products, g, band }: { t: EvalT; enrollT: EnrollT; programa: ProgramKey; products: OfferProducts; g: number | null; band: string | null }) {
+  const meta = PROGRAMS[programa];
+  const code = recommendedPlan(programa, g ?? 2);
+  const p = products[code];
+  const plan = programa === "celsglobal" ? products.celsglobal_plan?.installments : null;
+  const w = enrollT.offerWhy;
+  const why = band ? fill(programa === "celsbsns" ? (code === "bundle_tv_bsns" ? w.celsbsnsBundle : w.celsbsnsReady) : w[programa], { band }) : enrollT.promise[programa];
+  return (
+    <div className="rounded-2xl border-2 p-5" style={{ borderColor: C.yellow, background: "rgba(255,197,49,0.10)" }} data-testid="program-offer" data-plan={code}>
+      <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }}>
+        {t.recommended}
+      </span>
+      <p className="mt-2.5 text-xs font-extrabold uppercase tracking-wider" style={{ color: meta.color }}>
+        {fill(enrollT.offerFor, { program: meta.title })}
+      </p>
+      <h2 className="mt-1 text-xl font-extrabold text-white">{p?.name ?? meta.title}</h2>
+      <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{why}</p>
+      {p && (
+        <div className="mt-2 text-2xl font-extrabold text-white">
+          {usd(p.cents)} <span className="text-sm font-bold text-[#A9A4C0]">{enrollT.oneTime}</span>
+          {plan?.length ? (
+            <p className="text-xs font-bold text-[#A9A4C0]">
+              {fill(enrollT.monthly, { count: plan.length, first: usd(plan[0]) })}
+            </p>
+          ) : null}
+        </div>
+      )}
+      <Link
+        href={planHref(code)}
+        data-testid="offer-start"
+        className="mt-4 block w-full rounded-2xl py-4 text-center text-base font-extrabold text-white transition hover:brightness-110"
+        style={{ background: C.pink }}
+      >
+        {t.startToday}
+      </Link>
+      <Link href={plansHref(programa)} className="mt-3 block text-center text-sm font-bold text-[#A9A4C0] underline underline-offset-4 hover:text-white">
+        {fill(enrollT.seeAllPlans, { program: meta.title })}
+      </Link>
+    </div>
+  );
+}
 
 function Gauge({ g }: { g: number }) {
   const arc = useRef<SVGPathElement>(null);
@@ -95,8 +146,29 @@ export function SkillBars({ t, levels }: { t: EvalT; levels: Record<string, stri
   );
 }
 
-export function Results({ t, name, goal, result, writingText, student }: { t: EvalT; name: string; goal: Goal; result: FinalResult; writingText: string; student: boolean }) {
+export function Results({
+  t,
+  name,
+  goal,
+  result,
+  writingText,
+  student,
+  programa = null,
+  products,
+  enrollT,
+}: {
+  t: EvalT;
+  name: string;
+  goal: Goal;
+  result: FinalResult;
+  writingText: string;
+  student: boolean;
+  programa?: ProgramKey | null;
+  products: OfferProducts;
+  enrollT: EnrollT;
+}) {
   const rec = result.recommendation;
+  const entry = products[ENTRY_PLAN[rec.product]];
   const [copied, setCopied] = useState(false);
   const page = rec.product === "celstv" ? "/celstv" : "/celsbsns";
   const q = new URLSearchParams({ name, level: result.band, goal });
@@ -168,28 +240,41 @@ export function Results({ t, name, goal, result, writingText, student }: { t: Ev
         ⬇ {t.getApp}
       </InstallLink>
 
+      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={result.g} band={result.band} />}
+
       {student ? (
         <Link href="/app" className="btn-primary w-full !rounded-2xl !py-4 text-base font-extrabold">
           {t.keepLearning}
         </Link>
       ) : (
         <>
-          <div className="rounded-2xl border-2 p-5" style={{ borderColor: C.yellow, background: "rgba(255,197,49,0.10)" }}>
-            <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }}>
-              {t.recommended}
-            </span>
-            <h2 className="mt-2.5 text-xl font-extrabold text-white">
-              {rec.emoji} {rec.name}
-            </h2>
-            <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{rec.why}</p>
-            {rec.path && <p className="mt-2 text-xs font-extrabold" style={{ color: C.yellow }}>{rec.path}</p>}
-            <div className="mt-2 text-2xl font-extrabold text-white">
-              ${PRICE[rec.product]} <span className="text-sm font-bold text-[#A9A4C0]">USD</span>
+          {!programa && (
+            <div
+              className="rounded-2xl border-2 p-5"
+              style={{ borderColor: C.yellow, background: "rgba(255,197,49,0.10)" }}
+            >
+              <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }}>
+                {t.recommended}
+              </span>
+              <h2 className="mt-2.5 text-xl font-extrabold text-white">
+                {rec.emoji} {rec.name}
+              </h2>
+              <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{rec.why}</p>
+              {rec.path && (
+                <p className="mt-2 text-xs font-extrabold" style={{ color: C.yellow }}>
+                  {rec.path}
+                </p>
+              )}
+              {entry && (
+                <div className="mt-2 text-2xl font-extrabold text-white">
+                  {usd(entry.cents)} <span className="text-sm font-bold text-[#A9A4C0]">USD</span>
+                </div>
+              )}
+              <Link href={`${page}?${q}`} className="mt-4 block w-full rounded-2xl py-4 text-center text-base font-extrabold text-white transition hover:brightness-110" style={{ background: C.pink }}>
+                {t.startToday}
+              </Link>
             </div>
-            <Link href={`${page}?${q}`} className="mt-4 block w-full rounded-2xl py-4 text-center text-base font-extrabold text-white transition hover:brightness-110" style={{ background: C.pink }}>
-              {t.startToday}
-            </Link>
-          </div>
+          )}
           <div className="rounded-2xl border-2 border-white/15 p-5 text-center" style={{ background: "linear-gradient(140deg,#3A1B57,#182042)" }}>
             <div className="text-lg font-extrabold" style={{ color: C.pink }}>
               Cels<span style={{ color: C.cyan }}>U</span>
@@ -208,7 +293,8 @@ export function Results({ t, name, goal, result, writingText, student }: { t: Ev
   );
 }
 
-export function Locked({ t, info }: { t: EvalT; info: LockedInfo }) {
+export function Locked({ t, info, programa = null, products, enrollT }: { t: EvalT; info: LockedInfo; programa?: ProgramKey | null; products: OfferProducts; enrollT: EnrollT }) {
+  const g = info.cefr_level ? LEVELS.indexOf(info.cefr_level as (typeof LEVELS)[number]) : -1;
   const date = new Date(info.retake_on).toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" });
   return (
     <div className="space-y-4 pb-10 pt-6">
@@ -230,6 +316,7 @@ export function Locked({ t, info }: { t: EvalT; info: LockedInfo }) {
       ) : (
         info.lead && <p className="card text-center text-sm text-white/90">{t.lockedLead}</p>
       )}
+      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={g >= 0 ? g : null} band={g >= 0 ? info.cefr_level! : null} />}
       <p className="text-center text-xs text-[#A9A4C0]">{t.lockedBack}</p>
     </div>
   );

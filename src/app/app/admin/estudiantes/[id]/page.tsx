@@ -19,7 +19,7 @@ export default async function Estudiante({ params }: Props) {
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer || !isAdminRole(viewer.role)) notFound();
-  const { data: p } = await supabase.from("profiles").select("id, email, display_name, created_at").eq("id", id).maybeSingle();
+  const { data: p } = await supabase.from("profiles").select("id, email, display_name, created_at, requested_plan, requested_plan_at").eq("id", id).maybeSingle();
   if (!p) notFound();
   const [{ data: enr }, targets, { data: pledges }] = await Promise.all([
     supabase
@@ -32,6 +32,8 @@ export default async function Estudiante({ params }: Props) {
     supabase.from("course_commitments").select("id, signed_name, signed_at, course:courses(title)").eq("user_id", id).order("signed_at"),
   ]);
   const now = Date.now();
+  // The plan they reserved at sign-up while purchases are closed (/registro?plan=…).
+  const { data: wanted } = p.requested_plan ? await supabase.from("products").select("name").eq("code", p.requested_plan).maybeSingle() : { data: null };
 
   return (
     <div className="mx-auto max-w-3xl space-y-5">
@@ -43,6 +45,12 @@ export default async function Estudiante({ params }: Props) {
         <p className="mt-1 text-sm font-semibold text-[#6B6680]">
           {p.email} · se registró el {fmt(p.created_at)}
         </p>
+        {p.requested_plan && (
+          <p className="mt-2 inline-flex rounded-full bg-[#FFF4D6] px-3 py-1 text-xs font-extrabold text-[#7A5A00]" data-testid="requested-plan">
+            Reservó: {wanted?.name ?? p.requested_plan}
+            {p.requested_plan_at ? ` · ${fmt(p.requested_plan_at)}` : ""}
+          </p>
+        )}
         {(pledges ?? []).map((c) => (
           <p key={c.id} className="mt-2 inline-flex rounded-full bg-[#E3F6E8] px-3 py-1 text-xs font-extrabold text-[#15803D]">
             ✓ Compromiso firmado · {fmt(c.signed_at)} · {one(c.course as { title: string } | { title: string }[] | null)?.title ?? ""} · “{c.signed_name}”

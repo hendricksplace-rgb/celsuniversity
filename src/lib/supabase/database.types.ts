@@ -2079,6 +2079,8 @@ export type Database = {
           legacy_id: string | null
           organization_id: string | null
           preferred_language: Database["public"]["Enums"]["lang"]
+          requested_plan: string | null
+          requested_plan_at: string | null
           role: Database["public"]["Enums"]["user_role"]
           starting_level: Database["public"]["Enums"]["cefr_level"] | null
           updated_at: string
@@ -2098,6 +2100,8 @@ export type Database = {
           legacy_id?: string | null
           organization_id?: string | null
           preferred_language?: Database["public"]["Enums"]["lang"]
+          requested_plan?: string | null
+          requested_plan_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           starting_level?: Database["public"]["Enums"]["cefr_level"] | null
           updated_at?: string
@@ -2117,6 +2121,8 @@ export type Database = {
           legacy_id?: string | null
           organization_id?: string | null
           preferred_language?: Database["public"]["Enums"]["lang"]
+          requested_plan?: string | null
+          requested_plan_at?: string | null
           role?: Database["public"]["Enums"]["user_role"]
           starting_level?: Database["public"]["Enums"]["cefr_level"] | null
           updated_at?: string

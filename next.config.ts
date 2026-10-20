@@ -18,9 +18,12 @@ const SITE_URL = (
 const SITE_HOST = new URL(SITE_URL).hostname.replace(/[.]/g, "\\.");
 // Search engines only once SITE_INDEXABLE=true, and then only on SITE_URL's host (not the vercel.app previews).
 const INDEXABLE = process.env.SITE_INDEXABLE === "true";
+// Purchases (src/lib/enroll.ts): PURCHASES_OPEN=true once Stripe is live; anything else sends plan buttons to
+// /registro?plan=… (free account, spot reserved).
+const PURCHASES_OPEN = process.env.PURCHASES_OPEN === "true" ? "true" : "false";
 
 const nextConfig: NextConfig = {
-  env: { NEXT_PUBLIC_SITE_URL: SITE_URL },
+  env: { NEXT_PUBLIC_SITE_URL: SITE_URL, NEXT_PUBLIC_PURCHASES_OPEN: PURCHASES_OPEN },
   async redirects() {
     return OLD_SITE.map(([source, destination]) => ({ source, destination, permanent: true }));
   },

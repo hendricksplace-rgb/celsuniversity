@@ -16,7 +16,7 @@ export default async function Estudiantes({ searchParams }: Props) {
   if (!viewer || !isAdminRole(viewer.role)) notFound();
   const search = (q ?? "").trim().slice(0, 80).replace(/[%,()]/g, "");
 
-  let query = supabase.from("profiles").select("id, email, display_name, created_at").in("role", ["individual_student", "student"]).order("created_at", { ascending: false }).limit(50);
+  let query = supabase.from("profiles").select("id, email, display_name, created_at, requested_plan").in("role", ["individual_student", "student"]).order("created_at", { ascending: false }).limit(50);
   if (search) query = query.or(`email.ilike.%${search}%,display_name.ilike.%${search}%`);
   const { data: people } = await query;
   const ids = (people ?? []).map((p) => p.id);
@@ -24,6 +24,10 @@ export default async function Estudiantes({ searchParams }: Props) {
   const { data: active } = ids.length
     ? await supabase.from("enrollments").select("user_id").in("user_id", ids).eq("status", "active").or(`expires_at.is.null,expires_at.gt.${now}`)
     : { data: [] };
+  // Plans reserved at sign-up while purchases are closed (/registro?plan=…).
+  const wanted = [...new Set((people ?? []).map((p) => p.requested_plan).filter((c): c is string => !!c))];
+  const { data: plans } = wanted.length ? await supabase.from("products").select("code, name").in("code", wanted) : { data: [] };
+  const planName = new Map((plans ?? []).map((x) => [x.code, x.name]));
   const count = new Map<string, number>();
   for (const e of active ?? []) count.set(e.user_id, (count.get(e.user_id) ?? 0) + 1);
 
@@ -54,6 +58,7 @@ export default async function Estudiantes({ searchParams }: Props) {
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-extrabold">{p.display_name || p.email}</p>
                   <p className="truncate text-sm font-semibold text-[#6B6680]">{p.email}</p>
+                  {p.requested_plan && <p className="truncate text-xs font-extrabold text-[#7A5A00]">Reservó: {planName.get(p.requested_plan) ?? p.requested_plan}</p>}
                 </div>
                 <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-extrabold ${count.get(p.id) ? "bg-[#E3F6E8] text-[#15803D]" : "bg-[#F4F1F7] text-[#5E5A73]"}`}>
                   {count.get(p.id) ? `${count.get(p.id)} con acceso` : "Sin acceso"}

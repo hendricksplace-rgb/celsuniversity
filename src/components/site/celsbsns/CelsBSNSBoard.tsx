@@ -5,15 +5,17 @@
 // real week titles (props.weeks), purchase-flow links, testimonials hidden, reduced motion respected.
 import { Component, Fragment } from "react";
 import { css } from "@/components/site/css";
+import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./celsbsns.css";
 
 // Testimonials stay hidden until Matt sends real ones (celsu-website-spec.md: never invent any).
 const SHOW_TESTIMONIALS = false;
+// Plan cards inside #planes go straight to the plan (purchase, or /registro while purchases are closed).
 const BUY = {
-  standard: "/comprar/resumen?producto=celsbsns_standard",
-  premium: "/comprar/resumen?producto=celsbsns_premium",
-  bundle: "/comprar/resumen?producto=bundle_tv_bsns",
+  standard: planHref("celsbsns_standard"),
+  premium: planHref("celsbsns_premium"),
+  bundle: planHref("bundle_tv_bsns"),
 };
 
 export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices: SitePrices }, any> {
@@ -115,12 +117,12 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <div className="cu-desk" style={{ gap: "28px", fontWeight: "600", fontSize: "15px", alignItems: "center" }}>
 <a href="/#programas" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Programas</a>
 <a href="#programa" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Las 10 semanas</a>
-<a href="#precios" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Precios</a>
+<a href="#planes" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Precios</a>
 <a href="#programa" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Para quién es</a>
 <a href="#faq" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Preguntas</a>
 <a href="/entrar" style={{ color: "#0F0D1E", textDecoration: "none", padding: "10px 0", fontWeight: "700" }}>Iniciar sesión</a>
 </div>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Evaluación gratis</a>
+<a href={enrollHref("celsbsns")} className="cu-btn cu-btn-pink cu-btn-sm">Inscríbete</a>
 <button type="button" className="cu-mob" onClick={v.toggleMenu} aria-label="Abrir men\u00fa" aria-expanded={v.menuExpanded} style={{ width: "46px", height: "46px", borderRadius: "10px", border: "1px solid #E2DFEA", background: "#FFFFFF", color: "#0F0D1E", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
 </button>
@@ -129,7 +131,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <div style={{ display: "flex", flexDirection: "column", padding: "4px 20px 16px", fontWeight: "600", fontSize: "17px", borderTop: "1px solid #ECEAF2" }}>
 <a href="/#programas" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Programas</a>
 <a href="#programa" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Las 10 semanas</a>
-<a href="#precios" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Precios</a>
+<a href="#planes" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Precios</a>
 <a href="#programa" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Para quién es</a>
 <a href="#faq" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Preguntas</a>
 <a href="/entrar" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Iniciar sesión</a>
@@ -150,8 +152,8 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <h1 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(40px, 5.6vw, 70px)", lineHeight: "1.03", letterSpacing: "-2px" }}>English for Business.</h1>
 <p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#C9D6EE", maxWidth: "560px" }}>10 semanas para hablar con seguridad en juntas, entrevistas y presentaciones. Contenido real de empresas, tareas semanales y un proyecto final que puedes mostrar.</p>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-<a href="#precios" className="cu-btn cu-btn-light">Ver planes y precios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
-<a href="/evaluacion" className="cu-btn cu-btn-pink">Confirma tu nivel B2</a>
+<a href="#planes" className="cu-btn cu-btn-light">Ver planes y precios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={evalHref("celsbsns")} className="cu-btn cu-btn-pink">Confirma tu nivel B2</a>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
 <span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.08)", border: "1px solid rgba(255,255,255,.12)" }}>10 semanas</span>
@@ -263,15 +265,16 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <div className="cu-reveal cu-raise" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "16px", padding: "22px 24px", borderRadius: "18px", background: "linear-gradient(135deg, #FFF6D6, #FFFFFF)" }}>
 <p style={{ margin: "0", flex: "1 1 360px", fontSize: "16px", lineHeight: "1.55", color: "#0F0D1E" }}><strong>CelsBSNS requiere nivel B2.</strong> ¿Aún no llegas? El paquete CelsTV + CelsBSNS te lleva desde lo cotidiano hasta los negocios.</p>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Confirma tu nivel gratis</a>
-<a href="#precios" className="cu-btn cu-btn-light cu-btn-sm">Ver el paquete</a>
+<a href={evalHref("celsbsns")} className="cu-btn cu-btn-pink cu-btn-sm">Confirma tu nivel gratis</a>
+<a href="#planes" className="cu-btn cu-btn-light cu-btn-sm">Ver el paquete</a>
 </div>
 </div>
 </div>
 </section>
 
 {/* PLANS */}
-<section id="precios" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 33px, #B2C6DD 67px, #9CB4D2 100px, #829EC3 133px, #6583AC 167px, #48628A 200px, #2D4269 233px, #20345A 267px, #1B2F55 300px, #172C51 333px, #14294E 367px, #13284D 400px, #0B1E3A 100%)", color: "#FFFFFF" }}>
+<section id="planes" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 33px, #B2C6DD 67px, #9CB4D2 100px, #829EC3 133px, #6583AC 167px, #48628A 200px, #2D4269 233px, #20345A 267px, #1B2F55 300px, #172C51 333px, #14294E 367px, #13284D 400px, #0B1E3A 100%)", color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
+
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "260px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(91,141,239,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -351,7 +354,7 @@ export default class CelsBSNSBoard extends Component<{ weeks?: string[]; prices:
 <h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(28px, 3.4vw, 40px)", lineHeight: "1.12", letterSpacing: "-0.8px" }}>¿Tienes nivel B2? Compruébalo en 10 minutos.</h2>
 <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#C9D6EE" }}>Evaluación gratuita, sin tarjeta. Te decimos si estás listo para CelsBSNS o por dónde empezar.</p>
 </div>
-<a href="/evaluacion" className="cu-btn cu-btn-pink">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={evalHref("celsbsns")} className="cu-btn cu-btn-pink">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </section>
 

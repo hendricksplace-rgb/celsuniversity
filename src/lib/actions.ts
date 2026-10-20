@@ -39,23 +39,49 @@ export async function signIn(formData: FormData) {
   redirect(next);
 }
 
+/** A product code from /registro?plan=… (checked against public.products by handle_new_user / reservePlan). */
+const planCode = (value: FormDataEntryValue | null) => {
+  const v = String(value ?? "").trim();
+  return /^[a-z0-9_]{1,60}$/.test(v) ? v : "";
+};
+
 export async function signUp(formData: FormData) {
   const password = String(formData.get("password") ?? "");
-  if (password.length < 8) redirect("/registro?error=weakPassword");
+  // While purchases are closed, the plan the person picked (Matt, 2026-10-20): saved in the sign-up metadata;
+  // the handle_new_user trigger copies it to profiles.requested_plan for staff.
+  const plan = planCode(formData.get("plan"));
+  const keep = plan ? `&plan=${plan}` : "";
+  if (password.length < 8) redirect(`/registro?error=weakPassword${keep}`);
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signUp({
     email: String(formData.get("email") ?? ""),
     password,
     options: {
-      data: { display_name: String(formData.get("name") ?? "") || undefined },
+      data: { display_name: String(formData.get("name") ?? "") || undefined, requested_plan: plan || undefined },
       emailRedirectTo: `${await siteUrl()}/auth/callback?next=/app`,
     },
   });
-  if (error) redirect("/registro?error=generic");
+  if (error) redirect(`/registro?error=generic${keep}`);
   // With email confirmation on, there is no session yet.
-  if (!data.session) redirect("/registro?sent=1");
-  redirect("/app");
+  if (!data.session) redirect(`/registro?sent=1${keep}`);
+  redirect(plan ? `/registro?reservado=1${keep}` : "/app");
+}
+
+/** A signed-in person on /registro?plan=…: reserve that plan on their own profile (staff then use "Dar acceso"). */
+export async function reservePlan(formData: FormData) {
+  const plan = planCode(formData.get("plan"));
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect(`/registro${plan ? `?plan=${plan}` : ""}`);
+  if (!plan) redirect("/app");
+  const { data: product } = await supabase.from("products").select("code").eq("code", plan).eq("active", true).maybeSingle();
+  if (!product) redirect("/registro?error=generic");
+  const { error } = await supabase.from("profiles").update({ requested_plan: plan, requested_plan_at: new Date().toISOString() }).eq("id", user.id);
+  if (error) redirect(`/registro?error=generic&plan=${plan}`);
+  redirect(`/registro?reservado=1&plan=${plan}`);
 }
 
 export async function signInWithGoogle(formData: FormData) {

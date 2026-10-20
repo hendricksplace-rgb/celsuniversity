@@ -1,11 +1,12 @@
 // Building blocks for the /celstv and /celsbsns sales pages (ported from Base44, bright CelsU style).
 import Link from "next/link";
+import { enrollHref } from "@/lib/enroll";
 
 export const C = { pink: "#F5178C", blue: "#5B8DEF", cyan: "#35C3F0", green: "#6DC067", yellow: "#FFC531", lavender: "#A9A4C0" };
 export type Plan = "celstv" | "celsbsns" | "bundle";
 
-/** The buttons open the purchase flow: plan choice for a program, straight to the summary for the bundle. */
-export const planHref = (plan: Plan) => (plan === "bundle" ? "/comprar/resumen?producto=bundle_tv_bsns" : `/comprar/${plan}`);
+/** The buttons go through /inscribirme (Matt, 2026-10-20); the CelsTV + CelsBSNS bundle opens with CelsBSNS. */
+export const planHref = (plan: Plan) => enrollHref(plan === "bundle" ? "celsbsns" : plan);
 
 /** USD → MXN for the "≈ $X MXN" hint. Cached for a day; nothing shown if the rate service is down. */
 export async function mxnRate(): Promise<number | null> {
