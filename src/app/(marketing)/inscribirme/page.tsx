@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter, SiteNav } from "@/components/site/SiteChrome";
 import { setLanguage } from "@/lib/actions";
-import { ENROLL_PROGRAMS, evalHref, isEnrollProgram, plansHref } from "@/lib/enroll";
+import { ENROLL_PROGRAMS, evalHref, isEnrollProgram, planCode, plansHref } from "@/lib/enroll";
 import { enrollCopy } from "@/lib/i18n/enroll-copy";
 import { getLang } from "@/lib/i18n/server";
 import { PROGRAMS } from "@/lib/purchase-programs";
+import { publicClient } from "@/lib/supabase/public";
 
 // Enrollment entry point (Matt, 2026-10-20): every buy/enroll button on the site lands here with its program.
 // Free evaluation first; "ver los planes" skips it.
@@ -15,12 +16,15 @@ export const metadata: Metadata = {
   alternates: { canonical: "/inscribirme" },
 };
 
-type Props = { searchParams: Promise<{ programa?: string }> };
+type Props = { searchParams: Promise<{ programa?: string; plan?: string }> };
 
 const focus = "focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#0F0D1E]";
 
 export default async function Inscribirme({ searchParams }: Props) {
-  const { programa } = await searchParams;
+  const { programa, plan: planParam } = await searchParams;
+  // A plan card's product code (home page, &plan=): kept only if it is an active product.
+  const code = planCode(planParam);
+  const { data: plan } = code ? await publicClient().from("products").select("code, name").eq("code", code).eq("active", true).maybeSingle() : { data: null };
   const lang = await getLang();
   const t = enrollCopy(lang);
   const fill = (s: string, v: Record<string, string>) => s.replace(/\{(\w+)\}/g, (_, k: string) => v[k] ?? "");
@@ -43,7 +47,7 @@ export default async function Inscribirme({ searchParams }: Props) {
         </div>
 
         {isEnrollProgram(programa) ? (
-          <ProgramEntry programa={programa} t={t} fill={fill} />
+          <ProgramEntry programa={programa} plan={plan} t={t} fill={fill} />
         ) : (
           <section aria-labelledby="choose-title">
             <h1 id="choose-title" className="text-[clamp(28px,5vw,42px)] font-extrabold leading-tight tracking-tight">
@@ -78,7 +82,17 @@ export default async function Inscribirme({ searchParams }: Props) {
   );
 }
 
-function ProgramEntry({ programa, t, fill }: { programa: (typeof ENROLL_PROGRAMS)[number]; t: ReturnType<typeof enrollCopy>; fill: (s: string, v: Record<string, string>) => string }) {
+function ProgramEntry({
+  programa,
+  plan,
+  t,
+  fill,
+}: {
+  programa: (typeof ENROLL_PROGRAMS)[number];
+  plan: { code: string; name: string } | null;
+  t: ReturnType<typeof enrollCopy>;
+  fill: (s: string, v: Record<string, string>) => string;
+}) {
   const meta = PROGRAMS[programa];
   return (
     <section aria-labelledby="enroll-title" className="overflow-hidden rounded-[28px] text-white shadow-[0_34px_70px_-30px_rgba(15,13,30,.7)]" style={{ background: meta.bg }}>
@@ -87,6 +101,11 @@ function ProgramEntry({ programa, t, fill }: { programa: (typeof ENROLL_PROGRAMS
           {meta.title}
         </h1>
         <p className="max-w-[620px] text-[18px] leading-relaxed text-white/90">{t.promise[programa]}</p>
+        {plan && (
+          <p className="self-start rounded-full bg-white/12 px-4 py-2 text-sm font-bold text-white" data-testid="enroll-plan" data-plan={plan.code}>
+            {t.chosen}: <span className="font-extrabold">{plan.name}</span>
+          </p>
+        )}
 
         <ol className="flex flex-wrap gap-2 text-[13px] font-bold text-white/85">
           {t.steps.map((s, i) => (
@@ -101,7 +120,7 @@ function ProgramEntry({ programa, t, fill }: { programa: (typeof ENROLL_PROGRAMS
 
         <div className="mt-2 flex flex-col items-stretch gap-4 sm:items-start">
           <Link
-            href={evalHref(programa)}
+            href={evalHref(programa, plan?.code)}
             data-testid="enroll-eval"
             className={`inline-flex min-h-[52px] items-center justify-center rounded-full px-6 py-3.5 text-center text-base font-extrabold shadow-lg transition hover:brightness-110 ${focus} focus-visible:outline-white`}
             style={{ background: meta.color, color: meta.ink }}
@@ -109,7 +128,7 @@ function ProgramEntry({ programa, t, fill }: { programa: (typeof ENROLL_PROGRAMS
             {t.primary} →
           </Link>
           <p className="text-sm text-white/75">{t.primaryNote}</p>
-          <Link href={plansHref(programa)} data-testid="enroll-skip" className={`self-start text-[15px] font-bold text-white underline underline-offset-4 hover:text-white/80 ${focus} focus-visible:outline-white`}>
+          <Link href={plansHref(programa, plan?.code)} data-testid="enroll-skip" className={`self-start text-[15px] font-bold text-white underline underline-offset-4 hover:text-white/80 ${focus} focus-visible:outline-white`}>
             {t.skip}
           </Link>
         </div>

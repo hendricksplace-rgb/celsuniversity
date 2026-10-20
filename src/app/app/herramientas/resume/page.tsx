@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { getViewer } from "@/lib/access";
+import { appPlansHref } from "@/lib/enroll";
 import type { ResumeReview } from "@/lib/ai-tools";
 import { AiHeader, OptimizedResumeView, ResumeForm, ResumeHistory, ResumeResultView, ResumeWaiting, aiShell } from "@/components/ai/ResumeTool";
 
@@ -26,7 +27,7 @@ export default async function ResumePage({ searchParams }: Props) {
         <AiHeader t={t.ai} icon="resume" title={t.ai.resumeTitle} backHref={back} />
         <p className="mt-6 rounded-2xl bg-white p-5 shadow-[0_0_0_1px_#E3DDD0]">{t.ai.noAccess}</p>
         <Link
-          href="/comprar/celsglobal"
+          href={appPlansHref("celsglobal")}
           className="kit-focus mt-4 block rounded-xl py-3.5 text-center font-extrabold"
           style={{ background: "linear-gradient(180deg, #EBD08C 0%, #C7A24E 100%)" }}
         >

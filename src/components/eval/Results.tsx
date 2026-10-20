@@ -27,43 +27,90 @@ export type OfferProducts = Record<string, { name: string; cents: number; instal
 const ENTRY_PLAN: Record<Product, string> = { celstv: "celstv_standard", celsbsns: "celsbsns_standard", bundle: "bundle_tv_bsns" };
 const usd = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: cents % 100 ? 2 : 0 })}`;
 
-/** The offer after an evaluation started from /inscribirme?programa=…: that program's recommended plan. */
-function ProgramOffer({ t, enrollT, programa, products, g, band }: { t: EvalT; enrollT: EnrollT; programa: ProgramKey; products: OfferProducts; g: number | null; band: string | null }) {
+/**
+ * The offer after an evaluation started from /inscribirme?programa=…: that program's recommended plan.
+ * plan (?plan=, the card clicked on the home page): pre-selected and shown as "Elegiste"; when it differs from
+ * the recommendation both are shown, the chosen one first (Matt, 2026-10-20 item 3).
+ */
+function ProgramOffer({
+  t,
+  enrollT,
+  programa,
+  products,
+  g,
+  band,
+  plan = null,
+}: {
+  t: EvalT;
+  enrollT: EnrollT;
+  programa: ProgramKey;
+  products: OfferProducts;
+  g: number | null;
+  band: string | null;
+  plan?: string | null;
+}) {
   const meta = PROGRAMS[programa];
   const code = recommendedPlan(programa, g ?? 2);
-  const p = products[code];
-  const plan = programa === "celsglobal" ? products.celsglobal_plan?.installments : null;
+  const chosen = plan && products[plan] ? plan : null;
   const w = enrollT.offerWhy;
   const why = band ? fill(programa === "celsbsns" ? (code === "bundle_tv_bsns" ? w.celsbsnsBundle : w.celsbsnsReady) : w[programa], { band }) : enrollT.promise[programa];
+  const cards = chosen && chosen !== code ? [chosen, code] : [code];
   return (
-    <div className="rounded-2xl border-2 p-5" style={{ borderColor: C.yellow, background: "rgba(255,197,49,0.10)" }} data-testid="program-offer" data-plan={code}>
-      <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }}>
-        {t.recommended}
-      </span>
-      <p className="mt-2.5 text-xs font-extrabold uppercase tracking-wider" style={{ color: meta.color }}>
-        {fill(enrollT.offerFor, { program: meta.title })}
-      </p>
-      <h2 className="mt-1 text-xl font-extrabold text-white">{p?.name ?? meta.title}</h2>
-      <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{why}</p>
-      {p && (
-        <div className="mt-2 text-2xl font-extrabold text-white">
-          {usd(p.cents)} <span className="text-sm font-bold text-[#A9A4C0]">{enrollT.oneTime}</span>
-          {plan?.length ? (
-            <p className="text-xs font-bold text-[#A9A4C0]">
-              {fill(enrollT.monthly, { count: plan.length, first: usd(plan[0]) })}
+    <div className="space-y-3" data-testid="program-offer" data-plan={code} data-chosen={chosen ?? undefined}>
+      {cards.map((c, i) => {
+        const p = products[c];
+        const isRec = c === code;
+        const isChosen = c === chosen;
+        const primary = i === 0;
+        const installments = c === "celsglobal" ? products.celsglobal_plan?.installments : null;
+        return (
+          <div
+            key={c}
+            data-testid="offer-card"
+            data-plan={c}
+            data-selected={primary ? "true" : undefined}
+            className="rounded-2xl border-2 p-5"
+            style={primary ? { borderColor: C.yellow, background: "rgba(255,197,49,0.10)" } : { borderColor: "rgba(255,255,255,0.18)", background: "rgba(255,255,255,0.04)" }}
+          >
+            <div className="flex flex-wrap gap-1.5">
+              {isChosen && (
+                <span className="inline-block rounded-full bg-white px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#1B1830]" data-testid="offer-chosen">
+                  ✓ {enrollT.chosen}
+                </span>
+              )}
+              {isRec && (
+                <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }} data-testid="offer-recommended">
+                  {t.recommended}
+                </span>
+              )}
+            </div>
+            <p className="mt-2.5 text-xs font-extrabold uppercase tracking-wider" style={{ color: meta.color }}>
+              {fill(enrollT.offerFor, { program: meta.title })}
             </p>
-          ) : null}
-        </div>
-      )}
-      <Link
-        href={planHref(code)}
-        data-testid="offer-start"
-        className="mt-4 block w-full rounded-2xl py-4 text-center text-base font-extrabold text-white transition hover:brightness-110"
-        style={{ background: C.pink }}
-      >
-        {t.startToday}
-      </Link>
-      <Link href={plansHref(programa)} className="mt-3 block text-center text-sm font-bold text-[#A9A4C0] underline underline-offset-4 hover:text-white">
+            <h2 className="mt-1 text-xl font-extrabold text-white">{p?.name ?? meta.title}</h2>
+            {isRec && <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{why}</p>}
+            {p && (
+              <div className="mt-2 text-2xl font-extrabold text-white">
+                {usd(p.cents)} <span className="text-sm font-bold text-[#A9A4C0]">{enrollT.oneTime}</span>
+                {installments?.length ? (
+                  <p className="text-xs font-bold text-[#A9A4C0]">
+                    {fill(enrollT.monthly, { count: installments.length, first: usd(installments[0]) })}
+                  </p>
+                ) : null}
+              </div>
+            )}
+            <Link
+              href={planHref(c)}
+              data-testid={primary ? "offer-start" : "offer-start-alt"}
+              className={`mt-4 block w-full rounded-2xl text-center font-extrabold transition hover:brightness-110 ${primary ? "py-4 text-base text-white" : "border-2 border-white/25 py-3 text-sm text-white"}`}
+              style={primary ? { background: C.pink } : undefined}
+            >
+              {t.startToday}
+            </Link>
+          </div>
+        );
+      })}
+      <Link href={plansHref(programa, chosen)} className="block pt-1 text-center text-sm font-bold text-[#A9A4C0] underline underline-offset-4 hover:text-white">
         {fill(enrollT.seeAllPlans, { program: meta.title })}
       </Link>
     </div>
@@ -154,6 +201,7 @@ export function Results({
   writingText,
   student,
   programa = null,
+  plan = null,
   products,
   enrollT,
 }: {
@@ -164,6 +212,7 @@ export function Results({
   writingText: string;
   student: boolean;
   programa?: ProgramKey | null;
+  plan?: string | null;
   products: OfferProducts;
   enrollT: EnrollT;
 }) {
@@ -240,7 +289,7 @@ export function Results({
         ⬇ {t.getApp}
       </InstallLink>
 
-      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={result.g} band={result.band} />}
+      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={result.g} band={result.band} plan={plan} />}
 
       {student ? (
         <Link href="/app" className="btn-primary w-full !rounded-2xl !py-4 text-base font-extrabold">
@@ -293,7 +342,21 @@ export function Results({
   );
 }
 
-export function Locked({ t, info, programa = null, products, enrollT }: { t: EvalT; info: LockedInfo; programa?: ProgramKey | null; products: OfferProducts; enrollT: EnrollT }) {
+export function Locked({
+  t,
+  info,
+  programa = null,
+  plan = null,
+  products,
+  enrollT,
+}: {
+  t: EvalT;
+  info: LockedInfo;
+  programa?: ProgramKey | null;
+  plan?: string | null;
+  products: OfferProducts;
+  enrollT: EnrollT;
+}) {
   const g = info.cefr_level ? LEVELS.indexOf(info.cefr_level as (typeof LEVELS)[number]) : -1;
   const date = new Date(info.retake_on).toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" });
   return (
@@ -316,7 +379,7 @@ export function Locked({ t, info, programa = null, products, enrollT }: { t: Eva
       ) : (
         info.lead && <p className="card text-center text-sm text-white/90">{t.lockedLead}</p>
       )}
-      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={g >= 0 ? g : null} band={g >= 0 ? info.cefr_level! : null} />}
+      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={g >= 0 ? g : null} band={g >= 0 ? info.cefr_level! : null} plan={plan} />}
       <p className="text-center text-xs text-[#A9A4C0]">{t.lockedBack}</p>
     </div>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Mxn } from "@/components/shop/Mxn";
 import { PROGRAMS, isProgram, planDates, productsFor, usd } from "@/lib/purchase";
+import { closedPurchaseRedirect } from "@/lib/purchase-closed";
 
 type Props = { params: Promise<{ programa: string }> };
 export const metadata = { title: "Elige tu plan · CelsU" };
@@ -13,6 +14,7 @@ const fmt = (d: Date) => d.toLocaleDateString("es-MX", { day: "numeric", month: 
 export default async function ElegirPlan({ params }: Props) {
   const { programa } = await params;
   if (!isProgram(programa)) notFound();
+  await closedPurchaseRedirect(programa);
   const products = await productsFor({ program: programa });
   if (!products.length) notFound();
   if (products.length === 1) redirect(`/comprar/resumen?producto=${products[0].code}`);

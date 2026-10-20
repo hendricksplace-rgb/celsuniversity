@@ -68,20 +68,41 @@ export async function signUp(formData: FormData) {
   redirect(plan ? `/registro?reservado=1${keep}` : "/app");
 }
 
-/** A signed-in person on /registro?plan=…: reserve that plan on their own profile (staff then use "Dar acceso"). */
-export async function reservePlan(formData: FormData) {
-  const plan = planCode(formData.get("plan"));
+/**
+ * Saves `plan` (an active product code) as the signed-in person's requested plan: profiles.requested_plan +
+ * requested_plan_at on their own row (RLS: own profile; guard_profile_update only blocks evaluation, role and
+ * organization fields). Staff then use "Dar acceso". "user" = not signed in, "plan" = unknown or inactive code.
+ */
+async function saveRequestedPlan(plan: string): Promise<"ok" | "user" | "plan" | "error"> {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect(`/registro${plan ? `?plan=${plan}` : ""}`);
-  if (!plan) redirect("/app");
+  if (!user) return "user";
+  if (!plan) return "plan";
   const { data: product } = await supabase.from("products").select("code").eq("code", plan).eq("active", true).maybeSingle();
-  if (!product) redirect("/registro?error=generic");
+  if (!product) return "plan";
   const { error } = await supabase.from("profiles").update({ requested_plan: plan, requested_plan_at: new Date().toISOString() }).eq("id", user.id);
-  if (error) redirect(`/registro?error=generic&plan=${plan}`);
+  return error ? "error" : "ok";
+}
+
+/** A signed-in person on /registro?plan=…: reserve that plan on their own profile (staff then use "Dar acceso"). */
+export async function reservePlan(formData: FormData) {
+  const plan = planCode(formData.get("plan"));
+  const r = await saveRequestedPlan(plan);
+  if (r === "user") redirect(`/registro${plan ? `?plan=${plan}` : ""}`);
+  if (r === "plan") redirect(plan ? "/registro?error=generic" : "/app");
+  if (r === "error") redirect(`/registro?error=generic&plan=${plan}`);
   redirect(`/registro?reservado=1&plan=${plan}`);
+}
+
+/**
+ * "Solicitar acceso" on /app/planes while purchases are closed: the same request. Called from the client
+ * (RequestAccess), which shows the confirmation in place. "user" = signed out.
+ */
+export async function requestPlanAccess(plan: string): Promise<"ok" | "user" | "error"> {
+  const r = await saveRequestedPlan(planCode(plan));
+  return r === "ok" || r === "user" ? r : "error";
 }
 
 export async function signInWithGoogle(formData: FormData) {

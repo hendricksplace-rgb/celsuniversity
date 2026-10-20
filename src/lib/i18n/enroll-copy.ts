@@ -41,6 +41,24 @@ const es = {
   reservedCheck: "Revisa tu correo para confirmar tu cuenta.",
   reservedSignedIn: "Ya tienes cuenta. Reserva este plan para tu cuenta y el equipo activará tu acceso.",
   goApp: "Ir a mi cuenta",
+  // Evaluation result: the plan clicked on a plan card (?plan=…)
+  chosen: "Elegiste",
+  // /app/planes (in-app plans: signed-in students skip the evaluation)
+  appKicker: "Planes",
+  appTitle: "Planes de {program}",
+  appChoose: "¿Qué programa te interesa?",
+  appSubClosed: "Los pagos en línea abren pronto. Elige tu plan y solicita acceso: nuestro equipo lo activará.",
+  appSubOpen: "Elige tu plan. El pago es seguro con tarjeta.",
+  requestCta: "Solicitar acceso",
+  buyCta: "Elegir este plan",
+  requested: "Tu solicitud está registrada. Nuestro equipo activará tu acceso.",
+  requestedFor: "Plan solicitado: {plan}",
+  requestedBadge: "Solicitado",
+  requestError: "No pudimos guardar tu solicitud. Intenta de nuevo.",
+  owned: "Ya tienes acceso",
+  goCourses: "Ir a Mis cursos",
+  bundle: "Paquete",
+  otherPrograms: "Ver otros programas",
 };
 
 export type EnrollT = typeof es;
@@ -81,6 +99,22 @@ const en: EnrollT = {
   reservedCheck: "Check your email to confirm your account.",
   reservedSignedIn: "You already have an account. Reserve this plan for it and the team will activate your access.",
   goApp: "Go to my account",
+  chosen: "Your choice",
+  appKicker: "Plans",
+  appTitle: "{program} plans",
+  appChoose: "Which program are you interested in?",
+  appSubClosed: "Online payments open soon. Pick your plan and request access: our team will activate it.",
+  appSubOpen: "Pick your plan. Pay securely by card.",
+  requestCta: "Request access",
+  buyCta: "Choose this plan",
+  requested: "Your request is saved. Our team will activate your access.",
+  requestedFor: "Requested plan: {plan}",
+  requestedBadge: "Requested",
+  requestError: "We couldn't save your request. Please try again.",
+  owned: "You already have access",
+  goCourses: "Go to My courses",
+  bundle: "Bundle",
+  otherPrograms: "See other programs",
 };
 
 export const enrollCopy = (lang: Lang): EnrollT => (lang === "en" ? en : es);

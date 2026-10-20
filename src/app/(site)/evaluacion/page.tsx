@@ -26,16 +26,20 @@ const offerProducts = unstable_cache(
   { revalidate: 3600, tags: ["products"] },
 );
 
-type Props = { searchParams: Promise<{ programa?: string }> };
+type Props = { searchParams: Promise<{ programa?: string; plan?: string }> };
 
 /**
  * Public: no account needed. A signed-in student's result is saved to their profile.
  * ?programa=celstv|celsbsns|celsus|celsglobal (from /inscribirme) makes the result offer that program's
- * recommended plan. eval_sessions has no field for it, so it travels in the URL.
+ * recommended plan. eval_sessions has no field for it, so it travels in the URL. &plan=<product code> (a plan card
+ * clicked before the evaluation) is shown as "Elegiste" next to the recommendation; unknown or inactive codes are ignored.
  * TODO(celsus-eval): CelsUS moves to /evaluacion/celsus when that evaluation ships (src/lib/enroll.ts evalHref).
  */
 export default async function EvaluacionPage({ searchParams }: Props) {
   const { lang, t } = await getDictionary();
-  const { programa } = await searchParams;
-  return <Evaluation t={t.evaluation} programa={isEnrollProgram(programa) ? programa : null} products={await offerProducts()} enrollT={enrollCopy(lang)} />;
+  const { programa, plan } = await searchParams;
+  const products = await offerProducts();
+  const prog = isEnrollProgram(programa) ? programa : null;
+  const chosen = prog && plan && Object.hasOwn(products, plan) ? plan : null;
+  return <Evaluation t={t.evaluation} programa={prog} plan={chosen} products={products} enrollT={enrollCopy(lang)} />;
 }

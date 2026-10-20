@@ -1,6 +1,7 @@
 // Each program's look on cards: background, ink, accent, top bar and logo. Shared by the home and Mis cursos.
 import Image from "next/image";
 import type { ThemeKey } from "@/lib/themes";
+import { appPlansHref } from "@/lib/enroll";
 
 // `fill` and `onFill` are for filled buttons: the accent itself is too light behind its text (WCAG 4.5:1).
 export const BRAND: Record<ThemeKey, { href: string; bg: string; ink: string; muted: string; accent: string; fill: string; onFill: string; bar: string; logo: React.ReactNode }> = {
@@ -34,7 +35,8 @@ export const BRAND: Record<ThemeKey, { href: string; bg: string; ink: string; mu
     logo: <Image src="/brand/celsbsns.png" alt="CelsBSNS" width={150} height={42} />,
   },
   celsus: {
-    href: "/comprar/celsus",
+    // No CelsUS page in the app yet: its card opens the in-app plans (Matt, 2026-10-20 item 2).
+    href: appPlansHref("celsus"),
     bg: "linear-gradient(150deg,#194876 0%,#0E2A4F 100%)",
     ink: "#F4F1E8",
     muted: "#C9D3E2",

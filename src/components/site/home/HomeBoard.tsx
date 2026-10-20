@@ -20,7 +20,8 @@ const Keep = memo(
 // Testimonials stay hidden until there are real ones (celsu-website-spec.md).
 const SHOW_TESTIMONIALS = false;
 // The home page isn't a program's #planes section: its plan and bundle buttons go through /inscribirme
-// (Matt, 2026-10-20). Bundles open with their main program (CelsTV + CelsBSNS → CelsBSNS, CelsUS + CelsTV → CelsUS).
+// (Matt, 2026-10-20), carrying the plan's product code (&plan=). Bundles open with their main program
+// (CelsTV + CelsBSNS → CelsBSNS, CelsUS + CelsTV → CelsUS).
 const HOME_TAB_PROGRAM = { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal' };
 
 export default class MainBoard extends Component<{ prices: SitePrices }, any> {
@@ -396,7 +397,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
           plans: cur.plans.map(function (pl) {
             var f = !!pl.featured;
             return {
-              program: cur.label.toUpperCase(), name: pl.name, href: enrollHref(HOME_TAB_PROGRAM[s.priceTab]), price: pl.price, unit: 'USD · pago único', mxn: pl.mxn, features: pl.features, featured: f,
+              program: cur.label.toUpperCase(), name: pl.name, href: enrollHref(HOME_TAB_PROGRAM[s.priceTab], pl.code), price: pl.price, unit: 'USD · pago único', mxn: pl.mxn, features: pl.features, featured: f,
               accent: cur.accentDark, check: f ? '#FF7DB8' : '#B3EC79',
               cta: f ? 'Inscríbete en ' + pl.name : 'Inscríbete',
               btnClass: 'cu-btn ' + (f ? 'cu-btn-pink' : 'cu-btn-light'),
@@ -827,7 +828,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
 <span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>{fmtPrice(P, "bundle_tv_bsns")} <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span></span>
 <span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras {fmtSaving(P, "bundle_tv_bsns", ["celstv_standard", "celsbsns_standard"])} USD</span>
-<a href={enrollHref("celsbsns")} className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={enrollHref("celsbsns", "bundle_tv_bsns")} className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </article>
 <article className="cu-sheen" style={{ flex: "1 1 360px", minWidth: "0", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px 24px", padding: "22px 24px", borderRadius: "18px", background: "linear-gradient(135deg, rgba(255,255,255,.12), rgba(255,255,255,.04))", boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 24px 48px -24px rgba(0,0,0,.6)", border: "1px solid rgba(255,255,255,.12)" }}>
@@ -839,7 +840,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
 <span style={{ fontWeight: "800", fontSize: "32px", lineHeight: "1" }}>{fmtPrice(P, "bundle_us_tvpremium")} <span style={{ fontSize: "14px", color: "#C9D3E6" }}>USD</span> <s style={{ fontSize: "16px", color: "#8F8AA8", fontWeight: "600" }}>{fmtSeparately(P, ["celsus_completo", "celstv_premium"])}</s></span>
 <span style={{ fontSize: "13px", fontWeight: "700", color: "#B3EC79" }}>Ahorras {fmtSaving(P, "bundle_us_tvpremium", ["celsus_completo", "celstv_premium"])} USD</span>
-<a href={enrollHref("celsus")} className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={enrollHref("celsus", "bundle_us_tvpremium")} className="cu-btn cu-btn-light cu-btn-sm">Obtener paquete <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </article>
 </div>

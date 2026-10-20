@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
+import { appPlansHref } from "@/lib/enroll";
+import type { ProgramKey } from "@/lib/purchase-programs";
 import { listExams } from "@/lib/civics-server";
 import { loadCoursePage } from "@/lib/course-page";
 import { activeWeekOf, weekPath } from "@/lib/bsns";
@@ -123,7 +125,7 @@ function AiToolCard({ href, icon, kicker, title, text }: { href: string; icon: s
   );
 }
 
-const PROGRAM_OF_SLUG: Record<string, string> = {
+const PROGRAM_OF_SLUG: Record<string, ProgramKey> = {
   "celstv-english-for-our-generation": "celstv",
   "english-for-business": "celsbsns",
   "celsus-para-ciudadania": "celsus",
@@ -140,7 +142,8 @@ async function AccessNotice({ userId, courseId, slug, fallback }: { userId: stri
   const mine = (rows ?? []).filter(
     (e) => e.course_id === courseId || (Array.isArray(e.program) ? e.program[0] : e.program)?.program_courses?.some((pc: { course_id: string }) => pc.course_id === courseId),
   );
-  const buy = `/comprar/${PROGRAM_OF_SLUG[slug] ?? "celsglobal"}`;
+  // In-app plans: no evaluation, and no checkout while purchases are closed (src/lib/enroll.ts).
+  const buy = appPlansHref(PROGRAM_OF_SLUG[slug] ?? "celsglobal");
   const btn = "kit-focus mt-3 inline-flex rounded-full bg-[#1B1830] px-5 py-2.5 text-sm font-extrabold text-white transition hover:bg-[#2A2648]";
   if (mine.some((e) => e.status === "paused"))
     return (

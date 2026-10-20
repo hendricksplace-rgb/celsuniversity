@@ -5,6 +5,8 @@ import { CheckoutForm } from "@/components/shop/CheckoutForm";
 import { Mxn } from "@/components/shop/Mxn";
 import { PROGRAMS, productsFor, programOf, usd } from "@/lib/purchase";
 import { missingGrants, type Grant } from "@/lib/grants";
+import { closedPurchaseRedirect } from "@/lib/purchase-closed";
+import { programOfPlan } from "@/lib/enroll";
 
 type Props = { searchParams: Promise<{ producto?: string }> };
 export const metadata = { title: "Tu compra · CelsU" };
@@ -14,6 +16,7 @@ export default async function Resumen({ searchParams }: Props) {
   const { producto } = await searchParams;
   const [p] = producto ? await productsFor({ code: producto }) : [];
   if (!p) notFound();
+  await closedPurchaseRedirect(programOfPlan(p), p.code);
   const program = programOf(p);
   const meta = PROGRAMS[program];
   const plan = p.installments;

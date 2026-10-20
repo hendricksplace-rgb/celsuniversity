@@ -21,6 +21,7 @@ import { BigButton, C, FreeResponse, StickyBar, Pill, QuestionView, Speaking, fi
 import { Locked, Results, type FinalResult, type LockedInfo, type OfferProducts } from "./Results";
 import type { ProgramKey } from "@/lib/purchase-programs";
 import type { EnrollT } from "@/lib/i18n/enroll-copy";
+import { evalHref } from "@/lib/enroll";
 
 const TOTAL = SECTIONS.reduce((a, s) => a + s.count, 0) + 2; // + writing + speaking
 
@@ -29,8 +30,21 @@ type Screen = "welcome" | "goal" | "sectionIntro" | "question" | "freeResponse" 
 /**
  * The public English assessment, ported from Base44 (same items, adaptive engine and rules).
  * programa (from /inscribirme): the result offers that program's recommended plan; null = as before.
+ * plan (an active product code the person clicked, &plan=): shown as "Elegiste" next to the recommendation.
  */
-export function Evaluation({ t, programa = null, products, enrollT }: { t: EvalT; programa?: ProgramKey | null; products: OfferProducts; enrollT: EnrollT }) {
+export function Evaluation({
+  t,
+  programa = null,
+  plan = null,
+  products,
+  enrollT,
+}: {
+  t: EvalT;
+  programa?: ProgramKey | null;
+  plan?: string | null;
+  products: OfferProducts;
+  enrollT: EnrollT;
+}) {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [name, setName] = useState("");
   const [goal, setGoal] = useState<Goal>("general");
@@ -158,7 +172,7 @@ export function Evaluation({ t, programa = null, products, enrollT }: { t: EvalT
         </div>
       )}
 
-      {screen === "welcome" && <Welcome t={t} programa={programa} busy={busy} error={error} onStart={(n) => void start(n)} />}
+      {screen === "welcome" && <Welcome t={t} programa={programa} plan={plan} busy={busy} error={error} onStart={(n) => void start(n)} />}
 
       {screen === "goal" && (
         <div>
@@ -261,10 +275,10 @@ export function Evaluation({ t, programa = null, products, enrollT }: { t: EvalT
       {screen === "emailGate" && <EmailGate t={t} name={name} student={student} busy={busy} error={error} onSubmit={(e) => void finish(e)} />}
 
       {screen === "results" && result && (
-        <Results t={t} name={name} goal={goal} result={result} writingText={writing.text} student={student} programa={programa} products={products} enrollT={enrollT} />
+        <Results t={t} name={name} goal={goal} result={result} writingText={writing.text} student={student} programa={programa} plan={plan} products={products} enrollT={enrollT} />
       )}
 
-      {screen === "locked" && locked && <Locked t={t} info={locked} programa={programa} products={products} enrollT={enrollT} />}
+      {screen === "locked" && locked && <Locked t={t} info={locked} programa={programa} plan={plan} products={products} enrollT={enrollT} />}
 
       {screen === "rateLimited" && (
         <div className="pt-16 text-center">
@@ -285,7 +299,7 @@ export function Evaluation({ t, programa = null, products, enrollT }: { t: EvalT
   );
 }
 
-function Welcome({ t, programa, busy, error, onStart }: { t: EvalT; programa: ProgramKey | null; busy: boolean; error: string; onStart: (name: string) => void }) {
+function Welcome({ t, programa, plan, busy, error, onStart }: { t: EvalT; programa: ProgramKey | null; plan: string | null; busy: boolean; error: string; onStart: (name: string) => void }) {
   const [name, setName] = useState("");
   const ok = name.trim().length > 0;
   return (
@@ -321,7 +335,7 @@ function Welcome({ t, programa, busy, error, onStart }: { t: EvalT; programa: Pr
         <p className="text-center text-xs text-[#A9A4C0]/80">{t.free}</p>
       </form>
       <p className="mt-4 text-center text-xs">
-        <Link href={`/entrar?next=${encodeURIComponent(programa ? `/evaluacion?programa=${programa}` : "/evaluacion")}`} className="font-semibold text-[#A9A4C0] hover:text-white">
+        <Link href={`/entrar?next=${encodeURIComponent(programa ? evalHref(programa, plan) : "/evaluacion")}`} className="font-semibold text-[#A9A4C0] hover:text-white">
           {t.haveAccount}
         </Link>
       </p>
