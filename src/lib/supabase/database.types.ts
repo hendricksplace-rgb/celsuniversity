@@ -3057,6 +3057,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_speaking_rep: {
+        Args: { p_exercise: number; p_lesson: string }
+        Returns: number[]
+      }
       admin_duplicate_module: { Args: { p_module: string }; Returns: string }
       can_use_ai_tools: { Args: never; Returns: boolean }
       content_health: {
@@ -3139,6 +3143,10 @@ export type Database = {
           expires_at: string
           module_id: string
         }[]
+      }
+      set_speaking_partner: {
+        Args: { p_lesson: string; p_question: number; p_value: number }
+        Returns: number[]
       }
     }
     Enums: {

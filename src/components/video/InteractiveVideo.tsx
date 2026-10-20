@@ -8,6 +8,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
+import { canRecord, pickMime, stopRecorder, usePageLeave } from "@/lib/voice";
 import { navTitle } from "@/lib/reading";
 import { fmtTime, grabFrames, jpegBlob, spokenSeconds, thumbPath, type VideoProof, type VideoTaskData } from "@/lib/video-task";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, iconOr, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
@@ -23,6 +24,8 @@ type Props = {
   proof: VideoProof | null;
   writing: { subject: string | null; body: string } | null;
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 type Phase = "idle" | "recording" | "review" | "uploading" | "saved";
 
@@ -167,8 +170,9 @@ export function InteractiveVideo(p: Props) {
   const db = useCallback(() => (sb.current ??= createClient()), []);
 
   useEffect(() => {
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+    if (p.track !== false) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, p.track]);
 
   // ---------- the script: the saved one, else the Writing email; edits persist (row) or stay on this device ----------
   const draftKey = `celsu:video-script:${p.userId}:${p.lessonId}`;
@@ -273,31 +277,46 @@ export function InteractiveVideo(p: Props) {
     setPhase("review");
     requestAnimationFrame(() => goTo("v3"));
   };
-  const stopRec = useCallback(() => {
+  // Stop always finishes: state check, then onstop or (after 1.5 s) the chunks already collected.
+  const stopping = useRef(false);
+  const stopRec = useCallback(async () => {
     clearInterval(tick.current);
     const r = recRef.current;
-    if (r && r.state !== "inactive") r.stop();
+    if (!r || stopping.current) return;
+    stopping.current = true;
+    recRef.current = null;
+    const seconds = Math.max(1, (Date.now() - tStart.current) / 1000);
+    try {
+      const blob = await stopRecorder(r, chunks.current, 1500);
+      chunks.current = [];
+      stopTracks();
+      // In memory only: the recording is never written to storage of any kind.
+      const url = URL.createObjectURL(blob);
+      setBlob(url);
+      await toReview(url, seconds);
+    } catch {
+      stopTracks();
+      setPhase("idle");
+    } finally {
+      stopping.current = false;
+    }
   }, []);
+  // Phone locked or app switched while recording: stop there and keep what was recorded; leaving: free the camera.
+  usePageLeave(() => {
+    if (recRef.current) void stopRec();
+    else stopTracks();
+  });
   const startRec = async () => {
     setCamError(false);
     try {
-      if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") throw new Error("no media");
+      if (!canRecord()) throw new Error("no media");
       const stream = await navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720, facingMode: "user" }, audio: true });
       streamRef.current = stream;
-      const type = MIME_TYPES.find((x) => MediaRecorder.isTypeSupported(x)) ?? "video/webm";
+      const type = pickMime("video") ?? MIME_TYPES.find((x) => MediaRecorder.isTypeSupported(x)) ?? "video/webm";
       setMime(type);
       chunks.current = [];
       const rec = new MediaRecorder(stream, { mimeType: type });
       rec.ondataavailable = (e) => e.data.size && chunks.current.push(e.data);
-      rec.onstop = () => {
-        const seconds = Math.max(1, (Date.now() - tStart.current) / 1000);
-        stopTracks();
-        // In memory only: the recording is never written to storage of any kind.
-        const url = URL.createObjectURL(new Blob(chunks.current, { type: type.split(";")[0] }));
-        chunks.current = [];
-        setBlob(url);
-        void toReview(url, seconds);
-      };
       recRef.current = rec;
       rec.start(500);
     } catch {
@@ -311,7 +330,7 @@ export function InteractiveVideo(p: Props) {
     tick.current = setInterval(() => {
       const sec = (Date.now() - tStart.current) / 1000;
       setElapsed(sec);
-      if (sec >= data.auto_stop_s) stopRec();
+      if (sec >= data.auto_stop_s) void stopRec();
     }, 250);
   };
   const onFile = async (f: File | undefined) => {
@@ -373,7 +392,7 @@ export function InteractiveVideo(p: Props) {
       setPhase("review");
       return setError(true);
     }
-    await finishLesson(db(), p.userId, p.lessonId);
+    if (p.track !== false) await finishLesson(db(), p.userId, p.lessonId);
     setUpPct(100);
     setHasProof(true);
     try {
