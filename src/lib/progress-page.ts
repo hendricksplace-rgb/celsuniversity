@@ -53,6 +53,8 @@ export type Road = {
   pin?: number;
   /** The % shown, when that isn't units / total (CelsBSNS: lessons done, lessons started count half). */
   pct?: number;
+  /** Which stops get a ✓, when that isn't "the pin has passed it" (CelsBSNS: every week up to the stop is complete). */
+  done?: boolean[];
 };
 
 export type ProgramView =
@@ -181,6 +183,8 @@ function bsnsView(c: CourseStats): ProgramView {
       at: [0, 2, 4, 6, 8, 10].map((n) => Math.min(n, weeks.length)),
       pin,
       pct: Math.round(frac(weeks.reduce((n, w) => n + worked(w.m), 0), lessons) * 100),
+      // A student who skips ahead doesn't get ✓ on weeks never done: a stop is done when every week up to it is.
+      done: [0, 2, 4, 6, 8, 10].map((n, i, a) => (i === 0 ? true : i === a.length - 1 ? allDone : weeks.filter((w) => w.n <= n).every((w) => w.m.complete))),
     },
     href: hrefOf(c),
     week,

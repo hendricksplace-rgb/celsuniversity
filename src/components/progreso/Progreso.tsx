@@ -67,7 +67,7 @@ function RoadMap({ t, p }: { t: T; p: ProgramView }) {
   const u = r.pin ?? r.units;
   const reached = r.at.map((a, i) => (i === r.at.length - 1 ? u >= r.total : u >= a));
   const nextIdx = reached.indexOf(false);
-  const stops: RoadStop[] = m.stops.map(([label, sub], i) => ({ label, sub, state: reached[i] ? "done" : i === nextIdx ? "cur" : "todo" }));
+  const stops: RoadStop[] = m.stops.map(([label, sub], i) => ({ label, sub, state: (r.done ? r.done[i] : reached[i]) ? "done" : i === nextIdx ? "cur" : "todo" }));
   const percent = Math.min(100, r.pct ?? Math.round((r.units / Math.max(r.total, 1)) * 100));
   const next = nextIdx >= 0 ? m.stops[nextIdx][0] : null;
   return (
