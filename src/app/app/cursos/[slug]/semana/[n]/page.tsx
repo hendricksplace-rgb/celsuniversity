@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
-import { getViewer } from "@/lib/access";
+import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { loadCoursePage } from "@/lib/course-page";
 import { loadBsnsWeek } from "@/lib/bsns-week";
@@ -22,6 +22,8 @@ export default async function BsnsWeekPage({ params }: Props) {
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   const week = page?.episodes.find((e) => e.n === Number(n));
   if (!page || !week) notFound();
+  // Without access: the course page, with its access notice (never the week's content).
+  if (!(await canAccessCourse(supabase, viewer, page.course.id))) redirect(`/app/cursos/${slug}`);
 
   const [data, goal] = await Promise.all([
     loadBsnsWeek(supabase, {

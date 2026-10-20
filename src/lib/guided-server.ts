@@ -48,7 +48,7 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
       const m = modules!.find((x) => x.id === r.module_id)!;
       const p = progress.get(r.module_id);
       return {
-        step: r.data as unknown as GuidedStep,
+        step: normalizeStep(r.data),
         moduleId: r.module_id,
         lessonIds: (m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).map((l) => l.id),
         completedAt: p?.completed_at ?? null,
@@ -68,6 +68,35 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
   };
 }
 
+const arr = <T,>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+const isObj = (v: unknown): v is Record<string, unknown> => !!v && typeof v === "object" && !Array.isArray(v);
+
+/**
+ * Every array a renderer maps or flatMaps is an array, whatever shape the row has (a step saved before its renderer
+ * shipped threw "Cannot read properties of undefined (reading 'flatMap')" on Finanzas step 3, 2026-10-20 00:21–01:09).
+ * Optional fields stay absent when missing; lists inside blocks and sections become [].
+ */
+const fixItems = <T extends Record<string, unknown>>(o: T): T => {
+  for (const k of ["items", "options", "prompts", "fields", "tabs", "questions", "groups", "rows"]) if (k in o && !Array.isArray(o[k])) (o as Record<string, unknown>)[k] = [];
+  return o;
+};
+
+function normalizeStep(data: unknown): GuidedStep {
+  const step = (isObj(data) ? data : {}) as Record<string, unknown>;
+  const build = isObj(step.build) ? step.build : {};
+  build.sections = arr<unknown>(build.sections).filter(isObj).map(fixItems);
+  step.build = build;
+  if ("essentials" in step) step.essentials = arr<unknown>(step.essentials).filter(isObj).map(fixItems);
+  if ("more_videos" in step) step.more_videos = arr<unknown>(step.more_videos).filter(isObj);
+  if ("check" in step) step.check = arr<Record<string, unknown>>(step.check).filter((c) => isObj(c) && Array.isArray(c.o));
+  step.keys = arr<unknown>(step.keys).filter(isObj);
+  if (isObj(step.practice)) fixItems(step.practice);
+  else step.practice = null;
+  if (isObj(step.essentials_from)) step.essentials_from.screens = arr<string>(step.essentials_from.screens);
+  else delete step.essentials_from;
+  return step as unknown as GuidedStep;
+}
+
 /**
  * "Lo esencial" from the e-book (essentials_from): the listed screens' blocks, without the skipped types / title
  * prefix and without any block a practice or build section takes with `from_ebook` ("m5 myth", "m5 checklist 1" =
@@ -78,11 +107,11 @@ async function withEbookEssentials(supabase: Client, steps: GuidedStep[]) {
   const slugs = [...new Set(steps.flatMap((s) => (s.essentials_from?.ebook ? [s.essentials_from.ebook] : [])))];
   if (!slugs.length) return;
   const { data: books } = await supabase.from("ebooks").select("slug, title, screens").in("slug", slugs);
-  const bySlug = new Map((books ?? []).map((b) => [b.slug, { title: b.title, screens: (Array.isArray(b.screens) ? b.screens : []) as unknown as Screen[] }]));
+  const bySlug = new Map((books ?? []).map((b) => [b.slug, { title: b.title, screens: arr<unknown>(b.screens).filter(isObj) as unknown as Screen[] }]));
   type Any = Record<string, unknown>;
   const blockOf = (screens: Screen[], ref: string | undefined) => {
     const [sid, type, nth] = (ref ?? "").split(" ");
-    const list = screens.find((x) => x.id === sid)?.blocks.filter((b) => b.type === type) ?? [];
+    const list = arr<Block>(screens.find((x) => x.id === sid)?.blocks).filter((b) => b?.type === type);
     return (list[Number(nth || 0)] as (Block & Any) | undefined) ?? null;
   };
   const courseIds = new Set<string>();
@@ -118,7 +147,9 @@ async function withEbookEssentials(supabase: Client, steps: GuidedStep[]) {
     step.ebookScreens = f.screens.flatMap((sid) => {
       const sc = screens.find((x) => x.id === sid);
       if (!sc) return [];
-      const blocks = sc.blocks.filter((b) => {
+      const blocks = arr<Block>(sc.blocks).filter((b) => {
+        if (!isObj(b)) return false;
+        fixItems(b as unknown as Record<string, unknown>);
         const title = (b as { title?: string }).title ?? "";
         return !skipTypes.includes(b.type) && !(prefix && title.startsWith(prefix)) && !used.has(b);
       });
