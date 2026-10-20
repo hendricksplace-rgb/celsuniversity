@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { CAPSTONE_PARTS, INPUT_MAX, RESUME_MAX_BYTES, fieldOk, partBody, partReady, resumePath, splitName, type CapField, type CapFields, type CapPart, type Lang } from "@/lib/capstone";
 import type { CapstoneLoad, Evidence } from "@/lib/capstone-server";
+import { interviewAnswered, interviewPracticeDone } from "@/lib/interview-practice";
 import { Icon, Layout, RailCard, ShellPage, TopBar, shell as sh, useLangPref } from "@/components/bsns/shell";
 import s from "./capstone.module.css";
 
@@ -22,10 +23,10 @@ const UI = {
     kick: "PROYECTO FINAL · CAPSTONE",
     h1a: "Mi perfil",
     h1b: "profesional",
-    sub: "Tu Capstone es el documento que construyes durante las 10 semanas: una parte cada semana. Es obligatorio. Lo presentas en tu entrevista final y lo necesitas para tu certificado.",
+    sub: "Tu Capstone es el documento que construyes durante las 10 semanas: una parte cada semana. Es obligatorio. Lo usas en tu práctica de entrevista con IA y lo necesitas para tu certificado.",
     ring: (b: number) => `de ${b} partes`,
     ringAria: (a: number, b: number) => `${a} de ${b} partes completas`,
-    req: ["Completa las 10 partes", "Tu currículum final (Parte 10)", "Tu entrevista simulada en la semana 10"],
+    req: ["Completa las 10 partes", "Tu currículum final (Parte 10)", "Tu práctica de entrevista con IA en la semana 10"],
     partsH: "Las 10 partes",
     partsI: "Cada parte se abre en su semana. Complétala antes de cerrar esa semana.",
     wk: (w: number, n: number) => `SEMANA ${w} · PARTE ${n}`,
@@ -54,9 +55,10 @@ const UI = {
     lockIntro: "En esta parte vas a incluir:",
     soon: "Las preguntas de esta parte se publican con el contenido de su semana.",
     finK: "SEMANA 10 · PRESENTACIÓN FINAL",
-    finH: "Tu entrevista simulada en vivo",
-    finP: "Presentas tu perfil completo en una entrevista de 50 minutos. Para tener tu certificado necesitas:",
-    fl: ["Las 10 partes completas", "Tu currículum final en PDF", "Repasar el método STAR", "Tu entrevista en vivo de 50 minutos"],
+    finH: "Tu práctica de entrevista con IA",
+    finP: "Respondes en voz alta las 4 preguntas clásicas de entrevista y la IA te da retroalimentación con el método STAR. Para tener tu certificado necesitas:",
+    fl: ["Las 10 partes completas", "Tu currículum final en PDF", "Repasar el método STAR", "Tu práctica de entrevista con IA"],
+    flGo: "Practicar",
     flDone: "hecho",
     flTodo: "pendiente",
     rail: "TU AVANCE",
@@ -98,10 +100,10 @@ const UI = {
     kick: "FINAL PROJECT · CAPSTONE",
     h1a: "My professional",
     h1b: "profile",
-    sub: "Your Capstone is the document you build over the 10 weeks: one part each week. It's required. You present it in your final interview and you need it for your certificate.",
+    sub: "Your Capstone is the document you build over the 10 weeks: one part each week. It's required. You use it in your AI interview practice and you need it for your certificate.",
     ring: (b: number) => `of ${b} parts`,
     ringAria: (a: number, b: number) => `${a} of ${b} parts complete`,
-    req: ["Complete all 10 parts", "Your final resume (Part 10)", "Your mock interview in Week 10"],
+    req: ["Complete all 10 parts", "Your final resume (Part 10)", "Your AI interview practice in Week 10"],
     partsH: "The 10 parts",
     partsI: "Each part opens in its week. Complete it before you close that week.",
     wk: (w: number, n: number) => `WEEK ${w} · PART ${n}`,
@@ -130,9 +132,10 @@ const UI = {
     lockIntro: "In this part you'll include:",
     soon: "The questions for this part are published with that week's content.",
     finK: "WEEK 10 · FINAL PRESENTATION",
-    finH: "Your live mock interview",
-    finP: "You present your full profile in a 50-minute interview. To earn your certificate you need:",
-    fl: ["All 10 parts complete", "Your final resume as a PDF", "Review the STAR method", "Your 50-minute live interview"],
+    finH: "Your AI interview practice",
+    finP: "You answer the 4 classic interview questions out loud and the AI gives you feedback with the STAR method. To earn your certificate you need:",
+    fl: ["All 10 parts complete", "Your final resume as a PDF", "Review the STAR method", "Your AI interview practice"],
+    flGo: "Practice",
     flDone: "done",
     flTodo: "to do",
     rail: "YOUR PROGRESS",
@@ -429,19 +432,26 @@ export function Capstone({ d, userId, defaultLang }: { d: CapstoneLoad; userId: 
             {t.finH}
           </h2>
           <p className={s.finP}>{t.finP}</p>
-          {/* Certificate checklist from data: the 10 completed parts and the Part 10 resume. The STAR review and the
-              live interview (marked done by staff) have no data yet, so they render as pending. */}
+          {/* Certificate checklist from data: the 10 completed parts, the Part 10 resume and the AI interview practice
+              (interviewPracticeDone in src/lib/interview-practice.ts; Matt can change that rule). The STAR review has
+              no data, so it renders as pending. */}
           <ul className={s.fl}>
             {t.fl.map((f, k) => {
-              const ok = k === 0 ? nd === 10 : k === 1 ? !!values[10]?.resume : false;
+              const ok = k === 0 ? nd === 10 : k === 1 ? !!values[10]?.resume : k === 3 ? interviewPracticeDone(d.interview) : false;
               return (
                 <li key={f} className={cx(ok && s.flOk)}>
                   <i aria-hidden>{ok ? <Icon name="check" size={14} /> : null}</i>
                   <span>
                     {f}
-                    {k === 0 ? ` · ${nd}/10` : ""}
+                    {k === 0 ? ` · ${nd}/10` : k === 3 ? ` · ${interviewAnswered(d.interview)}/4` : ""}
                     <span className={sh.sr}> ({ok ? t.flDone : t.flTodo})</span>
                   </span>
+                  {k === 3 && !ok && (
+                    <Link href={`/app/herramientas/entrevista?volver=${encodeURIComponent(`/app/cursos/${d.slug}/capstone`)}`} className={s.flGo}>
+                      {t.flGo}
+                      <Icon name="next" size={14} />
+                    </Link>
+                  )}
                 </li>
               );
             })}

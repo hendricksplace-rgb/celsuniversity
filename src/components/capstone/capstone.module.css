@@ -696,6 +696,24 @@
   background: #2fbf71;
   border-color: #2fbf71;
 }
+.fl li > span {
+  flex: 1;
+  min-width: 0;
+}
+/* "Practicar": opens the AI interview practice from the checklist. */
+.flGo {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #14182b !important;
+  background: linear-gradient(135deg, #ffe08a, #e2b23a);
+}
 
 /* ---------- Mis frases ---------- */
 .phr {

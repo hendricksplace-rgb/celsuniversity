@@ -2,6 +2,7 @@ import "server-only";
 import type { createClient } from "@/lib/supabase/server";
 import { countWords } from "@/lib/writing";
 import { repsNeeded, vocabCount } from "@/lib/speaking";
+import { loadInterviewBest } from "@/lib/interview-practice";
 import { actionNote, type Answer, type FeedbackData, type Reflection, type WeekNumbers } from "@/lib/feedback";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -54,6 +55,8 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
   ]);
   if (!row?.data) return null;
   const data = row.data as unknown as FeedbackData;
+  // The course close (week 10) points to the AI interview practice and shows the best score per question.
+  const interview = data.next?.final ? await loadInterviewBest(supabase, userId) : null;
 
   const thumbPath = (proof.data as { thumb_path?: string } | null)?.thumb_path;
   const { data: signed } = thumbPath ? await supabase.storage.from("video-proofs").createSignedUrl(thumbPath, 600) : { data: null };
@@ -100,6 +103,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
     commitment: { name: c?.signed_name ?? null, signedAt: c?.signed_at ?? null, href: syllabus?.href ?? null },
     vocabUsed: vocabCount(usedText, vocab),
     week1: null,
+    interview,
     capstone: { part: week, done: !!(cap.data as { completed_at?: string | null } | null)?.completed_at },
   };
   const r = refl as { self_eval?: number[]; answers?: string[]; confidence?: number | null; next_goal?: string | null; focus?: string[]; completed_at?: string | null } | null;

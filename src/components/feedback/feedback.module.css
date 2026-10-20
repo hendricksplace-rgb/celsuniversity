@@ -972,3 +972,99 @@ label.lab {
 .capLine[data-ok] .capI {
   color: #1e7a3a;
 }
+
+/* ---------- week 10: the AI interview practice card (replaces the voice-assistant card) ---------- */
+.aiInt {
+  margin-top: 18px;
+  padding: 22px;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+.aiTop {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.aiI {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(140deg, #3b82e6, #1e55a8);
+}
+.aiK {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--blue2);
+}
+.aiTop h3 {
+  margin: 4px 0 6px !important;
+  font-family: var(--head);
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.aiP {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--mut);
+}
+.aiQs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 16px !important;
+}
+.aiQs li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #f6f9fe;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.aiQs b {
+  font-family: var(--head);
+  font-size: 15px;
+  color: var(--mut);
+}
+.aiQs li[data-ok] {
+  background: var(--okbg);
+}
+.aiQs li[data-ok] b {
+  color: var(--ok);
+}
+.aiCount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px !important;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--blue2);
+}
+.aiCount[data-ok] {
+  color: var(--ok);
+}
+.aiCta {
+  margin-top: 16px;
+  width: 100%;
+}
+.findone .aiInt {
+  text-align: left;
+}
+@media (max-width: 560px) {
+  .aiQs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1197,6 +1197,7 @@ const es = {
   },
   ai: {
     kicker: "CelsGLOBAL · IA",
+    kickerBsns: "CelsBSNS · IA",
     resumeTitle: "Revisión de tu resume",
     resumeIntro: "Sube tu resume y nuestra IA lo evalúa con los criterios de reclutamiento TN: formato, inglés, palabras clave (ATS) y relevancia para el programa.",
     upload: "Sube tu resume",
@@ -1249,6 +1250,7 @@ const es = {
     seePlans: "Ver CelsGLOBAL",
     interviewTitle: "Práctica de entrevista",
     interviewIntro: "Una entrevistadora te hace preguntas reales. Tú respondes con tu voz y la IA te da retroalimentación con lo que aprendiste en «Crack the U.S. Interview Code».",
+    interviewIntroBsns: "Una entrevistadora te hace las 4 preguntas clásicas. Tú respondes con tu voz y la IA te da retroalimentación con el método STAR, como practicaste en English for Business.",
     starTitle: "STAR",
     starText: "Situación · Tarea · Acción · Resultado. Menos de 2 minutos, y termina en positivo.",
     classics: "Preguntas clásicas",
@@ -1288,6 +1290,7 @@ const es = {
     summaryEmail: "Te enviamos este resumen por correo, con las respuestas sugeridas para practicar.",
     practiceAgain: "Practicar la pregunta {n} otra vez",
     backRoute: "Volver a mi ruta",
+    backWeek: "Volver a mi semana",
     toolsTitle: "Herramientas con IA",
   },
   lesson: {
@@ -2814,6 +2817,7 @@ const en: Dictionary = {
   },
   ai: {
     kicker: "CelsGLOBAL · AI",
+    kickerBsns: "CelsBSNS · AI",
     resumeTitle: "Your resume review",
     resumeIntro: "Upload your resume and our AI evaluates it with TN recruiting criteria: format, English, keywords (ATS) and program relevance.",
     upload: "Upload your resume",
@@ -2866,6 +2870,7 @@ const en: Dictionary = {
     seePlans: "See CelsGLOBAL",
     interviewTitle: "Interview practice",
     interviewIntro: "An interviewer asks you real questions. You answer with your voice and the AI gives you feedback based on \"Crack the U.S. Interview Code\".",
+    interviewIntroBsns: "An interviewer asks you the 4 classic questions. You answer with your voice and the AI gives you feedback with the STAR method, as you practiced in English for Business.",
     starTitle: "STAR",
     starText: "Situation · Task · Action · Result. Under 2 minutes, and end on a positive note.",
     classics: "Classic questions",
@@ -2905,6 +2910,7 @@ const en: Dictionary = {
     summaryEmail: "We emailed you this summary with the suggested answers to practice.",
     practiceAgain: "Practice question {n} again",
     backRoute: "Back to my route",
+    backWeek: "Back to my week",
     toolsTitle: "AI tools",
   },
   lesson: {
