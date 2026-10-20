@@ -5,6 +5,8 @@ import { getDictionary } from "@/lib/i18n/server";
 import { getViewer } from "@/lib/access";
 import { signStorageRefs } from "@/lib/storage";
 import { INTERVIEW_KEYS, type InterviewKey } from "@/lib/ai-tools";
+import { bestInterviewScores } from "@/lib/interview-practice";
+import { themeForCourse } from "@/lib/themes";
 import { AiHeader, aiShell } from "@/components/ai/ResumeTool";
 import { InterviewTool } from "@/components/ai/InterviewTool";
 
@@ -21,18 +23,29 @@ const FILES: Record<InterviewKey, string> = {
 };
 const refOf = (k: InterviewKey) => `storage://course-media/${COURSE_ID}/interview/${FILES[k]}`;
 
+/** "?volver=/app/cursos/<slug>/…": where the tool was opened from (CelsBSNS week 10 Feedback). Only in-app paths. */
+function backOf(volver: string | string[] | undefined) {
+  const v = typeof volver === "string" ? volver : null;
+  if (!v || !/^\/app\/[\w\-/.%?=&#]*$/.test(v)) return null;
+  const slug = /^\/app\/cursos\/([^/?#]+)/.exec(v)?.[1];
+  return { href: v, bsns: !!slug && themeForCourse({ slug }) === "celsbsns" };
+}
+
+type Props = { searchParams: Promise<{ volver?: string | string[] }> };
+
 /** Interview Practice (celsu-ai-tools-spec.md §2): record an answer, Whisper + STAR feedback, summary by email. */
-export default async function InterviewPage() {
+export default async function InterviewPage({ searchParams }: Props) {
   const { t } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect("/entrar?next=/app/herramientas/entrevista");
+  const back = backOf((await searchParams).volver);
 
   const { data: allowed } = await supabase.rpc("can_use_ai_tools");
   if (!allowed)
     return (
       <div className={aiShell}>
-        <AiHeader t={t.ai} icon="interview" title={t.ai.interviewTitle} backHref="/app/programas/celsglobal" />
+        <AiHeader t={t.ai} icon="interview" title={t.ai.interviewTitle} backHref={back?.href ?? "/app/programas/celsglobal"} />
         <p className="mt-6 rounded-2xl bg-white p-5 shadow-[0_0_0_1px_#E3DDD0]">{t.ai.noAccess}</p>
         <Link
           href="/comprar/celsglobal"
@@ -53,11 +66,16 @@ export default async function InterviewPage() {
     const url = signed.get(refOf(k));
     if (url) audio[k] = url;
   }
-  const best: Partial<Record<InterviewKey, number>> = {};
-  for (const a of answers ?? []) {
-    const k = a.question_key as InterviewKey;
-    if (a.score != null && (best[k] == null || a.score > best[k]!)) best[k] = a.score;
-  }
+  const best = bestInterviewScores(answers ?? []);
 
-  return <InterviewTool t={t.ai} userId={viewer.user.id} audio={audio} best={best} />;
+  // Opened from a CelsBSNS week: back goes there, and the kicker names CelsBSNS instead of CelsGLOBAL.
+  return (
+    <InterviewTool
+      t={back?.bsns ? { ...t.ai, kicker: t.ai.kickerBsns, interviewIntro: t.ai.interviewIntroBsns } : t.ai}
+      userId={viewer.user.id}
+      audio={audio}
+      best={best}
+      backHref={back?.href}
+    />
+  );
 }

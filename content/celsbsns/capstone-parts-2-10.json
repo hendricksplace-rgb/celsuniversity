@@ -463,12 +463,12 @@
     "preview_es": [
       "Tus metas a 1, 3 y 5 años",
       "Tu currículum final (sube tu PDF)",
-      "Lista para tu entrevista simulada en vivo"
+      "Lista para tu práctica de entrevista con IA"
     ],
     "preview_en": [
       "Your 1, 3 and 5-year goals",
       "Your final resume (upload your PDF)",
-      "Ready for your live mock interview"
+      "Ready for your AI interview practice"
     ],
     "fields": [
       {
@@ -495,8 +495,8 @@
         "k": "about",
         "label_es": "Tu respuesta a “Tell me about yourself”",
         "label_en": "Your answer to “Tell me about yourself”",
-        "hint_es": "Tu mejor intento de Speaking (90 segundos) ya está aquí. Es la primera respuesta de tu entrevista en vivo.",
-        "hint_en": "Your best Speaking try (90 seconds) is already here. It's the first answer in your live interview.",
+        "hint_es": "Tu mejor intento de Speaking (90 segundos) ya está aquí. Es la primera pregunta de tu práctica de entrevista con IA.",
+        "hint_en": "Your best Speaking try (90 seconds) is already here. It's the first question in your AI interview practice.",
         "type": "textarea",
         "min": 150,
         "fill_from": "speaking"

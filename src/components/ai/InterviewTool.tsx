@@ -211,7 +211,7 @@ function FeedbackScreen({ t, i, answer, last, onRetry, onNext }: { t: T; i: numb
   );
 }
 
-function SummaryScreen({ t, summary, onPractice }: { t: T; summary: InterviewSummary; onPractice: (k: InterviewKey) => void }) {
+function SummaryScreen({ t, summary, backHref, onPractice }: { t: T; summary: InterviewSummary; backHref: string; onPractice: (k: InterviewKey) => void }) {
   const weakest = [...summary.questions].sort((a, b) => a.score - b.score)[0];
   const weakestIndex = weakest ? INTERVIEW_KEYS.indexOf(weakest.key as InterviewKey) : -1;
   return (
@@ -241,15 +241,28 @@ function SummaryScreen({ t, summary, onPractice }: { t: T; summary: InterviewSum
             {fill(t.practiceAgain, { n: weakestIndex + 1 })}
           </button>
         )}
-        <Link href="/app/programas/celsglobal" className="kit-focus block w-full rounded-xl bg-white py-3.5 text-center font-extrabold shadow-[0_0_0_1px_#E3DDD0]">
-          {t.backRoute}
+        <Link href={backHref} className="kit-focus block w-full rounded-xl bg-white py-3.5 text-center font-extrabold shadow-[0_0_0_1px_#E3DDD0]">
+          {backHref.startsWith("/app/cursos/") ? t.backWeek : t.backRoute}
         </Link>
       </div>
     </div>
   );
 }
 
-export function InterviewTool({ t, userId, audio, best }: { t: T; userId: string; audio: Partial<Record<InterviewKey, string>>; best: Partial<Record<InterviewKey, number>> }) {
+export function InterviewTool({
+  t,
+  userId,
+  audio,
+  best,
+  backHref = "/app/programas/celsglobal",
+}: {
+  t: T;
+  userId: string;
+  audio: Partial<Record<InterviewKey, string>>;
+  best: Partial<Record<InterviewKey, number>>;
+  /** Where "back" goes: CelsGLOBAL by default, or the CelsBSNS week the tool was opened from. */
+  backHref?: string;
+}) {
   const [screen, setScreen] = useState<Screen>({ s: "choose" });
   const [plan, setPlan] = useState<{ keys: InterviewKey[]; mode: "full" | "single" | "random" }>({ keys: [], mode: "single" });
   const [session, setSession] = useState<string | null>(null);
@@ -321,11 +334,11 @@ export function InterviewTool({ t, userId, audio, best }: { t: T; userId: string
       />
     );
   }
-  if (screen.s === "summary") return <SummaryScreen t={t} summary={screen.summary} onPractice={(k) => begin([k], "single")} />;
+  if (screen.s === "summary") return <SummaryScreen t={t} summary={screen.summary} backHref={backHref} onPractice={(k) => begin([k], "single")} />;
 
   return (
     <div className={aiShell}>
-      <AiHeader t={t} icon="interview" title={t.interviewTitle} backHref="/app/programas/celsglobal" />
+      <AiHeader t={t} icon="interview" title={t.interviewTitle} backHref={backHref} />
       <p className="mt-5 text-sm leading-relaxed text-[#3A4258]">{t.interviewIntro}</p>
       <div className="mt-4 flex gap-3 rounded-2xl bg-[#14182B] p-4 text-white">
         <strong className="font-serif text-lg text-[#EBD08C]">{t.starTitle}</strong>

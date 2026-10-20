@@ -3,6 +3,7 @@ import type { createClient } from "@/lib/supabase/server";
 import type { CoursePage } from "@/lib/course-page";
 import { currentWeekOf, weekPath } from "@/lib/bsns";
 import { countWords } from "@/lib/writing";
+import { loadInterviewBest, type InterviewBest } from "@/lib/interview-practice";
 import { CAPSTONE_PARTS, PITCH_EXERCISE_ORDER, emailToBackground, type CapFields } from "@/lib/capstone";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -31,6 +32,8 @@ export type CapstoneLoad = {
   thumb: string | null;
   prefillName: string;
   phrases: string[];
+  /** The AI interview practice's best score per question (certificate checklist, interviewPracticeDone). */
+  interview: InterviewBest;
 };
 
 /** Writing counts as "terminado" once it left the draft state (the coach step is gone: 'finished'). */
@@ -53,7 +56,7 @@ export async function loadCapstone(supabase: Client, page: CoursePage, userId: s
   const none = Promise.resolve({ data: null });
   const ids = (xs: { p: { id: string } }[]) => xs.map((x) => x.p.id);
 
-  const [{ data: caps }, subs, proofs, bests, entries, refls, { data: bank }] = await Promise.all([
+  const [{ data: caps }, subs, proofs, bests, entries, refls, { data: bank }, interview] = await Promise.all([
     supabase.from("capstone_parts").select("part, fields, sources, completed_at").eq("user_id", userId).eq("course_id", page.course.id),
     writing.length ? supabase.from("submissions").select("id, lesson_id, body, status").eq("user_id", userId).in("lesson_id", ids(writing)) : none,
     video.length ? supabase.from("video_proofs").select("id, lesson_id, thumb_path, script, updated_at").eq("user_id", userId).in("lesson_id", ids(video)) : none,
@@ -62,6 +65,7 @@ export async function loadCapstone(supabase: Client, page: CoursePage, userId: s
     research.length ? supabase.from("research_reflections").select("lesson_id, change").eq("user_id", userId).in("lesson_id", ids(research)) : none,
     // "Mis frases" (phrase_bank, owner only), oldest first.
     supabase.from("phrase_bank").select("text").eq("user_id", userId).order("created_at"),
+    loadInterviewBest(supabase, userId),
   ]);
 
   const rows: Record<number, CapRow> = {};
@@ -128,6 +132,7 @@ export async function loadCapstone(supabase: Client, page: CoursePage, userId: s
     thumb: newest ? (signed.get(newest.lesson_id) ?? null) : null,
     prefillName: (displayName ?? "").trim(),
     phrases: [...new Set((bank ?? []).map((b) => b.text))],
+    interview,
   };
 }
 

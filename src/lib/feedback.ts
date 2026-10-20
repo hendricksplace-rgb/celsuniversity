@@ -2,6 +2,8 @@
 // week; the page (src/components/feedback/InteractiveFeedback.tsx) is built once from it. Matt's decision: reflection
 // only. Nothing is sent to anyone and nothing is graded; weekly_reflections is readable by its owner only.
 
+import type { InterviewBest } from "@/lib/interview-practice";
+
 export type Bi = { es: string; en: string };
 export type BiList = { es: string[]; en: string[] };
 export type AutoKey = "writing" | "video" | "speaking" | "research" | null;
@@ -14,10 +16,12 @@ export type FeedbackData = {
   /** The self-evaluation statements; `auto` says what the app can already confirm. `vocab` shows the vocabulary chip. */
   statements: { es: string; en: string; auto: AutoKey; vocab?: boolean }[];
   questions: Bi[];
-  /** `final` (week 10): the course close (live mock interview and certificate) instead of a next week. */
+  /** `final` (week 10): the course close (AI interview practice and certificate) instead of a next week. */
   next: { week: number; title: string; bullets: BiList; capstone: Bi; final?: boolean };
   goal_suggestions: BiList;
   focus_options: BiList;
+  /** The optional voice-assistant practice (ChatGPT prompts). On the course close it becomes "Extra (opcional)"
+   *  under the AI interview practice card. */
   ai_practice: { steps: BiList; prompts: string[]; tip: Bi };
   /** A hint under the reflection questions (weeks 2 and 3). */
   answer_hint?: Bi;
@@ -69,6 +73,9 @@ export type WeekNumbers = {
   /** Week 10: the week-1 self-check to compare with. Self-evaluations are compared only when both weeks have the
    *  same number of statements; otherwise only the confidence score. */
   week1: { confidence: number | null; yes: number | null; of: number } | null;
+  /** The course close (`next.final`, week 10): the best score per question of the AI interview practice
+   *  (interview_answers). null on the other weeks, which keep their ChatGPT voice-practice card. */
+  interview: InterviewBest | null;
 };
 
 export type Reflection = { self_eval: (Answer | null)[]; answers: string[]; confidence: number | null; next_goal: string; focus: number[]; completed_at: string | null };

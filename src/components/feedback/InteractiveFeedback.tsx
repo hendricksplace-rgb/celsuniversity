@@ -6,6 +6,7 @@
 // week. Matt's decision: reflection only; nothing is sent to anyone and nothing is graded. weekly_reflections is
 // owner-only. Closing marks the lesson complete through record_lesson_progress (finishLesson).
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
@@ -13,6 +14,8 @@ import { navTitle } from "@/lib/reading";
 import { fmtTime } from "@/lib/video-task";
 import { actionNote, type Answer, type FeedbackData, type Reflection, type WeekNumbers } from "@/lib/feedback";
 import { writingDone } from "@/lib/writing";
+import { INTERVIEW_KEYS, QUESTIONS } from "@/lib/ai-tools";
+import { interviewAnswered, interviewPracticeDone, type InterviewBest } from "@/lib/interview-practice";
 import { dancing } from "@/components/bsns/fonts";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type IconName, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./feedback.module.css";
@@ -78,6 +81,17 @@ const UI = {
     focusL: "LO QUE MÁS QUIERO MEJORAR",
     exT: "Práctica extra con un asistente de voz (opcional)",
     exS: "Practica tu presentación con ChatGPT en modo de voz",
+    exT10: "Extra (opcional)",
+    exS10: "Practica más preguntas con ChatGPT en modo de voz",
+    aiK: "PRÁCTICA CON IA",
+    aiH: "Tu práctica de entrevista con IA",
+    aiP: "Respondes en voz alta las 4 preguntas clásicas de entrevista y la IA te da retroalimentación con el método STAR. Es parte de tu certificado.",
+    aiCta: "Practicar mi entrevista",
+    aiCtaAgain: "Practicar otra vez",
+    aiBest: "Tu mejor puntaje",
+    aiNone: "Sin practicar",
+    aiCount: (n: number) => `${n} de 4 preguntas practicadas`,
+    aiDone: "Lista para tu certificado",
     copied: "Copiado",
     copyAria: (p: string) => `Copiar: ${p}`,
     finish: (n: number) => `Cerrar mi semana ${n}`,
@@ -90,7 +104,7 @@ const UI = {
     doneHf: "¡Terminaste las 10 semanas!",
     doneP: (n: number) => `Diste el primer paso de tu Capstone y practicaste las 4 habilidades. Tu meta para la semana ${n}:`,
     donePn: (n: number) => `Avanzaste en tu Capstone y practicaste las 4 habilidades. Tu meta para la semana ${n}:`,
-    donePf: "Practicaste las 4 habilidades durante 10 semanas. Lo que sigue: tu entrevista en vivo y tu certificado. Tu meta:",
+    donePf: "Practicaste las 4 habilidades durante 10 semanas. Lo que sigue: tu práctica de entrevista con IA y tu certificado. Tu meta:",
     closeCta: "Ir a mi Capstone",
     capMissing: (n: number) => `Para cerrar tu semana, completa la Parte ${n} de tu Capstone.`,
     capOk: (n: number) => `Capstone · Parte ${n} completa`,
@@ -150,6 +164,17 @@ const UI = {
     focusL: "WHAT I MOST WANT TO IMPROVE",
     exT: "Extra practice with a voice assistant (optional)",
     exS: "Practice your introduction with ChatGPT in voice mode",
+    exT10: "Extra (optional)",
+    exS10: "Practice more questions with ChatGPT in voice mode",
+    aiK: "AI PRACTICE",
+    aiH: "Your AI interview practice",
+    aiP: "You answer the 4 classic interview questions out loud and the AI gives you feedback with the STAR method. It's part of your certificate.",
+    aiCta: "Practice my interview",
+    aiCtaAgain: "Practice again",
+    aiBest: "Your best score",
+    aiNone: "Not practiced yet",
+    aiCount: (n: number) => `${n} of 4 questions practiced`,
+    aiDone: "Ready for your certificate",
     copied: "Copied",
     copyAria: (p: string) => `Copy: ${p}`,
     finish: (n: number) => `Close my Week ${n}`,
@@ -162,7 +187,7 @@ const UI = {
     doneHf: "You finished all 10 weeks!",
     doneP: (n: number) => `You took the first step of your Capstone and practiced all 4 skills. Your goal for Week ${n}:`,
     donePn: (n: number) => `You moved your Capstone forward and practiced all 4 skills. Your goal for Week ${n}:`,
-    donePf: "You practiced all 4 skills for 10 weeks. What's next: your live interview and your certificate. Your goal:",
+    donePf: "You practiced all 4 skills for 10 weeks. What's next: your AI interview practice and your certificate. Your goal:",
     closeCta: "Go to my Capstone",
     capMissing: (n: number) => `To close your week, complete Part ${n} of your Capstone.`,
     capOk: (n: number) => `Capstone · Part ${n} complete`,
@@ -190,6 +215,11 @@ export function InteractiveFeedback(p: Props) {
   const [lang, chooseLang] = useLangPref(p.userId, p.defaultLang);
   const t = UI[lang];
   const final = !!data.next.final;
+  const pathname = usePathname();
+  // The course close (week 10, from the data: `next.final`) replaces the voice-assistant card with the AI interview
+  // practice; the ChatGPT prompts stay below it as "Extra (opcional)".
+  const interview = final ? (N.interview ?? {}) : null;
+  const toolHref = `/app/herramientas/entrevista?volver=${encodeURIComponent(pathname)}`;
   const note = actionNote(data);
   const nq = data.questions.length;
   const sb = useRef<ReturnType<typeof createClient> | null>(null);
@@ -587,6 +617,7 @@ export function InteractiveFeedback(p: Props) {
                       })}
                     </ol>
                     {final && <NextCard data={data} lang={lang} t={t} final />}
+                    {interview && <InterviewCard best={interview} href={toolHref} t={t} tip={data.ai_practice.tip[lang]} />}
                     <div className={s.acts}>
                       {!final && p.nextWeekHref && (
                         <Link href={p.nextWeekHref} className={s.btnP}>
@@ -655,14 +686,15 @@ export function InteractiveFeedback(p: Props) {
                         </div>
                       </div>
                     </div>
+                    {interview && <InterviewCard best={interview} href={toolHref} t={t} tip={data.ai_practice.tip[lang]} />}
                     <div className={s.extra} data-open={extraOpen || undefined}>
                       <button type="button" aria-expanded={extraOpen} aria-controls="fb-extra" onClick={() => setExtraOpen((v) => !v)}>
                         <span className={s.ei}>
                           <Icon name="spark" size={20} />
                         </span>
                         <span>
-                          <b>{t.exT}</b>
-                          <span className={s.exS}>{t.exS}</span>
+                          <b>{interview ? t.exT10 : t.exT}</b>
+                          <span className={s.exS}>{interview ? t.exS10 : t.exS}</span>
                         </span>
                         <Icon name="chev" size={20} className={s.chev} />
                       </button>
@@ -687,7 +719,7 @@ export function InteractiveFeedback(p: Props) {
                               </div>
                             </li>
                           ))}
-                          <li className={s.etip}>{data.ai_practice.tip[lang]}</li>
+                          {!interview && <li className={s.etip}>{data.ai_practice.tip[lang]}</li>}
                         </ol>
                       )}
                     </div>
@@ -740,7 +772,7 @@ export function InteractiveFeedback(p: Props) {
   );
 }
 
-/** The next week's preview, or (week 10, `next.final`) the course close: the live mock interview and the certificate. */
+/** The next week's preview, or (week 10, `next.final`) the course close: the AI interview practice and the certificate. */
 function NextCard({ data, lang, t, final }: { data: FeedbackData; lang: Lang; t: UIT; final: boolean }) {
   return (
     <div className={s.w2} data-final={final || undefined}>
@@ -760,6 +792,46 @@ function NextCard({ data, lang, t, final }: { data: FeedbackData; lang: Lang; t:
         <Icon name="trophy" size={17} />
         {data.next.capstone[lang]}
       </p>
+    </div>
+  );
+}
+
+/** Week 10: the AI interview practice (/app/herramientas/entrevista), with the best STAR score per question. */
+function InterviewCard({ best, href, t, tip }: { best: InterviewBest; href: string; t: UIT; tip: string }) {
+  const n = interviewAnswered(best);
+  const done = interviewPracticeDone(best);
+  return (
+    <div className={s.aiInt} data-done={done || undefined}>
+      <div className={s.aiTop}>
+        <span className={s.aiI}>
+          <Icon name="mic" size={22} />
+        </span>
+        <div>
+          <p className={s.aiK}>{t.aiK}</p>
+          <h3>{t.aiH}</h3>
+          <p className={s.aiP}>{t.aiP}</p>
+        </div>
+      </div>
+      <ul className={s.aiQs} aria-label={t.aiBest}>
+        {INTERVIEW_KEYS.map((k) => {
+          const v = best[k];
+          return (
+            <li key={k} data-ok={v != null || undefined}>
+              <span lang="en">{QUESTIONS[k].short}</span>
+              <b>{v != null ? `${v}/4 STAR` : t.aiNone}</b>
+            </li>
+          );
+        })}
+      </ul>
+      <p className={s.aiCount} data-ok={done || undefined}>
+        <Icon name={done ? "check" : "target"} size={17} />
+        {done ? `${t.aiCount(n)} · ${t.aiDone}` : t.aiCount(n)}
+      </p>
+      {tip && <p className={s.etip}>{tip}</p>}
+      <Link href={href} className={`${s.btnP} ${s.aiCta}`}>
+        <Icon name="mic" size={18} />
+        {n ? t.aiCtaAgain : t.aiCta}
+      </Link>
     </div>
   );
 }

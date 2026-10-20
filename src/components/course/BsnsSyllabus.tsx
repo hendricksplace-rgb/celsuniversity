@@ -28,7 +28,7 @@ const UI = {
     prev: "PREVIOUS",
     next: "NEXT",
     nav: "Lesson navigation",
-    chips: ["10 weeks", "100 hours", "Level B2–C1", "Live final interview"],
+    chips: ["10 weeks", "100 hours", "Level B2–C1", "AI interview practice"],
     task: { read: "READING", write: "WRITING", speak: "SPEAKING", res: "RESEARCH", quiz: "VIDEO QUIZ", check: "FINAL CHECKLIST" },
     week: "Week {n}",
   },
@@ -42,7 +42,7 @@ const UI = {
     prev: "ANTERIOR",
     next: "SIGUIENTE",
     nav: "Navegación entre lecciones",
-    chips: ["10 semanas", "100 horas", "Nivel B2–C1", "Entrevista final en vivo"],
+    chips: ["10 semanas", "100 horas", "Nivel B2–C1", "Práctica de entrevista con IA"],
     task: { read: "LECTURA", write: "ESCRITURA", speak: "EXPRESIÓN ORAL", res: "INVESTIGACIÓN", quiz: "CUESTIONARIO EN VIDEO", check: "LISTA FINAL" },
     week: "Semana {n}",
   },
@@ -56,7 +56,7 @@ const CM = {
       ["clock", "Dedicar alrededor de 10 horas cada semana a mi curso."],
       ["pen", "Entregar mis tareas y construir mi Proyecto Final paso a paso."],
       ["mic", "Hablar en inglés con confianza, aunque me equivoque."],
-      ["trophy", "Presentarme a mi entrevista final en vivo en la semana 10."],
+      ["trophy", "Hacer mi práctica de entrevista con IA en la semana 10."],
     ],
     lab: "Escribe tu nombre completo para firmar",
     ph: "Tu firma aparecerá aquí",
@@ -67,7 +67,7 @@ const CM = {
     dk: "COMPROMISO FIRMADO",
     dh: ["Hoy empezó ", "tu cambio"],
     dp: (n: string) =>
-      `${n}, diste el primer paso. Cada semana que completes te acerca a la versión profesional que quieres ser. Nos vemos en tu entrevista final.`,
+      `${n}, diste el primer paso. Cada semana que completes te acerca a la versión profesional que quieres ser. Nos vemos en tu práctica de entrevista con IA.`,
     sg: "FIRMADO",
   },
   en: {
@@ -78,7 +78,7 @@ const CM = {
       ["clock", "Spend about 10 hours every week on my course."],
       ["pen", "Turn in my assignments and build my Capstone step by step."],
       ["mic", "Speak English with confidence, even when I make mistakes."],
-      ["trophy", "Show up for my live final interview in Week 10."],
+      ["trophy", "Do my AI interview practice in Week 10."],
     ],
     lab: "Type your full name to sign",
     ph: "Your signature will appear here",
@@ -89,7 +89,7 @@ const CM = {
     dk: "COMMITMENT SIGNED",
     dh: ["Your change ", "starts today"],
     dp: (n: string) =>
-      `${n}, you took the first step. Every week you complete brings you closer to the professional you want to be. See you at your final interview.`,
+      `${n}, you took the first step. Every week you complete brings you closer to the professional you want to be. See you at your AI interview practice.`,
     sg: "SIGNED",
   },
 };
