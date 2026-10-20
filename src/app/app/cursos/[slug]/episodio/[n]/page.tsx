@@ -1,7 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
-import { canAccessCourse, getViewer } from "@/lib/access";
+import { canAccessCourse, canSeeTeacherGuides, getViewer } from "@/lib/access";
+import { guidePath, moduleGuides } from "@/lib/teacher-guide-server";
 import { themeForCourse } from "@/lib/themes";
 import { episodePath, loadCoursePage } from "@/lib/course-page";
 import { isGuidedCourse } from "@/lib/guided-modules";
@@ -152,7 +153,12 @@ export default async function EpisodePage({ params, searchParams }: Props) {
 
   if (page.layout === "citizenship") {
     const nextEpisode = page.episodes.find((e) => e.n > episode.n) ?? null;
-    const us = await celsusDetails(supabase, viewer, page.course.id, episode, nextEpisode, t.us);
+    // Teachers and admins: the episode's Teacher's Guide (and, on the last episode, the final evaluation's) on top.
+    const evaluation = !nextEpisode ? page.extras.find((x) => x.kind === "evaluation")?.id : undefined;
+    const [us, guides] = await Promise.all([
+      celsusDetails(supabase, viewer, page.course.id, episode, nextEpisode, t.us),
+      canSeeTeacherGuides(viewer.role) ? moduleGuides(supabase, [episode.id, ...(evaluation ? [evaluation] : [])]) : null,
+    ]);
     const tarjetas = `${episodePath(page.course.slug, episode.n)}/tarjetas`;
     return (
       <CelsusEpisode
@@ -174,6 +180,15 @@ export default async function EpisodePage({ params, searchParams }: Props) {
         trackHref={`${tarjetas}?examen=1`}
         resumeMeta={us.resumeMeta}
         xp={episode.parts.reduce((s, p) => s + p.xpEarned, 0)}
+        teacherGuide={
+          guides?.has(episode.id)
+            ? {
+                t: t.guide,
+                href: guidePath(page.course.slug, episode.n),
+                evalHref: evaluation && guides.has(evaluation) ? guidePath(page.course.slug, "evaluacion") : null,
+              }
+            : null
+        }
       />
     );
   }

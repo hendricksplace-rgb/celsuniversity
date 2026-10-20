@@ -69,6 +69,7 @@ export function CelsusEpisode({
   trackHref,
   resumeMeta,
   xp,
+  teacherGuide = null,
 }: {
   t: T;
   episode: Episode;
@@ -88,6 +89,8 @@ export function CelsusEpisode({
   trackHref: string;
   resumeMeta: { done: number; total: number; text: string } | null;
   xp: number;
+  /** Teachers and admins only: the "Guía del profesor" card above "Continúa donde te quedaste". */
+  teacherGuide?: { t: Dictionary["guide"]; href: string; evalHref: string | null } | null;
 }) {
   const parts = episode.parts;
   /** Track C doesn't need the quiz: it never blocks them, and shows as "not needed" until it is recorded. */
@@ -213,6 +216,32 @@ export function CelsusEpisode({
 
       <div className="main">
         <div>
+          {teacherGuide && (
+            <section className="tguide" aria-labelledby="use-tguide">
+              <span className="ti" aria-hidden>
+                <svg viewBox="0 0 48 48" width="34" height="34">
+                  <rect x="9" y="8" width="28" height="35" rx="5" fill="#fff" stroke="#0E2547" strokeWidth="2.6" />
+                  <rect x="17" y="4.5" width="12" height="7" rx="2.5" fill="#F2C230" stroke="#0E2547" strokeWidth="2.2" />
+                  <path d="M15 21l3 3 5-6M15 31l3 3 5-6" stroke="#0E2547" strokeWidth="2.6" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="37" cy="37" r="7" fill="#21A67A" />
+                  <path d="M33.8 37.2l2.2 2.2 4-4.4" stroke="#fff" strokeWidth="2.2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <div>
+                <p className="k">{teacherGuide.t.cardKicker}</p>
+                <h2 id="use-tguide">{fill(teacherGuide.t.cardTitle, { n: episode.n })}</h2>
+                <p className="s">{teacherGuide.t.cardSub}</p>
+                {teacherGuide.evalHref && (
+                  <Link className="ev" href={teacherGuide.evalHref}>
+                    {teacherGuide.t.evalLink} ›
+                  </Link>
+                )}
+              </div>
+              <Link className="go" href={teacherGuide.href}>
+                {teacherGuide.t.cardBtn}
+              </Link>
+            </section>
+          )}
           {current ? (
             <div className="cont">
               <div className="in">

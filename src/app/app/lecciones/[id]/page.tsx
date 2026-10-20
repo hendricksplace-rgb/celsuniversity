@@ -17,6 +17,8 @@ import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
 import { loadVideoTask } from "@/lib/video-task-server";
 import { loadSpeaking } from "@/lib/speaking-server";
+import { GUIDE_LAYOUT, guidePlaceOfLesson } from "@/lib/teacher-guide-server";
+import { LockedCard } from "@/components/celsus/TeacherGuide";
 import { loadFeedback } from "@/lib/feedback-server";
 
 type Props = { params: Promise<{ id: string }> };
@@ -32,7 +34,16 @@ export default async function LessonPage({ params }: Props) {
   const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, status, teacher_only, module:modules(id, title, kind, course:courses(id, slug, title, layout))").eq("id", id).maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
+  // RLS hides teacher-only lessons (the Teacher's Guides) and drafts from students: a direct link says "no access".
+  if (!lesson && !viewer.isStaff && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id))
+    return <LockedCard title={t.guide.lockedTitle} text={t.lesson.noAccess} href="/app/cursos" cta={t.guide.lockedCta} />;
   if (!lesson || !lessonModule || !course) notFound();
+
+  // CelsUS Teacher's Guides open their own page (teachers and admins), never inside the student flow.
+  if (lesson.teacher_only && course.layout === GUIDE_LAYOUT && course.slug) {
+    const guide = await guidePlaceOfLesson(supabase, lesson.id, lessonModule.id, course.slug);
+    if (guide) redirect(guide);
+  }
 
   // Guided courses (CelsGLOBAL step template): the module's old lessons open its step page for students.
   if (!viewer.isStaff && course.slug) {
@@ -73,7 +84,7 @@ export default async function LessonPage({ params }: Props) {
   ]);
   if (reading || writing || research || video || speaking || ty === "feedback") {
     const [{ data: weekLessons }, weekN, backHref] = await Promise.all([
-      supabase.from("lessons").select("id, title, has_content, lesson_type").eq("module_id", lessonModule.id).order("sort_order"),
+      supabase.from("lessons").select("id, title, has_content, lesson_type").eq("module_id", lessonModule.id).eq("teacher_only", false).order("sort_order"),
       weekNumber(supabase, course.id, lessonModule.id),
       moduleHref(supabase, course, lessonModule.id),
     ]);
@@ -165,7 +176,8 @@ export default async function LessonPage({ params }: Props) {
 
   const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: allSiblings }] = await Promise.all([
     loadLessonContent(supabase, viewer, lesson.id, course.id, access),
-    supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).order("sort_order"),
+    // Prev / Next never lead to a teacher-only lesson (the Teacher's Guide), not even for staff.
+    supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).eq("teacher_only", false).order("sort_order"),
   ]);
   const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings ?? []);
   // A video lesson whose video isn't up yet: nothing to watch, so it is neither recorded nor finishable.
