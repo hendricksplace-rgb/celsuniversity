@@ -58,7 +58,7 @@ export async function loadRoute(supabase: Client, userId: string) {
     if (!c) return [];
     const s = stats.get(c.id);
     const assignment = assignments.find((a) => a.courseId === c.id) ?? null;
-    const moduleCount = s?.modules.length ?? (c.modules as unknown as { count: number }[])[0]?.count ?? 0;
+    const moduleCount = s?.units ?? (c.modules as unknown as { count: number }[])[0]?.count ?? 0;
     let state: StageState = "preview";
     if (enrolled && s) state = s.completed ? "done" : s.started ? "progress" : assignment ? "assigned" : "available";
     const next = s ? nextLesson(s) : null;

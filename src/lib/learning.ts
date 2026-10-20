@@ -34,6 +34,9 @@ export type CourseStats = {
   modulesDone: number;
   /** 1-based: the first module not finished yet (the last one when everything is done). */
   currentModule: number;
+  /** The course's units for "Semana x de y" / "Módulo x de y": its lesson_week modules with something in them
+   *  (not "Material extra", "Recursos adicionales" or the evaluation module). */
+  units: number;
   started: boolean;
   completed: boolean;
   xp: number;
@@ -88,7 +91,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     supabase.from("courses").select("id, slug, title, description, cover_art_url, sort_order").in("id", courseIds),
     supabase
       .from("modules")
-      .select("id, course_id, title, sort_order, lessons(id, title, sort_order, status, teacher_only, has_content)")
+      .select("id, course_id, title, kind, sort_order, lessons(id, title, sort_order, status, teacher_only, has_content)")
       .in("course_id", courseIds)
       .eq("status", "published")
       .order("sort_order"),
@@ -113,6 +116,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     const ms: ModuleStats[] = [];
     let xp = 0;
     let last: CourseStats["last"] = null;
+    const weekIds = new Set<string>();
     for (const m of mods) {
       const g = guided.get(m.id);
       if (g) {
@@ -132,6 +136,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         order.push({ id: rep.id, title, done: isDone, moduleId: m.id });
         const stepLast = [row?.updated_at ?? null, ...own.map((l) => prog.get(l.id)?.last_activity ?? null)].filter((x): x is string => !!x).sort().pop() ?? null;
         ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
+        weekIds.add(m.id);
         continue;
       }
       // studentLessons keeps an empty CelsVideo for the episode path; it can't be finished, so it doesn't count here.
@@ -155,6 +160,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         order.push({ id: l.id, title: l.title, done: isDone, moduleId: m.id });
       }
       ms.push({ id: m.id, title: m.title, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length, started, lastActivity: modLast });
+      if (m.kind === "lesson_week") weekIds.add(m.id);
     }
     const lessons = order.length;
     const done = order.filter((o) => o.done).length;
@@ -173,6 +179,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
       done,
       modulesDone,
       currentModule: firstOpen === -1 ? Math.max(ms.length, 1) : firstOpen + 1,
+      units: weekIds.size || ms.length,
       started: !!last,
       completed: lessons > 0 && done === lessons,
       xp,

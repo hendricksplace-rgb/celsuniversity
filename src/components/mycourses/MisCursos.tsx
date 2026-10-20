@@ -20,7 +20,7 @@ const COVER_SIZES = "(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 310px";
 
 /** "CelsTV: English For Our Generation" → "English For Our Generation" on the cards. */
 const shortTitle = (title: string) => title.replace(/^Cels\w+:\s*/, "");
-const unitLine = (u: U, c: CourseStats) => fill(u.unitOf, { unit: u.unit[c.brand], x: Math.min(c.currentModule, Math.max(c.modules.length, 1)), y: c.modules.length });
+const unitLine = (u: U, c: CourseStats) => fill(u.unitOf, { unit: u.unit[c.brand], x: Math.min(c.currentModule, Math.max(c.units, 1)), y: c.units });
 
 const ICONS = {
   resume: (
@@ -66,7 +66,7 @@ function Cover({ src, children }: { src: string | null; children?: React.ReactNo
 function CourseCard({ t, u, c, kit, label, badge, blurb, icon }: { t: T; u: U; c: CourseStats; kit: string; label: string; badge: React.ReactNode; blurb: boolean; icon?: keyof typeof ICONS }) {
   const state = stateOf(c);
   const pct = pctOf(c);
-  const extra = blurb ? fill(t.blurb[c.brand], { n: c.modules.length }) : "";
+  const extra = blurb ? fill(t.blurb[c.brand], { n: c.units }) : "";
   const line = state === "done" ? t.completed : state === "progress" ? `${t.inProgress} · ${unitLine(u, c)}` : extra ? `${t.notStarted} · ${extra}` : t.notStarted;
   return (
     <li className={`${s.cc} ${kit}`} data-state={state}>
@@ -130,7 +130,7 @@ function Resume({ t, u, r }: { t: T; u: U; r: NonNullable<MyCoursesData["resume"
   const c = r.course;
   const pct = pctOf(c);
   const state = stateOf(c);
-  const kick = `${NAME[c.brand]} · ${fill(u.unitOf, { unit: u.unit[c.brand], x: Math.max(r.unit, 1), y: c.modules.length })}`.toLocaleUpperCase("es");
+  const kick = `${NAME[c.brand]} · ${fill(u.unitOf, { unit: u.unit[c.brand], x: Math.min(Math.max(r.unit, 1), Math.max(c.units, 1)), y: c.units })}`.toLocaleUpperCase("es");
   const when = c.last ? (Date.now() - new Date(c.last.at).getTime() < 864e5 ? u.today : Date.now() - new Date(c.last.at).getTime() < 2 * 864e5 ? u.yesterday : fill(u.daysAgo, { n: Math.floor((Date.now() - new Date(c.last.at).getTime()) / 864e5) })) : t.notStarted;
   return (
     <div className={s.hideEmpty}>
