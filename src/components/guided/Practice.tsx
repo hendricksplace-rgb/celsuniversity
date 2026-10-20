@@ -3,8 +3,10 @@
 // "Practica": the five kinds of game (sort, order, pick, spot, highlight). Answers are kept in
 // guided_step_progress.state.practice so the student finds them again.
 import { useEffect, useMemo, useState } from "react";
-import type { HighlightPractice, OrderPractice, PickPractice, Practice, SortPractice, SpotPractice } from "@/lib/guided";
-import { Ico, type T } from "./ui";
+import type { HighlightPractice, LabelPractice, ListenPickPractice, MythPractice, OrderPractice, PickPractice, Practice, SortPractice, SpotPractice } from "@/lib/guided";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { Binary } from "./Essentials";
+import { Ico, say, type T } from "./ui";
 import s from "./guided.module.css";
 
 type V = Record<string, unknown>;
@@ -45,8 +47,11 @@ const L = {
   },
 };
 
-export function PracticeView(props: { p: Practice; v: V; set: (v: V) => void; t: T; lang: "es" | "en" }) {
+export function PracticeView(props: { p: Practice; v: V; set: (v: V) => void; t: T; lang: "es" | "en"; readerT: Dictionary["reader"] }) {
   const { p } = props;
+  if (p.kind === "label") return <Label {...props} p={p} />;
+  if (p.kind === "listen_pick") return <ListenPick {...props} p={p} />;
+  if (p.kind === "myth") return <Myth p={p} v={props.v} set={props.set} />;
   if (p.kind === "sort") return <Sort {...props} p={p} />;
   if (p.kind === "order") return <Order {...props} p={p} />;
   if (p.kind === "pick") return <Pick {...props} p={p} />;
@@ -62,74 +67,48 @@ export function practiceDone(p: Practice | null, v: V) {
   if (p.kind === "sort" || p.kind === "pick") return Object.keys(a).length >= p.items.length;
   if (p.kind === "order") return ((v.placed as string[]) ?? []).length >= p.items.length;
   if (p.kind === "spot") return ((v.found as number[]) ?? []).length >= p.doc.filter((d) => d.err).length;
+  if (p.kind === "label" || p.kind === "listen_pick") return Object.keys(a).length >= p.items.length;
+  if (p.kind === "myth") return Array.isArray(v.picks) && (v.picks as unknown[]).filter((x) => x !== null && x !== undefined).length >= p.items.length;
   return ((v.found as number[]) ?? []).length >= (p.min_found ?? 6);
 }
 
-function Sort({ p, v, set, t, lang }: Props<SortPractice>) {
-  const l = L[lang];
+/** Each statement with the two labels (CV / Resume): right or wrong with its `why`, plus the score above. */
+function Sort({ p, v, set, t }: Props<SortPractice>) {
   const answers = (v.answers ?? {}) as Record<string, "a" | "b">;
-  const [i, setI] = useState(() => Math.min(Object.keys(answers).length, p.items.length));
-  const finished = i >= p.items.length;
-  const right = p.items.filter((it, k) => answers[k] === it.answer).length;
-  const it = p.items[i];
-  const ans = it ? answers[i] : undefined;
   return (
-    <div className={s.dq}>
-      {!finished && it ? (
-        <>
-          <div className={s.counter}>
-            {i + 1} / {p.items.length}
-          </div>
-          <p className={s.sortCard}>{it.text}</p>
-          <div className={s.big2}>
-            {(["a", "b"] as const).map((k) => (
-              <button
-                key={k}
-                type="button"
-                disabled={ans !== undefined}
-                className={ans === undefined ? "" : k === it.answer ? s.right : k === ans ? s.wrong : ""}
-                onClick={() => set({ ...v, answers: { ...answers, [i]: k } })}
-              >
-                {p.labels[k]}
-              </button>
-            ))}
-          </div>
-          {ans !== undefined && (
-            <>
-              <div className={s.dfb} aria-live="polite">
-                {ans === it.answer ? <b>{t.right} </b> : <b className={s.no}>{t.almost} </b>}
+    <div className={s.gm}>
+      {p.items.map((it, i) => {
+        const a = answers[i];
+        const done = a !== undefined;
+        return (
+          <div className={s.dq} key={i}>
+            <div className={s.gmQ}>{it.text}</div>
+            <div className={s.bin}>
+              {(["a", "b"] as const).map((k) => {
+                const c = !done ? "" : k === it.answer ? s.right : k === a ? s.wrong : "";
+                return (
+                  <button key={k} type="button" className={c} disabled={done} aria-pressed={a === k} onClick={() => set({ ...v, answers: { ...answers, [i]: k } })}>
+                    {p.labels[k]}
+                  </button>
+                );
+              })}
+            </div>
+            {done && it.why && (
+              <div className={s.dfb}>
+                {a === it.answer ? <b>{t.right} </b> : <b className={s.no}>{t.almost} </b>}
                 {it.why}
               </div>
-              <div className={s.rowEnd}>
-                <button type="button" className={`${s.btn} ${s.btnN}`} onClick={() => setI(i + 1)}>
-                  {l.next}
-                  <Ico n="right" />
-                </button>
-              </div>
-            </>
-          )}
-        </>
-      ) : (
-        <>
-          <span className={s.score}>{t.of(right, p.items.length)}</span>
-          <p className={s.sortCard}>{l.final(right, p.items.length)}</p>
-          <div className={s.rowEnd}>
-            <button
-              type="button"
-              className={`${s.btn} ${s.btnO}`}
-              onClick={() => {
-                set({ ...v, answers: {} });
-                setI(0);
-              }}
-            >
-              {l.again}
-            </button>
+            )}
           </div>
-        </>
-      )}
+        );
+      })}
     </div>
   );
 }
+export const sortScore = (p: SortPractice, v: V) => {
+  const a = (v.answers ?? {}) as Record<string, string>;
+  return { n: Object.keys(a).length, right: p.items.filter((d, i) => a[i] === d.answer).length };
+};
 
 function shuffle<X>(xs: X[], seed: number) {
   const a = [...xs];
@@ -363,6 +342,96 @@ function Highlight({ p, v, set, lang }: Props<HighlightPractice>) {
           <b>{l.allFound}</b>
         </div>
       )}
+    </div>
+  );
+}
+
+// ---------- label (S / T / A / R), myth as practice, listen_pick ----------
+
+function Label({ p, v, set, t }: Props<LabelPractice>) {
+  const answers = (v.answers ?? {}) as Record<string, string>;
+  const all = p.items.every((_, i) => answers[i] !== undefined);
+  return (
+    <div className={s.drill}>
+      {p.items.map((it, i) => {
+        const a = answers[i];
+        return (
+          <div className={s.dq} key={i}>
+            <div className={s.sent}>
+              <small>FRASE {i + 1}</small>
+              <span lang="en">{it.text}</span>
+            </div>
+            <div className={s.labs}>
+              {p.labels.map((k) => {
+                const c = a === undefined ? "" : k === it.answer ? s.right : k === a ? s.wrong : "";
+                return (
+                  <button key={k} type="button" className={c} disabled={a !== undefined} onClick={() => set({ ...v, answers: { ...answers, [i]: k } })} aria-pressed={a === k}>
+                    {k}
+                  </button>
+                );
+              })}
+            </div>
+            {a !== undefined && a !== it.answer && (
+              <p className={s.count}>
+                <b className={s.no}>{t.almost}</b> Es «{it.answer}».
+              </p>
+            )}
+          </div>
+        );
+      })}
+      {all && p.done && (
+        <div className={s.dfb} aria-live="polite">
+          <b>{t.right}</b> {p.done}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** The e-book's myth / reality block as practice, with the course's own button labels ("Ayuda / Perjudica", "Sí / Mejor no"). */
+function Myth({ p, v, set }: { p: MythPractice; v: V; set: (v: V) => void }) {
+  return (
+    <Binary items={p.items} value={v.picks} onChange={(x) => set({ ...v, picks: x })} labels={p.labels ?? { true: "Sí", false: "No" }} />
+  );
+}
+
+function ListenPick({ p, v, set, t }: Props<ListenPickPractice>) {
+  const answers = (v.answers ?? {}) as Record<string, number>;
+  return (
+    <div className={s.drill}>
+      {p.items.map((d, i) => {
+        const ans = answers[i];
+        return (
+          <div className={s.dq} key={i}>
+            <div className={s.weak}>
+              Situación
+              <b>{d.situation}</b>
+            </div>
+            <div className={s.dopts}>
+              {d.options.map((o, j) => {
+                const c = ans === undefined ? "" : j === d.answer ? s.right : j === ans ? s.wrong : "";
+                return (
+                  <div key={j} className={s.lpRow}>
+                    <button type="button" className={c} disabled={ans !== undefined} onClick={() => set({ ...v, answers: { ...answers, [i]: j } })} lang="en">
+                      <i>{c === s.right ? "✓" : c === s.wrong ? "✗" : "ABC"[j]}</i>
+                      {o}
+                    </button>
+                    <button type="button" className={s.sayBtn} aria-label={`Escuchar ${o}`} onClick={() => say(o)}>
+                      <Ico n="vol" />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+            {ans !== undefined && (
+              <div className={s.dfb} aria-live="polite">
+                {ans === d.answer ? <b>{t.right} </b> : <b className={s.no}>{t.almost} </b>}
+                {d.why ?? <span lang="en">«{d.options[d.answer]}»</span>}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

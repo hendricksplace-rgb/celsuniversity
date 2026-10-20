@@ -22,7 +22,7 @@ export default async function MiResumePage({ params, searchParams }: Props) {
   if (!course) notFound();
   if (!(await canAccessCourse(supabase, viewer, course.id))) redirect(`/app/cursos/${slug}`);
   const g = await loadGuided(supabase, slug, viewer.user.id);
-  if (!g) notFound();
+  if (!g || g.theme !== "resume") notFound();
   return (
     <MiResumeView
       slug={g.course.slug}

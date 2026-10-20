@@ -59,13 +59,21 @@ export function ResumeSheet({ m, lang, empty, id }: { m: DocModel; lang: Lang; e
 
 /** The copy that prints ("Descargar PDF"): hidden on screen, alone on the page in print. */
 export function PrintCopy({ m, lang }: { m: DocModel; lang: Lang }) {
-  // A direct child of <body>, so print can drop everything else from the layout (no blank pages).
+  return (
+    <PrintPortal>
+      <ResumeSheet m={m} lang={lang} />
+    </PrintPortal>
+  );
+}
+
+/** What prints: a direct child of <body>, so print can drop everything else from the layout (no blank pages). */
+export function PrintPortal({ children }: { children: React.ReactNode }) {
   const [host, setHost] = useState<HTMLElement | null>(null);
   useEffect(() => setHost(document.body), []);
   if (!host) return null;
   return createPortal(
     <div className={s.printDoc} aria-hidden>
-      <ResumeSheet m={m} lang={lang} />
+      {children}
     </div>,
     host,
   );

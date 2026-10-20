@@ -1,0 +1,1525 @@
+[
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 1,
+    "of": 7,
+    "module_id": "dcf51ecb-ef3a-4c60-9671-0a1424d5a108",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/110b0d22093cceec0875dcf48023271916288ac5/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "cGTQYVASf3U",
+        "title": "The Ultimate Interview Tip: Your Personal Value Proposition",
+        "channel": "Indeed",
+        "lang": "en",
+        "about": "Cómo transformar respuestas genéricas en historias que muestran tus fortalezas. Se enfoca en la confianza y la claridad más que en la perfección del idioma."
+      }
+    ],
+    "original_activity_lesson_id": "661e64bb-1776-4c76-8b7e-b858aac1d6e7",
+    "kicker": "Paso 1 · Tu valor",
+    "title": "Tu valor, no solo tus respuestas",
+    "minutes": 40,
+    "builds": "Tu frase de valor y 5 respuestas mejoradas",
+    "intro": "Las entrevistas en Estados Unidos no se tratan solo de responder preguntas. Son tu oportunidad para compartir tu historia, mostrar tu valor profesional y crear una conexión auténtica.",
+    "keys": [
+      {
+        "t": "Quién eres",
+        "d": "Se enfocan en quién eres, no solo en lo que hiciste."
+      },
+      {
+        "t": "Tu presencia",
+        "d": "Tu actitud y tu manera de hablar importan tanto como tus respuestas."
+      },
+      {
+        "t": "¿Encajas?",
+        "d": "Quieren saber si puedes hacer el trabajo y si encajarás en el equipo."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "quote",
+        "text": "No necesitas hablar inglés perfecto. Solo necesitas hablar con calma, seguridad y enfoque."
+      },
+      {
+        "type": "list",
+        "title": "En este curso aprenderás",
+        "items": [
+          "Cómo prepararte antes de la entrevista",
+          "Cómo usar tu lenguaje corporal",
+          "Cómo responder a preguntas comunes",
+          "Cómo hacer preguntas inteligentes",
+          "Cómo sentirte más cómodo usando inglés profesional"
+        ]
+      },
+      {
+        "type": "keys",
+        "title": "Tips rápidos para demostrar tu valor",
+        "items": [
+          {
+            "title": "Usa ejemplos reales",
+            "body": "Menciona algo que hiciste que tuvo un resultado positivo."
+          },
+          {
+            "title": "Habla de resultados",
+            "body": "Números, mejoras, reconocimientos."
+          },
+          {
+            "title": "Muestra acción",
+            "body": "¿Qué hiciste? ¿Cómo solucionaste un problema?"
+          },
+          {
+            "title": "Mantén la confianza",
+            "body": "No necesitas hablar perfecto, solo demostrar seguridad."
+          }
+        ]
+      },
+      {
+        "type": "compare",
+        "title": "Mini-ejemplo · What is your biggest strength?",
+        "items": [
+          {
+            "bad": "\"I'm organized.\"",
+            "good": "\"I'm organized — for example, I managed project deadlines for a team of 10 and delivered all projects ahead of schedule.\""
+          }
+        ]
+      }
+    ],
+    "practice": {
+      "kind": "pick",
+      "title": "¿Cuál demuestra tu valor?",
+      "intro": "Elige la respuesta que pondrías en una entrevista.",
+      "items": [
+        {
+          "weak": "Why do you want this job?",
+          "options": [
+            "\"Because I need a job.\"",
+            "\"I've spent 5 years improving quality processes, and your focus on zero defects is exactly the work I love.\"",
+            "\"Because it pays well.\""
+          ],
+          "answer": 1,
+          "why": "Conecta tu experiencia con lo que la empresa busca."
+        },
+        {
+          "weak": "Tell me about a challenge you faced.",
+          "options": [
+            "\"I had many challenges.\"",
+            "\"Work is always hard.\"",
+            "\"Our biggest client was unhappy with delays, so I created a weekly status call and we didn't miss a deadline for a year.\""
+          ],
+          "answer": 2,
+          "why": "Una situación real, lo que hiciste y un resultado."
+        },
+        {
+          "weak": "What is your biggest strength?",
+          "options": [
+            "\"I'm a good communicator: I trained 25 new hires and cut their onboarding time in half.\"",
+            "\"I'm very good at everything.\"",
+            "\"Communication, I think.\""
+          ],
+          "answer": 0,
+          "why": "Una fortaleza + un ejemplo + un resultado."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu frase de valor y tus primeras respuestas",
+      "intro": "Primero escribe una respuesta normal; luego mejórala demostrando tu valor (ejemplos, resultados o acciones positivas). Se guarda en tu banco.",
+      "sections": [
+        {
+          "key": "value",
+          "type": "template",
+          "title": "Mi frase de valor",
+          "hint": "Una frase que diga qué haces y qué resultado das. La usarás en «Tell me about yourself» y «Why should we hire you?».",
+          "template": "I help [tipo de equipo o empresa] [lograr qué] by [cómo lo haces].",
+          "example": "I help manufacturing teams reduce defects and costs with data, clear processes and well-trained people.",
+          "min_chars": 40,
+          "max_chars": 220,
+          "lang": "en"
+        },
+        {
+          "key": "improve5",
+          "type": "normal_vs_better",
+          "title": "Respuesta normal → respuesta mejorada",
+          "questions": [
+            "Tell me about yourself.",
+            "Why do you want this job?",
+            "What is your biggest strength?",
+            "What is your biggest weakness?",
+            "Tell me about a challenge you faced."
+          ],
+          "lang": "en"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué buscan en una entrevista en EE.UU.?",
+        "o": [
+          "Inglés perfecto",
+          "Quién eres, si puedes hacer el trabajo y si encajarás",
+          "Solo tus títulos"
+        ],
+        "a": 1,
+        "why": "Se enfocan en quién eres, no solo en lo que hiciste."
+      },
+      {
+        "q": "¿Qué hace más fuerte una respuesta?",
+        "o": [
+          "Un ejemplo real con un resultado",
+          "Muchos adjetivos",
+          "Hablar muy rápido"
+        ],
+        "a": 0,
+        "why": "Usa ejemplos reales y habla de resultados."
+      },
+      {
+        "q": "¿Necesitas hablar inglés perfecto?",
+        "o": [
+          "Sí, o no te contratan",
+          "No: necesitas calma, seguridad y enfoque",
+          "Solo si es por video"
+        ],
+        "a": 1,
+        "why": "No necesitas hablar inglés perfecto."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 2,
+    "of": 7,
+    "module_id": "e279a2f1-3264-4013-a7d2-94bb5b44dd05",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/9807e09e83105986f02d71812f93c516019fa0e8/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "u1YQv5ayJzc",
+        "title": "¿Cómo hacer una video entrevista?",
+        "channel": "Ibero Egresados",
+        "lang": "es",
+        "about": "Preparación técnica, entorno, vestimenta, lenguaje corporal y cómo transmitir confianza en pantalla."
+      },
+      {
+        "provider": "youtube",
+        "id": "ZdNeIGm9AZI",
+        "title": "Top 8 fails en videollamadas",
+        "channel": "—",
+        "lang": "es",
+        "about": "Momentos divertidos de videollamadas que muestran por qué conviene preparar tu entorno."
+      }
+    ],
+    "original_activity_lesson_id": "f237ffe3-ce87-40cb-b17f-fc7a0e18fe58",
+    "kicker": "Paso 2 · Antes de la entrevista",
+    "title": "Antes de la entrevista",
+    "minutes": 35,
+    "builds": "Tu ficha de la empresa y tu lista de preparación",
+    "intro": "Prepararte te ayuda a sentirte seguro. Cuando sabes lo que vas a decir y cómo vas a presentarte, llegas más tranquilo y profesional.",
+    "keys": [
+      {
+        "t": "Investiga",
+        "d": "La empresa, el puesto y su descripción."
+      },
+      {
+        "t": "Prepárate",
+        "d": "Ropa profesional, hora y lugar confirmados."
+      },
+      {
+        "t": "Videollamada",
+        "d": "Fondo, conexión y luz revisados."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "checklist",
+        "title": "Antes de la entrevista",
+        "items": [
+          {
+            "text": "Investiga la empresa y el puesto. Lee bien la descripción del trabajo."
+          },
+          {
+            "text": "Practica preguntas comunes (las verás en el paso 4)."
+          },
+          {
+            "text": "Elige ropa profesional, neutral y limpia."
+          },
+          {
+            "text": "Confirma la hora y el lugar."
+          },
+          {
+            "text": "Si es por videollamada, revisa tu fondo, tu conexión y la luz."
+          }
+        ],
+        "done_text": "¡Listo para tu entrevista!"
+      },
+      {
+        "type": "tip",
+        "title": "Consejo práctico",
+        "text": "La seguridad comienza mucho antes de hablar. Empieza con tu preparación."
+      }
+    ],
+    "practice": {
+      "kind": "spot",
+      "title": "¿Lista para la videollamada?",
+      "intro": "Esta videollamada tiene 5 problemas. Tócalos para encontrarlos.",
+      "doc": [
+        {
+          "text": "La cámara apunta desde abajo, hacia el techo.",
+          "err": "Pon la cámara a la altura de tus ojos."
+        },
+        {
+          "text": "Detrás se ve una cama sin tender y ropa en la silla.",
+          "err": "Elige un fondo ordenado y sin distracciones."
+        },
+        {
+          "text": "Una ventana brillante detrás de la persona: su cara se ve oscura.",
+          "err": "La luz debe estar frente a ti, no detrás."
+        },
+        {
+          "text": "Camisa limpia y de color neutro.",
+          "err": null
+        },
+        {
+          "text": "El teléfono suena con notificaciones.",
+          "err": "Silencia tu teléfono y cierra otras aplicaciones."
+        },
+        {
+          "text": "Se conectó 1 minuto después de la hora.",
+          "err": "Conéctate 5–10 minutos antes y prueba audio y cámara."
+        },
+        {
+          "text": "Tiene la descripción del puesto abierta en su escritorio.",
+          "err": null
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu ficha de la empresa",
+      "intro": "Llena una ficha por cada entrevista. La tendrás a la mano en tu banco y en el simulacro.",
+      "sections": [
+        {
+          "key": "company",
+          "type": "fields",
+          "title": "La empresa y el puesto",
+          "fields": [
+            {
+              "k": "company",
+              "label": "Empresa"
+            },
+            {
+              "k": "role",
+              "label": "Puesto"
+            },
+            {
+              "k": "what",
+              "label": "A qué se dedica la empresa"
+            },
+            {
+              "k": "asks",
+              "label": "3 cosas que piden en la descripción del puesto"
+            },
+            {
+              "k": "why",
+              "label": "Por qué quiero trabajar ahí (1–2 frases)"
+            },
+            {
+              "k": "when",
+              "label": "Fecha y hora de la entrevista",
+              "input": "datetime"
+            },
+            {
+              "k": "format",
+              "label": "Formato",
+              "input": "select",
+              "options": [
+                "Presencial",
+                "Videollamada",
+                "Teléfono"
+              ]
+            }
+          ]
+        },
+        {
+          "key": "prep",
+          "type": "checklist",
+          "title": "Mi lista de preparación",
+          "from": "essentials[0]"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuándo empiezas a prepararte?",
+        "o": [
+          "El día de la entrevista",
+          "Mucho antes: la seguridad empieza con tu preparación",
+          "No hace falta"
+        ],
+        "a": 1,
+        "why": "La seguridad comienza mucho antes de hablar."
+      },
+      {
+        "q": "En una videollamada, la cámara va…",
+        "o": [
+          "A la altura de tus ojos",
+          "Debajo de tu cara",
+          "Donde sea"
+        ],
+        "a": 0,
+        "why": "Ajusta tu cámara a la altura de tus ojos."
+      },
+      {
+        "q": "¿Qué ropa eliges?",
+        "o": [
+          "La más llamativa",
+          "Profesional, neutral y limpia",
+          "Casual"
+        ],
+        "a": 1,
+        "why": "Elige ropa profesional, neutral y limpia."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 3,
+    "of": 7,
+    "module_id": "4fe4ff7a-b2e9-4c31-a794-27572eeb2c9b",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/5ff85fe33915089c975adeb41869916d76e00fb1/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "cyzgVnXGBl0",
+        "title": "Cómo triunfar en una Entrevista Virtual de Trabajo",
+        "channel": "Teresa Baró",
+        "lang": "es",
+        "about": "Lenguaje corporal, postura, expresiones faciales y conexión visual en entrevistas virtuales."
+      }
+    ],
+    "original_activity_lesson_id": "fbe5bc07-6f86-450b-a3b5-041038638555",
+    "kicker": "Paso 3 · Lenguaje corporal",
+    "title": "Lenguaje corporal y presencia",
+    "minutes": 45,
+    "builds": "Tu autoevaluación en video",
+    "intro": "Tu cuerpo también comunica confianza. Tu postura, tu mirada y tus gestos hablan antes que tus palabras.",
+    "keys": [
+      {
+        "t": "Mira a la cámara",
+        "d": "Crea confianza y conexión."
+      },
+      {
+        "t": "Postura abierta",
+        "d": "Derecho, con los hombros relajados."
+      },
+      {
+        "t": "Calma",
+        "d": "Gestos moderados, sin tocar tu cara."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "expand",
+        "title": "Consejos clave",
+        "items": [
+          {
+            "icon": "spark",
+            "title": "Sonríe",
+            "body": "Sonríe de forma natural."
+          },
+          {
+            "icon": "user",
+            "title": "Mira a los ojos",
+            "body": "Mira al entrevistador, o a la cámara si es por video."
+          },
+          {
+            "icon": "check",
+            "title": "Postura",
+            "body": "Siéntate derecho, con los pies en el suelo."
+          },
+          {
+            "icon": "shield",
+            "title": "Calma",
+            "body": "No te muevas demasiado ni toques tu cara."
+          },
+          {
+            "icon": "chat",
+            "title": "Manos",
+            "body": "Usa tus manos para apoyar tus ideas, pero sin exagerar."
+          }
+        ]
+      }
+    ],
+    "practice": {
+      "kind": "myth",
+      "title": "¿Ayuda o perjudica?",
+      "items": [
+        {
+          "q": "Mirar tu propia imagen en la pantalla mientras hablas.",
+          "real": false,
+          "a": "Perjudica: mira a la cámara para crear conexión."
+        },
+        {
+          "q": "Sonreír de forma natural al saludar.",
+          "real": true,
+          "a": "Ayuda: genera cercanía y una actitud positiva."
+        },
+        {
+          "q": "Cruzar los brazos mientras escuchas.",
+          "real": false,
+          "a": "Perjudica: una postura abierta comunica seguridad y apertura."
+        },
+        {
+          "q": "Asentir con la cabeza cuando el entrevistador habla.",
+          "real": true,
+          "a": "Ayuda: muestra que estás escuchando con interés."
+        }
+      ],
+      "labels": {
+        "true": "Ayuda",
+        "false": "Perjudica"
+      }
+    },
+    "build": {
+      "title": "Tu grabación y tu autoevaluación",
+      "intro": "Grábate de 2 a 3 minutos respondiendo «Tell me about yourself». El video NO se sube: se queda en tu dispositivo. Solo se guarda tu evaluación.",
+      "sections": [
+        {
+          "key": "selfvideo",
+          "type": "self_video",
+          "title": "Graba tu respuesta",
+          "question": "Tell me about yourself.",
+          "min_s": 120,
+          "max_s": 180,
+          "setup": [
+            "Elige un lugar ordenado, con buena iluminación y sin distracciones.",
+            "Ajusta tu cámara a la altura de tus ojos."
+          ],
+          "watch": [
+            "Postura",
+            "Contacto visual (mirando a la cámara)",
+            "Sonrisa y expresiones faciales",
+            "Gestos de manos moderados",
+            "Ambiente y fondo"
+          ],
+          "upload": false
+        },
+        {
+          "key": "rubric",
+          "type": "rubric",
+          "title": "Guía de autoevaluación",
+          "scale": [
+            "Sí",
+            "Más o menos",
+            "No"
+          ],
+          "groups": [
+            {
+              "title": "Postura",
+              "items": [
+                "¿Me senté derecho/a, con los hombros relajados?",
+                "¿Proyecté energía y profesionalismo a través de mi postura?",
+                "¿Me moví de forma excesiva o parecía inquieto/a?"
+              ]
+            },
+            {
+              "title": "Contacto visual",
+              "items": [
+                "¿Miré a la cámara la mayor parte del tiempo?",
+                "¿Hubo momentos en que miré hacia abajo o a otro lado?",
+                "¿Mi mirada transmitió seguridad y conexión?"
+              ]
+            },
+            {
+              "title": "Expresiones faciales",
+              "items": [
+                "¿Sonreí de forma natural y genuina?",
+                "¿Mostré interés mientras escuchaba o hablaba?",
+                "¿Mi rostro reflejaba energía y positividad?"
+              ]
+            },
+            {
+              "title": "Gestos y movimientos",
+              "items": [
+                "¿Usé gestos de manos para reforzar mi mensaje de forma moderada?",
+                "¿Algún movimiento fue exagerado o distrajo del contenido?",
+                "¿Mis gestos fueron coherentes con lo que decía?"
+              ]
+            },
+            {
+              "title": "Ambiente y fondo",
+              "items": [
+                "¿El entorno se veía limpio, profesional y sin distracciones?",
+                "¿La iluminación fue suficiente para verme claramente?",
+                "¿El ángulo de la cámara fue el correcto?"
+              ]
+            }
+          ],
+          "comments_per_group": true
+        },
+        {
+          "key": "final3",
+          "type": "notes2",
+          "title": "Evaluación final",
+          "lists": [
+            {
+              "k": "strengths",
+              "label": "Fortalezas (lo que hice muy bien)"
+            },
+            {
+              "k": "improve",
+              "label": "Áreas de mejora (lo que puedo ajustar para la próxima vez)"
+            }
+          ]
+        },
+        {
+          "key": "retake",
+          "type": "toggle",
+          "title": "Reto adicional (opcional)",
+          "text": "Regraba el video corrigiendo al menos 2 áreas de mejora.",
+          "optional": true
+        },
+        {
+          "key": "note3",
+          "type": "tip",
+          "title": "Consejo",
+          "text": "¡Sé amable contigo mismo/a! Cada grabación es una oportunidad de mejorar. El objetivo no es ser perfecto, sino progresar."
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "En una entrevista por video, ¿a dónde miras?",
+        "o": [
+          "A tu imagen",
+          "A la cámara",
+          "Al teclado"
+        ],
+        "a": 1,
+        "why": "Mirar a la cámara crea confianza y conexión."
+      },
+      {
+        "q": "¿Cómo usas las manos?",
+        "o": [
+          "No las muevas nunca",
+          "Para apoyar tus ideas, sin exagerar",
+          "Para tocarte la cara"
+        ],
+        "a": 1,
+        "why": "Gestos moderados que refuercen tu mensaje."
+      },
+      {
+        "q": "¿Qué pasa con tu video de práctica?",
+        "o": [
+          "Se sube al curso",
+          "Se queda en tu dispositivo; solo se guarda tu evaluación",
+          "Lo ve tu profesor"
+        ],
+        "a": 1,
+        "why": "Tus grabaciones son privadas."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 4,
+    "of": 7,
+    "module_id": "924602ba-09c9-43d7-8e61-329a2fd09fe6",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/1ece8273d548115035295498d914baa02218f6cf/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "RHoUFgDEbIM",
+        "title": "¿Cómo te ves en 5 años? Pregunta de entrevista con estructura",
+        "channel": "Virna Vitteri",
+        "lang": "es",
+        "about": "Presente, futuro cercano y meta a 5 años, alineados con el puesto."
+      },
+      {
+        "provider": "youtube",
+        "id": "OtkfSyuinmk",
+        "title": "Guión para responder «¿cuál es tu debilidad?»",
+        "channel": "Virna Vitteri",
+        "lang": "es",
+        "about": "Una debilidad real pero no crítica, cómo te afectó y qué haces para mejorarla."
+      }
+    ],
+    "original_activity_lesson_id": "0bd9286c-e6fd-4c90-862f-9b472e63f08f",
+    "kicker": "Paso 4 · Preguntas clásicas",
+    "title": "Preguntas clásicas con STAR",
+    "minutes": 75,
+    "builds": "Tus 8 respuestas",
+    "intro": "Prepara tus historias, no solo tus respuestas. Las 8 preguntas que casi siempre hacen en EE.UU., cada una con una historia real con el método STAR.",
+    "keys": [
+      {
+        "t": "Historias, no listas",
+        "d": "Una historia real convence más que una lista de cualidades."
+      },
+      {
+        "t": "Menos de 2 minutos",
+        "d": "Claro y directo, sin perderte en detalles."
+      },
+      {
+        "t": "Final positivo",
+        "d": "Termina siempre con lo que lograste."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "keys",
+        "title": "El método STAR",
+        "items": [
+          {
+            "title": "S · Situation",
+            "body": "Situación: el contexto. ¿Dónde estabas y qué pasaba?"
+          },
+          {
+            "title": "T · Task",
+            "body": "Tarea: lo que te tocaba resolver."
+          },
+          {
+            "title": "A · Action",
+            "body": "Acción: lo que hiciste tú y cómo lo hiciste."
+          },
+          {
+            "title": "R · Result",
+            "body": "Resultado: lo que lograste. Termina en positivo."
+          }
+        ]
+      },
+      {
+        "type": "checklist",
+        "title": "Tips clave",
+        "items": [
+          {
+            "text": "Usa una historia diferente para cada pregunta"
+          },
+          {
+            "text": "Mantén tu respuesta en menos de 2 minutos"
+          },
+          {
+            "text": "Termina siempre con un resultado positivo"
+          }
+        ]
+      },
+      {
+        "type": "steps",
+        "title": "«Where do you see yourself in 5 years?»",
+        "items": [
+          {
+            "title": "Presente",
+            "body": "Qué estás construyendo hoy (tu enfoque actual)."
+          },
+          {
+            "title": "Futuro cercano",
+            "body": "Cómo quieres crecer en habilidades o responsabilidades."
+          },
+          {
+            "title": "Meta a 5 años",
+            "body": "Un objetivo profesional realista y positivo, alineado con el puesto."
+          }
+        ]
+      },
+      {
+        "type": "steps",
+        "title": "«What is your weakness?»",
+        "items": [
+          {
+            "title": "Identifica una debilidad específica",
+            "body": "Real, pero que no sea crítica para el puesto."
+          },
+          {
+            "title": "Explica brevemente cómo te ha afectado",
+            "body": "Sin dramatizar."
+          },
+          {
+            "title": "Describe lo que haces para mejorarla",
+            "body": "Acciones concretas que ya estás tomando."
+          }
+        ]
+      }
+    ],
+    "practice": {
+      "kind": "label",
+      "title": "Arma la historia STAR",
+      "intro": "Estas 4 frases cuentan una historia, pero están revueltas. Toca la letra que le toca a cada una.",
+      "labels": [
+        "S",
+        "T",
+        "A",
+        "R"
+      ],
+      "items": [
+        {
+          "text": "I trained the team and created a weekly schedule to cover the extra orders.",
+          "answer": "A"
+        },
+        {
+          "text": "Last December, our store received twice the usual number of orders.",
+          "answer": "S"
+        },
+        {
+          "text": "We delivered every order on time and got a record 4.9 customer rating.",
+          "answer": "R"
+        },
+        {
+          "text": "As shift manager, I had to deliver all orders before Christmas Eve.",
+          "answer": "T"
+        }
+      ],
+      "done": "¡Así se cuenta! Situación → Tarea → Acción → Resultado."
+    },
+    "build": {
+      "title": "Tus 8 respuestas",
+      "intro": "Escribe en inglés con tus propias palabras: no busques respuestas perfectas, busca respuestas que te representen. Usa una historia diferente para cada pregunta.",
+      "sections": [
+        {
+          "key": "answers",
+          "type": "answers",
+          "lang": "en",
+          "speaking_wpm": 130,
+          "max_s": 120,
+          "questions": [
+            {
+              "en": "Tell me about yourself.",
+              "es": "Háblame de ti.",
+              "form": "present_past_future",
+              "prefill_from": "value"
+            },
+            {
+              "en": "Why do you want this job?",
+              "es": "¿Por qué quieres este trabajo?",
+              "form": "free",
+              "prefill_from": "company.why"
+            },
+            {
+              "en": "What are your strengths and weaknesses?",
+              "es": "¿Cuáles son tus fortalezas y debilidades?",
+              "form": "strength_weakness"
+            },
+            {
+              "en": "Tell me about a challenge you faced at work.",
+              "es": "Cuéntame de un reto que enfrentaste en el trabajo.",
+              "form": "star"
+            },
+            {
+              "en": "Why should we hire you?",
+              "es": "¿Por qué deberíamos contratarte?",
+              "form": "free",
+              "prefill_from": "value"
+            },
+            {
+              "en": "Where do you see yourself in 5 years?",
+              "es": "¿Dónde te ves en 5 años?",
+              "form": "five_years"
+            },
+            {
+              "en": "How do you handle stress or pressure?",
+              "es": "¿Cómo manejas el estrés o la presión?",
+              "form": "star"
+            },
+            {
+              "en": "Do you prefer working alone or in a team?",
+              "es": "¿Prefieres trabajar solo o en equipo?",
+              "form": "free"
+            }
+          ],
+          "checks": [
+            "under_2_min",
+            "enough_detail:40s"
+          ],
+          "actions": [
+            "listen",
+            "practice_aloud",
+            "mark_ready"
+          ]
+        },
+        {
+          "key": "selfcheck4",
+          "type": "checklist",
+          "title": "Guía de autoevaluación de respuestas",
+          "items": [
+            {
+              "text": "¿Usé la estructura STAR correctamente en cada respuesta?"
+            },
+            {
+              "text": "¿Incluí una situación clara, una tarea específica, una acción concreta y un resultado positivo?"
+            },
+            {
+              "text": "¿Mis respuestas son breves (1 a 2 minutos máximo al hablar)?"
+            },
+            {
+              "text": "¿Evité extenderme demasiado o perderme en detalles irrelevantes?"
+            },
+            {
+              "text": "¿Hablo de forma clara y directa, sin rodeos?"
+            },
+            {
+              "text": "¿Mis respuestas destacan mis logros y habilidades en lugar de solo describir tareas?"
+            },
+            {
+              "text": "¿Mostré cómo mis experiencias aportan valor al nuevo trabajo?"
+            },
+            {
+              "text": "¿Mantengo un tono positivo, mostrando entusiasmo y profesionalismo?"
+            },
+            {
+              "text": "¿Mis respuestas transmiten confianza sin sonar arrogante?"
+            },
+            {
+              "text": "¿Mencioné (cuando es relevante) cómo mis valores, habilidades o metas se alinean con el puesto o la empresa?"
+            },
+            {
+              "text": "¿Demostré que investigué sobre el tipo de empresa o industria?"
+            }
+          ]
+        },
+        {
+          "key": "reflect4",
+          "type": "reflect",
+          "title": "Reflexión final",
+          "prompts": [
+            "Fortalezas en mis respuestas",
+            "Aspectos a mejorar",
+            "¿Qué aprendí de este ejercicio?"
+          ],
+          "optional": true
+        },
+        {
+          "key": "quote4",
+          "type": "tip",
+          "title": "Consejo final",
+          "text": "Cada práctica es una oportunidad de perfeccionar tu historia. No busques respuestas perfectas — busca respuestas que te representen de forma auténtica y poderosa."
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué significa la «A» del método STAR?",
+        "o": [
+          "Attitude",
+          "Action: lo que hiciste tú",
+          "Answer"
+        ],
+        "a": 1,
+        "why": "STAR = Situation, Task, Action, Result."
+      },
+      {
+        "q": "¿Cuánto debe durar tu respuesta?",
+        "o": [
+          "Menos de 2 minutos",
+          "Al menos 10 minutos",
+          "Una sola palabra"
+        ],
+        "a": 0,
+        "why": "Mantén cada respuesta en menos de 2 minutos."
+      },
+      {
+        "q": "¿Cómo termina siempre una buena historia?",
+        "o": [
+          "Con un problema sin resolver",
+          "Con un resultado positivo",
+          "Con una pregunta"
+        ],
+        "a": 1,
+        "why": "Termina siempre con un resultado positivo."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 5,
+    "of": 7,
+    "module_id": "382a2c65-c20f-4483-a2ef-77ad66b3eb40",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/b25385c31fdb3593c25c8f7460b97eafc06d5caf/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "enx_eZKckXM",
+        "title": "Cómo hacer una entrevista ESPECTACULAR y que destaques de tu competencia",
+        "channel": "Virna Vitteri",
+        "lang": "es",
+        "about": "Preparación, primera impresión, comunicación, mostrar valor y un cierre fuerte con preguntas inteligentes."
+      }
+    ],
+    "original_activity_lesson_id": "f4e5e84b-2294-42f9-8940-b57d98f0a676",
+    "kicker": "Paso 5 · Tus preguntas",
+    "title": "Tus preguntas para el entrevistador",
+    "minutes": 25,
+    "builds": "Tus 3 preguntas",
+    "intro": "Tú también haces preguntas: hazlas bien. Al final casi siempre te preguntan «Do you have any questions for us?». Llegar con 2 o 3 preguntas muestra interés y madurez.",
+    "keys": [
+      {
+        "t": "2 o 3 preguntas",
+        "d": "No más."
+      },
+      {
+        "t": "Interés real",
+        "d": "Sobre el puesto, el equipo y los siguientes pasos."
+      },
+      {
+        "t": "Sin salario",
+        "d": "No en la primera entrevista."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "phrases",
+        "title": "Buenas preguntas para el final",
+        "items": [
+          {
+            "en": "What would a typical day in this role look like?",
+            "es": "¿Cómo sería un día típico en este puesto?"
+          },
+          {
+            "en": "What do you enjoy most about working here?",
+            "es": "¿Qué es lo que más le gusta de trabajar aquí?"
+          },
+          {
+            "en": "What are the next steps in the process?",
+            "es": "¿Cuáles son los próximos pasos del proceso?"
+          },
+          {
+            "en": "How is success measured in this role?",
+            "es": "¿Cómo se mide el éxito en este rol?"
+          },
+          {
+            "en": "Who would I be working with directly?",
+            "es": "¿Con quién trabajaría directamente?"
+          }
+        ]
+      },
+      {
+        "type": "tip",
+        "title": "Consejo",
+        "text": "Haz solo 2 o 3 preguntas, y no hables de salario en la primera entrevista."
+      }
+    ],
+    "practice": {
+      "kind": "myth",
+      "title": "¿La harías en la primera entrevista?",
+      "labels": {
+        "true": "Sí",
+        "false": "Mejor no"
+      },
+      "items": [
+        {
+          "q": "Preguntar cuánto pagan.",
+          "real": false,
+          "a": "Evítala. No hables de salario en la primera entrevista."
+        },
+        {
+          "q": "Preguntar cuántos días de vacaciones tendrás.",
+          "real": false,
+          "a": "Evítala en la primera entrevista."
+        },
+        {
+          "q": "Preguntar a qué se dedica la empresa.",
+          "real": false,
+          "a": "Evítala: muestra que no investigaste a la empresa."
+        },
+        {
+          "q": "Preguntar cuáles son los próximos pasos.",
+          "real": true,
+          "a": "Buena pregunta: muestra interés y madurez."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tus 3 preguntas",
+      "intro": "Elige 2 de la lista y escribe 1 propia sobre la empresa de tu ficha.",
+      "sections": [
+        {
+          "key": "myq",
+          "type": "pick_many",
+          "title": "Elige 2 preguntas",
+          "from": "phrases",
+          "count": 2,
+          "audio": true
+        },
+        {
+          "key": "ownq",
+          "type": "textarea",
+          "title": "Escribe 1 pregunta propia (en inglés)",
+          "hint": "Algo que descubriste al investigar la empresa. Ej. «I read that you're opening a new plant in Texas. How will this role support that?»",
+          "lang": "en"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuántas preguntas haces al final?",
+        "o": [
+          "Ninguna",
+          "2 o 3",
+          "10 o más"
+        ],
+        "a": 1,
+        "why": "Haz solo 2 o 3 preguntas."
+      },
+      {
+        "q": "¿Cuál de estas preguntas conviene hacer al final?",
+        "o": [
+          "¿Cuánto pagan?",
+          "¿Cómo se mide el éxito en este rol?",
+          "¿A qué se dedica su empresa?"
+        ],
+        "a": 1,
+        "why": "Muestra interés real."
+      },
+      {
+        "q": "Preguntar a qué se dedica la empresa muestra que…",
+        "o": [
+          "Tienes curiosidad",
+          "No investigaste a la empresa",
+          "Eres muy profesional"
+        ],
+        "a": 1,
+        "why": "Investiga antes de la entrevista."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 6,
+    "of": 7,
+    "module_id": "50ab6155-9506-4174-9017-73dfd9f5bd93",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/6ff065bf9b5c3dc347b0f062bf96b524a879f176/file.mp4"
+    },
+    "more_videos": [
+      {
+        "provider": "youtube",
+        "id": "WxTrH2ZRnP8",
+        "title": "El lenguaje no verbal en una entrevista de trabajo",
+        "channel": "Virna Vitteri",
+        "lang": "es",
+        "about": "Tu cuerpo habla antes que tus palabras: postura, contacto visual y sonrisa."
+      }
+    ],
+    "original_activity_lesson_id": "eed625a5-5795-4496-8ad2-355a39d8a6f8",
+    "kicker": "Paso 6 · La entrevista en inglés",
+    "title": "La entrevista en inglés",
+    "minutes": 60,
+    "builds": "Tu simulacro y su evaluación",
+    "intro": "No es perfección: es comunicación clara. Habla despacio, pide que repitan si no entiendes y usa palabras que ya conoces. Al final haces un simulacro completo.",
+    "keys": [
+      {
+        "t": "Despacio y claro",
+        "d": "Mejor claro que rápido."
+      },
+      {
+        "t": "No adivines",
+        "d": "Pide que repitan la pregunta."
+      },
+      {
+        "t": "Practica",
+        "d": "Con un amigo, un familiar o el simulacro."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "checklist",
+        "title": "Consejos clave",
+        "items": [
+          {
+            "text": "Habla despacio y con claridad"
+          },
+          {
+            "text": "Si no entiendes, pide que repitan la pregunta"
+          },
+          {
+            "text": "No adivines: es mejor pedir que repitan"
+          },
+          {
+            "text": "Practica tus respuestas con un amigo o mentor"
+          },
+          {
+            "text": "Usa palabras que ya conoces; evita vocabulario complicado si no estás seguro"
+          }
+        ]
+      },
+      {
+        "type": "phrases",
+        "title": "Frases útiles",
+        "items": [
+          {
+            "en": "Can you please repeat the question?",
+            "es": "¿Puede repetir la pregunta, por favor?"
+          },
+          {
+            "en": "Can I take a moment to think?",
+            "es": "¿Puedo tomarme un momento para pensar?"
+          },
+          {
+            "en": "I'm sorry, could you clarify that?",
+            "es": "Disculpe, ¿podría aclarar eso?"
+          },
+          {
+            "en": "One of my strengths is…",
+            "es": "Una de mis fortalezas es…"
+          },
+          {
+            "en": "In my last job, I was responsible for…",
+            "es": "En mi último trabajo, era responsable de…"
+          },
+          {
+            "en": "Thank you for the opportunity to speak with you today.",
+            "es": "Gracias por la oportunidad de hablar con usted hoy."
+          }
+        ]
+      },
+      {
+        "type": "tip",
+        "title": "Consejo práctico",
+        "text": "Graba tus respuestas. No busques sonar perfecto, sino claro y seguro."
+      }
+    ],
+    "practice": {
+      "kind": "listen_pick",
+      "title": "¿Qué dices?",
+      "intro": "Escucha la situación y elige la frase correcta.",
+      "items": [
+        {
+          "situation": "No entendiste la pregunta.",
+          "options": [
+            "Can you please repeat the question?",
+            "Thank you for the opportunity to speak with you today.",
+            "One of my strengths is…"
+          ],
+          "answer": 0
+        },
+        {
+          "situation": "Necesitas unos segundos para pensar tu respuesta.",
+          "options": [
+            "I'm sorry, could you clarify that?",
+            "Can I take a moment to think?",
+            "In my last job, I was responsible for…"
+          ],
+          "answer": 1
+        },
+        {
+          "situation": "La entrevista terminó y te despides.",
+          "options": [
+            "Can I take a moment to think?",
+            "Thank you for the opportunity to speak with you today.",
+            "Can you please repeat the question?"
+          ],
+          "answer": 1
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu simulacro de entrevista",
+      "intro": "Responde 7 preguntas en voz alta, como en una entrevista real. Puedes practicar solo o con un amigo o familiar que te evalúe.",
+      "sections": [
+        {
+          "key": "sim",
+          "type": "simulator",
+          "modes": [
+            "solo",
+            "friend"
+          ],
+          "interviewer": {
+            "name": "Sarah",
+            "role_from": "company.role",
+            "company_from": "company.company"
+          },
+          "questions": [
+            {
+              "en": "Tell me about yourself.",
+              "audio": "q-about-yourself.mp3"
+            },
+            {
+              "en": "Why do you want this job?",
+              "audio": "q-why-this-job.mp3"
+            },
+            {
+              "en": "What are your strengths and weaknesses?",
+              "audio": "q-strengths-weaknesses.mp3"
+            },
+            {
+              "en": "Tell me about a challenge you faced at work.",
+              "audio": "q-challenge-at-work.mp3"
+            },
+            {
+              "en": "How do you handle stress or pressure?"
+            },
+            {
+              "en": "Where do you see yourself in 5 years?"
+            },
+            {
+              "en": null,
+              "surprise": true,
+              "note": "Pregunta sorpresa: en modo «con un amigo», tu amigo la escribe; en modo solo, la app elige una de las preguntas que no has practicado."
+            }
+          ],
+          "audio_base": "storage://course-media/f7d7f4e4-b598-4943-8692-e18ce65379d3/interview/",
+          "max_s": 120,
+          "transcript": "web_speech_en_us",
+          "store": "text_only",
+          "eval": [
+            {
+              "k": "time",
+              "label": "Tiempo de respuesta",
+              "o": [
+                "Breve (1-2 min)",
+                "Muy largo",
+                "Muy corto"
+              ]
+            },
+            {
+              "k": "attitude",
+              "label": "Actitud",
+              "o": [
+                "Segura",
+                "Nerviosa",
+                "Monótona"
+              ]
+            },
+            {
+              "k": "clarity",
+              "label": "Claridad y enfoque",
+              "o": [
+                "Clara",
+                "Confusa",
+                "Irrelevante"
+              ]
+            },
+            {
+              "k": "star",
+              "label": "Uso de STAR",
+              "o": [
+                "Excelente",
+                "Incompleto",
+                "No aplicado"
+              ]
+            }
+          ],
+          "comments": true,
+          "before": [
+            "Vístete de manera profesional.",
+            "Mantén contacto visual y una buena postura.",
+            "Responde usando la estructura STAR.",
+            "Agradece al final de la entrevista."
+          ]
+        },
+        {
+          "key": "reflect6",
+          "type": "reflect",
+          "title": "Reflexión final personal",
+          "prompts": [
+            "¿Cómo me sentí durante la simulación?",
+            "¿Qué respuestas me salieron mejor?",
+            "¿En qué áreas puedo mejorar?",
+            "Plan de acción para seguir mejorando"
+          ]
+        },
+        {
+          "key": "quote6",
+          "type": "tip",
+          "title": "Consejo final",
+          "text": "Cada simulación es una oportunidad de ser más fuerte, más claro y más seguro en tus entrevistas reales."
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "No entendiste la pregunta. ¿Qué haces?",
+        "o": [
+          "Adivinas",
+          "Te quedas callado",
+          "Pides que la repitan"
+        ],
+        "a": 2,
+        "why": "No adivines: «Can you please repeat the question?»"
+      },
+      {
+        "q": "¿Qué vocabulario usas?",
+        "o": [
+          "Palabras que ya conoces",
+          "Las palabras más difíciles",
+          "Palabras en español"
+        ],
+        "a": 0,
+        "why": "Evita vocabulario complicado si no estás seguro."
+      },
+      {
+        "q": "¿Cuál es la meta en una entrevista en inglés?",
+        "o": [
+          "Sonar perfecto",
+          "Comunicar con claridad y seguridad",
+          "Hablar muy rápido"
+        ],
+        "a": 1,
+        "why": "No es perfección: es comunicación clara."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "course": "crack-the-u-s-interview-code",
+    "product": {
+      "key": "answer_bank",
+      "title": "Mi banco de respuestas"
+    },
+    "step": 7,
+    "of": 7,
+    "module_id": "164251df-2338-4cd7-af6b-b620d0c68088",
+    "video": null,
+    "more_videos": [],
+    "original_activity_lesson_id": "cbf212fb-820c-4afe-bf8c-8f4e941bdbb2",
+    "kicker": "Paso 7 · Tus siguientes pasos",
+    "title": "Tus siguientes pasos",
+    "minutes": 15,
+    "builds": "Tu plan de práctica",
+    "intro": "Estás más cerca de lo que piensas. Este no es solo un curso sobre entrevistas: es una guía para abrirte paso con seguridad en un nuevo país, una nueva cultura y una nueva etapa profesional.",
+    "keys": [
+      {
+        "t": "Práctica real",
+        "d": "Cada entrevista es práctica real. Aunque no te seleccionen, el aprendizaje te lleva al siguiente nivel."
+      },
+      {
+        "t": "Sin perfección",
+        "d": "No necesitas ser perfecto para ser contratado."
+      },
+      {
+        "t": "Ventaja",
+        "d": "Prepararte te da ventaja sobre otros candidatos."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "quote",
+        "text": "No necesitas hablar perfecto. Necesitas comunicar tu valor con claridad y seguridad."
+      },
+      {
+        "type": "para",
+        "text": "Cada historia de éxito comienza con una decisión. La tuya empieza hoy."
+      },
+      {
+        "type": "expand",
+        "title": "Soporte adicional de Latin American Media",
+        "items": [
+          {
+            "icon": "check",
+            "title": "Evaluación gratuita",
+            "body": "Conoce tu nivel de inglés."
+          },
+          {
+            "icon": "book",
+            "title": "Inglés General · 10 semanas / 100 horas",
+            "body": "Ideal si tu nivel es básico o menor a B2."
+          },
+          {
+            "icon": "briefcase",
+            "title": "Inglés para Negocios · 10 semanas / 100 horas",
+            "body": "Perfecto si ya tienes una base y quieres prepararte para entrevistas y entornos laborales."
+          }
+        ]
+      }
+    ],
+    "practice": null,
+    "build": {
+      "title": "Tu plan de práctica",
+      "sections": [
+        {
+          "key": "next",
+          "type": "checklist",
+          "title": "Antes de tu próxima entrevista",
+          "items": [
+            {
+              "text": "Termina tus 8 respuestas",
+              "link": {
+                "label": "Paso 4",
+                "step": 4
+              }
+            },
+            {
+              "text": "Llena la ficha de la empresa",
+              "link": {
+                "label": "Paso 2",
+                "step": 2
+              }
+            },
+            {
+              "text": "Haz el simulacro completo al menos una vez",
+              "link": {
+                "label": "Paso 6",
+                "step": 6
+              }
+            },
+            {
+              "text": "Practica con preguntas nuevas",
+              "link": {
+                "label": "Práctica de entrevista",
+                "tool": "interview_practice"
+              }
+            },
+            {
+              "text": "Ten tu resume a la mano",
+              "link": {
+                "label": "Mi resume",
+                "course": "from-cv-to-u-s-resume-a-step-by-step-guide"
+              }
+            },
+            {
+              "text": "Sigue con English for Business: te prepara para la entrevista y la comunicación profesional en la cultura de negocios de EE.UU.",
+              "link": {
+                "label": "English for Business",
+                "course": "english-for-business"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "check": null,
+    "finish": {
+      "title": "¡Terminaste Crack the U.S. Interview Code!",
+      "text": "Tu banco de respuestas está listo. Siguiente etapa de tu ruta: English for Business.",
+      "cta": {
+        "label": "Ir a English for Business",
+        "course": "english-for-business"
+      }
+    }
+  }
+]

@@ -11,6 +11,19 @@
 
 **This becomes the template for the other CelsGLOBAL courses**, so build it data-driven, like CelsBSNS. The next course will be new data.
 
+
+## Every step is now in the mockup (2026-10-19)
+- **`?v=mod&n=N`** opens step N (1–7). On the course page, each step's button opens its own step; Anterior/Siguiente move between steps. `&demo=1` fills in the practice and the check.
+- Step 3 stays the hand-built example. **All other steps are drawn by one data-driven component** that reads that step's JSON (`guided_course_steps.data`), so what you see is the real content of each step.
+- **Build it the same way:** one `<GuidedStep>` component with a renderer per type: essentials blocks (`para, keys, expand, steps, myth, compare, checklist, phrases, list, tip, quote, titles, glossary, say, whatif, activity`), practice `kind`s and build `type`s. The reference is `celsu-global-guided-renderer/guided.js` + `guided.css` (plain JS; port it to React components, don't copy it in).
+  - Nothing should be hard-coded per course: the course only supplies its theme colors (`--acc`, `--acc3`, `--accb`, `--lab`) and its "product" button.
+- **Rules the renderer follows:**
+  - A step with `video: null` shows "En pocas palabras" (the 3 keys) instead of the video.
+  - A step with `check: null` (the last step) ends with "Terminar el curso" and then shows the `finish` card.
+  - `more_video` / `more_videos` → "Para ver más" (YouTube thumbnail; it plays inline with youtube-nocookie).
+  - The Wistia video plays inline (`video.media_url`).
+  - `essentials_from` (Finanzas): skip the blocks in `skip`, and also skip the e-book block the practice already uses (`practice.from_ebook`, e.g. `m5 myth`), so it isn't shown twice.
+
 ## Look (CelsGLOBAL)
 - **Colors:**
   - ivory background `#F4F1EA`;

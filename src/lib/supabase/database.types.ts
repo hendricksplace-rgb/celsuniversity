@@ -83,6 +83,24 @@ export type Database = {
         }
         Relationships: []
       }
+      answer_banks: {
+        Row: {
+          data: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          data?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          data?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       audio_jobs: {
         Row: {
           attempts: number
@@ -575,6 +593,7 @@ export type Database = {
           status: Database["public"]["Enums"]["pub_status"]
           title: string
           updated_at: string
+          theme: string | null
         }
         Insert: {
           accent_color?: string | null
@@ -589,6 +608,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["pub_status"]
           title: string
           updated_at?: string
+          theme?: string | null
         }
         Update: {
           accent_color?: string | null
@@ -603,6 +623,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["pub_status"]
           title?: string
           updated_at?: string
+          theme?: string | null
         }
         Relationships: []
       }

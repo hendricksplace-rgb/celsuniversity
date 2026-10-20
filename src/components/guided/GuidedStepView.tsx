@@ -8,9 +8,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { ReaderBlock } from "@/components/reader/ReaderBlocks";
-import { docModel, resumePath, splitTitle, stepPath, titlesOf, visibleSections, type GuidedStep, type Lang, type ResumeData, type StepState } from "@/lib/guided";
-import { PracticeView, pickScore, practiceDone } from "./Practice";
+import { EssBlock, MoreVideos } from "./Essentials";
+import { PRODUCT, docModel, productPath, stepPath, titlesOf, visibleSections, type GuidedStep, type GuidedTheme, type Lang, type MoreVideo, type ResumeData, type StepState } from "@/lib/guided";
+import { PracticeView, pickScore, practiceDone, sortScore } from "./Practice";
 import { BuildSection, type BuildCtx } from "./Build";
 import { useFitsOnePage } from "./ResumeDoc";
 import { Ico, TopBar, UI, useLang, useResume, useStepState, useToast } from "./ui";
@@ -30,11 +30,11 @@ export type StepPageProps = {
   resume: ResumeData;
   readerT: Dictionary["reader"];
   defaultLang: Lang;
+  theme: GuidedTheme;
 };
 
 /** Wistia delivery links and direct .mp4 files play as a file (the same rule as the lesson player). */
 const directMedia = (url: string | undefined) => (url && (/^https:\/\/embed-ssl\.wistia\.com\/deliveries\//.test(url) || /^https:\/\/[^\s?#]+\.mp4(?:[?#]|$)/i.test(url)) ? url : null);
-const youtube = (id: string) => (/^[A-Za-z0-9_-]{6,}$/.test(id) ? `https://www.youtube-nocookie.com/embed/${id}` : null);
 
 export function GuidedStepView(p: StepPageProps) {
   const [lang, setLang] = useLang(p.defaultLang);
@@ -42,7 +42,11 @@ export function GuidedStepView(p: StepPageProps) {
   const step = p.steps[p.index]!;
   const n = step.step;
   const [toast, showToast] = useToast();
-  const { data, set, update, state: save } = useResume(p.userId, p.resume);
+  const { data, set, update, state: save } = useResume(p.userId, p.resume, PRODUCT[p.theme].table);
+  const prodHref = productPath(p.slug, p.theme);
+  const prodLabel = PRODUCT[p.theme].label[lang];
+  const prodIcon = PRODUCT[p.theme].icon;
+  const cover = p.theme === "interview";
   const [st, setSt] = useStepState(p.userId, p.moduleId, p.state);
   const [doneAt, setDoneAt] = useState(p.completedAt);
   const stRef = useRef(st);
@@ -50,13 +54,13 @@ export function GuidedStepView(p: StepPageProps) {
 
   const parts = useMemo(() => {
     const out: { id: string; label: string }[] = [];
-    if (step.video?.media_url) out.push({ id: "vid", label: t.parts.vid });
+    out.push({ id: "vid", label: step.video?.media_url ? t.parts.vid : t.parts.nutshell });
     out.push({ id: "ess", label: t.parts.ess });
     if (step.practice) out.push({ id: "prac", label: t.parts.prac });
-    out.push({ id: "build", label: t.parts.build });
+    out.push({ id: "build", label: PRODUCT[p.theme].build[lang] });
     out.push({ id: "chk", label: step.check?.length ? t.parts.chk : t.partH.fin });
     return out;
-  }, [step, t]);
+  }, [step, t, lang, p.theme]);
   const [cur, pct] = useScrollSpy(parts.map((x) => x.id));
 
   const complete = useCallback(async () => {
@@ -80,6 +84,7 @@ export function GuidedStepView(p: StepPageProps) {
   }, [complete, p.lessonIds, step.check]);
 
   const checks = step.check ?? [];
+  const ended = !!st.ended;
   const answers = st.check ?? {};
   const allAnswered = checks.length > 0 && checks.every((_, i) => answers[i] !== undefined);
   useEffect(() => {
@@ -93,15 +98,15 @@ export function GuidedStepView(p: StepPageProps) {
   );
   const hasAuto = step.build.sections.some((x) => x.type === "autocheck");
   const [fits, measure] = useFitsOnePage(docModel(data, "es"), "es");
-  const ctx: BuildCtx = { data, set, update, save, steps: p.steps, titles, verbs, slug: p.slug, t, lang, fits };
+  const ctx: BuildCtx = { step, theme: p.theme, data, set, update, save, steps: p.steps, titles, verbs, slug: p.slug, t, lang, fits };
+  const moreVideos: MoreVideo[] = [...(step.more_video ? [step.more_video] : []), ...(step.more_videos ?? [])];
 
   const prev = p.steps[p.index - 1];
   const next = p.steps[p.index + 1];
-  const [h1a, h1b] = splitTitle(step.title);
   const kickWord = step.kicker.split("·").slice(1).join("·").trim() || step.title;
   const prac = step.practice;
   const pv = (st.practice ?? {}) as Record<string, unknown>;
-  const sc = prac?.kind === "pick" ? pickScore(prac, pv) : null;
+  const sc = prac?.kind === "pick" ? pickScore(prac, pv) : prac?.kind === "sort" ? sortScore(prac, pv) : null;
   const curPart = parts[cur] ?? parts[0]!;
   const progress = doneAt ? 1 : Math.max(pct, (parts.findIndex((x) => x.id === curPart.id) + (practiceDone(prac, pv) ? 0.5 : 0)) / (parts.length + 0.5));
 
@@ -125,20 +130,31 @@ export function GuidedStepView(p: StepPageProps) {
       </div>
       <div className={s.box}>
         <h4>
-          <Ico n="doc" />
-          {t.youBuild}
+          <Ico n={prodIcon} />
+          {PRODUCT[p.theme].rail[lang]}
         </h4>
-        <p>{t.youBuildP(step.builds)}</p>
-        <Link href={resumePath(p.slug)} className={`${s.btn} ${s.btnG}`}>
+        <p>
+          {step.builds}. {PRODUCT[p.theme].railP[lang]}
+        </p>
+        <Link href={prodHref} className={`${s.btn} ${s.btnG}`}>
           <Ico n="eye" />
-          {t.seeResume}
+          {PRODUCT[p.theme].see[lang]}
         </Link>
       </div>
+      {PRODUCT[p.theme].privacy && (
+        <div className={s.box}>
+          <h4>
+            <Ico n="lock" style={{ color: "var(--ok)" }} />
+            {lang === "es" ? "PRIVADO" : "PRIVATE"}
+          </h4>
+          <p>{PRODUCT[p.theme].privacy![lang]}</p>
+        </div>
+      )}
     </aside>
   );
 
   return (
-    <div className={s.page} lang={lang}>
+    <div className={`${s.page} ${cover ? s.thInterview : ""}`} lang={lang}>
       <TopBar
         kicker={`${t.stepOf(n, step.of)} · ${kickWord.toUpperCase()}`}
         title={step.title}
@@ -146,28 +162,28 @@ export function GuidedStepView(p: StepPageProps) {
         progress={progress}
         lang={lang}
         onLang={setLang}
-        resumeHref={resumePath(p.slug)}
+        resumeHref={prodHref}
+        productLabel={prodLabel}
+        productIcon={prodIcon}
         t={t}
         row={
           <>
             <span aria-live="polite">{t.mobStep(cur + 1, parts.length, curPart.label)}</span>
-            <Link href={resumePath(p.slug)}>
-              <Ico n="doc" />
-              {t.myResume}
+            <Link href={prodHref}>
+              <Ico n={prodIcon} />
+              {prodLabel}
             </Link>
           </>
         }
       />
       <div className={s.wrap}>
         <div className={s.main}>
-          <section className={`${s.hero} ${s.heroStep}`}>
+          <section className={`${s.hero} ${s.heroStep} ${cover ? s.heroCover : ""}`}>
             <span className={s.kick}>
-              <Ico n="brief" />
+              <Ico n={cover ? "chat" : "brief"} />
               {t.stepOf(n, step.of)}
             </span>
-            <h1>
-              {h1a} {h1b && <em>{h1b}</em>}
-            </h1>
+            <h1>{step.title}</h1>
             <p>{step.intro}</p>
             <div className={s.chips}>
               <span>
@@ -181,55 +197,20 @@ export function GuidedStepView(p: StepPageProps) {
             </div>
           </section>
 
-          {step.video?.media_url && (
-            <section className={s.sec} id="vid">
-              <Head n={partNo(parts, "vid")} small={t.parts.vid} h={t.partH.vid} />
-              <div className={s.vid}>
-                {directMedia(step.video.media_url) ? (
-                  <video controls playsInline preload="metadata" src={directMedia(step.video.media_url)!} aria-label={step.title} />
-                ) : (
-                  <iframe src={step.video.media_url} title={step.title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen loading="lazy" />
-                )}
-              </div>
-              <Keys keys={step.keys} />
-            </section>
-          )}
+          <section className={s.sec} id="vid">
+            <Head n={partNo(parts, "vid")} small={step.video?.media_url ? t.parts.vid : t.parts.nutshell} h={step.video?.media_url ? step.title : t.partH.nutshell} />
+            {step.video?.media_url && <StepVideo url={step.video.media_url} title={step.title} n={n} minutes={step.minutes} />}
+            <Keys keys={step.keys} first={!step.video?.media_url} />
+          </section>
 
           <section className={s.sec} id="ess">
             <Head n={partNo(parts, "ess")} small={t.parts.ess} h={t.partH.ess} />
-            {!step.video?.media_url && step.keys.length > 0 && (
-              <div style={{ marginBottom: 16 }}>
-                <Keys keys={step.keys} first />
-              </div>
-            )}
             {step.essentials.map((b, i) => (
-              <div className={`${s.card} ${s.ess}`} key={i} data-block={b.type}>
-                <ReaderBlock block={b} value={st.ess?.[i]} onChange={(v) => setSt((x) => ({ ...x, ess: { ...(x.ess ?? {}), [i]: v } }))} t={p.readerT} />
+              <div key={i} data-block={b.type}>
+                <EssBlock block={b} value={st.ess?.[i]} onChange={(v) => setSt((x) => ({ ...x, ess: { ...(x.ess ?? {}), [i]: v } }))} stepHref={(k) => stepPath(p.slug, k)} />
               </div>
             ))}
-            {step.more_video && youtube(step.more_video.id) && (
-              <div className={`${s.card} ${s.more}`} data-block="more_video">
-                <div className={s.moreHead}>
-                  <div style={{ minWidth: 0 }}>
-                    <p className={s.groupT} style={{ margin: 0 }}>
-                      {t.moreVideo}
-                    </p>
-                    <h3 style={{ margin: "2px 0 0" }}>{step.more_video.title}</h3>
-                    {step.more_video.channel && <p className={s.count}>{step.more_video.channel}</p>}
-                  </div>
-                  {step.more_video.lang && <span className={s.langChip}>{t.lang[step.more_video.lang] ?? step.more_video.lang.toUpperCase()}</span>}
-                </div>
-                <div className={s.vid}>
-                  <iframe
-                    src={youtube(step.more_video.id)!}
-                    title={step.more_video.title}
-                    allow="accelerometer; autoplay; encrypted-media; fullscreen; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-            )}
+            <MoreVideos list={moreVideos} />
           </section>
 
           {prac && (
@@ -237,17 +218,17 @@ export function GuidedStepView(p: StepPageProps) {
               <Head n={partNo(parts, "prac")} small={t.parts.prac} h={prac.title} />
               {(prac.intro || sc) && (
                 <p className={s.intro}>
-                  {prac.intro} {sc && sc.n > 0 && <span className={s.score}>{t.of(sc.right, prac.kind === "pick" ? prac.items.length : 0)}</span>}
+                  {prac.intro} {sc && sc.n > 0 && <span className={s.score}>{t.of(sc.right, prac.kind === "pick" || prac.kind === "sort" ? prac.items.length : 0)}</span>}
                 </p>
               )}
               <div data-practice={prac.kind}>
-                <PracticeView p={prac} v={pv} set={(v) => setSt((x) => ({ ...x, practice: v }))} t={t} lang={lang} />
+                <PracticeView p={prac} v={pv} set={(v) => setSt((x) => ({ ...x, practice: v }))} t={t} lang={lang} readerT={p.readerT} />
               </div>
             </section>
           )}
 
           <section className={s.sec} id="build">
-            <Head n={partNo(parts, "build")} small={t.parts.build} h={step.build.title} />
+            <Head n={partNo(parts, "build")} small={PRODUCT[p.theme].build[lang]} h={step.build.title} />
             {step.build.intro && <p className={s.intro}>{step.build.intro}</p>}
             {visibleSections(step).map((x) => (
               <BuildSection key={x.key} sec={x} ctx={ctx} />
@@ -295,31 +276,58 @@ export function GuidedStepView(p: StepPageProps) {
                 </div>
                 <div>
                   <h3>{t.stepDone(n)}</h3>
-                  <p>{t.stepDoneP}</p>
+                  <p>{t.stepSaved(step.builds, prodLabel)}</p>
                 </div>
-                <Link href={resumePath(p.slug)} className={`${s.btn} ${s.btnG}`}>
-                  <Ico n="eye" />
-                  {t.seeResume}
-                </Link>
-              </div>
-            ) : null}
-            {!step.check?.length && step.finish && (
-              <div className={s.done} data-done>
-                <div className={s.seal}>
-                  <Ico n="check" />
-                </div>
-                <div>
-                  <h3>{step.finish.title}</h3>
-                  <p>{step.finish.text}</p>
-                </div>
-                {step.finish.cta?.course && (
-                  <Link href={`/app/cursos/${step.finish.cta.course}`} className={`${s.btn} ${s.btnG}`}>
-                    {step.finish.cta.label}
+                {next ? (
+                  <Link href={stepPath(p.slug, next.step)} className={`${s.btn} ${s.btnG}`}>
+                    {t.stepN(next.step)}
                     <Ico n="right" />
+                  </Link>
+                ) : (
+                  <Link href={prodHref} className={`${s.btn} ${s.btnG}`}>
+                    <Ico n="eye" />
+                    {PRODUCT[p.theme].see[lang]}
                   </Link>
                 )}
               </div>
-            )}
+            ) : null}
+            {!step.check?.length &&
+              (ended ? (
+                step.finish && (
+                  <div className={s.fin} data-done>
+                    <div className={s.seal}>
+                      <Ico n="check" />
+                    </div>
+                    <div>
+                      <h3>{step.finish.title}</h3>
+                      <p>{step.finish.text}</p>
+                    </div>
+                    {step.finish.cta?.course && (
+                      <Link href={`/app/cursos/${step.finish.cta.course}`} className={`${s.btn} ${s.btnG}`}>
+                        {step.finish.cta.label}
+                        <Ico n="right" />
+                      </Link>
+                    )}
+                  </div>
+                )
+              ) : (
+                <div className={s.card}>
+                  <h3>{t.readyQ}</h3>
+                  <p className={s.sub}>{t.readyP}</p>
+                  <button
+                    type="button"
+                    className={`${s.btn} ${s.btnG}`}
+                    data-action="end"
+                    onClick={() => {
+                      setSt((x) => ({ ...x, ended: true }));
+                      showToast(t.courseDone);
+                    }}
+                  >
+                    <Ico n="check" />
+                    {t.endCourse}
+                  </button>
+                </div>
+              ))}
           </section>
 
           <nav className={s.nav} aria-label={`${t.prev} / ${t.next}`}>
@@ -330,10 +338,10 @@ export function GuidedStepView(p: StepPageProps) {
                 <span>{prev ? `${t.stepN(prev.step)} · ${prev.kicker.split("·").slice(1).join("·").trim() || prev.title}` : t.toCourse}</span>
               </div>
             </Link>
-            <Link href={next ? stepPath(p.slug, next.step) : resumePath(p.slug)} className={`${s.btn} ${s.btnN} ${s.navNext}`}>
+            <Link href={next ? stepPath(p.slug, next.step) : `/app/cursos/${p.slug}`} className={`${s.btn} ${s.btnN} ${s.navNext}`}>
               <div>
-                <small>{t.next}</small>
-                <span>{next ? `${t.stepN(next.step)} · ${next.title}` : t.myResume}</span>
+                <small>{next ? t.next : t.finished}</small>
+                <span>{next ? `${t.stepN(next.step)} · ${next.title}` : t.backToCourse}</span>
               </div>
               <Ico n="right" />
             </Link>
@@ -356,6 +364,33 @@ function Head({ n, small, h }: { n: number; small: string; h: string }) {
         <small>{small.toUpperCase()}</small>
         <h2>{h}</h2>
       </div>
+    </div>
+  );
+}
+
+/** The step's video (Wistia delivery file or a direct .mp4), inline after a tap on the poster. */
+function StepVideo({ url, title, n, minutes }: { url: string; title: string; n: number; minutes: number }) {
+  const [play, setPlay] = useState(false);
+  const file = directMedia(url);
+  return (
+    <div className={s.vid}>
+      {play ? (
+        file ? (
+          <video controls autoPlay playsInline src={file} aria-label={title} />
+        ) : (
+          <iframe src={url} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
+        )
+      ) : (
+        <button type="button" className={s.vidBtn} onClick={() => setPlay(true)} aria-label="Reproducir el video" data-action="play">
+          <span className={s.pl2}>
+            <Ico n="play" />
+          </span>
+          <span className={s.vcap}>
+            <b>Video del paso {n} · CelsGLOBAL</b>
+            <span>{minutes} min en total</span>
+          </span>
+        </button>
+      )}
     </div>
   );
 }

@@ -50,6 +50,7 @@ export default async function CoursePage({ params }: Props) {
         books={books ?? []}
         tools={!!tools}
         defaultLang={lang === "en" ? "en" : "es"}
+        theme={guided.theme}
       />
     );
   }

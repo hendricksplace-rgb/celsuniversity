@@ -3,7 +3,7 @@ import "server-only";
 // the signed-in student. guided_course_steps is readable with course access; guided_step_progress and resumes
 // return the student's own rows only (RLS).
 import type { Client } from "@/lib/supabase/types";
-import type { GuidedStep, ResumeData, StepState } from "@/lib/guided";
+import { PRODUCT, themeOf, type GuidedStep, type GuidedTheme, type ResumeData, type StepState } from "@/lib/guided";
 
 export type StepRow = {
   step: GuidedStep;
@@ -15,6 +15,8 @@ export type StepRow = {
 };
 export type GuidedLoad = {
   course: { id: string; slug: string; title: string; description: string | null };
+  /** courses.theme: the colors, the hero and the product (resumes or answer_banks). */
+  theme: GuidedTheme;
   steps: StepRow[];
   resume: ResumeData;
   resumeAt: string | null;
@@ -22,7 +24,7 @@ export type GuidedLoad = {
 };
 
 export async function loadGuided(supabase: Client, slug: string, userId: string): Promise<GuidedLoad | null> {
-  const { data: course } = await supabase.from("courses").select("id, slug, title, description").eq("slug", slug).maybeSingle();
+  const { data: course } = await supabase.from("courses").select("id, slug, title, description, theme").eq("slug", slug).maybeSingle();
   if (!course) return null;
   const { data: modules } = await supabase
     .from("modules")
@@ -32,10 +34,11 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
     .order("sort_order", { referencedTable: "lessons" });
   const ids = (modules ?? []).map((m) => m.id);
   if (!ids.length) return null;
+  const theme = themeOf(course.theme);
   const [{ data: rows }, { data: prog }, { data: resume }] = await Promise.all([
     supabase.from("guided_course_steps").select("module_id, data").in("module_id", ids),
     supabase.from("guided_step_progress").select("module_id, state, completed_at").eq("user_id", userId).in("module_id", ids),
-    supabase.from("resumes").select("data, updated_at").eq("user_id", userId).maybeSingle(),
+    supabase.from(PRODUCT[theme].table).select("data, updated_at").eq("user_id", userId).maybeSingle(),
   ]);
   if (!rows?.length) return null;
   const progress = new Map((prog ?? []).map((p) => [p.module_id, p]));
@@ -55,6 +58,7 @@ export async function loadGuided(supabase: Client, slug: string, userId: string)
   const data = resume?.data && typeof resume.data === "object" && !Array.isArray(resume.data) ? (resume.data as ResumeData) : {};
   return {
     course: { id: course.id, slug: course.slug ?? slug, title: course.title, description: course.description },
+    theme,
     steps,
     resume: data,
     resumeAt: resume?.updated_at ?? null,

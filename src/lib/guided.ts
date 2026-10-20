@@ -12,23 +12,26 @@ export type OrderPractice = { kind: "order"; title: string; intro?: string; item
 export type PickPractice = { kind: "pick"; title: string; intro?: string; items: { weak: string; options: string[]; answer: number; why: string }[] };
 export type SpotPractice = { kind: "spot"; title: string; intro?: string; doc: { text: string; err: string | null }[] };
 export type HighlightPractice = { kind: "highlight"; title: string; intro?: string; ad_title?: string; ad: string; label?: string; keywords: string[]; min_found?: number };
-export type Practice = SortPractice | OrderPractice | PickPractice | SpotPractice | HighlightPractice;
+export type LabelPractice = { kind: "label"; title: string; intro?: string; labels: string[]; items: { text: string; answer: string }[]; done?: string };
+export type MythPractice = { kind: "myth"; title: string; intro?: string; labels?: { true: string; false: string }; items: { q: string; real: boolean; a: string }[] };
+export type ListenPickPractice = { kind: "listen_pick"; title: string; intro?: string; items: { situation: string; options: string[]; answer: number; why?: string }[] };
+export type Practice = SortPractice | OrderPractice | PickPractice | SpotPractice | HighlightPractice | LabelPractice | MythPractice | ListenPickPractice;
 
 type Base = { key: string; title?: string; hint?: string; optional?: boolean };
-export type FieldDef = { k: string; label: string; placeholder?: string; check?: "email" | "phone_cc"; optional?: boolean };
+export type FieldDef = { k: string; label: string; placeholder?: string; check?: "email" | "phone_cc"; optional?: boolean; input?: "text" | "datetime" | "select"; options?: string[] };
 export type ChecklistItem = string | { text: string; link?: { label: string; step?: number; tool?: string; course?: string } };
 export type AutoItem = { text: string; auto?: AutoRule };
 export type Section =
   | (Base & { type: "fields"; fields: FieldDef[] })
   | (Base & { type: "textarea" })
-  | (Base & { type: "checklist"; items: ChecklistItem[]; result?: { high: string; mid: string; low: string } })
+  | (Base & { type: "checklist"; items?: ChecklistItem[]; from?: string; result?: { high: string; mid: string; low: string } })
   | (Base & { type: "notes2"; lists: { k: string; label: string }[] })
   | (Base & { type: "reflect"; prompts: string[] })
-  | (Base & { type: "template"; template: string; slots: string[]; example?: string; min_chars?: number; max_chars?: number })
+  | (Base & { type: "template"; template: string; slots?: string[]; example?: string; min_chars?: number; max_chars?: number; lang?: string })
   | (Base & { type: "jobs"; bullets?: { min?: number; max?: number; checks?: string[] } })
   | (Base & { type: "education"; suggest_equivalent?: boolean })
   | (Base & { type: "chips"; min?: number; max?: number })
-  | (Base & { type: "pick_many"; from?: string; count?: number })
+  | (Base & { type: "pick_many"; from?: string; count?: number; audio?: boolean })
   | (Base & { type: "list"; min?: number; max?: number })
   | (Base & { type: "postings"; count?: number; fields?: string[]; reflect?: string[] })
   | (Base & { type: "autocheck"; groups: { title: string; items: AutoItem[] }[]; done_text?: string; fix_link?: string })
@@ -36,7 +39,19 @@ export type Section =
   | (Base & { type: "ai_translate"; button?: string; review_questions?: string[]; rule?: string })
   | (Base & { type: "ai_suggest" })
   | (Base & { type: "export"; file_name?: string; formats?: string[]; send_to?: string })
-  | (Base & { type: "card"; text: string; link?: { label: string; url: string }; needs_matt_confirm?: boolean });
+  | (Base & { type: "card"; text: string; link?: { label: string; url: string }; needs_matt_confirm?: boolean })
+  | (Base & { type: "normal_vs_better"; questions: string[]; lang?: string })
+  | (Base & { type: "answers"; questions: AnswerQ[]; speaking_wpm?: number; max_s?: number; lang?: string })
+  | (Base & { type: "self_video"; question: string; min_s?: number; max_s?: number; setup?: string[]; watch?: string[]; upload?: boolean })
+  | (Base & { type: "rubric"; scale: string[]; groups: { title: string; items: string[] }[]; comments_per_group?: boolean })
+  | (Base & { type: "toggle"; text: string })
+  | (Base & { type: "tip"; text: string })
+  | (Base & { type: "simulator"; modes?: string[]; interviewer?: { name: string; role_from?: string; company_from?: string }; questions: SimQ[]; audio_base?: string; max_s?: number; eval: { k: string; label: string; o: string[] }[]; comments?: boolean; before?: string[] });
+
+export type AnswerForm = "star" | "present_past_future" | "strength_weakness" | "five_years" | "free";
+export type AnswerQ = { en: string; es: string; form: AnswerForm; prefill_from?: string };
+export type SimQ = { en: string | null; audio?: string; surprise?: boolean; note?: string };
+export type MoreVideo = { provider: string; id: string; title: string; channel?: string; lang?: string; about?: string };
 
 export type GuidedStep = {
   version: number;
@@ -44,7 +59,8 @@ export type GuidedStep = {
   of: number;
   module_id: string;
   video: { media_url: string } | null;
-  more_video: { provider: string; id: string; title: string; channel?: string; lang?: string } | null;
+  more_video?: MoreVideo | null;
+  more_videos?: MoreVideo[];
   kicker: string;
   title: string;
   minutes: number;
@@ -61,9 +77,41 @@ export type GuidedStep = {
 /** A section is shown unless it waits for Matt (needs_matt_confirm: hidden until he confirms). */
 export const visibleSections = (s: GuidedStep) => s.build.sections.filter((x) => !(x.type === "card" && x.needs_matt_confirm));
 
+// ---------- theme and product (courses.theme): the colors, the hero and what the course builds ----------
+
+export type GuidedTheme = "resume" | "interview";
+export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" ? "interview" : "resume");
+/** Each course builds one "product", stored in its own owner-only table. */
+type Bi = { es: string; en: string };
+export const PRODUCT: Record<GuidedTheme, { table: "resumes" | "answer_banks"; path: string; label: Bi; icon: string; build: Bi; rail: Bi; railP: Bi; see: Bi; privacy?: Bi }> = {
+  resume: {
+    table: "resumes",
+    path: "mi-resume",
+    label: { es: "Mi resume", en: "My resume" },
+    icon: "doc",
+    build: { es: "Construye tu resume", en: "Build your resume" },
+    rail: { es: "LO QUE CONSTRUYES", en: "WHAT YOU BUILD" },
+    railP: { es: "Todo se guarda solo en Mi resume.", en: "Everything saves to My resume automatically." },
+    see: { es: "Ver mi resume", en: "See my resume" },
+  },
+  interview: {
+    table: "answer_banks",
+    path: "mi-banco",
+    label: { es: "Mis respuestas", en: "My answers" },
+    icon: "chat",
+    build: { es: "Construye tus respuestas", en: "Build your answers" },
+    rail: { es: "MI BANCO", en: "MY BANK" },
+    railP: { es: "Todo se guarda solo en tu banco de respuestas.", en: "Everything saves to your answer bank automatically." },
+    see: { es: "Ver mis respuestas", en: "See my answers" },
+    privacy: { es: "Tus respuestas y grabaciones son solo tuyas.", en: "Your answers and recordings are yours only." },
+  },
+};
+
 // ---------- per-step progress (guided_step_progress.state) ----------
 
 export type StepState = {
+  /** A step without questions: the student tapped "Terminar el curso". */
+  ended?: boolean;
   practice?: Record<string, unknown>;
   check?: Record<string, number>;
   ess?: Record<string, unknown>;
@@ -385,5 +433,96 @@ export function splitTitle(t: string): [string, string] {
 
 export const stepPath = (slug: string, n: number) => `/app/cursos/${slug}/paso/${n}`;
 export const resumePath = (slug: string) => `/app/cursos/${slug}/mi-resume`;
+export const productPath = (slug: string, theme: GuidedTheme) => `/app/cursos/${slug}/${PRODUCT[theme].path}`;
+export const simPath = (slug: string) => `/app/cursos/${slug}/simulacro`;
+
+// ---------- answer bank (Interview) ----------
+
+export type AnswerVal = { text?: string; star?: Partial<Record<"S" | "T" | "A" | "R", string>>; parts?: Record<string, string>; ready?: boolean };
+export const FORM_FIELDS: Record<AnswerForm, { k: string; es: string; color?: string }[]> = {
+  star: [
+    { k: "S", es: "Situación · ¿Dónde estabas y qué pasaba?", color: "#2E6F86" },
+    { k: "T", es: "Tarea · ¿Qué te tocaba resolver?", color: "#7A4FD6" },
+    { k: "A", es: "Acción · ¿Qué hiciste tú y cómo?", color: "#D99A1F" },
+    { k: "R", es: "Resultado · ¿Qué lograste? Termina en positivo.", color: "#2F7D57" },
+  ],
+  present_past_future: [
+    { k: "present", es: "Presente · Quién eres y qué haces hoy" },
+    { k: "past", es: "Pasado · Tu experiencia y un logro" },
+    { k: "future", es: "Futuro · Por qué este puesto es tu siguiente paso" },
+  ],
+  strength_weakness: [
+    { k: "strength", es: "Tu fortaleza" },
+    { k: "example", es: "Un ejemplo real de esa fortaleza" },
+    { k: "weakness", es: "Debilidad real pero no crítica" },
+    { k: "impact", es: "Cómo te afectó" },
+    { k: "improve", es: "Qué haces para mejorarla" },
+  ],
+  five_years: [
+    { k: "present", es: "Presente · Lo que haces hoy" },
+    { k: "near", es: "Futuro cercano · Lo que quieres aprender en este puesto" },
+    { k: "goal", es: "Meta a 5 años · Alineada con la empresa" },
+  ],
+  free: [{ k: "text", es: "Tu respuesta" }],
+};
+/** The fields of one answer, in order, as [key, value]. */
+export function answerFields(form: AnswerForm, v: AnswerVal): [string, string][] {
+  return FORM_FIELDS[form].map((f) => [f.k, form === "star" ? (v.star?.[f.k as "S"] ?? "") : form === "free" ? (v.text ?? "") : (v.parts?.[f.k] ?? "")]);
+}
+export const answerText = (form: AnswerForm, v: AnswerVal) =>
+  answerFields(form, v)
+    .map(([, x]) => x.trim())
+    .filter(Boolean)
+    .join(" ");
+export const wordCount = (t: string) => t.trim().split(/\s+/).filter(Boolean).length;
+/** Speaking time at `wpm` words per minute, in seconds. */
+export const speakSeconds = (t: string, wpm = 130) => Math.round((wordCount(t) / wpm) * 60);
+export const mmss = (s: number) => `${Math.floor(s / 60)}:${String(Math.round(s) % 60).padStart(2, "0")}`;
+/** "company.why" → data.company.why */
+export function pathValue(d: ResumeData, path: string) {
+  return path.split(".").reduce<unknown>((o, k) => (o && typeof o === "object" ? (o as Record<string, unknown>)[k] : undefined), d);
+}
+export type SimItem = { q: string; transcript: string; seconds: number; eval: Record<string, number>; comments: string };
+export type SimRun = { id: string; at: string; mode: "solo" | "friend"; items: SimItem[]; done?: boolean };
 /** sessionStorage key for "Enviar a revisión con IA" (the text never goes in the URL). */
 export const HANDOFF_KEY = "celsu:resume-review-handoff";
+
+/** The answers section of a course (Interview step 4): its questions and stored values. */
+export function answersSection(steps: GuidedStep[]) {
+  for (const st of steps) for (const x of st.build.sections) if (x.type === "answers") return { step: st.step, sec: x };
+  return null;
+}
+export function answerVals(d: ResumeData, key: string, n: number): AnswerVal[] {
+  const raw = Array.isArray(d[key]) ? (d[key] as unknown[]) : [];
+  return Array.from({ length: n }, (_, i) => {
+    const o = obj(raw[i]);
+    return { text: str(o.text) || undefined, star: obj(o.star) as AnswerVal["star"], parts: obj(o.parts) as Record<string, string>, ready: o.ready === true };
+  });
+}
+export const simRuns = (d: ResumeData) => (Array.isArray(d.sim_runs) ? (d.sim_runs as SimRun[]) : []).filter((r) => r && Array.isArray(r.items) && r.items.length);
+
+/** "Mi banco" parts, in course order: the key that holds each one and when it counts as done. */
+export const BANK_PARTS = [
+  { key: "value", es: "Mi frase de valor", en: "My value statement" },
+  { key: "company", es: "Ficha de la empresa", en: "Company card" },
+  { key: "rubric", es: "Autoevaluación en video", en: "Video self-review" },
+  { key: "answers", es: "8 respuestas", en: "8 answers" },
+  { key: "myq", es: "Mis 3 preguntas", en: "My 3 questions" },
+  { key: "sim", es: "Simulacro", en: "Mock interview" },
+] as const;
+export function bankFilled(d: ResumeData, key: (typeof BANK_PARTS)[number]["key"], steps: GuidedStep[]) {
+  if (key === "value") return str(d.value).trim().length >= 20;
+  if (key === "company") {
+    const c = obj(d.company);
+    return !!(str(c.company).trim() && str(c.role).trim());
+  }
+  if (key === "rubric") return Object.keys(obj(obj(d.rubric).answers)).length >= 10;
+  if (key === "answers") {
+    const a = answersSection(steps);
+    return !!a && answerVals(d, a.sec.key, a.sec.questions.length).every((x) => x.ready);
+  }
+  if (key === "myq") return strs(d.myq).length >= 2 && str(d.ownq).trim().length > 5;
+  return simRuns(d).some((r) => r.done);
+}
+export const bankStep = (steps: GuidedStep[], key: string) =>
+  steps.find((s) => s.build.sections.some((x) => x.key === key || (key === "sim" && x.type === "simulator")))?.step ?? null;

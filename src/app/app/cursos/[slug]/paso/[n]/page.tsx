@@ -40,6 +40,7 @@ export default async function GuidedStepPage({ params }: Props) {
       resume={g.resume}
       readerT={t.reader}
       defaultLang={lang === "en" ? "en" : "es"}
+      theme={g.theme}
     />
   );
 }

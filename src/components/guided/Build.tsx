@@ -38,6 +38,7 @@ import {
   type EnDraft,
   type EnSection,
   type GuidedStep,
+  type GuidedTheme,
   type Job,
   type Lang,
   type ResumeData,
@@ -47,9 +48,13 @@ import {
 } from "@/lib/guided";
 import { Ico, SavedBadge, say, type SaveState, type T } from "./ui";
 import { PrintCopy, downloadDocx, printPdf } from "./ResumeDoc";
+import { InterviewSection } from "./BuildInterview";
 import s from "./guided.module.css";
 
 export type BuildCtx = {
+  /** The step being built (sections that read its own blocks: checklist `from`, pick_many `from: phrases`). */
+  step: GuidedStep;
+  theme: GuidedTheme;
   data: ResumeData;
   set: (key: string, value: unknown, now?: boolean) => void;
   update: (fn: (d: ResumeData) => ResumeData, now?: boolean) => void;
@@ -181,7 +186,20 @@ const useB = () => B;
 
 export function BuildSection({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
   const b = useB();
-  const hideSave = sec.type === "export" || sec.type === "card";
+  const hideSave = sec.type === "export" || sec.type === "card" || sec.type === "tip" || sec.type === "self_video" || sec.type === "simulator";
+  if (sec.type === "tip")
+    return (
+      <div className={s.gtip} data-section={sec.key}>
+        <span className={s.gi}>
+          <Ico n="spark" />
+        </span>
+        <div>
+          {sec.title && <b>{sec.title}</b>}
+          <p>{sec.text}</p>
+        </div>
+      </div>
+    );
+  if (sec.type === "simulator") return <InterviewSection sec={sec} ctx={ctx} />;
   return (
     <div className={s.card} data-section={sec.key}>
       <div className={s.bhead}>
@@ -237,6 +255,13 @@ function SectionBody({ sec, ctx }: { sec: Section; ctx: BuildCtx }) {
       return <Suggest ctx={ctx} />;
     case "export":
       return <Export sec={sec} ctx={ctx} />;
+    case "normal_vs_better":
+    case "answers":
+    case "self_video":
+    case "rubric":
+    case "toggle":
+    case "simulator":
+      return <InterviewSection sec={sec} ctx={ctx} />;
     case "card":
       return (
         <div className={s.allc}>
@@ -271,16 +296,27 @@ function Fields({ sec, ctx }: { sec: Extract<Section, { type: "fields" }>; ctx: 
               {f.label}
               {f.optional ? ` ${b.optional}` : ""}
             </label>
+            {f.input === "select" ? (
+              <select id={id} value={val} onChange={(e) => ctx.set(sec.key, { ...v, [f.k]: e.target.value })}>
+                <option value="">—</option>
+                {(f.options ?? []).map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </select>
+            ) : (
             <input
               id={id}
               value={val}
               placeholder={f.placeholder}
-              type={f.check === "email" ? "email" : f.check === "phone_cc" ? "tel" : "text"}
+              type={f.input === "datetime" ? "datetime-local" : f.check === "email" ? "email" : f.check === "phone_cc" ? "tel" : "text"}
               inputMode={f.check === "phone_cc" ? "tel" : undefined}
               aria-invalid={bad || undefined}
               aria-describedby={bad ? `${id}-m` : undefined}
               onChange={(e) => ctx.set(sec.key, { ...v, [f.k]: e.target.value })}
             />
+            )}
             {bad && (
               <p className={s.fldMsg} id={`${id}-m`}>
                 {f.check === "email" ? b.email : b.phone}
@@ -301,7 +337,16 @@ function linkHref(l: NonNullable<Exclude<ChecklistItem, string>["link"]>, slug: 
   return null;
 }
 
-function Checklist({ sec, ctx }: { sec: Extract<Section, { type: "checklist" }>; ctx: BuildCtx }) {
+/** A checklist's items, or those of the step block it points to (`from: "essentials[0]"`). */
+function checklistItems(sec: Extract<Section, { type: "checklist" }>, step: GuidedStep): ChecklistItem[] {
+  if (sec.items?.length) return sec.items;
+  const m = /^essentials\[(\d+)\]$/.exec(sec.from ?? "");
+  const b = m ? step.essentials[Number(m[1])] : null;
+  return b && b.type === "checklist" ? b.items : [];
+}
+
+function Checklist({ sec: raw0, ctx }: { sec: Extract<Section, { type: "checklist" }>; ctx: BuildCtx }) {
+  const sec = { ...raw0, items: checklistItems(raw0, ctx.step) };
   const raw = Array.isArray(ctx.data[sec.key]) ? (ctx.data[sec.key] as unknown[]) : [];
   const vals = sec.items.map((_, i) => raw[i] === true);
   const n = vals.filter(Boolean).length;
@@ -700,13 +745,29 @@ function PickMany({ sec, ctx }: { sec: Extract<Section, { type: "pick_many" }>; 
   const b = useB();
   const count = sec.count ?? 5;
   const chosen = strs(ctx.data[sec.key]);
+  // The phrases of this step (the verbs in step 3, the good questions in step 5), else every step's.
+  const own = ctx.step.essentials.flatMap((x) => (x.type === "phrases" ? x.items.map((i) => ({ es: i.es, en: i.en })) : []));
+  const list = own.length ? own : ctx.verbs;
+  // English answers (questions to ask) are kept in English; Spanish verbs as the student picks them.
+  const keyOf = (v: { es: string; en: string }) => (sec.audio ? v.en : v.es);
   return (
     <>
-      <div className={s.pick}>
-        {ctx.verbs.map((v) => {
-          const on = chosen.includes(v.es);
+      <div className={`${s.pick} ${sec.audio ? s.pickLong : ""}`}>
+        {list.map((v) => {
+          const k = keyOf(v);
+          const on = chosen.includes(k);
           return (
-            <button key={v.es} type="button" aria-pressed={on} disabled={!on && chosen.length >= count} onClick={() => ctx.set(sec.key, on ? chosen.filter((x) => x !== v.es) : [...chosen, v.es])}>
+            <button
+              key={k}
+              type="button"
+              aria-pressed={on}
+              disabled={!on && chosen.length >= count}
+              onClick={() => {
+                if (sec.audio) say(v.en);
+                ctx.set(sec.key, on ? chosen.filter((x) => x !== k) : [...chosen, k]);
+              }}
+            >
+              {sec.audio && <Ico n="vol" />}
               <b lang="en">{v.en}</b>
               {v.es}
             </button>

@@ -3,11 +3,31 @@
 // Course page of a guided course (cv-resume-mockup.html ?v=home): hero with the little paper resume that fills in,
 // the steps as a timeline (nothing is locked), the AI tools, the original books, and the "Tu resume" rail.
 import Link from "next/link";
-import { PAPER_KEYS, contactOf, resumePath, sectionFilled, stepOfKey, stepPath, str, type GuidedStep, type Lang, type ResumeData } from "@/lib/guided";
+import {
+  BANK_PARTS,
+  PAPER_KEYS,
+  PRODUCT,
+  answerVals,
+  answersSection,
+  bankFilled,
+  bankStep,
+  contactOf,
+  productPath,
+  resumePath,
+  sectionFilled,
+  simPath,
+  stepOfKey,
+  stepPath,
+  str,
+  type GuidedStep,
+  type GuidedTheme,
+  type Lang,
+  type ResumeData,
+} from "@/lib/guided";
 import { Ico, TopBar, UI, useLang } from "./ui";
 import s from "./guided.module.css";
 
-export type CourseCopy = { kick: string; h1a: string; h1b: string; text: string; result: string };
+export type CourseCopy = { kick: string; h1a: string; h1b: string; h1c?: string; text: string; result: string; routeH?: string; routeI?: string };
 
 export function GuidedCourseView({
   slug,
@@ -21,6 +41,7 @@ export function GuidedCourseView({
   tools,
   notice,
   defaultLang,
+  theme = "resume",
 }: {
   slug: string;
   title: string;
@@ -33,6 +54,7 @@ export function GuidedCourseView({
   tools: boolean;
   notice?: React.ReactNode;
   defaultLang: Lang;
+  theme?: GuidedTheme;
 }) {
   const [lang, setLang] = useLang(defaultLang);
   const t = UI[lang];
@@ -46,9 +68,15 @@ export function GuidedCourseView({
   const target = str((resume.target as Record<string, unknown> | undefined)?.target_role);
   const railKeys = [...PAPER_KEYS, "en"] as const;
   const enDone = resume.en_status === "approved";
+  const bank = theme === "interview";
+  const prod = PRODUCT[theme];
+  const prodHref = productPath(slug, theme);
+  const ans = answersSection(steps);
+  const ansVals = ans ? answerVals(resume, ans.sec.key, ans.sec.questions.length) : [];
+  const readyN = ansVals.filter((a) => a.ready).length;
 
   return (
-    <div className={s.page} lang={lang}>
+    <div className={`${s.page} ${bank ? s.thInterview : ""}`} lang={lang}>
       <TopBar
         kicker={stage}
         title={title}
@@ -56,14 +84,16 @@ export function GuidedCourseView({
         progress={total ? doneN / total : 0}
         lang={lang}
         onLang={setLang}
-        resumeHref={resumePath(slug)}
+        resumeHref={prodHref}
+        productLabel={prod.label[lang]}
+        productIcon={prod.icon}
         t={t}
         row={
           <>
-            <span>{t.mobHome(cur, total, filled.length, PAPER_KEYS.length)}</span>
-            <Link href={resumePath(slug)}>
-              <Ico n="doc" />
-              {t.myResume}
+            <span>{bank ? `${t.stepOf(cur, total).charAt(0)}${t.stepOf(cur, total).slice(1).toLowerCase()} · ${readyN} ${lang === "es" ? "de" : "of"} ${ansVals.length} ${lang === "es" ? "respuestas" : "answers"}` : t.mobHome(cur, total, filled.length, PAPER_KEYS.length)}</span>
+            <Link href={prodHref}>
+              <Ico n={prod.icon} />
+              {prod.label[lang]}
             </Link>
           </>
         }
@@ -71,16 +101,24 @@ export function GuidedCourseView({
       <div className={s.wrap}>
         <div className={s.main}>
           {notice}
-          <section className={s.hero}>
+          <section className={`${s.hero} ${bank ? s.heroCover : ""}`}>
             <div className={s.hgrid}>
               <div>
                 <span className={s.kick}>
                   <Ico n="globe" />
                   {copy.kick}
                 </span>
-                <h1>
-                  {copy.h1a} <em>{copy.h1b}</em>
-                </h1>
+                {bank ? (
+                  <h1>
+                    {copy.h1a}
+                    <small>{copy.h1b}</small>
+                    {copy.h1c}
+                  </h1>
+                ) : (
+                  <h1>
+                    {copy.h1a} <em>{copy.h1b}</em>
+                  </h1>
+                )}
                 <p>{copy.text}</p>
                 <div className={s.chips}>
                   <span>
@@ -91,22 +129,43 @@ export function GuidedCourseView({
                     <Ico n="clock" />
                     {lang === "es" ? `Unas ${hours} horas, a tu ritmo` : `About ${hours} hours, at your pace`}
                   </span>
-                  <span>
-                    <Ico n="doc" />
-                    {copy.result}
-                  </span>
+                  {copy.result && (
+                    <span>
+                      <Ico n={bank ? "mic" : "doc"} />
+                      {copy.result}
+                    </span>
+                  )}
                 </div>
                 <div className={s.hcta}>
                   <Link href={stepPath(slug, cur)} className={`${s.btn} ${s.btnG}`}>
                     <Ico n="play" />
                     {doneN === total ? t.review : t.continueStep(cur)}
                   </Link>
-                  <Link href={resumePath(slug)} className={`${s.btn} ${s.btnO}`}>
-                    <Ico n="eye" />
-                    {t.seeResume}
-                  </Link>
+                  {bank ? (
+                    <Link href={simPath(slug)} className={`${s.btn} ${s.btnO}`}>
+                      <Ico n="mic" />
+                      {lang === "es" ? "Probar el simulacro" : "Try the mock interview"}
+                    </Link>
+                  ) : (
+                    <Link href={resumePath(slug)} className={`${s.btn} ${s.btnO}`}>
+                      <Ico n="eye" />
+                      {t.seeResume}
+                    </Link>
+                  )}
                 </div>
               </div>
+              {bank && ans ? (
+                <div className={s.bankc} aria-label={`${readyN}/${ansVals.length}`}>
+                  <small>{lang === "es" ? "MI BANCO DE RESPUESTAS" : "MY ANSWER BANK"}</small>
+                  <b>{lang === "es" ? `${readyN} de ${ansVals.length} listas` : `${readyN} of ${ansVals.length} ready`}</b>
+                  {ans.sec.questions.map((q, i) => (
+                    <div key={q.en} className={`${s.bq} ${ansVals[i]?.ready ? s.bqOk : ""}`}>
+                      <i>{ansVals[i]?.ready ? "✓" : ""}</i>
+                      <span lang="en">{q.en}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
               <div className={s.hpaper} aria-label={`${filled.length}/${PAPER_KEYS.length} ${t.sections}`}>
                 <div className={s.paper}>
                   <div className={s.nm}>{c.name?.trim() || t.yourName}</div>
@@ -134,6 +193,7 @@ export function GuidedCourseView({
                   </div>
                 </div>
               </div>
+              )}
             </div>
           </section>
 
@@ -144,10 +204,10 @@ export function GuidedCourseView({
               </div>
               <div>
                 <small>{t.route}</small>
-                <h2>{t.routeH(total)}</h2>
+                <h2>{copy.routeH ?? t.routeH(total)}</h2>
               </div>
             </div>
-            <p className={s.intro}>{t.routeI}</p>
+            <p className={s.intro}>{copy.routeI ?? t.routeI}</p>
             <ol className={s.route}>
               {steps.map((x) => {
                 const isDone = !!done[x.step];
@@ -190,7 +250,35 @@ export function GuidedCourseView({
                   <h2>{t.toolsH}</h2>
                 </div>
               </div>
-              {tools && (
+              {tools && bank && (
+                <div className={s.tools}>
+                  <div className={s.tool}>
+                    <div className={s.ic}>
+                      <Ico n="mic" />
+                    </div>
+                    <span className={s.chip}>{t.ai}</span>
+                    <h3>{lang === "es" ? "Práctica de entrevista" : "Interview Practice"}</h3>
+                    <p>{lang === "es" ? "Cuando tengas tus respuestas, practica con preguntas nuevas y recibe comentarios sobre tu claridad y tu inglés." : "When your answers are ready, practice new questions and get feedback on your clarity and your English."}</p>
+                    <Link href="/app/herramientas/entrevista" className={`${s.btn} ${s.btnG}`}>
+                      {t.ipB}
+                      <Ico n="right" />
+                    </Link>
+                  </div>
+                  <div className={s.tool}>
+                    <div className={s.ic}>
+                      <Ico n="doc" />
+                    </div>
+                    <span className={s.chip}>{lang === "es" ? "ETAPA 2" : "STAGE 2"}</span>
+                    <h3>{lang === "es" ? "Tu resume" : "Your resume"}</h3>
+                    <p>{lang === "es" ? "Tus historias STAR salen de tu experiencia. Tenla a la mano en Mi resume." : "Your STAR stories come from your experience. Keep it handy in My resume."}</p>
+                    <Link href={resumePath("from-cv-to-u-s-resume-a-step-by-step-guide")} className={`${s.btn} ${s.btnO}`}>
+                      {t.seeResume}
+                      <Ico n="right" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+              {tools && !bank && (
                 <div className={s.tools}>
                   <div className={s.tool}>
                     <div className={s.ic}>
@@ -239,6 +327,44 @@ export function GuidedCourseView({
         </div>
 
         <aside className={s.rail}>
+          {bank ? (
+            <>
+              <div className={s.box}>
+                <h4>
+                  <Ico n="chat" />
+                  {lang === "es" ? "MI BANCO" : "MY BANK"}
+                </h4>
+                <ul className={s.mini}>
+                  {BANK_PARTS.map((x) => {
+                    const n = bankStep(steps, x.key) ?? 1;
+                    const ok = bankFilled(resume, x.key, steps);
+                    const isCur = !ok && n === cur;
+                    return (
+                      <li key={x.key}>
+                        <Link href={stepPath(slug, n)} className={ok ? s.miniDone : isCur ? s.miniCur : ""}>
+                          <i>{ok ? "✓" : n}</i>
+                          {x[lang]}
+                          <small>{t.stepN(n)}</small>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <Link href={prodHref} className={`${s.btn} ${s.btnG}`}>
+                  <Ico n="eye" />
+                  {lang === "es" ? "Ver mis respuestas" : "See my answers"}
+                </Link>
+              </div>
+              <div className={s.box}>
+                <h4>
+                  <Ico n="lock" style={{ color: "var(--ok)" }} />
+                  {lang === "es" ? "PRIVADO" : "PRIVATE"}
+                </h4>
+                <p>{lang === "es" ? "Tus respuestas y tus grabaciones son solo tuyas. Los videos no se suben: se quedan en tu teléfono o computadora." : "Your answers and recordings are yours only. Videos are never uploaded: they stay on your phone or computer."}</p>
+              </div>
+            </>
+          ) : (
+            <>
           <div className={s.box}>
             <h4>
               <Ico n="doc" />
@@ -272,6 +398,8 @@ export function GuidedCourseView({
             </h4>
             <p>{t.whenDoneP}</p>
           </div>
+            </>
+          )}
         </aside>
       </div>
     </div>

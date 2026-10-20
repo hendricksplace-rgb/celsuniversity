@@ -99,6 +99,20 @@ const P: Record<string, React.ReactNode> = {
       <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z" />
     </>
   ),
+  chat: <path d="M4 5h16v11H9l-5 4z" />,
+  lock: (
+    <>
+      <rect x="5" y="11" width="14" height="10" rx="2.5" />
+      <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+    </>
+  ),
+  stop: <rect x="7" y="7" width="10" height="10" rx="2" />,
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </>
+  ),
   link: <path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7" />,
 };
 export function Ico({ n, style }: { n: keyof typeof P | string; style?: React.CSSProperties }) {
@@ -148,11 +162,19 @@ export const UI = {
     paperH: { contact: "CONTACTO", summary: "PERFIL", jobs: "EXPERIENCIA", education: "EDUCACIÓN", skills: "HABILIDADES" } as Record<string, string>,
     yourName: "Tu nombre",
     yourRole: "Tu puesto",
-    parts: { vid: "Mira el video", ess: "Lo esencial", prac: "Practica", build: "Construye tu resume", chk: "Comprueba" } as Record<string, string>,
-    partH: { vid: "Las ideas clave en video", ess: "Lo que necesitas saber", chk: "Tres preguntas para cerrar", fin: "Cierre del curso" } as Record<string, string>,
+    parts: { vid: "Mira el video", nutshell: "En pocas palabras", ess: "Lo esencial", prac: "Practica", build: "Construye tu resume", chk: "Comprueba" } as Record<string, string>,
+    partH: { vid: "Las ideas clave en video", nutshell: "Lo más importante de este paso", ess: "Lo que necesitas saber", chk: "Tres preguntas para cerrar", fin: "Termina" } as Record<string, string>,
+    stepSaved: (b: string, p: string) => `${b}: guardado en ${p}.`,
+    readyQ: "¿Listo?",
+    readyP: "Revisa tu lista de arriba. Cuando quieras, marca el curso como terminado: siempre puedes regresar a cualquier paso.",
+    endCourse: "Terminar el curso",
+    courseDone: "¡Curso terminado!",
+    finished: "TERMINASTE",
+    backToCourse: "Regresar al curso",
     inStep: "EN ESTE PASO",
     youBuild: "LO QUE CONSTRUYES",
-    youBuildP: (t: string) => `${t}. Todo se guarda solo en Mi resume.`,
+    youBuildP: (t: string, p = "Mi resume") => `${t}. Todo se guarda solo en ${p}.`,
+    seeProduct: (p: string) => (p === "Mi resume" ? "Ver mi resume" : `Ver ${p.toLowerCase()}`),
     mobStep: (a: number, b: number, name: string) => `Parte ${a} de ${b} · ${name}`,
     moreVideo: "Para ver más",
     lang: { es: "ESPAÑOL", en: "INGLÉS" } as Record<string, string>,
@@ -210,11 +232,19 @@ export const UI = {
     paperH: { contact: "CONTACT", summary: "SUMMARY", jobs: "EXPERIENCE", education: "EDUCATION", skills: "SKILLS" } as Record<string, string>,
     yourName: "Your name",
     yourRole: "Your role",
-    parts: { vid: "Watch the video", ess: "The essentials", prac: "Practice", build: "Build your resume", chk: "Check" } as Record<string, string>,
-    partH: { vid: "The key ideas on video", ess: "What you need to know", chk: "Three questions to close", fin: "Course wrap-up" } as Record<string, string>,
+    parts: { vid: "Watch the video", nutshell: "In a nutshell", ess: "The essentials", prac: "Practice", build: "Build your resume", chk: "Check" } as Record<string, string>,
+    partH: { vid: "The key ideas on video", nutshell: "The most important part of this step", ess: "What you need to know", chk: "Three questions to close", fin: "Finish" } as Record<string, string>,
+    stepSaved: (b: string, p: string) => `${b}: saved to ${p}.`,
+    readyQ: "Ready?",
+    readyP: "Review your list above. Whenever you want, mark the course as finished: you can always come back to any step.",
+    endCourse: "Finish the course",
+    courseDone: "Course finished!",
+    finished: "YOU FINISHED",
+    backToCourse: "Back to the course",
     inStep: "IN THIS STEP",
     youBuild: "WHAT YOU BUILD",
-    youBuildP: (t: string) => `${t}. Everything saves to My resume automatically.`,
+    youBuildP: (t: string, p = "My resume") => `${t}. Everything saves to ${p} automatically.`,
+    seeProduct: (p: string) => (p === "My resume" ? "See my resume" : `See ${p.toLowerCase()}`),
     mobStep: (a: number, b: number, name: string) => `Part ${a} of ${b} · ${name}`,
     moreVideo: "Watch more",
     lang: { es: "SPANISH", en: "ENGLISH" } as Record<string, string>,
@@ -260,7 +290,7 @@ export function useLang(initial: Lang) {
   return [lang, choose] as const;
 }
 
-export function TopBar({ kicker, title, backHref, progress, lang, onLang, resumeHref, t, row }: { kicker: string; title: string; backHref: string; progress: number; lang: Lang; onLang: (l: Lang) => void; resumeHref?: string; t: T; row?: React.ReactNode }) {
+export function TopBar({ kicker, title, backHref, progress, lang, onLang, resumeHref, productLabel, productIcon = "doc", t, row }: { kicker: string; title: string; backHref: string; progress: number; lang: Lang; onLang: (l: Lang) => void; resumeHref?: string; productLabel?: string; productIcon?: string; t: T; row?: React.ReactNode }) {
   return (
     <>
       <header className={s.top}>
@@ -281,8 +311,8 @@ export function TopBar({ kicker, title, backHref, progress, lang, onLang, resume
           </div>
           {resumeHref && (
             <Link href={resumeHref} className={`${s.btn} ${s.btnG} ${s.myr}`}>
-              <Ico n="doc" />
-              {t.myResume}
+              <Ico n={productIcon} />
+              {productLabel ?? t.myResume}
             </Link>
           )}
         </div>
@@ -318,8 +348,8 @@ export function useToast() {
 
 export type SaveState = "idle" | "saving" | "saved" | "error";
 
-/** resumes.data: the whole document, debounced; flushed when the page hides. Owner only (RLS). */
-export function useResume(userId: string, initial: ResumeData) {
+/** resumes.data / answer_banks.data: the whole product, debounced; flushed when the page hides. Owner only (RLS). */
+export function useResume(userId: string, initial: ResumeData, table: "resumes" | "answer_banks" = "resumes") {
   const [data, setData] = useState<ResumeData>(initial);
   const [state, setState] = useState<SaveState>("idle");
   const latest = useRef(data);
@@ -331,13 +361,13 @@ export function useResume(userId: string, initial: ResumeData) {
     dirty.current = false;
     setState("saving");
     const { error } = await createClient()
-      .from("resumes")
+      .from(table)
       .upsert({ user_id: userId, data: latest.current as unknown as Json, updated_at: new Date().toISOString() });
     if (error) {
       dirty.current = true;
       setState("error");
     } else setState("saved");
-  }, [userId]);
+  }, [userId, table]);
 
   const update = useCallback(
     (fn: (d: ResumeData) => ResumeData, now = false) => {
