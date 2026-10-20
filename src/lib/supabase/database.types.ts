@@ -2819,6 +2819,54 @@ export type Database = {
         }
         Relationships: []
       }
+      student_invites: {
+        Row: {
+          activated_at: string | null
+          email_outbox_id: number | null
+          error: string | null
+          expires_at: string
+          id: string
+          redeem_count: number
+          redeemed_at: string | null
+          sent_at: string
+          sent_by: string | null
+          seq: number
+          status: string
+          token_hash: string
+          user_id: string
+        }
+        Insert: {
+          activated_at?: string | null
+          email_outbox_id?: number | null
+          error?: string | null
+          expires_at?: string
+          id?: string
+          redeem_count?: number
+          redeemed_at?: string | null
+          sent_at?: string
+          sent_by?: string | null
+          seq: number
+          status?: string
+          token_hash: string
+          user_id: string
+        }
+        Update: {
+          activated_at?: string | null
+          email_outbox_id?: number | null
+          error?: string | null
+          expires_at?: string
+          id?: string
+          redeem_count?: number
+          redeemed_at?: string | null
+          sent_at?: string
+          sent_by?: string | null
+          seq?: number
+          status?: string
+          token_hash?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       submissions: {
         Row: {
           body: string
@@ -3104,6 +3152,15 @@ export type Database = {
         Returns: number[]
       }
       admin_duplicate_module: { Args: { p_module: string }; Returns: string }
+      admin_invite_pending: {
+        Args: never
+        Returns: { display_name: string; email: string; user_id: string }[]
+      }
+      admin_student_signins: {
+        Args: { p_ids: string[] }
+        Returns: { last_sign_in_at: string | null; user_id: string }[]
+      }
+      can_send_invites: { Args: never; Returns: boolean }
       can_use_ai_tools: { Args: never; Returns: boolean }
       content_health: {
         Args: never
@@ -3162,6 +3219,7 @@ export type Database = {
           name: string
         }[]
       }
+      mark_invite_activated: { Args: never; Returns: undefined }
       my_resume_reviews: {
         Args: never
         Returns: {

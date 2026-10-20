@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { safeNextPath } from "@/lib/safe-next";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { PasswordFields } from "@/components/cuenta/SecurityForm";
 
@@ -14,10 +15,13 @@ export function NewPassword({ t }: { t: T }) {
   const [state, setState] = useState<"checking" | "ready" | "expired" | "done">("checking");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Where to go once the password is saved: /app, or ?next= (invitations from /activar go to Mis cursos).
+  const [next, setNext] = useState("/app");
 
   useEffect(() => {
     const supabase = createClient();
     const url = new URL(window.location.href);
+    setNext(safeNextPath(url.searchParams.get("next")));
     const hash = new URLSearchParams(url.hash.slice(1));
     if (url.searchParams.get("error_code") || hash.get("error_code") || url.searchParams.get("error")) return setState("expired");
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
@@ -38,11 +42,17 @@ export function NewPassword({ t }: { t: T }) {
 
   const save = async (password: string) => {
     setBusy(true);
-    const { error: e } = await createClient().auth.updateUser({ password });
+    const supabase = createClient();
+    const { error: e } = await supabase.auth.updateUser({ password });
     setBusy(false);
     if (e) return setError(t.pwError);
+    // Invited students (/activar): their invitation link stops working once the password exists.
+    await supabase.rpc("mark_invite_activated").then(
+      () => undefined,
+      () => undefined,
+    );
     setState("done");
-    setTimeout(() => window.location.assign("/app"), 1800);
+    setTimeout(() => window.location.assign(next), 1800);
   };
 
   return (

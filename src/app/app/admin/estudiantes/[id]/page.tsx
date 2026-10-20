@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getViewer, isAdminRole, one } from "@/lib/access";
 import { accessTargets } from "@/lib/grants";
 import { GrantForm, RevokeButton } from "@/components/admin/AccessForms";
+import { InviteButton } from "@/components/admin/InviteButtons";
+import { fmtDay, inviteLabel } from "@/lib/invites";
 
 export const metadata = { title: "Estudiante · CelsU" };
 
@@ -21,7 +23,7 @@ export default async function Estudiante({ params }: Props) {
   if (!viewer || !isAdminRole(viewer.role)) notFound();
   const { data: p } = await supabase.from("profiles").select("id, email, display_name, created_at, requested_plan, requested_plan_at").eq("id", id).maybeSingle();
   if (!p) notFound();
-  const [{ data: enr }, targets, { data: pledges }] = await Promise.all([
+  const [{ data: enr }, targets, { data: pledges }, { data: invites }, { data: signin }] = await Promise.all([
     supabase
       .from("enrollments")
       .select("id, status, source, starts_at, expires_at, course:courses(title), program:programs(title)")
@@ -30,7 +32,13 @@ export default async function Estudiante({ params }: Props) {
     accessTargets(supabase),
     // CelsBSNS "Mi compromiso" (the syllabus): staff and admins can read every signature.
     supabase.from("course_commitments").select("id, signed_name, signed_at, course:courses(title)").eq("user_id", id).order("signed_at"),
+    // «Enviar invitación»: every invitation sent (newest first) and the last sign-in (auth, through an admin RPC).
+    supabase.from("student_invites").select("id, seq, sent_at, status, redeemed_at, activated_at, expires_at").eq("user_id", id).order("sent_at", { ascending: false }),
+    supabase.rpc("admin_student_signins", { p_ids: [id] }),
   ]);
+  const lastInvite = invites?.[0] ?? null;
+  const lastSignIn = signin?.[0]?.last_sign_in_at ?? null;
+  const invite = inviteLabel(lastInvite);
   const now = Date.now();
   // The plan they reserved at sign-up while purchases are closed (/registro?plan=…).
   const { data: wanted } = p.requested_plan ? await supabase.from("products").select("name").eq("code", p.requested_plan).maybeSingle() : { data: null };
@@ -57,6 +65,22 @@ export default async function Estudiante({ params }: Props) {
           </p>
         ))}
       </div>
+
+      <section className="space-y-3 rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm" data-testid="invite-section">
+        <div className="flex flex-wrap items-center gap-2">
+          <h2 className="text-lg font-extrabold">Invitación</h2>
+          <span className={`rounded-full px-2.5 py-1 text-xs font-extrabold ${invite.tone}`} data-testid="invite-status">
+            {invite.text}
+          </span>
+        </div>
+        <p className="text-sm font-semibold text-[#6B6680]">
+          {lastInvite
+            ? `Última enviada el ${fmtDay(lastInvite.sent_at)}${invites && invites.length > 1 ? ` (${invites.length} en total)` : ""} · el enlace vence el ${fmtDay(lastInvite.expires_at)}.`
+            : "Le llega «Tu nueva plataforma CelsU ya está lista» con un enlace para crear su contraseña (dura 30 días)."}{" "}
+          {lastSignIn ? `Entró por última vez el ${fmtDay(lastSignIn)}.` : "Nunca ha entrado."}
+        </p>
+        <InviteButton userId={p.id} sent={!!lastInvite} />
+      </section>
 
       <section className="space-y-3 rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm">
         <h2 className="text-lg font-extrabold">Dar acceso</h2>
