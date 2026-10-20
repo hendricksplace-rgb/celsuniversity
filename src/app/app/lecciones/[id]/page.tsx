@@ -169,7 +169,7 @@ export default async function LessonPage({ params }: Props) {
   ]);
   const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings ?? []);
   // A video lesson whose video isn't up yet: nothing to watch, so it is neither recorded nor finishable.
-  const videoSoon = track && partIds.length === 0 && visible.some((b) => b.block_type === "video");
+  const videoSoon = track && partIds.length === 0 && (lesson.lesson_type === "video" || visible.some((b) => b.block_type === "video"));
   const backHref = await moduleHref(supabase, course, lessonModule.id);
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
@@ -189,7 +189,12 @@ export default async function LessonPage({ params }: Props) {
         <p className="t-card t-card-accent">{t.lesson.noAccess}</p>
       ) : !track || videoSoon ? (
         <div className="space-y-5">
-          {videoSoon && <p className="t-heading text-xl">{t.lesson.videoSoonTitle}</p>}
+          {videoSoon && (
+            <div className="t-card space-y-1 text-center">
+              <p className="t-heading text-xl">🎬 {t.lesson.videoSoonTitle}</p>
+              {!visible.some((b) => b.block_type === "video") && <p className="t-muted text-sm">{t.lesson.videoSoon}</p>}
+            </div>
+          )}
           {visible.map((block) => (
             <div key={block.id}>
               <LessonBlock
