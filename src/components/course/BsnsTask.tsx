@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
+import { canRecord, pickMime, stopRecorder, stopTracks, usePageLeave } from "@/lib/voice";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { fill } from "@/components/course/kit";
 
@@ -54,36 +55,73 @@ function useAutosave(lessonId: string, initial: string, enabled: boolean) {
 
 function Recorder({ t, video, onFile }: { t: T; video: boolean; onFile: (f: Blob, ext: string) => void }) {
   const [rec, setRec] = useState<MediaRecorder | null>(null);
+  const [stopping, setStopping] = useState(false);
   const [secs, setSecs] = useState(0);
-  const canRecord = typeof window !== "undefined" && "MediaRecorder" in window && !!navigator.mediaDevices;
+  const cur = useRef<{ rec: MediaRecorder; stream: MediaStream; chunks: Blob[] } | null>(null);
+  const can = canRecord();
   useEffect(() => {
     if (!rec) return;
     const h = setInterval(() => setSecs((s) => s + 1), 1000);
     return () => clearInterval(h);
   }, [rec]);
+  // Leaving the page or unmounting: free the mic / camera, drop the recording.
+  const drop = useCallback(() => {
+    const x = cur.current;
+    cur.current = null;
+    if (!x) return;
+    if (x.rec.state !== "inactive") {
+      try {
+        x.rec.stop();
+      } catch {
+        /* already stopped */
+      }
+    }
+    stopTracks(x.stream);
+    setRec(null);
+  }, []);
+  useEffect(() => drop, [drop]);
+  usePageLeave(drop);
   const start = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia(video ? { audio: true, video: true } : { audio: true });
-      const types = video ? ["video/webm", "video/mp4"] : ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"];
-      const r = new MediaRecorder(stream, { mimeType: types.find((m) => MediaRecorder.isTypeSupported(m)) });
+      const type = pickMime(video ? "video" : "audio");
+      const r = new MediaRecorder(stream, type ? { mimeType: type } : undefined);
       const chunks: Blob[] = [];
       r.ondataavailable = (e) => e.data.size && chunks.push(e.data);
-      r.onstop = () => {
-        stream.getTracks().forEach((x) => x.stop());
-        const type = r.mimeType || (video ? "video/webm" : "audio/webm");
-        onFile(new Blob(chunks, { type }), type.includes("mp4") ? (video ? "mp4" : "m4a") : "webm");
-      };
-      r.start();
+      r.start(1000);
+      cur.current = { rec: r, stream, chunks };
       setSecs(0);
       setRec(r);
     } catch {
       setRec(null);
     }
   };
-  if (!canRecord) return <p className="text-sm text-[#4A5878]">{t.noRecorder}</p>;
-  return rec ? (
-    <button type="button" onClick={() => (rec.stop(), setRec(null))} className="kit-focus rounded-lg bg-[#A3123F] px-4 py-2.5 text-sm font-extrabold text-white">
-      ■ {t.stop} · {fill(t.recording, { s: `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}` })}
+  // Stop always finishes: state check, onstop or the chunks already collected after 1.5 s.
+  const stop = async () => {
+    const x = cur.current;
+    if (!x || stopping) return;
+    cur.current = null;
+    setStopping(true);
+    try {
+      const blob = await stopRecorder(x.rec, x.chunks, 1500);
+      const type = blob.type || (video ? "video/webm" : "audio/webm");
+      if (blob.size) onFile(new Blob([blob], { type }), type.includes("mp4") ? (video ? "mp4" : "m4a") : "webm");
+    } finally {
+      stopTracks(x.stream);
+      setRec(null);
+      setStopping(false);
+    }
+  };
+  if (!can) return <p className="text-sm text-[#4A5878]">{t.noRecorder}</p>;
+  return rec || stopping ? (
+    <button
+      type="button"
+      onClick={() => void stop()}
+      disabled={stopping}
+      aria-busy={stopping}
+      className="kit-focus rounded-lg bg-[#A3123F] px-4 py-2.5 text-sm font-extrabold text-white disabled:cursor-progress disabled:bg-[#6b7fa6]"
+    >
+      {stopping ? "…" : `■ ${t.stop} · ${fill(t.recording, { s: `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}` })}`}
     </button>
   ) : (
     <button type="button" onClick={() => void start()} className="kit-focus rounded-lg bg-[#13284D] px-4 py-2.5 text-sm font-extrabold text-white">
@@ -107,6 +145,7 @@ export function BsnsTask({
   done,
   sub,
   feedback,
+  track = true,
 }: {
   t: T;
   week: number;
@@ -122,6 +161,8 @@ export function BsnsTask({
   done: boolean;
   sub: Sub | null;
   feedback: { task: string; text: string; at: string | null }[];
+  /** false for drafts (staff previews): record_lesson_progress refuses them. */
+  track?: boolean;
 }) {
   const router = useRouter();
   const [showEs, setShowEs] = useState(false);
@@ -155,7 +196,7 @@ export function BsnsTask({
       setBusy(null);
       return setError(t.saveError);
     }
-    await finishLesson(createClient(), userId, lessonId);
+    if (track) await finishLesson(createClient(), userId, lessonId);
     setStatus("submitted");
     setSubmittedAt(new Date().toISOString());
     setBusy(null);
@@ -163,7 +204,7 @@ export function BsnsTask({
   };
   const markDone = async () => {
     setBusy("done");
-    await finishLesson(createClient(), userId, lessonId);
+    if (track) await finishLesson(createClient(), userId, lessonId);
     setBusy(null);
     router.push(backHref);
     router.refresh();

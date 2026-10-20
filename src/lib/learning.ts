@@ -8,7 +8,17 @@ import { guidedModules } from "@/lib/guided-modules";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
-export type ModuleStats = { id: string; title: string; lessons: number; done: number; complete: boolean };
+export type ModuleStats = {
+  id: string;
+  title: string;
+  lessons: number;
+  done: number;
+  complete: boolean;
+  /** Lessons opened but not finished (progress.status in_progress). */
+  started: number;
+  /** The latest progress.last_activity among the module's lessons. */
+  lastActivity: string | null;
+};
 export type CourseStats = {
   id: string;
   slug: string;
@@ -119,23 +129,28 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         if (row?.updated_at && (!last || row.updated_at > last.at)) last = { at: row.updated_at, lessonId: rep.id, lessonTitle: title };
         // The step's first lesson stands for the step: /app/lecciones/<id> opens the step page.
         order.push({ id: rep.id, title, done: isDone, moduleId: m.id });
-        ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone });
+        const stepLast = [row?.updated_at ?? null, ...own.map((l) => prog.get(l.id)?.last_activity ?? null)].filter((x): x is string => !!x).sort().pop() ?? null;
+        ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
         continue;
       }
       const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order));
       if (!ls.length) continue;
       let done = 0;
+      let started = 0;
+      let modLast: string | null = null;
       for (const l of ls) {
         const p = prog.get(l.id);
         const isDone = p?.status === "completed";
         if (isDone) done++;
+        else if (p) started++;
+        if (p?.last_activity && (!modLast || p.last_activity > modLast)) modLast = p.last_activity;
         if (p) {
           xp += p.xp_earned ?? 0;
           if (p.last_activity && (!last || p.last_activity > last.at)) last = { at: p.last_activity, lessonId: l.id, lessonTitle: l.title };
         }
         order.push({ id: l.id, title: l.title, done: isDone, moduleId: m.id });
       }
-      ms.push({ id: m.id, title: m.title, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length });
+      ms.push({ id: m.id, title: m.title, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length, started, lastActivity: modLast });
     }
     const lessons = order.length;
     const done = order.filter((o) => o.done).length;

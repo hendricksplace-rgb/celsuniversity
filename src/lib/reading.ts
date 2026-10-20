@@ -115,6 +115,19 @@ export type ReadingState = {
   reached?: number;
 };
 
+/** Two saves of the same reading (page state, the database): nothing answered is lost. Single choices: `b` when set;
+ *  MCQ per question: `b` when answered; found spots: union; furthest step: max. */
+export function mergeReadingState(a: ReadingState, b: ReadingState): ReadingState {
+  const mcqLen = Math.max(a.mcq?.length ?? 0, b.mcq?.length ?? 0);
+  const out: ReadingState = { ...a, ...b };
+  if (a.poll !== undefined || b.poll !== undefined) out.poll = b.poll ?? a.poll;
+  if (a.case3_choice !== undefined || b.case3_choice !== undefined) out.case3_choice = b.case3_choice ?? a.case3_choice;
+  if (a.spot_found || b.spot_found) out.spot_found = [...new Set([...(a.spot_found ?? []), ...(b.spot_found ?? [])])].sort((x, y) => x - y);
+  if (mcqLen) out.mcq = Array.from({ length: mcqLen }, (_, i) => b.mcq?.[i] ?? a.mcq?.[i] ?? null);
+  if (a.reached !== undefined || b.reached !== undefined) out.reached = Math.max(a.reached ?? 0, b.reached ?? 0);
+  return out;
+}
+
 export type NavLink = { title: string; href: string } | null;
 
 /** The TED player for a talk, with subtitles in the student's language where TED has them. */

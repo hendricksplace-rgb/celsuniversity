@@ -25,6 +25,8 @@ type Props = {
   reflection: { field: string; patterns: number[]; change: string; completedAt: string | null };
   phrases: Phrase[];
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 
 const UI = {
@@ -187,8 +189,9 @@ export function InteractiveResearch(p: Props) {
 
   // Opening the task counts as studying today and marks the lesson "in progress".
   useEffect(() => {
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+    if (p.track !== false) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, p.track]);
 
   // ---------- the two research cards (autosave about 600 ms after the last change) ----------
   const [entries, setEntries] = useState<ResearchEntry[]>(p.entries);
@@ -224,8 +227,10 @@ export function InteractiveResearch(p: Props) {
     },
     [db, p.userId, p.lessonId],
   );
+  const touchedEntries = useRef(new Map<number, Partial<ResearchEntry>>());
   const patch = useCallback(
     (slot: number, change: Partial<ResearchEntry>) => {
+      touchedEntries.current.set(slot, { ...touchedEntries.current.get(slot), ...change });
       setEntries((cur) => cur.map((e) => (e.slot === slot ? { ...e, ...change } : e)));
       clearTimeout(timers.current.get(slot));
       timers.current.set(
@@ -260,7 +265,9 @@ export function InteractiveResearch(p: Props) {
     },
     [db, p.userId, p.lessonId],
   );
+  const reflTouched = useRef(false);
   const scheduleRefl = useCallback(() => {
+    reflTouched.current = true;
     clearTimeout(reflTimer.current);
     reflTimer.current = setTimeout(() => void saveRefl(), 600);
   }, [saveRefl]);
@@ -280,6 +287,54 @@ export function InteractiveResearch(p: Props) {
 
   // ---------- Mis frases ----------
   const [phrases, setPhrases] = useState<Phrase[]>(p.phrases);
+
+  // A page from the client cache (back / forward) starts from its first load: read the saved rows again and merge
+  // (what the student changed since this page opened wins; everything else comes from the database).
+  useEffect(() => {
+    let live = true;
+    const sbc = db();
+    void Promise.all([
+      sbc.from("research_entries").select("slot, source_type, url, who, field, share, tone, borrow, liked, analysis").eq("user_id", p.userId).eq("lesson_id", p.lessonId),
+      sbc.from("research_reflections").select("field, patterns, change, completed_at").eq("user_id", p.userId).eq("lesson_id", p.lessonId).maybeSingle(),
+      sbc.from("phrase_bank").select("id, text, source, lesson_id").eq("user_id", p.userId).order("created_at"),
+    ]).then(([en, rf, ph]) => {
+      if (!live) return;
+      if (en.data?.length) {
+        const fresh = new Map(en.data.map((r) => [r.slot, r]));
+        setEntries((cur) =>
+          cur.map((e) => {
+            const r = fresh.get(e.slot);
+            if (!r) return e;
+            const fromDb: ResearchEntry = {
+              ...e,
+              source_type: r.source_type,
+              url: r.url ?? "",
+              who: r.who ?? "",
+              field: r.field ?? "",
+              share: (r.share ?? []).map(Number),
+              tone: (r.tone ?? []).map(Number),
+              borrow: r.borrow ?? "",
+              liked: r.liked ?? "",
+              analysis: r.analysis ?? "",
+            };
+            return { ...fromDb, ...touchedEntries.current.get(e.slot) };
+          }),
+        );
+      }
+      if (rf.data) {
+        if (!reflTouched.current) {
+          setField(rf.data.field ?? "");
+          setPatterns((rf.data.patterns ?? []).map(Number));
+          setChange(rf.data.change ?? "");
+        }
+        if (rf.data.completed_at) setCompletedAt((c) => c ?? rf.data!.completed_at);
+      }
+      if (ph.data) setPhrases((cur) => [...ph.data, ...cur.filter((x) => !ph.data.some((y) => y.id === x.id))]);
+    });
+    return () => {
+      live = false;
+    };
+  }, [db, p.userId, p.lessonId]);
   const [sheet, setSheet] = useState(false);
   const opener = useRef<HTMLElement | null>(null);
   const openSheet = (e: React.MouseEvent<HTMLElement>) => {
@@ -334,7 +389,7 @@ export function InteractiveResearch(p: Props) {
     const now = new Date().toISOString();
     const ok = await saveRefl({ completed_at: now });
     if (ok) {
-      await finishLesson(db(), p.userId, p.lessonId);
+      if (p.track !== false) await finishLesson(db(), p.userId, p.lessonId);
       setCompletedAt(now);
       requestAnimationFrame(() => doneRef.current?.focus());
     }

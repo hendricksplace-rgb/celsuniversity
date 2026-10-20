@@ -6,6 +6,7 @@ import { accessibleCourses, courseStats, todayIndex, weekIndex, type CourseStats
 import { liveStreak, liveWeeklyXp, nextMedalOf, weeklyGoalOf } from "@/lib/home";
 import { ROUTE_CARDS, hrefOf } from "@/lib/my-courses";
 import { ROUTE_PROGRAM } from "@/lib/route";
+import { activeWeekOf } from "@/lib/bsns";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
@@ -44,7 +45,17 @@ const GLOBAL_TOOLS = ["Resume Review", "Interview Prep"];
  * (`at`, one per stop, in order). Stops sit evenly along the drawn road; between two stops the pin
  * moves in proportion to the units of that stretch.
  */
-export type Road = { units: number; total: number; at: number[] };
+export type Road = {
+  units: number;
+  total: number;
+  at: number[];
+  /** Where the pin and "Siguiente" go, when that isn't `units` (CelsBSNS: the week being worked on). */
+  pin?: number;
+  /** The % shown, when that isn't units / total (CelsBSNS: lessons done, lessons started count half). */
+  pct?: number;
+  /** Which stops get a ✓, when that isn't "the pin has passed it" (CelsBSNS: every week up to the stop is complete). */
+  done?: boolean[];
+};
 
 export type ProgramView =
   | {
@@ -146,25 +157,40 @@ function bsnsView(c: CourseStats): ProgramView {
   const weeks = c.modules
     .map((m) => ({ m, n: numberIn(m.title, /(?:week|module|semana)\s*(\d+)/i) }))
     .filter((x): x is { m: CourseStats["modules"][number]; n: number } => x.n !== null && x.n >= 1 && x.n <= BSNS_WEEKS);
-  const open = weeks.find((w) => !w.m.complete);
-  const week = open?.n ?? BSNS_WEEKS;
+  // The week of the latest activity (the next one once it's complete), as on Inicio, Mis cursos and the course link.
+  const week = activeWeekOf(weeks.map((w) => ({ n: w.n, done: [w.m.complete], last: w.m.lastActivity })));
+  // Work in progress shows: a lesson started counts as half a lesson; "completed" still drives the checks.
+  const worked = (m: CourseStats["modules"][number]) => m.done + 0.5 * m.started;
   const groups = BSNS_GROUPS.map(([from, to]) => {
     const list = weeks.filter((w) => w.n >= from && w.n <= to);
     const lessons = list.reduce((n, w) => n + w.m.lessons, 0);
-    const done = list.reduce((n, w) => n + w.m.done, 0);
+    const done = list.reduce((n, w) => n + worked(w.m), 0);
     return { from, to, pct: Math.round(frac(done, lessons) * 100) };
   });
   const currentGroup = Math.max(0, BSNS_GROUPS.findIndex(([from, to]) => week >= from && week <= to));
-  const current = weeks.find((w) => w.n === week)?.m.title ?? null;
+  const cur = weeks.find((w) => w.n === week)?.m ?? null;
+  const allDone = weeks.length > 0 && weeks.every((w) => w.m.complete);
+  const lessons = weeks.reduce((n, w) => n + w.m.lessons, 0);
+  const total = Math.max(weeks.length, 1);
+  // The pin sits in the current week, moved along it by the share of that week worked on.
+  const pin = allDone ? total : Math.min(total, week - 1 + (cur ? Math.min(1, frac(worked(cur), cur.lessons)) : 0));
   // Weeks 1, 3, 5, 7 and 9, then the final project (week 10).
   return {
     brand: "celsbsns",
-    road: { units: moduleUnits(weeks.map((w) => w.m)), total: Math.max(weeks.length, 1), at: [0, 2, 4, 6, 8, 10].map((n) => Math.min(n, weeks.length)) },
+    road: {
+      units: moduleUnits(weeks.map((w) => w.m)),
+      total,
+      at: [0, 2, 4, 6, 8, 10].map((n) => Math.min(n, weeks.length)),
+      pin,
+      pct: Math.round(frac(weeks.reduce((n, w) => n + worked(w.m), 0), lessons) * 100),
+      // A student who skips ahead doesn't get ✓ on weeks never done: a stop is done when every week up to it is.
+      done: [0, 2, 4, 6, 8, 10].map((n, i, a) => (i === 0 ? true : i === a.length - 1 ? allDone : weeks.filter((w) => w.n <= n).every((w) => w.m.complete))),
+    },
     href: hrefOf(c),
     week,
     weeks: BSNS_WEEKS,
     // "Week 3 – Management and Leadership" → "Management and Leadership".
-    weekTitle: current ? current.replace(/^(?:week|module|semana)\s*\d+\s*[:–—-]\s*/i, "") : null,
+    weekTitle: cur ? cur.title.replace(/^(?:week|module|semana)\s*\d+\s*[:–—-]\s*/i, "") : null,
     groups,
     currentGroup,
   };

@@ -9,8 +9,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
+import { usePageLeave, useVoiceCapture, type VoiceResult } from "@/lib/voice";
 import { navTitle } from "@/lib/reading";
-import { countWordsSimple, fmtSecs, vocabCount, vocabRegex, type SpeakingBest, type SpeakingData, type SpeakingExercise, type VocabWord } from "@/lib/speaking";
+import { countWordsSimple, fmtSecs, maxMerge, repsNeeded, vocabCount, vocabRegex, type SpeakingBest, type SpeakingData, type SpeakingExercise, type VocabWord } from "@/lib/speaking";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, iconOr, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./speaking.module.css";
 
@@ -27,6 +28,8 @@ type Props = {
   partner: number[];
   completedAt: string | null;
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 type Try = { text: string; dur: number; self: number[]; manual?: boolean; failed?: boolean };
 
@@ -52,6 +55,8 @@ const UI = {
     tapMic: "Toca el micrófono y habla en inglés. Toca otra vez para terminar.",
     listening: "Escuchando…",
     transcribing: "Convirtiendo tu voz en texto…",
+    saving: "Guardando…",
+    opening: "Abriendo el micrófono…",
     micStart: "Grabar",
     micStop: "Terminar",
     limit: (a: number, b: number) => `Meta: ${a}–${b} s`,
@@ -123,6 +128,8 @@ const UI = {
     tapMic: "Tap the mic and speak in English. Tap again to finish.",
     listening: "Listening…",
     transcribing: "Turning your voice into text…",
+    saving: "Saving…",
+    opening: "Opening the microphone…",
     micStart: "Record",
     micStop: "Finish",
     limit: (a: number, b: number) => `Goal: ${a}–${b} s`,
@@ -177,23 +184,6 @@ const UI = {
 type UIT = (typeof UI)["es"];
 const POINT_COLORS = ["#7A4FD6", "#00A3C4", "#C98A00", "#1F7A4D", "#C2185B", "#2C6BC4"];
 const BARS = 28;
-const MAX_UPLOAD = 3_000_000;
-
-type SR = {
-  lang: string;
-  continuous: boolean;
-  interimResults: boolean;
-  start: () => void;
-  stop: () => void;
-  onresult: ((e: { resultIndex: number; results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> }) => void) | null;
-  onend: (() => void) | null;
-  onerror: ((e: { error?: string }) => void) | null;
-};
-const speechApi = (): (new () => SR) | null => {
-  if (typeof window === "undefined") return null;
-  const w = window as unknown as { SpeechRecognition?: new () => SR; webkitSpeechRecognition?: new () => SR };
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
-};
 
 export function InteractiveSpeaking(p: Props) {
   const { data } = p;
@@ -207,41 +197,71 @@ export function InteractiveSpeaking(p: Props) {
   const sb = useRef<ReturnType<typeof createClient> | null>(null);
   const db = useCallback(() => (sb.current ??= createClient()), []);
   const [saveError, setSaveError] = useState(false);
+  // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+  const track = p.track !== false;
 
   useEffect(() => {
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    if (track) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, track]);
 
   // ---------- state: tries live only in this page; counts and best texts are saved ----------
   const [tries, setTries] = useState<Try[][]>(ex.map(() => []));
   const [reps, setReps] = useState<number[]>(ex.map((_, i) => p.reps[i] ?? 0));
-  // One answer per partner question (the bonus has 2 or 3); the reps array has one count per exercise.
+  // One answer per partner question (the bonus has 2 or 3, each 0 = none or 1..3 = the option); the reps array has
+  // one count per exercise.
   const [partner, setPartner] = useState<number[]>(data.bonus.questions.en.map((_, i) => p.partner[i] ?? 0));
   const [bestIdx, setBestIdx] = useState<(number | null)[]>(ex.map(() => null));
   const [savedBest, setSavedBest] = useState<(SpeakingBest | null)[]>(ex.map((_, i) => p.best.find((b) => b.exercise === i + 1) ?? null));
   const [completedAt, setCompletedAt] = useState(p.completedAt);
   const repsRef = useRef(reps);
-  const partnerRef = useRef(partner);
+  /** Counts only go up: whatever arrives (props, a fresh read, an RPC answer) is merged by max. */
+  const bumpReps = useCallback((from: ArrayLike<number | null> | null | undefined) => {
+    const next = maxMerge(repsRef.current, from);
+    if (next.some((v, i) => v !== repsRef.current[i])) {
+      repsRef.current = next;
+      setReps(next);
+    }
+  }, []);
 
-  const saveProgress = useCallback(
-    async (extra: { completed_at?: string } = {}) => {
-      const { error } = await db()
-        .from("speaking_progress")
-        .upsert(
-          { user_id: p.userId, lesson_id: p.lessonId, reps: repsRef.current, partner_feedback: partnerRef.current, updated_at: new Date().toISOString(), ...extra },
-          { onConflict: "user_id,lesson_id" },
-        );
-      setSaveError(!!error);
-      return !error;
-    },
-    [db, p.userId, p.lessonId],
-  );
+  // A page shown from the client cache (back / forward) carries the counts of its first load: read them again.
+  useEffect(() => {
+    let live = true;
+    void db()
+      .from("speaking_progress")
+      .select("reps, partner_feedback, completed_at")
+      .eq("user_id", p.userId)
+      .eq("lesson_id", p.lessonId)
+      .maybeSingle()
+      .then(({ data: row }) => {
+        if (!live || !row) return;
+        bumpReps(row.reps);
+        setPartner((cur) => cur.map((v, i) => (row.partner_feedback?.[i] == null ? v : Number(row.partner_feedback[i]))));
+        if (row.completed_at) setCompletedAt((c) => c ?? row.completed_at);
+      });
+    return () => {
+      live = false;
+    };
+  }, [db, p.userId, p.lessonId, bumpReps]);
+
+  // Each try adds one in the database (add_speaking_rep); the page never writes the whole array.
   const addTry = (i: number, tr: Try) => {
     setTries((cur) => cur.map((list, k) => (k === i ? [...list, tr] : list)));
-    const next = repsRef.current.map((n, k) => (k === i ? n + 1 : n));
-    repsRef.current = next;
-    setReps(next);
-    void saveProgress();
+    bumpReps(repsRef.current.map((n, k) => (k === i ? n + 1 : n)));
+    void db()
+      .rpc("add_speaking_rep", { p_lesson: p.lessonId, p_exercise: i + 1 })
+      .then(({ data: out, error }) => {
+        setSaveError(!!error);
+        if (!error) bumpReps(out);
+      });
+  };
+  const setPartnerAnswer = (k: number, v: number) => {
+    setPartner((cur) => cur.map((x, i) => (i === k ? v : x)));
+    void db()
+      .rpc("set_speaking_partner", { p_lesson: p.lessonId, p_question: k + 1, p_value: v })
+      .then(({ data: out, error }) => {
+        setSaveError(!!error);
+        if (!error && out) setPartner((cur) => cur.map((x, i) => (out[i] == null ? x : Number(out[i]))));
+      });
   };
   const saveBest = useCallback(
     async (i: number, tr: Try) => {
@@ -278,194 +298,98 @@ export function InteractiveSpeaking(p: Props) {
     setTries((cur) => cur.map((list, x) => (x === i ? list.map((y, z) => (z === k ? { ...y, text: text.trim(), failed: false } : y)) : list)));
   };
 
-  // ---------- recording ----------
+  // ---------- recording (lib/voice: one capture at a time, stop always settles) ----------
   const [recIdx, setRecIdx] = useState<number | null>(null);
   const [busyIdx, setBusyIdx] = useState<number | null>(null);
+  const [stage, setStage] = useState<"start" | "saving" | "transcribing" | null>(null);
   const [live, setLive] = useState("");
   const [elapsed, setElapsed] = useState(0);
   const [micError, setMicError] = useState<number | null>(null);
-  const r = useRef<{
-    stream: MediaStream | null;
-    actx: AudioContext | null;
-    an: AnalyserNode | null;
-    recog: SR | null;
-    rec: MediaRecorder | null;
-    chunks: Blob[];
-    final: string;
-    live: string;
-    t0: number;
-    tick?: ReturnType<typeof setInterval>;
-    raf?: number;
-    stopping: boolean;
-  }>({ stream: null, actx: null, an: null, recog: null, rec: null, chunks: [], final: "", live: "", t0: 0, stopping: false });
-  const waveRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const recRef = useRef<number | null>(null);
+  const busyRef = useRef(false);
+  const tick = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const watchdog = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const voice = useVoiceCapture({ supabase: db, onLive: setLive, onTranscribing: () => setStage("transcribing") });
 
-  const cleanup = useCallback(() => {
-    const x = r.current;
-    clearInterval(x.tick);
-    if (x.raf) cancelAnimationFrame(x.raf);
-    x.stream?.getTracks().forEach((tr) => tr.stop());
-    if (x.actx && x.actx.state !== "closed") void x.actx.close();
-    x.stream = null;
-    x.actx = null;
-    x.an = null;
-    x.chunks = [];
+  const reset = useCallback(() => {
+    clearInterval(tick.current);
+    clearTimeout(watchdog.current);
+    recRef.current = null;
+    busyRef.current = false;
+    setRecIdx(null);
+    setBusyIdx(null);
+    setStage(null);
+    setLive("");
   }, []);
-  useEffect(
-    () => () => {
-      try {
-        r.current.recog?.stop();
-      } catch {
-        /* already stopped */
-      }
-      if (r.current.rec && r.current.rec.state !== "inactive") r.current.rec.stop();
-      cleanup();
-    },
-    [cleanup],
-  );
-
-  const drawWave = useCallback((i: number) => {
-    const x = r.current;
-    const el = waveRefs.current[i];
-    if (el) {
-      let d: Uint8Array<ArrayBuffer> | null = null;
-      if (x.an) {
-        d = new Uint8Array(new ArrayBuffer(x.an.frequencyBinCount));
-        x.an.getByteFrequencyData(d);
-      }
-      el.querySelectorAll("i").forEach((b, k) => ((b as HTMLElement).style.height = `${8 + (d ? (d[k % d.length] / 255) * 48 : 0)}px`));
-    }
-    x.raf = requestAnimationFrame(() => drawWave(i));
-  }, []);
-
-  const finishTry = useCallback(
-    (i: number, tr: Try) => {
-      cleanup();
-      r.current.recog = null;
-      r.current.rec = null;
-      setRecIdx(null);
-      setBusyIdx(null);
-      setLive("");
-      const el = waveRefs.current[i];
-      el?.querySelectorAll("i").forEach((b) => ((b as HTMLElement).style.height = "8px"));
-      addTry(i, tr);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- addTry only reads refs and setters
-    [cleanup],
-  );
 
   const stopMic = useCallback(async () => {
-    const x = r.current;
-    const i = recIdx;
-    if (i === null || x.stopping) return;
-    x.stopping = true;
-    clearInterval(x.tick);
-    const dur = Math.round((Date.now() - x.t0) / 1000);
-    if (x.recog) {
-      const recog = x.recog;
-      await new Promise<void>((res) => {
-        recog.onend = () => res();
-        try {
-          recog.stop();
-        } catch {
-          res();
-        }
-        setTimeout(res, 1200);
-      });
-      x.stopping = false;
-      return finishTry(i, { text: (x.final + " " + x.live).replace(/\s+/g, " ").trim(), dur, self: [] });
+    const i = recRef.current;
+    if (i === null || busyRef.current) return;
+    busyRef.current = true;
+    clearInterval(tick.current);
+    // Immediate feedback: the button turns into "Guardando…" before anything else happens.
+    setRecIdx(null);
+    setBusyIdx(i);
+    setStage("saving");
+    // Belt and braces: whatever happens below, the mic comes back (stop ≤ 1.5 s + transcription ≤ 20 s).
+    watchdog.current = setTimeout(() => {
+      voice.cancel();
+      reset();
+    }, 25_000);
+    let res: VoiceResult | null = null;
+    try {
+      res = await voice.stop();
+    } catch {
+      res = null;
+    } finally {
+      reset();
     }
-    if (x.rec) {
-      // Fallback: the recording stays in memory, goes to transcribe-speech once, and is dropped.
-      const rec = x.rec;
-      const blob = await new Promise<Blob>((res) => {
-        rec.onstop = () => res(new Blob(x.chunks, { type: rec.mimeType || "audio/webm" }));
-        rec.stop();
-      });
-      x.stream?.getTracks().forEach((tr) => tr.stop());
-      setBusyIdx(i);
-      setRecIdx(null);
-      let text = "";
-      let failed = false;
-      if (blob.size > 0 && blob.size <= MAX_UPLOAD) {
-        const fd = new FormData();
-        fd.append("audio", blob, "speech.webm");
-        const { data: out, error } = await db().functions.invoke("transcribe-speech", { body: fd });
-        if (error || typeof (out as { text?: unknown })?.text !== "string") failed = true;
-        else text = (out as { text: string }).text;
-      } else failed = blob.size > 0;
-      x.stopping = false;
-      return finishTry(i, { text, dur, self: [], failed });
-    }
-    x.stopping = false;
-    finishTry(i, { text: "", dur, self: [] });
-  }, [recIdx, db, finishTry]);
+    if (res) addTry(i, { text: res.text, dur: res.dur, self: [], failed: res.failed });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- addTry only reads refs and setters
+  }, [voice, reset]);
+  const stopRef = useRef(stopMic);
+  stopRef.current = stopMic;
 
   const startMic = async (i: number) => {
-    if (recIdx !== null || busyIdx !== null) return;
-    const x = r.current;
+    if (recRef.current !== null || busyRef.current) return;
+    busyRef.current = true;
     setMicError(null);
-    x.final = "";
-    x.live = "";
-    x.chunks = [];
-    const Speech = speechApi();
-    try {
-      x.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      x.actx = new AudioContext();
-      x.an = x.actx.createAnalyser();
-      x.an.fftSize = 64;
-      x.actx.createMediaStreamSource(x.stream).connect(x.an);
-    } catch {
-      cleanup();
-      if (!Speech) return setMicError(i);
-    }
-    if (Speech) {
-      const recog = new Speech();
-      recog.lang = "en-US";
-      recog.continuous = true;
-      recog.interimResults = true;
-      recog.onresult = (e) => {
-        let interim = "";
-        for (let k = e.resultIndex; k < e.results.length; k++) {
-          const res = e.results[k];
-          if (res.isFinal) x.final += res[0].transcript + " ";
-          else interim += res[0].transcript;
-        }
-        x.live = interim;
-        setLive((x.final + interim).trim());
-      };
-      recog.onerror = () => undefined;
-      try {
-        recog.start();
-      } catch {
-        /* already started */
-      }
-      x.recog = recog;
-    } else if (x.stream && typeof MediaRecorder !== "undefined") {
-      const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((m) => MediaRecorder.isTypeSupported(m));
-      const rec = new MediaRecorder(x.stream, type ? { mimeType: type } : undefined);
-      rec.ondataavailable = (e) => e.data.size && x.chunks.push(e.data);
-      rec.start(500);
-      x.rec = rec;
-    } else {
-      cleanup();
-      return setMicError(i);
-    }
-    x.t0 = Date.now();
-    setElapsed(0);
     setLive("");
+    setBusyIdx(i);
+    setStage("start");
+    let ok = false;
+    try {
+      ok = await voice.start();
+    } catch {
+      ok = false;
+    }
+    busyRef.current = false;
+    setBusyIdx(null);
+    setStage(null);
+    if (!ok) return setMicError(i);
+    recRef.current = i;
+    const t0 = Date.now();
+    setElapsed(0);
     setRecIdx(i);
-    x.raf = requestAnimationFrame(() => drawWave(i));
-    x.tick = setInterval(() => setElapsed((Date.now() - x.t0) / 1000), 200);
+    // The auto-stop at max_s takes the same path as a tap.
+    tick.current = setInterval(() => {
+      const s = (Date.now() - t0) / 1000;
+      setElapsed(s);
+      if (s >= data.max_s) void stopRef.current();
+    }, 200);
   };
-  // Auto-stop at 90 s.
-  useEffect(() => {
-    if (recIdx !== null && elapsed >= data.max_s) void stopMic();
-  }, [elapsed, recIdx, data.max_s, stopMic]);
+
+  // Leaving (phone locked, app switched, tab closed): drop the recording and free the mic.
+  usePageLeave(() => {
+    if (recRef.current === null) return;
+    voice.cancel();
+    reset();
+  });
+  useEffect(() => () => clearTimeout(watchdog.current), []);
 
   // ---------- completion ----------
-  const doneEx = (i: number) => reps[i] >= ex[i].reps;
-  const all = ex.every((_, i) => doneEx(i));
+  const readyEx = (i: number) => reps[i] >= repsNeeded(ex[i]);
+  const all = ex.every((_, i) => readyEx(i));
   const [finishing, setFinishing] = useState(false);
   const doneRef = useRef<HTMLDivElement>(null);
   const bestText = (i: number) => {
@@ -475,28 +399,45 @@ export function InteractiveSpeaking(p: Props) {
   const finish = async () => {
     if (!all || finishing) return;
     setFinishing(true);
-    // No star: the last try with text.
-    for (let i = 0; i < ex.length; i++) {
-      if (bestIdx[i] !== null || savedBest[i]) continue;
-      const last = [...tries[i]].reverse().find((x) => x.text);
-      if (last) await saveBest(i, last);
+    try {
+      // No star: the last try with text.
+      for (let i = 0; i < ex.length; i++) {
+        if (bestIdx[i] !== null || savedBest[i]) continue;
+        const last = [...tries[i]].reverse().find((x) => x.text);
+        if (last) await saveBest(i, last);
+      }
+      const now = new Date().toISOString();
+      // Only completed_at: the counts stay as the database has them.
+      const { data: rows, error } = await db()
+        .from("speaking_progress")
+        .update({ completed_at: now, updated_at: now })
+        .eq("user_id", p.userId)
+        .eq("lesson_id", p.lessonId)
+        .select("lesson_id");
+      setSaveError(!!error || !rows?.length);
+      if (!error && rows?.length) {
+        if (track) await finishLesson(db(), p.userId, p.lessonId);
+        setCompletedAt(now);
+        requestAnimationFrame(() => doneRef.current?.focus());
+      }
+    } finally {
+      setFinishing(false);
     }
-    const now = new Date().toISOString();
-    if (await saveProgress({ completed_at: now })) {
-      await finishLesson(db(), p.userId, p.lessonId);
-      setCompletedAt(now);
-      requestAnimationFrame(() => doneRef.current?.focus());
-    }
-    setFinishing(false);
   };
 
   // ---------- progress ----------
   const { current } = useScrollSpy(IDS);
-  const seen = (i: number) => (i === 0 ? current > 0 : i <= ex.length ? doneEx(i - 1) : !!completedAt);
-  const total = ex.reduce((a, e, i) => a + Math.min(reps[i], e.reps), 0);
-  const need = ex.reduce((a, e) => a + e.reps, 0);
+  // Moving to another exercise while recording ends that try (saved, like a tap on stop).
+  useEffect(() => {
+    const i = recRef.current;
+    if (i !== null && current >= 1 && current <= ex.length && current - 1 !== i) void stopRef.current();
+  }, [current, ex.length]);
+  const seen = (i: number) => (i === 0 ? current > 0 : i <= ex.length ? readyEx(i - 1) : !!completedAt);
+  const total = ex.reduce((a, e, i) => a + Math.min(reps[i], repsNeeded(e)), 0);
+  const need = ex.reduce((a, e) => a + repsNeeded(e), 0);
   const progress = completedAt ? 1 : 0.05 + (total / need) * 0.85;
   const re = vocabRegex(p.vocab);
+
 
   const highlight = (text: string) => {
     if (!re) return text;
@@ -610,12 +551,11 @@ export function InteractiveSpeaking(p: Props) {
                 bestIdx={bestIdx[i]}
                 savedBest={savedBest[i]}
                 rec={recIdx === i}
-                busy={busyIdx === i}
+                busy={busyIdx === i ? stage : null}
                 disabled={(recIdx !== null && recIdx !== i) || (busyIdx !== null && busyIdx !== i)}
                 elapsed={recIdx === i ? elapsed : 0}
                 live={recIdx === i ? live : ""}
                 micError={micError === i}
-                waveRef={(el) => (waveRefs.current[i] = el)}
                 onMic={() => (recIdx === i ? void stopMic() : void startMic(i))}
                 onManual={() => addTry(i, { text: "", dur: 0, self: [], manual: true })}
                 onStar={(k) => star(i, k)}
@@ -670,12 +610,7 @@ export function InteractiveSpeaking(p: Props) {
                                 key={j}
                                 type="button"
                                 aria-pressed={partner[k] === j + 1}
-                                onClick={() => {
-                                  const next = partnerRef.current.map((v, x) => (x === k ? (v === j + 1 ? 0 : j + 1) : v));
-                                  partnerRef.current = next;
-                                  setPartner(next);
-                                  void saveProgress();
-                                }}
+                                onClick={() => setPartnerAnswer(k, partner[k] === j + 1 ? 0 : j + 1)}
                               >
                                 {o}
                               </button>
@@ -703,7 +638,7 @@ export function InteractiveSpeaking(p: Props) {
                         <Icon name="check" size={18} />
                         {finishing ? t.finishing : t.finish}
                       </button>
-                      <p aria-live="polite">{all ? t.finOk : t.finN(ex.length, ex.map((e) => e.reps))}</p>
+                      <p aria-live="polite">{all ? t.finOk : t.finN(ex.length, ex.map((e) => repsNeeded(e)))}</p>
                     </div>
                   </>
                 )}
@@ -820,7 +755,6 @@ function ExerciseCard({
   elapsed,
   live,
   micError,
-  waveRef,
   onMic,
   onManual,
   onStar,
@@ -841,12 +775,12 @@ function ExerciseCard({
   bestIdx: number | null;
   savedBest: SpeakingBest | null;
   rec: boolean;
-  busy: boolean;
+  /** What the mic is doing for this exercise right now (null: idle or recording). */
+  busy: "start" | "saving" | "transcribing" | null;
   disabled: boolean;
   elapsed: number;
   live: string;
   micError: boolean;
-  waveRef: (el: HTMLDivElement | null) => void;
   onMic: () => void;
   onManual: () => void;
   onStar: (k: number) => void;
@@ -951,17 +885,21 @@ function ExerciseCard({
             <button
               type="button"
               className={s.mic}
+              data-mic
               data-on={rec || undefined}
+              data-busy={busy || undefined}
               onClick={onMic}
-              disabled={disabled || busy}
+              disabled={disabled || !!busy}
               aria-pressed={rec}
-              aria-label={`${rec ? t.micStop : t.micStart} · ${e.title[lang]}`}
+              aria-busy={!!busy}
+              aria-label={`${busy ? (busy === "start" ? t.opening : t.saving) : rec ? t.micStop : t.micStart} · ${e.title[lang]}`}
             >
-              <Icon name={rec ? "stop" : "mic"} size={30} />
+              {busy ? <span className={s.spin} aria-hidden /> : <Icon name={rec ? "stop" : "mic"} size={30} />}
             </button>
-            <div className={s.wave} data-on={rec || undefined} ref={waveRef} aria-hidden>
+            {/* A CSS wave: no AudioContext on the microphone (one capture at a time). */}
+            <div className={s.wave} data-on={rec || undefined} aria-hidden>
               {Array.from({ length: BARS }, (_, k) => (
-                <i key={k} />
+                <i key={k} style={{ "--k": k } as React.CSSProperties} />
               ))}
             </div>
             <div className={s.tmr} data-k={tmrK}>
@@ -970,14 +908,24 @@ function ExerciseCard({
             </div>
           </div>
           <p className={s.hint} aria-live="polite">
-            {busy ? t.transcribing : rec ? `${t.listening}${live ? ` “${live}”` : ""}` : micError ? t.noMic : t.tapMic}
+            {busy === "transcribing"
+              ? t.transcribing
+              : busy === "saving"
+                ? t.saving
+                : busy === "start"
+                  ? t.opening
+                  : rec
+                    ? `${t.listening}${live ? ` “${live}”` : ""}`
+                    : micError
+                      ? t.noMic
+                      : t.tapMic}
           </p>
           {e.manual_ok && (
             <div className={s.alt}>
               <p>
                 <Icon name="mirror" size={16} /> {t.manualP}
               </p>
-              <button type="button" className={s.btnO} onClick={onManual} disabled={rec || busy}>
+              <button type="button" className={s.btnO} onClick={onManual} disabled={rec || !!busy}>
                 <Icon name="check" size={17} />
                 {t.manualB}
               </button>

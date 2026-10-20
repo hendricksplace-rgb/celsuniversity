@@ -328,22 +328,48 @@ export async function flushPending(supabase: Client, userId: string | null) {
 
 const DONE = "celsu:lessondone:";
 
+/**
+ * record_lesson_progress refused the lesson for good (P0001 "no access" / "unknown part": a draft, a teacher-only
+ * lesson, a course the student lost): retrying can never work, so the item is dropped instead of queued.
+ */
+export function isPermanentRefusal(error: unknown) {
+  const e = error as { code?: string; message?: string } | null;
+  return !!e && e.code === "P0001" && /no access|unknown part/i.test(e.message ?? "");
+}
+
 /** Record a finished part; offline (or on a network error) it waits in localStorage until the next sync. */
 export async function finishLesson(supabase: Client, userId: string, lessonId: string): Promise<{ xp: number; queued: boolean }> {
   const { data, error } = navigator.onLine ? await supabase.rpc("record_lesson_progress", { p_lesson: lessonId, p_finish: true }) : { data: null, error: true };
   if (!error && data) return { xp: (data as { xp: number }).xp ?? 0, queued: false };
-  localStorage.setItem(DONE + lessonId, JSON.stringify({ userId, at: new Date().toISOString() }));
+  if (isPermanentRefusal(error)) return { xp: 0, queued: false };
+  try {
+    localStorage.setItem(DONE + lessonId, JSON.stringify({ userId, at: new Date().toISOString() }));
+  } catch {
+    /* private mode: nothing to queue into */
+  }
   return { xp: 0, queued: true };
 }
 
 export async function flushFinishedLessons(supabase: Client, userId: string | null) {
-  for (const key of Object.keys(localStorage).filter((k) => k.startsWith(DONE))) {
-    const row = JSON.parse(localStorage.getItem(key) ?? "null") as { userId: string } | null;
+  let keys: string[] = [];
+  try {
+    keys = Object.keys(localStorage).filter((k) => k.startsWith(DONE));
+  } catch {
+    return;
+  }
+  for (const key of keys) {
+    let row: { userId: string } | null = null;
+    try {
+      row = JSON.parse(localStorage.getItem(key) ?? "null") as { userId: string } | null;
+    } catch {
+      row = null;
+    }
     if (!row || row.userId !== userId) {
       localStorage.removeItem(key);
       continue;
     }
     const { error } = await supabase.rpc("record_lesson_progress", { p_lesson: key.slice(DONE.length), p_finish: true });
-    if (!error) localStorage.removeItem(key);
+    // Sent, or refused for good: either way it leaves the queue (only network / session errors are retried).
+    if (!error || isPermanentRefusal(error)) localStorage.removeItem(key);
   }
 }

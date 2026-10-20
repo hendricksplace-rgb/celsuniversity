@@ -31,6 +31,8 @@ type Props = {
   numbers: WeekNumbers;
   reflection: Reflection;
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 
 const UI = {
@@ -196,8 +198,9 @@ export function InteractiveFeedback(p: Props) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   useEffect(() => {
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+    if (p.track !== false) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, p.track]);
 
   // ---------- the reflection (owner only), saved as a draft while the student goes ----------
   const [ev, setEv] = useState<(Answer | null)[]>(p.reflection.self_eval);
@@ -274,7 +277,7 @@ export function InteractiveFeedback(p: Props) {
     setClosing(true);
     const now = new Date().toISOString();
     if (await save({ completed_at: now })) {
-      await finishLesson(db(), p.userId, p.lessonId);
+      if (p.track !== false) await finishLesson(db(), p.userId, p.lessonId);
       setCompletedAt(now);
       requestAnimationFrame(() => doneRef.current?.focus());
     }

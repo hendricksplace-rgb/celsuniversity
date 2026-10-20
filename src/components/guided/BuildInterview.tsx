@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { FORM_FIELDS, answerText, mmss, obj, pathValue, simPath, speakSeconds, str, type AnswerQ, type AnswerVal, type Section, type SimRun } from "@/lib/guided";
 import type { BuildCtx } from "./Build";
 import { Ico, say } from "./ui";
+import { pickMime, stopRecorder, usePageLeave } from "@/lib/voice";
 import s from "./guided.module.css";
 
 type Sec<T extends Section["type"]> = Extract<Section, { type: T }>;
@@ -223,19 +224,10 @@ function SelfVideo({ sec }: { sec: Sec<"self_video"> }) {
   };
   const start = () => {
     if (!stream.current) return;
-    const type = ["video/webm;codecs=vp9,opus", "video/webm", "video/mp4"].find((m) => MediaRecorder.isTypeSupported(m)) ?? "";
+    const type = pickMime("video") ?? "";
     const r = new MediaRecorder(stream.current, type ? { mimeType: type } : undefined);
     chunks.current = [];
     r.ondataavailable = (e) => e.data.size && chunks.current.push(e.data);
-    r.onstop = () => {
-      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
-      const u = URL.createObjectURL(new Blob(chunks.current, { type: (r.mimeType || "video/webm").split(";")[0] }));
-      urlRef.current = u;
-      chunks.current = [];
-      setUrl(u);
-      stopTracks();
-      setState("done");
-    };
     rec.current = r;
     r.start(1000);
     setSecs(0);
@@ -244,13 +236,32 @@ function SelfVideo({ sec }: { sec: Sec<"self_video"> }) {
     timer.current = setInterval(() => {
       const n = Math.round((Date.now() - t0) / 1000);
       setSecs(n);
-      if (n >= max) stop();
+      if (n >= max) void stop();
     }, 250);
   };
-  const stop = () => {
+  // Stop always finishes: state check, then onstop or (after 1.5 s) the chunks already collected.
+  const stop = async () => {
     if (timer.current) clearInterval(timer.current);
-    if (rec.current && rec.current.state !== "inactive") rec.current.stop();
+    const r = rec.current;
+    if (!r) return;
+    rec.current = null;
+    try {
+      const blob = await stopRecorder(r, chunks.current, 1500);
+      if (urlRef.current) URL.revokeObjectURL(urlRef.current);
+      const u = URL.createObjectURL(blob);
+      urlRef.current = u;
+      setUrl(u);
+      setState("done");
+    } finally {
+      chunks.current = [];
+      stopTracks();
+    }
   };
+  // Phone locked or app switched: stop there and keep the take; leaving: free the camera.
+  usePageLeave(() => {
+    if (rec.current) void stop();
+    else stopTracks();
+  });
   const again = () => {
     if (urlRef.current) URL.revokeObjectURL(urlRef.current);
     urlRef.current = null;

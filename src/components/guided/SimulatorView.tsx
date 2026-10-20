@@ -8,27 +8,12 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { usePageLeave, useVoiceCapture } from "@/lib/voice";
 import { answersSection, mmss, obj, productPath, simRuns, stepPath, str, uid, type GuidedStep, type Lang, type ResumeData, type Section, type SimItem, type SimRun } from "@/lib/guided";
 import { Ico, TopBar, UI, say, useLang, useResume } from "./ui";
 import s from "./guided.module.css";
 
 type Sim = Extract<Section, { type: "simulator" }>;
-type SR = {
-  lang: string;
-  continuous: boolean;
-  interimResults: boolean;
-  onresult: ((e: { resultIndex: number; results: ArrayLike<{ isFinal: boolean; 0: { transcript: string } }> }) => void) | null;
-  onerror: (() => void) | null;
-  onend: (() => void) | null;
-  start: () => void;
-  stop: () => void;
-};
-const speechApi = (): (new () => SR) | null => {
-  if (typeof window === "undefined") return null;
-  const w = window as unknown as { SpeechRecognition?: new () => SR; webkitSpeechRecognition?: new () => SR };
-  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
-};
-const MAX_UPLOAD = 8 * 1024 * 1024;
 
 export function SimulatorView({
   userId,
@@ -108,137 +93,74 @@ export function SimulatorView({
   }, [idx, question === "" ? "" : question]);
   useEffect(() => () => player.current?.pause(), []);
 
-  // ---------- microphone ----------
+  // ---------- microphone (lib/voice: one capture at a time, stop always settles) ----------
   const [rec, setRec] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<"saving" | "transcribing" | null>(null);
   const [secs, setSecs] = useState(0);
   const [text, setText] = useState("");
   const [micErr, setMicErr] = useState(false);
   const [evals, setEvals] = useState<Record<string, number>>({});
   const [comments, setComments] = useState("");
-  const r = useRef<{ stream: MediaStream | null; recog: SR | null; mr: MediaRecorder | null; chunks: Blob[]; final: string; t0: number; tick?: ReturnType<typeof setInterval> }>({
-    stream: null,
-    recog: null,
-    mr: null,
-    chunks: [],
-    final: "",
-    t0: 0,
-  });
-  const cleanup = useCallback(() => {
-    const x = r.current;
-    clearInterval(x.tick);
-    x.stream?.getTracks().forEach((tr) => tr.stop());
-    x.stream = null;
-    x.chunks = [];
-  }, []);
-  useEffect(
-    () => () => {
-      try {
-        r.current.recog?.stop();
-      } catch {
-        /* stopped */
-      }
-      if (r.current.mr && r.current.mr.state !== "inactive") r.current.mr.stop();
-      cleanup();
-    },
-    [cleanup],
-  );
+  const sb = useRef<ReturnType<typeof createClient> | null>(null);
+  const voice = useVoiceCapture({ supabase: () => (sb.current ??= createClient()), onLive: setText, onTranscribing: () => setBusy("transcribing") });
+  const recRef = useRef(false);
+  const busyRef = useRef(false);
+  const tick = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   const stop = useCallback(async () => {
-    const x = r.current;
-    clearInterval(x.tick);
+    if (!recRef.current || busyRef.current) return;
+    busyRef.current = true;
+    recRef.current = false;
+    clearInterval(tick.current);
     setRec(false);
-    const dur = Math.round((Date.now() - x.t0) / 1000);
-    setSecs(dur);
-    if (x.recog) {
-      const recog = x.recog;
-      await new Promise<void>((res) => {
-        recog.onend = () => res();
-        try {
-          recog.stop();
-        } catch {
-          res();
-        }
-        setTimeout(res, 1200);
-      });
-      x.recog = null;
+    setBusy("saving");
+    try {
+      const res = await voice.stop();
+      if (res) {
+        setSecs(res.dur);
+        setText(res.text);
+        setMicErr(res.failed);
+      }
+    } finally {
+      busyRef.current = false;
+      setBusy(null);
     }
-    let blob: Blob | null = null;
-    if (x.mr) {
-      const mr = x.mr;
-      blob = await new Promise<Blob>((res) => {
-        mr.onstop = () => res(new Blob(x.chunks, { type: mr.mimeType || "audio/webm" }));
-        if (mr.state !== "inactive") mr.stop();
-        else res(new Blob(x.chunks, { type: mr.mimeType || "audio/webm" }));
-      });
-      x.mr = null;
-    }
-    cleanup();
-    const said = x.final.replace(/\s+/g, " ").trim();
-    if (said) return setText(said);
-    // Fallback: this one recording goes in memory to transcribe-speech (it keeps nothing), then it's dropped.
-    if (blob && blob.size > 0 && blob.size <= MAX_UPLOAD) {
-      setBusy(true);
-      const fd = new FormData();
-      fd.append("audio", blob, "answer.webm");
-      const { data: out } = await createClient().functions.invoke("transcribe-speech", { body: fd });
-      setBusy(false);
-      const tx = (out as { text?: unknown } | null)?.text;
-      setText(typeof tx === "string" ? tx.trim() : "");
-    }
-  }, [cleanup]);
+  }, [voice]);
+  const stopRef = useRef(stop);
+  stopRef.current = stop;
 
   const start = async () => {
-    if (rec || busy) return;
-    const x = r.current;
+    if (recRef.current || busyRef.current) return;
+    busyRef.current = true;
     setMicErr(false);
     setText("");
-    x.final = "";
-    x.chunks = [];
+    let ok = false;
     try {
-      x.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch {
-      return setMicErr(true);
+      ok = await voice.start();
+    } finally {
+      busyRef.current = false;
     }
-    if (typeof MediaRecorder !== "undefined") {
-      const type = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4"].find((m) => MediaRecorder.isTypeSupported(m));
-      const mr = new MediaRecorder(x.stream, type ? { mimeType: type } : undefined);
-      mr.ondataavailable = (e) => e.data.size && x.chunks.push(e.data);
-      mr.start(1000);
-      x.mr = mr;
-    }
-    const Speech = speechApi();
-    if (Speech) {
-      const recog = new Speech();
-      recog.lang = "en-US";
-      recog.continuous = true;
-      recog.interimResults = true;
-      recog.onresult = (e) => {
-        let interim = "";
-        for (let k = e.resultIndex; k < e.results.length; k++) {
-          const res = e.results[k]!;
-          if (res.isFinal) x.final += res[0].transcript + " ";
-          else interim += res[0].transcript;
-        }
-        setText((x.final + interim).trim());
-      };
-      recog.onerror = () => undefined;
-      try {
-        recog.start();
-        x.recog = recog;
-      } catch {
-        x.recog = null;
-      }
-    }
-    x.t0 = Date.now();
+    if (!ok) return setMicErr(true);
+    recRef.current = true;
+    const t0 = Date.now();
     setSecs(0);
     setRec(true);
-    x.tick = setInterval(() => {
-      const n = Math.round((Date.now() - x.t0) / 1000);
+    tick.current = setInterval(() => {
+      const n = Math.round((Date.now() - t0) / 1000);
       setSecs(n);
-      if (n >= max) void stop();
+      if (n >= max) void stopRef.current();
     }, 250);
   };
+  // Leaving the page (or the question changing) drops the recording and frees the mic.
+  const drop = useCallback(() => {
+    if (!recRef.current) return;
+    clearInterval(tick.current);
+    recRef.current = false;
+    voice.cancel();
+    setRec(false);
+  }, [voice]);
+  usePageLeave(drop);
+  useEffect(() => drop, [idx, drop]);
 
   // ---------- saving: only text and evaluation ----------
   const save = (list: SimItem[], done: boolean) => {
@@ -345,14 +267,14 @@ export function SimulatorView({
                 </div>
                 <div className={s.micw}>
                   <div className={`${s.ring} ${rec ? s.ringRec : ""}`} style={{ ["--p" as string]: `${pct}%` }}>
-                    <button type="button" onClick={() => (rec ? void stop() : void start())} aria-label={rec ? "Terminar" : "Responder"} disabled={busy || !question} data-mic>
+                    <button type="button" onClick={() => (rec ? void stop() : void start())} aria-label={rec ? "Terminar" : "Responder"} disabled={!!busy || !question} aria-busy={!!busy} data-mic>
                       <Ico n={rec ? "stop" : "mic"} />
                     </button>
                   </div>
                   <div className={s.mt} aria-live="polite">
                     {mmss(rec ? Math.max(0, max - secs) : secs ? secs : max)}
                   </div>
-                  <small>{busy ? "Transcribiendo…" : rec ? "Grabando · toca para terminar" : micErr ? "No pudimos usar tu micrófono. Revisa los permisos." : "Toca y responde en voz alta"}</small>
+                  <small>{busy === "transcribing" ? "Transcribiendo…" : busy ? "Guardando…" : rec ? "Grabando · toca para terminar" : micErr ? "No pudimos usar tu micrófono o convertir tu voz. Revisa los permisos o escribe tu respuesta." : "Toca y responde en voz alta"}</small>
                 </div>
               </div>
               {question && (
@@ -399,7 +321,7 @@ export function SimulatorView({
                   <Ico n="mic" />
                   Intentar otra vez
                 </button>
-                <button type="button" className={`${s.btn} ${s.btnG}`} onClick={next} disabled={rec || busy || !question} data-action="next">
+                <button type="button" className={`${s.btn} ${s.btnG}`} onClick={next} disabled={rec || !!busy || !question} data-action="next">
                   {idx >= total - 1 ? "Terminar el simulacro" : "Siguiente pregunta"}
                   <Ico n="right" />
                 </button>

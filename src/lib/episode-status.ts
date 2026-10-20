@@ -25,7 +25,7 @@ export type EpisodeStatus = {
   courseSlug: string;
   n: number;
   /** The 6 core parts in order, with the links the student should use (Part 6 → the quiz route). */
-  parts: (Pick<Part, "id" | "done" | "xpEarned"> & { role: UsRole; href: string })[];
+  parts: (Pick<Part, "id" | "done" | "xpEarned" | "draft"> & { role: UsRole; href: string })[];
   done: number;
   total: number;
   complete: boolean;
@@ -46,7 +46,7 @@ export async function episodeStatus(supabase: Client, userId: string, courseSlug
   const slug = page.course.slug;
   const parts = ep.parts
     .filter((p): p is Part & { role: UsRole } => !!p.role)
-    .map((p) => ({ id: p.id, done: p.done, xpEarned: p.xpEarned, role: p.role, href: p.role === "quiz" ? celsusQuizPath(slug, n) : p.href }));
+    .map((p) => ({ id: p.id, done: p.done, xpEarned: p.xpEarned, draft: p.draft, role: p.role, href: p.role === "quiz" ? celsusQuizPath(slug, n) : p.href }));
   const nextIdx = parts.findIndex((p) => !p.done);
   const later = page.episodes.find((e) => e.n > n);
   const exam = page.extras.find((x) => x.kind === "evaluation");

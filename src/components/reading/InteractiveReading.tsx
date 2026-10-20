@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
-import { navTitle, plain, tedEmbed, tokenize, type ArticleBlock, type Email, type Lang, type ReadingCase, type ReadingData, type ReadingState, type Talk } from "@/lib/reading";
+import { mergeReadingState, navTitle, plain, tedEmbed, tokenize, type ArticleBlock, type Email, type Lang, type ReadingCase, type ReadingData, type ReadingState, type Talk } from "@/lib/reading";
 import { montserrat } from "@/components/bsns/fonts";
 import { Icon, Layout, Sheet, Pager, RailCard, RailSteps, ShellPage, StepHead as ShellStepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy } from "@/components/bsns/shell";
 import s from "./reading.module.css";
@@ -24,6 +24,8 @@ type Props = {
   initialState: ReadingState;
   completedAt: string | null;
   defaultLang: Lang;
+  /** false for drafts and teacher-only lessons (staff previews): nothing goes to record_lesson_progress. */
+  track?: boolean;
 };
 type SaveStatus = "saving" | "saved" | "error";
 
@@ -196,8 +198,9 @@ export function InteractiveReading(p: Props) {
   // Opening the reading counts as studying today and marks the lesson "in progress" (same RPC as every lesson).
   useEffect(() => {
     // Query builders only run when awaited or then()-ed.
-    void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
-  }, [db, p.lessonId]);
+    // Drafts and teacher-only lessons (staff previews) aren't recorded: record_lesson_progress refuses them.
+    if (p.track !== false) void db().rpc("record_lesson_progress", { p_lesson: p.lessonId, p_finish: false }).then(() => undefined);
+  }, [db, p.lessonId, p.track]);
 
   // ---------- notes: autosave 600 ms after typing stops ----------
   const [notes, setNotes] = useState<Record<string, string>>(p.initialNotes);
@@ -242,10 +245,34 @@ export function InteractiveReading(p: Props) {
 
   // ---------- reading state (poll, spot, case 3, MCQ, furthest step) ----------
   const [st, setSt] = useState<ReadingState>(p.initialState ?? {});
+  const [completedAt, setCompletedAt] = useState(p.completedAt);
   const stRef = useRef(st);
   const stTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const touched = useRef<Partial<ReadingState>>({});
+  // A page from the client cache (back / forward) starts from the state of its first load: read the saved state
+  // again and merge it (answers kept, the furthest step by max, found spots as a union) before anything is written.
+  useEffect(() => {
+    let live = true;
+    void db()
+      .from("reading_progress")
+      .select("state, completed_at")
+      .eq("user_id", p.userId)
+      .eq("lesson_id", p.lessonId)
+      .maybeSingle()
+      .then(({ data: row }) => {
+        if (!live || !row) return;
+        const merged = { ...mergeReadingState(stRef.current, (row.state ?? {}) as ReadingState), ...touched.current };
+        stRef.current = merged;
+        setSt(merged);
+        if (row.completed_at) setCompletedAt((c) => c ?? row.completed_at);
+      });
+    return () => {
+      live = false;
+    };
+  }, [db, p.userId, p.lessonId]);
   const update = useCallback(
     (patch: Partial<ReadingState>) => {
+      touched.current = { ...touched.current, ...patch };
       const nextSt = { ...stRef.current, ...patch };
       stRef.current = nextSt;
       setSt(nextSt);
@@ -323,7 +350,6 @@ export function InteractiveReading(p: Props) {
   const allAnswered = answers.every((a) => a !== null);
   const takeOk = (notes.take ?? "").trim().length >= MIN_TAKEAWAY;
   const correct = answers.filter((a, i) => a === mcq[i].a).length;
-  const [completedAt, setCompletedAt] = useState(p.completedAt);
   const [finishing, setFinishing] = useState(false);
   const [xp, setXp] = useState(0);
   const doneRef = useRef<HTMLDivElement>(null);
@@ -334,7 +360,7 @@ export function InteractiveReading(p: Props) {
     const now = new Date().toISOString();
     clearTimeout(stTimer.current);
     await db().from("reading_progress").upsert({ user_id: p.userId, lesson_id: p.lessonId, state: stRef.current, completed_at: now, updated_at: now }, { onConflict: "user_id,lesson_id" });
-    const r = await finishLesson(db(), p.userId, p.lessonId);
+    const r = p.track !== false ? await finishLesson(db(), p.userId, p.lessonId) : { xp: 0, queued: false };
     setXp(r.xp);
     setCompletedAt(now);
     setFinishing(false);
