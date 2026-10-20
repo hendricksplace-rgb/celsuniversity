@@ -367,12 +367,28 @@ export function InteractiveReading(p: Props) {
     requestAnimationFrame(() => doneRef.current?.focus());
   };
 
-  const rich = (text: string) =>
+  // `inButton`: text inside a button (the Case 3 options) gets no nested buttons or links: a <button> inside a
+  // <button> is invalid HTML and tapping the word also picked that option. The word stays highlighted.
+  const rich = (text: string, inButton = false) =>
     tokenize(text).map((tok, i) =>
       tok.k === "text" ? (
         <Fragment key={i}>{tok.v}</Fragment>
       ) : tok.k === "vocab" ? (
-        <VocabWord key={i} word={tok.v} known={!!findVocab(data, tok.v)} open={pop?.word === tok.v} onOpen={openVocab} />
+        inButton ? (
+          findVocab(data, tok.v) ? (
+            <span key={i} className={s.vocab}>
+              {tok.v}
+            </span>
+          ) : (
+            <Fragment key={i}>{tok.v}</Fragment>
+          )
+        ) : (
+          <VocabWord key={i} word={tok.v} known={!!findVocab(data, tok.v)} open={pop?.word === tok.v} onOpen={openVocab} />
+        )
+      ) : inButton ? (
+        <sup key={i} className={s.cite}>
+          [{tok.n}]
+        </sup>
       ) : (
         <sup key={i} className={s.cite}>
           <a href={`#rd-src-${tok.n}`} aria-label={`${lang === "es" ? "Fuente" : "Source"} ${tok.n}`}>
@@ -991,7 +1007,7 @@ function CaseCard({
   t: UIT;
   st: ReadingState;
   update: (p: Partial<ReadingState>) => void;
-  rich: (s: string) => React.ReactNode;
+  rich: (s: string, inButton?: boolean) => React.ReactNode;
   noteField: (id: string, label: React.ReactNode, required?: boolean, rows?: number) => React.ReactNode;
 }) {
   const [model, setModel] = useState(false);
@@ -1138,7 +1154,7 @@ function CaseCard({
                       {o.lead}
                     </span>
                     <span className={s.choiceText} lang="en">
-                      “{rich(o.text)}”
+                      “{rich(o.text, true)}”
                     </span>
                   </button>
                 );
