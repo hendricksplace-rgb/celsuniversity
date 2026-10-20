@@ -14,13 +14,13 @@ const range = (u: number, total: number) => ({ a: (u - 1) * UNIT_SIZE + 1, b: Ma
 const title = (e: Episode, t: T) => e.title || `${t.episode} ${e.n}`;
 
 function subtitle(e: Episode, t: T) {
-  const total = e.parts.length;
+  const total = e.total;
   if (e.isReview) {
     const { a } = range(unitOf(e.n), Infinity);
     return fill(t.reviewOf, { a, b: Math.max(a, e.n - 1) });
   }
   if (e.state === "done") return fill(t.partsAll, { n: total, total });
-  if (e.state === "now" && e.next) return fill(t.partOf, { n: e.parts.indexOf(e.next) + 1, total, part: e.next.name });
+  if (e.state === "now" && e.next) return fill(t.partOf, { n: e.parts.filter((p) => !p.soon).indexOf(e.next) + 1, total, part: e.next.name });
   return fill(t.partsCount, { n: total });
 }
 
@@ -41,7 +41,7 @@ function action(e: Episode, t: T) {
 function Card({ e, t }: { e: Episode; t: T }) {
   const now = e.state === "now";
   const a = action(e, t);
-  const pct = e.parts.length ? e.done / e.parts.length : 0;
+  const pct = e.total ? e.done / e.total : 0;
   return (
     <li
       className={`relative flex flex-col rounded-[22px] bg-white p-2.5 ${

@@ -4,6 +4,7 @@ import type { Client } from "@/lib/supabase/types";
 import type { ThemeKey } from "@/lib/themes";
 import { accessibleCourses, courseStats, myAssignments, nextLesson, todayIndex, weekIndex, weekStart, type CourseStats } from "@/lib/learning";
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
+import { guidedModules } from "@/lib/guided-modules";
 
 export const BRANDS: ThemeKey[] = ["celstv", "celsbsns", "celsus", "celsglobal"];
 
@@ -143,14 +144,14 @@ export async function loadHome(supabase: Client, userId: string) {
     access.ids.length && starts.length
       ? supabase
           .from("lessons")
-          .select("title, created_at, module:modules!inner(title, course_id)")
+          .select("title, created_at, module:modules!inner(id, title, course_id)")
           .in("module.course_id", access.ids)
           .eq("status", "published")
           .eq("teacher_only", false)
           .eq("has_content", true)
           .gt("created_at", new Date(Math.max(weekAgo, Math.min(...starts))).toISOString())
           .order("created_at", { ascending: false })
-          .limit(1)
+          .limit(20)
       : { data: null },
   ]);
   const all = [...stats.values()].sort((a, b) => a.sort - b.sort);
@@ -271,7 +272,10 @@ export async function loadHome(supabase: Client, userId: string) {
     });
   // No server-side "app installed" flag exists: the item is marked so the installed app hides it (display-mode: standalone).
   band.push({ kind: "app" });
-  const l = fresh?.[0];
+  // Not the old lessons of a guided (CelsGLOBAL step) module: students never see those.
+  const freshMods = [...new Set((fresh ?? []).map((x) => pick(x.module)?.id).filter((x): x is string => !!x))];
+  const guided = await guidedModules(supabase, freshMods);
+  const l = (fresh ?? []).find((x) => !guided.has(pick(x.module)?.id ?? ""));
   const mod = l ? pick(l.module) : null;
   if (l && mod) band.push({ kind: "fresh", part: partName(l.title), episode: mod.title });
   if (weeklyXp < goal) band.push({ kind: "goal", n: goal - weeklyXp });

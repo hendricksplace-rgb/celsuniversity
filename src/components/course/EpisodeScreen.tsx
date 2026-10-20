@@ -75,7 +75,9 @@ function Path({ parts, current, t, justDone }: { parts: Part[]; current: Part | 
           const left = x < 178;
           const now = current?.id === p.id && !p.done;
           const color = PART_COLOR[p.key!].c;
-          const badge = p.done ? (
+          const badge = p.soon ? (
+            <span className="rounded-full bg-white/[.07] px-2 py-1 text-[11px] font-extrabold text-white/75">{t.soon}</span>
+          ) : p.done ? (
             <span className="rounded-full bg-[rgba(124,201,74,.16)] px-2 py-1 text-[11px] font-extrabold text-[#C5F58F]">
               {p.xpEarned ? fill(t.xpEarned, { n: p.xpEarned }) : t.done}
             </span>
@@ -92,7 +94,7 @@ function Path({ parts, current, t, justDone }: { parts: Part[]; current: Part | 
             <li key={p.id}>
               <Link
                 href={p.href}
-                aria-label={`${fill(t.open, { part: p.name })}${p.done ? ` · ${t.done}` : now ? ` · ${t.here}` : ""}`}
+                aria-label={`${fill(t.open, { part: p.name })}${p.soon ? ` · ${t.soon}` : p.done ? ` · ${t.done}` : now ? ` · ${t.here}` : ""}`}
                 className="kit-focus-light group absolute rounded-[22px]"
                 style={{ left: x - 32, top: y - 32, width: 64, height: 64 }}
               >
@@ -142,10 +144,12 @@ export function EpisodeScreen({
   teacherGuide: string | null;
 }) {
   const { parts } = episode;
-  const done = parts.filter((p) => p.done).length;
-  const xpTotal = parts.reduce((s, p) => s + p.xpReward, 0);
-  const xpEarned = parts.reduce((s, p) => s + p.xpEarned, 0);
-  const allDone = parts.length > 0 && done === parts.length;
+  // A CelsVideo still "Próximamente" stays on the path but doesn't count (it can't be finished yet).
+  const counted = parts.filter((p) => !p.soon);
+  const done = counted.filter((p) => p.done).length;
+  const xpTotal = counted.reduce((s, p) => s + p.xpReward, 0);
+  const xpEarned = counted.reduce((s, p) => s + p.xpEarned, 0);
+  const allDone = counted.length > 0 && done === counted.length;
   const current = allDone ? null : episode.next;
   const ringC = 2 * Math.PI * 22;
 
@@ -205,15 +209,15 @@ export function EpisodeScreen({
                 strokeLinecap="round"
                 transform="rotate(-90 26 26)"
                 strokeDasharray={ringC}
-                strokeDashoffset={ringC * (1 - (parts.length ? done / parts.length : 0))}
+                strokeDashoffset={ringC * (1 - (counted.length ? done / counted.length : 0))}
               />
             </svg>
             <span className="absolute inset-0 grid place-items-center text-[13px] font-extrabold">
-              {done}/{parts.length}
+              {done}/{counted.length}
             </span>
           </div>
           <div>
-            <strong className="block text-base font-extrabold">{progressLabel(done, parts.length, t)}</strong>
+            <strong className="block text-base font-extrabold">{progressLabel(done, counted.length, t)}</strong>
             <span className="text-[13px] text-white/70">{fill(t.xp, { n: xpEarned, total: xpTotal })}</span>
           </div>
         </div>

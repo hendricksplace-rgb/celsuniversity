@@ -5,6 +5,7 @@ import type { Client } from "@/lib/supabase/types";
 import { themeForCourse, type ThemeKey } from "@/lib/themes";
 import { studentLessons } from "@/lib/course-page";
 import { guidedModules } from "@/lib/guided-modules";
+import { HIDDEN_FROM_STUDENTS } from "@/lib/glossary";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -133,7 +134,10 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
         continue;
       }
-      const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order));
+      // studentLessons keeps an empty CelsVideo for the episode path; it can't be finished, so it doesn't count here.
+      const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only && !HIDDEN_FROM_STUDENTS.has(l.id)).sort((a, b) => a.sort_order - b.sort_order)).filter(
+        (l) => l.has_content,
+      );
       if (!ls.length) continue;
       let done = 0;
       let started = 0;

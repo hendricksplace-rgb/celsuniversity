@@ -2,6 +2,7 @@ import Link from "next/link";
 import sanitizeHtml from "sanitize-html";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { collectStorageRefs, storageRefName, type SignedRefs } from "@/lib/storage";
+import { fileHref } from "@/lib/file-href";
 import { Activity } from "./activities/Activity";
 import { ResponseBox } from "./ResponseBox";
 
@@ -72,10 +73,6 @@ export function vimeoEmbed(url: string | null) {
 /** YouTube or Vimeo embed URL for a video link, or null. */
 export const videoEmbed = (url: string | null) => youtubeEmbed(url) ?? vimeoEmbed(url);
 
-function withDownload(url: string, name: string) {
-  return `${url}${url.includes("?") ? "&" : "?"}download=${encodeURIComponent(name)}`;
-}
-
 /** Only this block's signed URLs go to the browser. */
 export function urlsFor(value: unknown, signed: SignedRefs) {
   const out: Record<string, string> = {};
@@ -97,10 +94,12 @@ export function partKind(block: Block, isStaff: boolean): "none" | "seen" | "vid
   if (block.data.response_field === true) return "activity";
   const ebook = str(block.data.ebook_pdf) ?? (type === "flipbook" ? str(settings.pdfUrl) : null);
   if (ebook) return type === "flipbook" && Array.isArray(settings.pages) && settings.pages.length > 0 ? "activity" : "seen";
-  if (type === "video" || type === "embed") {
-    const src = type === "video" ? str(block.data.media_url) : (str(settings.src) ?? str(block.body));
-    return youtubeEmbed(src) ? "video" : "seen";
+  if (type === "video") {
+    // A video with no file yet ("Video próximamente") is not something to finish.
+    const src = str(block.data.media_url);
+    return videoEmbed(src) || (src && (src.startsWith("storage://") || directMedia(src, new Map()))) ? "video" : "none";
   }
+  if (type === "embed") return videoEmbed(str(settings.src) ?? str(block.body)) ? "video" : "seen";
   if (type === "evaluation") return /^[0-9a-f-]{36}$/i.test(str(block.data.evaluation_id) ?? "") ? "seen" : "none";
   if (ACTIVITY_TYPES.has(type)) {
     const data = block.data.settings;
@@ -375,10 +374,10 @@ function EbookBlock({
                 ✨ {reader.label}
               </Link>
             )}
-            <a href={url} target="_blank" rel="noopener" className={reader ? "t-btn-ghost" : "t-btn"}>
+            <a href={fileHref(refUrl)} target="_blank" rel="noopener" className={reader ? "t-btn-ghost" : "t-btn"}>
               📖 {t.openPdf}
             </a>
-            <a href={withDownload(url, name)} className="t-btn-ghost">
+            <a href={fileHref(refUrl, true)} className="t-btn-ghost">
               {t.download}
             </a>
           </div>
@@ -406,10 +405,10 @@ function FileLink({ refUrl, signed, t }: { refUrl: string; signed: SignedRefs; t
   if (!url) return <span className="t-muted text-sm">📄 {name} · {t.unavailable}</span>;
   return (
     <span className="inline-flex flex-wrap items-center gap-2">
-      <a href={url} target="_blank" rel="noopener" className="t-link">
+      <a href={fileHref(refUrl)} target="_blank" rel="noopener" className="t-link">
         📄 {name}
       </a>
-      <a href={withDownload(url, name)} className="t-muted text-xs underline">
+      <a href={fileHref(refUrl, true)} className="t-muted text-xs underline">
         {t.download}
       </a>
     </span>

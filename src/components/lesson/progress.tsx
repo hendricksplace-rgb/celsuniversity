@@ -2,7 +2,8 @@
 
 // Lesson completion tracking. Each visible content block is a part of the lesson:
 //   "seen"     text, images, audio, files, e-books: done after ~2 s on screen
-//   "video"    YouTube: done at 90 % watched or at the end (the player's postMessage events)
+//   "video"    YouTube, Vimeo or a video file: done at 90 % watched or at the end (a video with no file yet
+//              isn't a part, and a lesson whose only video has no file isn't recorded at all)
 //   "activity" flashcards, quizzes, grammar, flipbooks: done when the student reaches the end
 // The lesson is finished when every part is done, or when the student taps "Marcar como terminada".
 // Everything is written by public.record_lesson_progress (progress row, XP once, daily streak).
@@ -211,18 +212,49 @@ export function Part({ id, kind, children }: { id: string; kind: PartKind; child
   );
 }
 
-/** Calls `onDone` when the YouTube iframe inside `ref` reaches 90 % or ends (needs enablejsapi=1). */
+/**
+ * Calls `onDone` when the video inside `ref` reaches 90 % or ends: a YouTube iframe (needs enablejsapi=1), a Vimeo
+ * iframe (player.js postMessage API) or a <video> file.
+ */
 export function useYouTubeWatched(ref: React.RefObject<HTMLElement | null>, active: boolean, onDone: () => void, id: string) {
   useEffect(() => {
     if (!active || !ref.current) return;
+    const file = ref.current.querySelector("video");
+    if (file) {
+      const onTime = () => {
+        if (file.duration && file.currentTime / file.duration >= 0.9) onDone();
+      };
+      file.addEventListener("ended", onDone);
+      file.addEventListener("timeupdate", onTime);
+      return () => {
+        file.removeEventListener("ended", onDone);
+        file.removeEventListener("timeupdate", onTime);
+      };
+    }
     const frame = ref.current.querySelector("iframe");
     if (!frame) return;
-    const listen = () => frame.contentWindow?.postMessage(JSON.stringify({ event: "listening", id }), "*");
+    const vimeo = /player\.vimeo\.com$/.test(new URL(frame.src, location.href).hostname);
+    const post = (msg: object) => frame.contentWindow?.postMessage(JSON.stringify(msg), vimeo ? "https://player.vimeo.com" : "*");
+    const listen = () => {
+      if (vimeo) {
+        post({ method: "addEventListener", value: "ended" });
+        post({ method: "addEventListener", value: "timeupdate" });
+      } else post({ event: "listening", id });
+    };
     frame.addEventListener("load", listen);
     listen();
     const onMessage = (e: MessageEvent) => {
-      if (e.source !== frame.contentWindow || !/youtube(-nocookie)?\.com$/.test(new URL(e.origin).hostname)) return;
+      if (e.source !== frame.contentWindow) return;
+      const host = new URL(e.origin).hostname;
       try {
+        if (vimeo) {
+          if (host !== "player.vimeo.com") return;
+          const msg = (typeof e.data === "string" ? JSON.parse(e.data) : e.data) as { event?: string; data?: { percent?: number } };
+          if (msg.event === "ready") listen();
+          if (msg.event === "ended" || (msg.event === "timeupdate" && (msg.data?.percent ?? 0) >= 0.9)) onDone();
+          return;
+        }
+        if (!/youtube(-nocookie)?\.com$/.test(host)) return;
         const msg = JSON.parse(String(e.data)) as { event?: string; info?: { currentTime?: number; duration?: number; playerState?: number } | number };
         const info = typeof msg.info === "object" ? msg.info : null;
         const ended = msg.event === "onStateChange" ? msg.info === 0 : info?.playerState === 0;

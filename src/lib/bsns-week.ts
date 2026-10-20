@@ -230,7 +230,7 @@ export async function loadBsnsWeek(
       };
     });
   const videos: Video[] = week.parts
-    .filter((p) => p.type === "video")
+    .filter((p) => p.type === "video" && !p.soon)
     .map((p, i, all) => {
       // "Week 3 Video 1" says nothing more than the row's "Video 1": the week's topic then.
       const own = all.length > 1 ? videoTitle(p.title) : "";
@@ -315,11 +315,11 @@ export async function loadBsnsWeek(
   // ---- The 10-week route ----
   const share = (e: Episode) => {
     const tasks = e.parts.filter((p) => p.type !== "video");
-    const vids = e.parts.filter((p) => p.type === "video");
+    const vids = e.parts.filter((p) => p.type === "video" && !p.soon);
     const units = tasks.map((p) => isDone(statusOf(p))).concat(vids.length ? [vids.every((p) => p.done)] : []);
     return units.length ? units.filter(Boolean).length / units.length : 0;
   };
-  const currentWeek = currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.map((p) => p.done) })));
+  const currentWeek = currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.filter((p) => !p.soon).map((p) => p.done) })));
   const curEp = page.episodes.find((e) => e.n === currentWeek);
   const total = Math.max(10, page.episodes.length);
   const topics = WEEK_TOPICS[lang];

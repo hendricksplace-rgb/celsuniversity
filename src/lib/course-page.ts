@@ -62,6 +62,8 @@ export type Part = {
   href: string;
   /** Not published (only staff see drafts). */
   draft?: boolean;
+  /** A CelsVideo whose video isn't up yet: shown on the path as "Próximamente", never counted or completed. */
+  soon?: boolean;
 };
 export type EpisodeState = "done" | "now" | "new";
 export type Episode = {
@@ -75,6 +77,8 @@ export type Episode = {
   /** CelsUS: the lessons beyond the 6 core parts ("Material extra"); they don't count toward x/6. */
   extra: Part[];
   done: number;
+  /** Parts that count toward x/N: every part but the ones still "Próximamente". */
+  total: number;
   state: EpisodeState;
   /** The part to open from "Continuar": the first part not done (the first part when all are done). */
   next: Part | null;
@@ -172,6 +176,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
         lastActivity: p?.last_activity ?? null,
         href: partHref(course.slug ?? slug, n, layout, l, key, theme === "celsbsns"),
         draft: l.status !== "published",
+        soon: !l.has_content,
       };
     });
 
@@ -187,8 +192,10 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       // The interactive CelsBook (ebooks, slug celsus-celsbook-episode-N) replaces the old lesson page.
       if (p.role === "book") p.href = `/app/libros/celsus-celsbook-episode-${n}`;
     }
-    const done = parts.filter((p) => p.done).length;
-    const state: EpisodeState = parts.length > 0 && done === parts.length ? "done" : done > 0 ? "now" : "new";
+    // A part still "Próximamente" (an empty CelsVideo) can't be finished: it doesn't count toward the episode.
+    const counted = parts.filter((p) => !p.soon);
+    const done = counted.filter((p) => p.done).length;
+    const state: EpisodeState = counted.length > 0 && done === counted.length ? "done" : done > 0 ? "now" : "new";
     return {
       id: m.id,
       n,
@@ -199,8 +206,9 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       parts,
       extra,
       done,
+      total: counted.length,
       state,
-      next: parts.find((p) => !p.done) ?? parts[0] ?? null,
+      next: counted.find((p) => !p.done) ?? counted[0] ?? parts[0] ?? null,
       href: theme === "celsbsns" ? bsnsWeek(course.slug ?? slug, n) : layout === "weeks" && parts.length === 0 ? "#" : episodePath(course.slug ?? slug, n),
     };
   });
@@ -217,13 +225,13 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
   // Resume: the most recently touched part; if it's done, the next part not done in that episode,
   // then the next episode with something left.
   let resume: CoursePage["resume"] = null;
-  const all = episodes.flatMap((e) => e.parts.map((p) => ({ e, p })));
+  const all = episodes.flatMap((e) => e.parts.filter((p) => !p.soon).map((p) => ({ e, p })));
   const latest = all.filter((x) => x.p.lastActivity).sort((a, b) => b.p.lastActivity!.localeCompare(a.p.lastActivity!))[0];
   if (latest) {
     const { e, p } = latest;
     if (!p.done) resume = { episode: e, part: p, fresh: false };
     else {
-      const after = e.parts.slice(e.parts.indexOf(p) + 1).find((q) => !q.done) ?? e.parts.find((q) => !q.done);
+      const after = e.parts.slice(e.parts.indexOf(p) + 1).find((q) => !q.done && !q.soon) ?? e.parts.find((q) => !q.done && !q.soon);
       if (after) resume = { episode: e, part: after, fresh: false };
       else {
         const nextEp = episodes.find((x) => x.n > e.n && x.state !== "done") ?? episodes.find((x) => x.state !== "done");

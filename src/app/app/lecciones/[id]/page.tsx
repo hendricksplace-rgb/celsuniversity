@@ -168,6 +168,8 @@ export default async function LessonPage({ params }: Props) {
     supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).order("sort_order"),
   ]);
   const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings ?? []);
+  // A video lesson whose video isn't up yet: nothing to watch, so it is neither recorded nor finishable.
+  const videoSoon = track && partIds.length === 0 && visible.some((b) => b.block_type === "video");
   const backHref = await moduleHref(supabase, course, lessonModule.id);
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
@@ -185,8 +187,9 @@ export default async function LessonPage({ params }: Props) {
 
       {!access ? (
         <p className="t-card t-card-accent">{t.lesson.noAccess}</p>
-      ) : !track ? (
+      ) : !track || videoSoon ? (
         <div className="space-y-5">
+          {videoSoon && <p className="t-heading text-xl">{t.lesson.videoSoonTitle}</p>}
           {visible.map((block) => (
             <div key={block.id}>
               <LessonBlock

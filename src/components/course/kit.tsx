@@ -29,7 +29,7 @@ export function PartIcons({ parts, size, doneLabel }: { parts: Part[]; size: num
   const byKey = new Map(parts.filter((p) => p.key).map((p) => [p.key!, p]));
   const keys = PART_KEYS.filter((k) => byKey.has(k));
   return (
-    <ul className="flex items-center gap-1" aria-label={fill(doneLabel, { n: parts.filter((p) => p.done).length, total: parts.length })}>
+    <ul className="flex items-center gap-1" aria-label={fill(doneLabel, { n: parts.filter((p) => p.done && !p.soon).length, total: parts.filter((p) => !p.soon).length })}>
       {keys.map((k) => (
         <li key={k} title={PART_NAME[k]}>
           <PartIcon k={k} size={size} off={!byKey.get(k)!.done} />

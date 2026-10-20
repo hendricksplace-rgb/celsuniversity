@@ -41,6 +41,8 @@ type Ctx = {
   finish: (opts?: { stay?: boolean }) => Promise<{ xp: number; queued: boolean } | null>;
   /** The episode, with this part's check popping in. */
   backHref: string;
+  /** The episode, as it is (nothing finished). */
+  episodeHref: string;
   done: boolean;
   nextEpisodeHref: string | null;
   nextEpisodeN: number | null;
@@ -117,11 +119,12 @@ export function PartShell({
       celebrate,
       finish,
       backHref: back,
+      episodeHref,
       done: alreadyDone,
       nextEpisodeHref: nextEpisode?.href ?? null,
       nextEpisodeN: nextEpisode?.n ?? null,
     }),
-    [t, userId, partKey, episodeN, celebrate, finish, back, alreadyDone, nextEpisode],
+    [t, userId, partKey, episodeN, celebrate, finish, back, episodeHref, alreadyDone, nextEpisode],
   );
 
   const ink = light ? "text-[#2B1A05]" : "text-white";

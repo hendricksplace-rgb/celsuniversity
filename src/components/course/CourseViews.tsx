@@ -61,9 +61,9 @@ export function EpisodesView({ page, t, notice }: { page: CoursePage; t: T; noti
                 {t.episode} {ep.n}
                 {ep.title && ` · ${ep.title}`}
               </p>
-              <p className="text-xs font-semibold text-white/75">{fill(t.partOf, { n: ep.parts.indexOf(resume.part) + 1, total: ep.parts.length, part: resume.part.name })}</p>
+              <p className="text-xs font-semibold text-white/75">{fill(t.partOf, { n: ep.parts.filter((p) => !p.soon).indexOf(resume.part) + 1, total: ep.total, part: resume.part.name })}</p>
               <div className="max-w-[240px] pt-1.5">
-                <Segments parts={ep.parts} current={resume.part.id} />
+                <Segments parts={ep.parts.filter((p) => !p.soon)} current={resume.part.id} />
               </div>
             </div>
             <Link
@@ -151,7 +151,7 @@ export function WeeksView({ page, t, theme, notice }: { page: CoursePage; t: T; 
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-bold text-[#13284D]">{e.title || `${word} ${e.n}`}</span>
-                  <span className="mt-0.5 block text-xs text-[#4A5A75]">{fill(t.partsAll, { n: e.done, total: e.parts.length })}</span>
+                  <span className="mt-0.5 block text-xs text-[#4A5A75]">{fill(t.partsAll, { n: e.done, total: e.total })}</span>
                 </span>
                 {s === "done" ? (
                   <span className="shrink-0 text-xs font-bold" style={{ color: accent }}>
