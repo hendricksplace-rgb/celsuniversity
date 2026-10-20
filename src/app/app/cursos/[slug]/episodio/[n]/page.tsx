@@ -12,6 +12,7 @@ import { CelsusEpisode, type UsExtra } from "@/components/course/CelsusEpisode";
 import { completionPath } from "@/lib/episode-status";
 import { loadEpisodeDecks, tracksFromDecks, type RawCard } from "@/lib/celsus-cards";
 import { signStorageRefs } from "@/lib/storage";
+import { fileHref } from "@/lib/file-href";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Episode, UsRole } from "@/lib/course-page";
 
@@ -114,8 +115,9 @@ async function celsusDetails(
   }
   const en = pdf("English");
   const es = pdf("Español");
-  if (en && signed.get(en)) extras.push({ href: signed.get(en)!, label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
-  if (es && signed.get(es)) extras.push({ href: signed.get(es)!, label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
+  // Signed when tapped (/app/archivo): a URL signed with the page expires after 10 minutes.
+  if (en && signed.get(en)) extras.push({ href: fileHref(en), label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
+  if (es && signed.get(es)) extras.push({ href: fileHref(es), label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
 
   return {
     topic,

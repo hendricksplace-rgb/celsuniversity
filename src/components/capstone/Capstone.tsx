@@ -4,6 +4,7 @@
 // ring, the 10 parts as a timeline (current / done / locked), Part 1's evidence cards and 4 required fields that
 // autosave to capstone_parts.fields, "Marcar la Parte N como completa" (sets completed_at), the Week 10 final card,
 // the rail, and the "Ver mi perfil" preview that prints as the PDF. No coach: the app only checks the minimums.
+import { fileHref } from "@/lib/file-href";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -704,10 +705,6 @@ function ResumeField({ t, id, val, onUpload }: { t: UIT; id: string; val: string
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const see = async () => {
-    const { data } = await createClient().storage.from("resumes").createSignedUrl(val, 300);
-    if (data?.signedUrl) window.open(data.signedUrl, "_blank", "noopener");
-  };
   return (
     <div className={s.file}>
       <p className={cx(s.fileSt, val && s.fileHas)}>
@@ -720,10 +717,11 @@ function ResumeField({ t, id, val, onUpload }: { t: UIT; id: string; val: string
           {busy ? t.fileBusy : val ? t.fileRe : t.fileUp}
         </button>
         {val && (
-          <button type="button" className={cx(s.btn, s.btnS, s.fileBtn)} onClick={() => void see()}>
+          // Signed on the server when tapped (/app/archivo): no browser-side signing, and no pop-up blocked after an await.
+          <a href={fileHref(`storage://resumes/${val}`)} target="_blank" rel="noopener" className={cx(s.btn, s.btnS, s.fileBtn)}>
             <Icon name="eye" size={18} />
             {t.fileSee}
-          </button>
+          </a>
         )}
       </div>
       <input
