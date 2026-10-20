@@ -62,10 +62,10 @@ export const repsLength = (d: SpeakingData) => Math.min(6, Math.max(1, d.exercis
 export const partnerLength = (d: SpeakingData) => Math.min(6, Math.max(1, d.bonus.questions.en.length));
 
 /**
- * How many tries per exercise "Terminar la práctica" needs (Matt's switch): "all" = the exercise's own reps
+ * How many tries per exercise "Terminar la práctica" needs (Matt, 2026-10-20: 1). "all" = the exercise's own reps
  * (2–5, the original design); 1 = one try per exercise. The rest of the reps stay as optional practice.
  */
-export const SPEAKING_MIN_REPS = "all" as "all" | 1;
+export const SPEAKING_MIN_REPS = 1 as "all" | 1;
 export const repsNeeded = (e: Pick<SpeakingExercise, "reps">) => (SPEAKING_MIN_REPS === "all" ? e.reps : Math.min(SPEAKING_MIN_REPS, e.reps));
 
 /** Two snapshots of the same counts (server props, a fresh read, an RPC answer): the higher count wins. */

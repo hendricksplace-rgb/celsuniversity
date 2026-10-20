@@ -1,7 +1,7 @@
 import "server-only";
 import type { createClient } from "@/lib/supabase/server";
 import { countWords } from "@/lib/writing";
-import { vocabCount } from "@/lib/speaking";
+import { repsNeeded, vocabCount } from "@/lib/speaking";
 import { actionNote, type Answer, type FeedbackData, type Reflection, type WeekNumbers } from "@/lib/feedback";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -60,9 +60,11 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
 
   const s = sub.data as { body: string; status: string } | null;
   const bests = (sbest.data ?? []) as { exercise: number; text: string }[];
-  const reps = ((sprog.data as { reps?: number[] } | null)?.reps ?? []).reduce((a, b) => a + Number(b), 0);
+  const repsBy = ((sprog.data as { reps?: number[] } | null)?.reps ?? []).map(Number);
+  const reps = repsBy.reduce((a, b) => a + b, 0);
   const exercises = (sc.data as { data?: { exercises?: { reps?: number }[] } } | null)?.data?.exercises ?? [];
-  const needReps = exercises.length ? exercises.reduce((a, e) => a + Number(e.reps ?? 0), 0) : SPEAKING_REPS;
+  // Every exercise has the tries "Terminar la práctica" needs (repsNeeded: Matt's switch in lib/speaking).
+  const repsReady = exercises.length ? exercises.every((e, i) => (repsBy[i] ?? 0) >= repsNeeded({ reps: Number(e.reps ?? 0) })) : reps >= SPEAKING_REPS;
   const vocab = Object.entries(((rc.data as { data?: { vocab?: Record<string, { es: string }> } } | null)?.data?.vocab ?? {}) as Record<string, { es: string }>).map(([word, v]) => ({ word, es: v.es }));
   const usedText = [s?.body ?? "", ...bests.map((b) => b.text)].join("\n");
   const c = commit.data;
@@ -89,7 +91,7 @@ export async function loadFeedback(supabase: Client, userId: string, lessonId: s
       title: (vc.data as { data?: { original?: { title?: string } } } | null)?.data?.original?.title ?? video?.title ?? "",
     },
     speaking: {
-      done: !!(sprog.data as { completed_at?: string } | null)?.completed_at || reps >= needReps,
+      done: !!(sprog.data as { completed_at?: string } | null)?.completed_at || repsReady,
       tries: reps,
       quote: [...bests].reverse().find((b) => b.text.trim())?.text ?? null,
       href: speaking?.href ?? null,
