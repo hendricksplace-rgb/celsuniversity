@@ -25,6 +25,7 @@ Not needed for the October 19, 2026 switch. The order is roughly by value.
 
 ## Operations
 - **`evaluation` Edge Function.** Wire it to `logFunctionError` the next time it's redeployed for another reason.
+- **Evaluation bundle prices.** The evaluation function (`supabase/functions/_shared/eval-engine.ts`, `eval-emails.ts`) should read the bundle prices from `products` instead of the hard-coded "$150 · Ahorras $69". Needs an Edge Function redeploy.
 - **Delete retired Edge Functions** in the dashboard:
   - `ebook-signed-url`, `import-designrr-ebooks`, `import-celsaudio`, `import-media`, `handoff-upload`;
   - after checking, `secret-check` and `debug-ip-headers`.
