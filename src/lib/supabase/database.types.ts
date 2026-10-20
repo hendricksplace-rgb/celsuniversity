@@ -1176,6 +1176,24 @@ export type Database = {
           },
         ]
       }
+      financial_plans: {
+        Row: {
+          data: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          data?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          data?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       function_errors: {
         Row: {
           at: string

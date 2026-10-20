@@ -2,10 +2,11 @@
 
 // "Practica": the five kinds of game (sort, order, pick, spot, highlight). Answers are kept in
 // guided_step_progress.state.practice so the student finds them again.
-import { useEffect, useMemo, useState } from "react";
-import type { HighlightPractice, LabelPractice, ListenPickPractice, MythPractice, OrderPractice, PickPractice, Practice, SortPractice, SpotPractice } from "@/lib/guided";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { EstimatePractice, GuessPractice, MultiplyPractice, SumPractice, HighlightPractice, LabelPractice, ListenPickPractice, MythPractice, OrderPractice, PickPractice, Practice, SortPractice, SpotPractice } from "@/lib/guided";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { Binary } from "./Essentials";
+import { Binary, WhatIf } from "./Essentials";
+import { money } from "@/lib/guided-finance";
 import { Ico, say, type T } from "./ui";
 import s from "./guided.module.css";
 
@@ -57,6 +58,11 @@ export function PracticeView(props: { p: Practice; v: V; set: (v: V) => void; t:
   if (p.kind === "pick") return <Pick {...props} p={p} />;
   if (p.kind === "spot") return <Spot {...props} p={p} />;
   if (p.kind === "highlight") return <Highlight {...props} p={p} />;
+  if (p.kind === "whatif") return <WhatIf items={p.items ?? []} value={props.v.open} onChange={(x) => props.set({ ...props.v, open: x })} />;
+  if (p.kind === "guess") return <Guess {...props} p={p} />;
+  if (p.kind === "estimate") return <Estimate {...props} p={p} />;
+  if (p.kind === "sum") return <Sum {...props} p={p} />;
+  if (p.kind === "multiply") return <Multiply {...props} p={p} />;
   return null;
 }
 
@@ -68,7 +74,11 @@ export function practiceDone(p: Practice | null, v: V) {
   if (p.kind === "order") return ((v.placed as string[]) ?? []).length >= p.items.length;
   if (p.kind === "spot") return ((v.found as number[]) ?? []).length >= p.doc.filter((d) => d.err).length;
   if (p.kind === "label" || p.kind === "listen_pick") return Object.keys(a).length >= p.items.length;
-  if (p.kind === "myth") return Array.isArray(v.picks) && (v.picks as unknown[]).filter((x) => x !== null && x !== undefined).length >= p.items.length;
+  if (p.kind === "myth") return Array.isArray(v.picks) && (v.picks as unknown[]).filter((x) => x !== null && x !== undefined).length >= (p.items ?? []).length;
+  if (p.kind === "estimate") return Object.keys(a).length >= p.items.length;
+  if (p.kind === "guess") return v.revealed === true;
+  if (p.kind === "sum") return v.pick !== undefined;
+  if (p.kind === "whatif" || p.kind === "multiply") return true;
   return ((v.found as number[]) ?? []).length >= (p.min_found ?? 6);
 }
 
@@ -129,10 +139,13 @@ function Order({ p, v, set, t, lang }: Props<OrderPractice>) {
   const done = placed.length >= p.items.length;
   const tap = (x: { text: string; why: string | null }) => {
     if (x.why) return setMsg({ text: `${x.text}: ${x.why}`, bad: true });
-    if (p.items[placed.length] === x.text) {
+    const at = placed.length;
+    const L = p.items.length;
+    const tie = !!p.note && at >= L - 2 && p.items.indexOf(x.text) >= L - 2;
+    if (p.items[at] === x.text || tie) {
       const next = [...placed, x.text];
       set({ ...v, placed: next });
-      setMsg(next.length >= p.items.length ? { text: l.orderDone, bad: false } : null);
+      setMsg(next.length >= p.items.length ? { text: p.note ?? l.orderDone, bad: false } : null);
     } else setMsg({ text: l.notYet, bad: true });
   };
   return (
@@ -391,7 +404,7 @@ function Label({ p, v, set, t }: Props<LabelPractice>) {
 /** The e-book's myth / reality block as practice, with the course's own button labels ("Ayuda / Perjudica", "Sí / Mejor no"). */
 function Myth({ p, v, set }: { p: MythPractice; v: V; set: (v: V) => void }) {
   return (
-    <Binary items={p.items} value={v.picks} onChange={(x) => set({ ...v, picks: x })} labels={p.labels ?? { true: "Sí", false: "No" }} />
+    <Binary items={p.items ?? []} value={v.picks} onChange={(x) => set({ ...v, picks: x })} labels={p.labels ?? { true: "Sí", false: "No" }} />
   );
 }
 
@@ -434,4 +447,166 @@ function ListenPick({ p, v, set, t }: Props<ListenPickPractice>) {
       })}
     </div>
   );
+}
+
+// ---------- money practice (Finanzas) ----------
+
+function Guess({ p, v, set }: Props<GuessPractice>) {
+  const g = typeof v.guess === "number" ? v.guess : Math.round((p.min + p.max) / 2 / p.step) * p.step;
+  const rev = v.revealed === true;
+  const d = Math.abs(g - p.answer);
+  return (
+    <div className={s.gs}>
+      <div className={s.gsVal} aria-live="polite">
+        {money(g)}
+        <span> al año</span>
+      </div>
+      <input type="range" min={p.min} max={p.max} step={p.step} value={g} disabled={rev} aria-label="Tu estimado" onChange={(e) => set({ ...v, guess: Number(e.target.value) })} />
+      <div className={s.rng}>
+        <span>{money(p.min)}</span>
+        <span>{money(p.max)}</span>
+      </div>
+      {rev ? (
+        <div className={s.gRev}>
+          <ul>
+            {p.reveal.rows.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+          <div className={s.revTot}>{p.reveal.total}</div>
+          <div className={s.revDiff} style={{ color: d <= p.tolerance ? "var(--ok)" : "#8A6400" }}>
+            {d <= p.tolerance ? `¡Muy cerca! Te equivocaste por ${money(d)}.` : `Te equivocaste por ${money(d)}. Por eso hace falta un plan.`}
+          </div>
+        </div>
+      ) : (
+        <button type="button" className={`${s.btn} ${s.btnG}`} style={{ marginTop: 14 }} onClick={() => set({ ...v, guess: g, revealed: true })} data-action="reveal">
+          <Ico n="eye" />
+          Ver la respuesta
+        </button>
+      )}
+    </div>
+  );
+}
+
+function Estimate({ p, v, set }: Props<EstimatePractice>) {
+  const a = (v.answers ?? {}) as Record<string, number>;
+  return (
+    <div className={s.drill}>
+      {p.items.map((x, i) => (
+        <div className={s.dq} key={i}>
+          <div className={s.gmQ} style={{ fontSize: 17, fontWeight: 800 }}>
+            {x.text}
+          </div>
+          <div className={s.optsH}>
+            {x.options.map((o, j) => {
+              const c = a[i] === undefined ? "" : j === x.answer ? s.right : j === a[i] ? s.wrong : "";
+              return (
+                <button key={j} type="button" className={c} disabled={a[i] !== undefined} onClick={() => set({ ...v, answers: { ...a, [i]: j } })}>
+                  {o}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Sum({ p, v, set, t }: Props<SumPractice>) {
+  const shown = typeof v.shown === "number" ? v.shown : 1;
+  const all = shown >= p.rows.length;
+  const pick = v.pick as number | undefined;
+  return (
+    <>
+      <div className={s.rows}>
+        {p.rows.slice(0, shown).map(([label, n]) => (
+          <div key={label}>
+            <span>{label}</span>
+            <b>{money(n)}</b>
+          </div>
+        ))}
+        {!all && (
+          <button type="button" className={`${s.btn} ${s.btnT}`} style={{ width: "100%" }} onClick={() => set({ ...v, shown: shown + 1 })} data-action="next-row">
+            <Ico n="plus" />
+            Mostrar el siguiente gasto
+          </button>
+        )}
+      </div>
+      {all && (
+        <div className={s.dq} style={{ marginTop: 12 }}>
+          <div className={s.gmQ}>¿Cuánto pagas al mes en total?</div>
+          <div className={s.optsH}>
+            {p.options.map((o) => {
+              const c = pick === undefined ? "" : o === p.answer ? s.right : o === pick ? s.wrong : "";
+              return (
+                <button key={o} type="button" className={c} disabled={pick !== undefined} onClick={() => set({ ...v, pick: o })}>
+                  {money(o)}
+                </button>
+              );
+            })}
+          </div>
+          {pick !== undefined && (
+            <div className={s.dfb}>
+              {pick === p.answer ? <b>{t.right} </b> : <b className={s.no}>{t.almost} </b>}
+              {p.why}
+            </div>
+          )}
+        </div>
+      )}
+    </>
+  );
+}
+
+function Multiply({ p, v, set }: Props<MultiplyPractice>) {
+  const sel = typeof v.sel === "number" ? v.sel : 0;
+  const it = p.items[sel] ?? p.items[0]!;
+  const mo = it[1] * it[2];
+  return (
+    <>
+      <div className={s.mul}>
+        {p.items.map((x, i) => (
+          <button key={x[0]} type="button" aria-pressed={i === sel} onClick={() => set({ ...v, sel: i })}>
+            {x[0]}
+            <Ico n="right" />
+          </button>
+        ))}
+      </div>
+      <div className={s.mres} aria-live="polite">
+        <div>
+          <small>AL MES</small>
+          <b className={s.countUp}>
+            <CountUp to={mo} />
+          </b>
+        </div>
+        <div>
+          <small>AL AÑO</small>
+          <b className={s.countUp}>
+            <CountUp to={mo * 12} />
+          </b>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/** A money figure that counts up from its last value (instant with reduced motion). */
+function CountUp({ to }: { to: number }) {
+  const [n, setN] = useState(0);
+  const from = useRef(0);
+  useEffect(() => {
+    const start = from.current;
+    from.current = to;
+    if (start === to || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setN(to);
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const k = Math.min(1, (now - t0) / 700);
+      setN(start + (to - start) * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [to]);
+  return <>{money(n)}</>;
 }

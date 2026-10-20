@@ -10,7 +10,7 @@ import { currentWeekOf, weekPath } from "@/lib/bsns";
 import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
 import { loadGuided } from "@/lib/guided-server";
 import { courseCopy } from "@/lib/guided-copy";
-import { stageLabel } from "@/lib/route";
+import { STAGES, stageLabel } from "@/lib/route";
 import { GuidedCourseView } from "@/components/guided/GuidedCourseView";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -51,6 +51,7 @@ export default async function CoursePage({ params }: Props) {
         tools={!!tools}
         defaultLang={lang === "en" ? "en" : "es"}
         theme={guided.theme}
+        stages={Object.fromEntries(STAGES.map((x) => [x.slug, stageLabel(x.slug, lang === "en" ? "en" : "es") ?? ""]))}
       />
     );
   }

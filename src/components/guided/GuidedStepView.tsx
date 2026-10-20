@@ -12,6 +12,8 @@ import { EssBlock, MoreVideos } from "./Essentials";
 import { PRODUCT, docModel, productPath, stepPath, titlesOf, visibleSections, type GuidedStep, type GuidedTheme, type Lang, type MoreVideo, type ResumeData, type StepState } from "@/lib/guided";
 import { PracticeView, pickScore, practiceDone, sortScore } from "./Practice";
 import { BuildSection, type BuildCtx } from "./Build";
+import { BudgetExample } from "./BuildFinance";
+import { budgetTotals, money } from "@/lib/guided-finance";
 import { useFitsOnePage } from "./ResumeDoc";
 import { Ico, TopBar, UI, useLang, useResume, useStepState, useToast } from "./ui";
 import s from "./guided.module.css";
@@ -47,6 +49,9 @@ export function GuidedStepView(p: StepPageProps) {
   const prodLabel = PRODUCT[p.theme].label[lang];
   const prodIcon = PRODUCT[p.theme].icon;
   const cover = p.theme === "interview";
+  const fi = p.theme === "finanzas";
+  const totals = useMemo(() => (fi ? budgetTotals(data, p.steps) : null), [fi, data, p.steps]);
+  const screens = step.ebookScreens ?? [];
   const [st, setSt] = useStepState(p.userId, p.moduleId, p.state);
   const [doneAt, setDoneAt] = useState(p.completedAt);
   const stRef = useRef(st);
@@ -93,7 +98,7 @@ export function GuidedStepView(p: StepPageProps) {
 
   const titles = useMemo(() => titlesOf(p.steps), [p.steps]);
   const verbs = useMemo(
-    () => p.steps.flatMap((x) => x.essentials.flatMap((b) => (b.type === "phrases" ? b.items.map((i) => ({ es: i.es, en: i.en })) : []))).filter((v, i, a) => a.findIndex((y) => y.es === v.es) === i),
+    () => p.steps.flatMap((x) => (x.essentials ?? []).flatMap((b) => (b.type === "phrases" ? b.items.map((i) => ({ es: i.es, en: i.en })) : []))).filter((v, i, a) => a.findIndex((y) => y.es === v.es) === i),
     [p.steps],
   );
   const hasAuto = step.build.sections.some((x) => x.type === "autocheck");
@@ -129,13 +134,32 @@ export function GuidedStepView(p: StepPageProps) {
         </ul>
       </div>
       <div className={s.box}>
-        <h4>
-          <Ico n={prodIcon} />
-          {PRODUCT[p.theme].rail[lang]}
-        </h4>
-        <p>
-          {step.builds}. {PRODUCT[p.theme].railP[lang]}
-        </p>
+        {totals && totals.net > 0 ? (
+          <>
+            <h4>
+              <Ico n="chart" />
+              {totals.balance < 0 ? (lang === "es" ? "TE FALTA" : "SHORT BY") : lang === "es" ? "TE QUEDA" : "LEFT OVER"}
+            </h4>
+            <p>
+              <b className={`${s.railBal} ${totals.balance < 0 ? s.neg : ""}`} data-rail-balance>
+                {totals.balance < 0 ? "" : "+"}
+                {money(totals.balance)}
+              </b>
+              <br />
+              {lang === "es" ? "al mes, con tus números." : "a month, with your numbers."}
+            </p>
+          </>
+        ) : (
+          <>
+            <h4>
+              <Ico n={prodIcon} />
+              {PRODUCT[p.theme].rail[lang]}
+            </h4>
+            <p>
+              {step.builds}. {PRODUCT[p.theme].railP[lang]}
+            </p>
+          </>
+        )}
         <Link href={prodHref} className={`${s.btn} ${s.btnG}`}>
           <Ico n="eye" />
           {PRODUCT[p.theme].see[lang]}
@@ -154,7 +178,7 @@ export function GuidedStepView(p: StepPageProps) {
   );
 
   return (
-    <div className={`${s.page} ${cover ? s.thInterview : ""}`} lang={lang}>
+    <div className={`${s.page} ${cover ? s.thInterview : ""} ${fi ? s.thFinanzas : ""}`} lang={lang}>
       <TopBar
         kicker={`${t.stepOf(n, step.of)} · ${kickWord.toUpperCase()}`}
         title={step.title}
@@ -178,9 +202,9 @@ export function GuidedStepView(p: StepPageProps) {
       />
       <div className={s.wrap}>
         <div className={s.main}>
-          <section className={`${s.hero} ${s.heroStep} ${cover ? s.heroCover : ""}`}>
+          <section className={`${s.hero} ${s.heroStep} ${cover ? s.heroCover : ""} ${fi ? s.heroFi : ""}`}>
             <span className={s.kick}>
-              <Ico n={cover ? "chat" : "brief"} />
+              <Ico n={cover ? "chat" : fi ? "money" : "brief"} />
               {t.stepOf(n, step.of)}
             </span>
             <h1>{step.title}</h1>
@@ -204,8 +228,34 @@ export function GuidedStepView(p: StepPageProps) {
           </section>
 
           <section className={s.sec} id="ess">
-            <Head n={partNo(parts, "ess")} small={t.parts.ess} h={t.partH.ess} />
-            {step.essentials.map((b, i) => (
+            <Head n={partNo(parts, "ess")} small={t.parts.ess} h={screens[0]?.title ?? t.partH.ess} />
+            {screens.length > 0 && (
+              <p className={`${s.intro} ${s.introIco}`}>
+                <Ico n="book" style={{ width: 16, height: 16 }} /> {lang === "es" ? "Del e-book de este curso. Es el mismo texto que en Mis libros." : "From this course's e-book: the same text as in My books."}
+              </p>
+            )}
+            {screens.map((sc, si) => (
+              <div key={sc.id} className={s.essScr} data-screen={sc.id}>
+                {(screens.length > 1 || sc.audio) && (
+                  <h3 className={s.essScrH}>
+                    {screens.length > 1 && (
+                      <>
+                        <span>{lang === "es" ? `PARTE ${si + 1}` : `PART ${si + 1}`}</span>
+                        {sc.title}
+                      </>
+                    )}
+                    {sc.audio && <Listen src={sc.audio} label={lang === "es" ? "Escuchar" : "Listen"} stop={lang === "es" ? "Pausa" : "Pause"} />}
+                  </h3>
+                )}
+                {sc.blocks.map((b, i) => (
+                  <div key={i} data-block={b.type}>
+                    <EssBlock block={b} value={st.ess?.[`${si}.${i}`]} onChange={(v) => setSt((x) => ({ ...x, ess: { ...(x.ess ?? {}), [`${si}.${i}`]: v } }))} stepHref={(k) => stepPath(p.slug, k)} />
+                  </div>
+                ))}
+              </div>
+            ))}
+            {step.example && totals && <BudgetExample ex={step.example} ctx={ctx} />}
+            {(step.essentials ?? []).map((b, i) => (
               <div key={i} data-block={b.type}>
                 <EssBlock block={b} value={st.ess?.[i]} onChange={(v) => setSt((x) => ({ ...x, ess: { ...(x.ess ?? {}), [i]: v } }))} stepHref={(k) => stepPath(p.slug, k)} />
               </div>
@@ -234,6 +284,20 @@ export function GuidedStepView(p: StepPageProps) {
               <BuildSection key={x.key} sec={x} ctx={ctx} />
             ))}
             {hasAuto && measure}
+            {step.build.commitment && (
+              <div className={s.card} data-commitment>
+                <h3>{lang === "es" ? "Tu compromiso" : "Your commitment"}</h3>
+                <div className={s.gquote} style={{ marginTop: 10 }}>
+                  {step.build.commitment}
+                </div>
+              </div>
+            )}
+            {step.disclaimer && (
+              <div className={s.gdisc}>
+                <Ico n="shield" />
+                <div>{step.disclaimer}</div>
+              </div>
+            )}
           </section>
 
           <section className={s.sec} id="chk">
@@ -302,6 +366,12 @@ export function GuidedStepView(p: StepPageProps) {
                       <h3>{step.finish.title}</h3>
                       <p>{step.finish.text}</p>
                     </div>
+                    {step.finish.cta?.view && (
+                      <Link href={prodHref} className={`${s.btn} ${s.btnG}`}>
+                        {step.finish.cta.label}
+                        <Ico n="right" />
+                      </Link>
+                    )}
                     {step.finish.cta?.course && (
                       <Link href={`/app/cursos/${step.finish.cta.course}`} className={`${s.btn} ${s.btnG}`}>
                         {step.finish.cta.label}
@@ -438,3 +508,30 @@ function useScrollSpy(ids: string[]) {
   return [cur, pct] as const;
 }
 
+
+/** "▶ Escuchar": the e-book's narration of a screen (a signed URL), played in place. */
+function Listen({ src, label, stop }: { src: string; label: string; stop: string }) {
+  const ref = useRef<HTMLAudioElement | null>(null);
+  const [on, setOn] = useState(false);
+  useEffect(() => () => ref.current?.pause(), []);
+  return (
+    <button
+      type="button"
+      className={s.listen}
+      aria-pressed={on}
+      data-action="listen"
+      onClick={() => {
+        if (!ref.current) {
+          ref.current = new Audio(src);
+          ref.current.onended = () => setOn(false);
+        }
+        if (on) ref.current.pause();
+        else void ref.current.play().catch(() => setOn(false));
+        setOn(!on);
+      }}
+    >
+      <Ico n={on ? "stop" : "vol"} />
+      {on ? stop : label}
+    </button>
+  );
+}
