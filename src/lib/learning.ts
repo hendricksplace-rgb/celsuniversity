@@ -4,6 +4,7 @@
 import type { Client } from "@/lib/supabase/types";
 import { themeForCourse, type ThemeKey } from "@/lib/themes";
 import { studentLessons } from "@/lib/course-page";
+import { guidedModules } from "@/lib/guided-modules";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -84,6 +85,14 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     supabase.from("offline_downloads").select("module_id, expires_at").eq("user_id", userId).is("removed_at", null),
   ]);
   const prog = new Map((progress ?? []).map((p) => [p.lesson_id, p]));
+  // Guided courses (CelsGLOBAL step template): each module is one step, done when its 3 questions are answered
+  // (guided_step_progress.completed_at); its old lessons only carry the XP and the "last activity".
+  const modIds = (modules ?? []).map((m) => m.id);
+  const [guided, { data: gp }] = await Promise.all([
+    guidedModules(supabase, modIds),
+    modIds.length ? supabase.from("guided_step_progress").select("module_id, completed_at, updated_at").eq("user_id", userId).in("module_id", modIds) : Promise.resolve({ data: [] }),
+  ]);
+  const stepDone = new Map((gp ?? []).map((g) => [g.module_id, g]));
   const saved = new Set((downloads ?? []).filter((d) => !d.expires_at || new Date(d.expires_at) > new Date()).map((d) => d.module_id));
 
   for (const c of courses ?? []) {
@@ -94,6 +103,25 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     let xp = 0;
     let last: CourseStats["last"] = null;
     for (const m of mods) {
+      const g = guided.get(m.id);
+      if (g) {
+        const own = (m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order);
+        const rep = own[0];
+        if (!rep) continue;
+        const row = stepDone.get(m.id);
+        const isDone = !!row?.completed_at;
+        const title = `Paso ${g.step}: ${g.title}`;
+        for (const l of own) {
+          const p = prog.get(l.id);
+          xp += p?.xp_earned ?? 0;
+          if (p?.last_activity && (!last || p.last_activity > last.at)) last = { at: p.last_activity, lessonId: rep.id, lessonTitle: title };
+        }
+        if (row?.updated_at && (!last || row.updated_at > last.at)) last = { at: row.updated_at, lessonId: rep.id, lessonTitle: title };
+        // The step's first lesson stands for the step: /app/lecciones/<id> opens the step page.
+        order.push({ id: rep.id, title, done: isDone, moduleId: m.id });
+        ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone });
+        continue;
+      }
       const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only).sort((a, b) => a.sort_order - b.sort_order));
       if (!ls.length) continue;
       let done = 0;

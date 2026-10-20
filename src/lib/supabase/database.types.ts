@@ -1255,6 +1255,64 @@ export type Database = {
           },
         ]
       }
+      guided_course_steps: {
+        Row: {
+          data: Json
+          module_id: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          module_id: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          module_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guided_course_steps_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: true
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guided_step_progress: {
+        Row: {
+          completed_at: string | null
+          module_id: string
+          state: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          module_id: string
+          state?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          module_id?: string
+          state?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guided_step_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       import_logs: {
         Row: {
           admin_id: string | null
@@ -2455,6 +2513,26 @@ export type Database = {
             referencedRelation: "modules"
             referencedColumns: ["id"]
           },
+        ]
+      }
+      resumes: {
+        Row: {
+          data: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          data?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          data?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+
         ]
       }
       resume_reviews: {

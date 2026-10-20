@@ -1,4 +1,6 @@
 import { studentLessons } from "@/lib/course-page";
+import { guidedModules } from "@/lib/guided-modules";
+import { stepPath } from "@/lib/guided";
 import { dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -31,6 +33,12 @@ export default async function LessonPage({ params }: Props) {
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   if (!lesson || !lessonModule || !course) notFound();
+
+  // Guided courses (CelsGLOBAL step template): the module's old lessons open its step page for students.
+  if (!viewer.isStaff && course.slug) {
+    const step = (await guidedModules(supabase, [lessonModule.id])).get(lessonModule.id);
+    if (step) redirect(stepPath(course.slug, step.step));
+  }
 
   const theme = themeForCourse(course);
   // CelsBSNS: "Course Dictionary" (and the old "Course Dictionary (2)" note) open the Dictionary page.

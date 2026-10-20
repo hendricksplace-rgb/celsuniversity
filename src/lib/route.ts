@@ -14,6 +14,12 @@ export const STAGES = [
   { slug: "tu-camino-con-la-visa-tn-empieza-aqui", color: "#C23845" },
 ] as const;
 
+/** "ETAPA 2" for a route course (its place in STAGES), else null. */
+export function stageLabel(slug: string, lang: "es" | "en") {
+  const i = STAGES.findIndex((x) => x.slug === slug);
+  return i < 0 ? null : `${lang === "en" ? "STAGE" : "ETAPA"} ${i + 1}`;
+}
+
 export type StageState = "progress" | "done" | "assigned" | "available" | "preview";
 
 export type Stage = {

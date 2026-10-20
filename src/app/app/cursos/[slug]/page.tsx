@@ -8,12 +8,16 @@ import { listExams } from "@/lib/civics-server";
 import { loadCoursePage } from "@/lib/course-page";
 import { currentWeekOf, weekPath } from "@/lib/bsns";
 import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
+import { loadGuided } from "@/lib/guided-server";
+import { courseCopy } from "@/lib/guided-copy";
+import { stageLabel } from "@/lib/route";
+import { GuidedCourseView } from "@/components/guided/GuidedCourseView";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export default async function CoursePage({ params }: Props) {
   const { slug } = await params;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}`);
@@ -24,6 +28,31 @@ export default async function CoursePage({ params }: Props) {
   // CelsBSNS: the old week-list page is gone; old links and bookmarks land on the student's current week.
   if (theme === "celsbsns") redirect(weekPath(page.course.slug, currentWeekOf(page.episodes.map((e) => ({ n: e.n, done: e.parts.map((p) => p.done) })))));
   const access = await canAccessCourse(supabase, viewer, page.course.id);
+  // Guided courses (CelsGLOBAL step template): one page per step and Mi resume. Without access the steps aren't
+  // readable (RLS), so the old page with its access notice shows instead.
+  const guided = theme === "celsglobal" && access ? await loadGuided(supabase, slug, viewer.user.id) : null;
+  if (guided) {
+    const [{ data: books }, { data: tools }] = await Promise.all([
+      supabase.from("ebooks").select("slug, title").eq("course_id", guided.course.id).eq("status", "published").order("created_at"),
+      supabase.rpc("can_use_ai_tools"),
+    ]);
+    const stage = stageLabel(slug, lang === "en" ? "en" : "es");
+    const copy = courseCopy(slug, guided.course.title, guided.course.description);
+    return (
+      <GuidedCourseView
+        slug={guided.course.slug}
+        title={guided.course.title}
+        stage={stage ? `CELSGLOBAL · ${stage}` : "CELSGLOBAL"}
+        copy={{ ...copy, kick: stage ? `${stage} · ${copy.kick}` : copy.kick }}
+        steps={guided.steps.map((x) => x.step)}
+        done={Object.fromEntries(guided.steps.map((x) => [x.step.step, !!x.completedAt]))}
+        resume={guided.resume}
+        books={books ?? []}
+        tools={!!tools}
+        defaultLang={lang === "en" ? "en" : "es"}
+      />
+    );
+  }
   const tool = AI_TOOL_OF_SLUG[slug];
   const notice = (
     <>

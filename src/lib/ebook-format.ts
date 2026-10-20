@@ -22,6 +22,8 @@ export type Block =
   | { type: "say"; items: string[]; title?: string }
   | { type: "activity"; text: string; link?: EbookLink }
   | { type: "compare"; items: { bad: string; good: string }[]; title?: string }
+  /** Spanish job title or degree → its U.S. options [title, when to use it] and a context note (guided courses). */
+  | { type: "titles"; items: { es: string; options: [string, string][]; note?: string }[]; title?: string; intro?: string }
   // Blocks the student fills in (saved to ebook_answers under "<screen id>:<block index>")
   | { type: "checklist"; items: { text: string; link?: EbookLink }[]; title?: string; done_text?: string }
   | { type: "notes"; title?: string; placeholder?: string; min?: number; max?: number }

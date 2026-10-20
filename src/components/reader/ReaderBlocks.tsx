@@ -298,6 +298,9 @@ export function ReaderBlock({ block, value, onChange, t }: Props) {
     case "plan":
       return <Plan block={block} value={value} onChange={onChange} t={t} />;
 
+    case "titles":
+      return <Titles block={block} t={t} />;
+
     default:
       return null;
   }
@@ -325,7 +328,7 @@ function EbookLinkButton({ link }: { link: EbookLink }) {
  * Pronunciation: the recorded ElevenLabs file when the item has one (offline cache first),
  * otherwise the device's own voices (Web Speech API), so nothing leaves the browser.
  */
-function Speak({ text, lang, audioRef, t }: { text: string; lang: string; audioRef?: string | null; t: T }) {
+function Speak({ text, lang, audioRef, t, dark }: { text: string; lang: string; audioRef?: string | null; t: T; dark?: boolean }) {
   const src = useSignedRef(audioRef);
   return (
     <button
@@ -344,10 +347,55 @@ function Speak({ text, lang, audioRef, t }: { text: string; lang: string; audioR
         u.rate = 0.9;
         window.speechSynthesis.speak(u);
       }}
-      className="t-btn-ghost shrink-0 !px-2 !py-1 text-sm"
+      className={dark ? "grid size-11 shrink-0 place-items-center rounded-xl bg-[rgba(235,208,140,.16)] text-base" : "t-btn-ghost shrink-0 !px-2 !py-1 text-sm"}
     >
       🔊
     </button>
+  );
+}
+
+/** Spanish titles on the left; tapping one shows its U.S. options (with 🔊) and the context note on a dark card. */
+function Titles({ block, t }: { block: Extract<Block, { type: "titles" }>; t: T }) {
+  const [sel, setSel] = useState(0);
+  const it = block.items[sel];
+  if (!it) return null;
+  return (
+    <Section title={block.title}>
+      {block.intro && <p className="t-muted text-sm">{block.intro}</p>}
+      <div className="rb-titles grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)]">
+        <div className="grid content-start gap-2" role="listbox" aria-label={block.title ?? t.usSays}>
+          {block.items.map((x, i) => (
+            <button
+              key={i}
+              type="button"
+              role="option"
+              aria-selected={i === sel}
+              onClick={() => setSel(i)}
+              className={`flex min-h-[52px] items-center justify-between gap-2 rounded-[14px] border-[1.5px] px-3.5 py-2.5 text-left font-bold ${i === sel ? "border-[#C7A24E] bg-white shadow-[0_8px_18px_-12px_rgba(150,110,30,.6)]" : "border-transparent bg-[#F7F4EC]"}`}
+            >
+              {x.es}
+              <span aria-hidden className="text-[#A39C88]">›</span>
+            </button>
+          ))}
+        </div>
+        <div className="rounded-[18px] bg-[linear-gradient(160deg,#1E2A48,#14182B)] p-5 text-white" aria-live="polite">
+          <p className="text-[11.5px] font-extrabold tracking-[0.14em] text-[#EBD08C]">{t.usSays}</p>
+          <p className="mb-3.5 mt-1 font-bold text-[#C8D1E2]">{it.es}</p>
+          {it.options.map(([en, note]) => (
+            <div key={en} className="mt-2 flex items-center justify-between gap-2.5 rounded-xl bg-white/[.07] px-3.5 py-3">
+              <div className="min-w-0">
+                <b lang="en" className="block font-serif text-xl">
+                  {en}
+                </b>
+                <span className="text-[12.5px] font-semibold text-[#C8D1E2]">{note}</span>
+              </div>
+              <Speak text={en} lang="en-US" t={t} dark />
+            </div>
+          ))}
+          {it.note && <p className="mt-3.5 rounded-r-[10px] border-l-[3px] border-[#C7A24E] bg-[rgba(235,208,140,.08)] px-3.5 py-3 text-sm leading-relaxed text-[#DCE3EF]">{it.note}</p>}
+        </div>
+      </div>
+    </Section>
   );
 }
 

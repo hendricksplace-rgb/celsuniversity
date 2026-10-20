@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { RESUME_HOLD_HOURS, levelKey, resumeHeader, resumeText, type OptimizedResume, type ResumeReview } from "@/lib/ai-tools";
 import { fill } from "@/components/course/kit";
+import { HANDOFF_KEY } from "@/lib/guided";
 
 type T = Dictionary["ai"];
 const GOLD = "linear-gradient(180deg, #EBD08C 0%, #C7A24E 100%)";
@@ -70,6 +71,19 @@ export function ResumeForm({ t, userId, invalid }: { t: T; userId: string; inval
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // "Enviar a revisión con IA" from a guided course (Mi resume, step 6): the resume text arrives through
+  // sessionStorage (never the URL) and fills the paste box; nothing is sent until the student taps "Enviar".
+  useEffect(() => {
+    try {
+      const handed = sessionStorage.getItem(HANDOFF_KEY);
+      if (handed) {
+        sessionStorage.removeItem(HANDOFF_KEY);
+        setText(handed.slice(0, 30000));
+      }
+    } catch {
+      /* storage blocked */
+    }
+  }, []);
 
   const pick = (f: File | null) => {
     setError(null);

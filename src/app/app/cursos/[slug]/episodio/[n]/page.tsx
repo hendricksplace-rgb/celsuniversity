@@ -4,6 +4,8 @@ import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { episodePath, loadCoursePage } from "@/lib/course-page";
+import { isGuidedCourse } from "@/lib/guided-modules";
+import { stepPath } from "@/lib/guided";
 import { EpisodeScreen, PartList } from "@/components/course/EpisodeScreen";
 import { fill } from "@/components/course/kit";
 import { CelsusEpisode, type UsExtra } from "@/components/course/CelsusEpisode";
@@ -70,6 +72,8 @@ export default async function EpisodePage({ params, searchParams }: Props) {
 
   const theme = themeForCourse({ slug });
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
+  // Guided courses (CelsGLOBAL step template): an old module link opens that step's page for students.
+  if (page && !viewer.isStaff && theme === "celsglobal" && (await isGuidedCourse(supabase, page.course.id))) redirect(stepPath(page.course.slug, Number(n) || 1));
   const episode = page?.episodes.find((e) => e.n === Number(n));
   if (!page || !episode) notFound();
   const courseHref = `/app/cursos/${page.course.slug}`;

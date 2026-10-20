@@ -1,0 +1,1532 @@
+[
+  {
+    "version": 1,
+    "step": 1,
+    "of": 7,
+    "module_id": "8c46d8ac-c661-452f-ad40-5a868da1a712",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/5327074d6effb945762a237e5a3149e5d29fc0f6/file.mp4"
+    },
+    "more_video": {
+      "provider": "youtube",
+      "id": "4JaWWq3mwtQ",
+      "title": "Resumes & CVs! British VS American",
+      "channel": "Evan Edinger",
+      "lang": "en"
+    },
+    "original_activity_lesson_id": "5ee6cf34-f35e-4b05-8234-3deda89623c8",
+    "kicker": "Paso 1 · Del CV al resume",
+    "title": "Del CV al resume",
+    "minutes": 35,
+    "intro": "A diferencia del CV tradicional de muchos países latinoamericanos, que es extenso, detallado y más académico, el resume estadounidense es breve, directo y altamente enfocado en resultados concretos.",
+    "builds": "Tu diagnóstico y el puesto que buscas",
+    "keys": [
+      {
+        "t": "Breve",
+        "d": "Una página para la mayoría de los candidatos."
+      },
+      {
+        "t": "Enfocado en resultados",
+        "d": "No es una lista de lo que hiciste: comunica tu valor."
+      },
+      {
+        "t": "Se lee en segundos",
+        "d": "Los reclutadores dedican apenas unos segundos a cada resume."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "keys",
+        "title": "CV vs. resume",
+        "items": [
+          {
+            "title": "Extensión",
+            "body": "El CV es largo. El resume es breve: una página para la mayoría de los candidatos."
+          },
+          {
+            "title": "Enfoque",
+            "body": "El CV es académico y detallado. El resume se centra en resultados concretos."
+          },
+          {
+            "title": "Lectura",
+            "body": "Los reclutadores reciben cientos de resumes y dedican apenas unos segundos a cada uno."
+          },
+          {
+            "title": "Objetivo",
+            "body": "No es una lista de lo que hiciste: es una herramienta para comunicar tu valor en pocas líneas."
+          }
+        ]
+      },
+      {
+        "type": "expand",
+        "title": "Aspecto por aspecto",
+        "items": [
+          {
+            "icon": "doc",
+            "title": "Longitud",
+            "body": "CV: 2–4 páginas (o más). Resume: 1 página (ideal)."
+          },
+          {
+            "icon": "spark",
+            "title": "Propósito",
+            "body": "CV: registro detallado de toda la trayectoria académica y laboral. Resume: resumen breve y personalizado para un puesto específico."
+          },
+          {
+            "icon": "book",
+            "title": "Enfoque del contenido",
+            "body": "CV: educación, investigación, premios, publicaciones. Resume: habilidades, logros y experiencia laboral."
+          },
+          {
+            "icon": "chat",
+            "title": "Tono",
+            "body": "CV: formal, detallado. Resume: directo, orientado a logros."
+          },
+          {
+            "icon": "user",
+            "title": "Audiencia",
+            "body": "CV: académica, médica, científica. Resume: sector privado, empresas, reclutadores."
+          },
+          {
+            "icon": "check",
+            "title": "Personalización",
+            "body": "CV: rara vez se adapta para cada puesto. Resume: siempre se adapta para cada vacante."
+          },
+          {
+            "icon": "briefcase",
+            "title": "Secciones",
+            "body": "CV: listas completas de educación, publicaciones y trabajos. Resume: solo las experiencias y habilidades más relevantes."
+          },
+          {
+            "icon": "door",
+            "title": "Uso geográfico",
+            "body": "CV: común en muchos países fuera de EE.UU. Resume: estándar en Estados Unidos."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "text": "Tu experiencia ya es valiosa. Solo necesitas presentarla en un formato que los empleadores entiendan."
+      }
+    ],
+    "practice": {
+      "kind": "sort",
+      "title": "¿CV o resume?",
+      "intro": "Toca a qué documento pertenece cada frase.",
+      "labels": {
+        "a": "CV",
+        "b": "Resume"
+      },
+      "items": [
+        {
+          "text": "Ocupa una sola página.",
+          "answer": "b",
+          "why": "El resume ideal ocupa 1 página."
+        },
+        {
+          "text": "Incluye publicaciones, premios e investigación.",
+          "answer": "a",
+          "why": "El CV registra toda la trayectoria académica."
+        },
+        {
+          "text": "Se adapta para cada vacante.",
+          "answer": "b",
+          "why": "El resume siempre se personaliza para el puesto."
+        },
+        {
+          "text": "Se usa en el ámbito académico, médico o científico.",
+          "answer": "a",
+          "why": "Esa es la audiencia típica del CV."
+        },
+        {
+          "text": "Es directo y orientado a logros.",
+          "answer": "b",
+          "why": "El tono del resume es directo y muestra resultados."
+        },
+        {
+          "text": "Ocupa de 2 a 4 páginas o más.",
+          "answer": "a",
+          "why": "El CV suele ser largo y detallado."
+        },
+        {
+          "text": "Es el estándar en Estados Unidos.",
+          "answer": "b",
+          "why": "En EE.UU. las empresas esperan un resume."
+        },
+        {
+          "text": "Rara vez se adapta para cada puesto.",
+          "answer": "a",
+          "why": "El CV casi no cambia de una solicitud a otra."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu punto de partida",
+      "intro": "Saca tu CV actual. Si no tienes uno, piensa en el que entregarías a una empresa de tu país. Contesta con honestidad: nadie más ve tus respuestas.",
+      "sections": [
+        {
+          "key": "target",
+          "type": "fields",
+          "title": "El puesto que buscas",
+          "fields": [
+            {
+              "k": "target_role",
+              "label": "Puesto que buscas en EE.UU.",
+              "placeholder": "Ej. Quality Engineer"
+            },
+            {
+              "k": "field",
+              "label": "Tu área o industria",
+              "placeholder": "Ej. Manufactura automotriz"
+            }
+          ]
+        },
+        {
+          "key": "cv_text",
+          "type": "textarea",
+          "title": "Tu CV actual (opcional)",
+          "hint": "Pega aquí el texto de tu CV. Te servirá de referencia en los siguientes pasos. Solo tú lo ves.",
+          "optional": true
+        },
+        {
+          "key": "diagnosis",
+          "type": "checklist",
+          "title": "¿Está tu CV listo para convertirse en un resume?",
+          "result": {
+            "high": "Tu CV ya está cerca de un resume. En los siguientes pasos lo pulimos.",
+            "mid": "Vas bien. Hay varias cosas que vamos a cambiar juntos.",
+            "low": "Es normal: casi todo CV necesita estos cambios. Para eso es este curso."
+          },
+          "items": [
+            "¿He reducido mi experiencia a lo más relevante para el puesto?",
+            "¿He eliminado detalles innecesarios como hobbies o experiencia no relacionada?",
+            "¿Mi Resume incluye logros y resultados, no solo responsabilidades?",
+            "¿Mi Resume tiene máximo una página?",
+            "¿He resumido cada experiencia en 2–4 líneas?",
+            "¿He adaptado mi Resume específicamente para el puesto al que estoy aplicando?",
+            "¿He utilizado palabras clave del anuncio de empleo?",
+            "¿He usado un formato limpio, moderno y fácil de leer?",
+            "¿Utilicé verbos de acción fuertes al describir mi experiencia (por ejemplo: «logré», «desarrollé», «implementé»)?",
+            "¿He revisado ortografía, gramática y consistencia en todo el documento?",
+            "¿Le he pedido a alguien más que revise mi Resume antes de enviarlo?"
+          ]
+        },
+        {
+          "key": "reflect1",
+          "type": "notes2",
+          "title": "Dos listas",
+          "lists": [
+            {
+              "k": "keep",
+              "label": "Cosas que ya están correctas"
+            },
+            {
+              "k": "change",
+              "label": "Cosas que necesito modificar"
+            }
+          ]
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuánto debe medir el resume para la mayoría de los candidatos?",
+        "o": [
+          "Una página",
+          "Cinco páginas",
+          "Lo que haga falta"
+        ],
+        "a": 0,
+        "why": "El resume en EE.UU. es breve: una página para la mayoría de los candidatos."
+      },
+      {
+        "q": "¿En qué se enfoca un resume?",
+        "o": [
+          "En toda tu trayectoria académica",
+          "En resultados concretos para el puesto",
+          "En tus datos personales"
+        ],
+        "a": 1,
+        "why": "Es una herramienta para comunicar tu valor en pocas líneas."
+      },
+      {
+        "q": "¿Cada cuánto se adapta un resume?",
+        "o": [
+          "Nunca",
+          "Una vez al año",
+          "Para cada vacante"
+        ],
+        "a": 2,
+        "why": "El resume siempre se adapta para cada vacante."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 2,
+    "of": 7,
+    "module_id": "3ea63d9d-1f87-48fc-9f08-6cd5dc0e4382",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/375d8f5df1bca8e15b88024b2a7b86b0664a4ca0/file.mp4"
+    },
+    "more_video": {
+      "provider": "youtube",
+      "id": "qCNiLUvvHNM",
+      "title": "How to Write a Resume",
+      "channel": "TRAIN PD",
+      "lang": "es"
+    },
+    "original_activity_lesson_id": "c63e4c1c-4cf5-4bbb-8cf1-91d6a94c2369",
+    "kicker": "Paso 2 · La estructura",
+    "title": "La estructura que leen los reclutadores",
+    "minutes": 45,
+    "intro": "Cada sección cuenta. Tu objetivo es que el empleador lea tu resume y en menos de 10 segundos diga: «Esta persona merece una entrevista».",
+    "builds": "Contacto y perfil profesional",
+    "keys": [
+      {
+        "t": "Un orden fijo",
+        "d": "Contacto, perfil, experiencia, educación, habilidades."
+      },
+      {
+        "t": "Tu «elevator pitch»",
+        "d": "El perfil profesional: 3 a 4 líneas."
+      },
+      {
+        "t": "Sin datos personales",
+        "d": "Nada de foto, edad, estado civil ni CURP."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "steps",
+        "title": "Las secciones, en orden",
+        "items": [
+          {
+            "title": "Información de contacto",
+            "body": "Nombre completo, teléfono con clave de país, correo profesional, y ciudad y estado (sin dirección completa)."
+          },
+          {
+            "title": "Perfil profesional",
+            "body": "De 3 a 4 líneas: tu perfil, experiencia principal, especialidad y logros. Es tu «elevator pitch»."
+          },
+          {
+            "title": "Experiencia laboral",
+            "body": "Tus últimos 10 años, del más reciente al más antiguo: empresa y ubicación, puesto, fechas (mes y año) y logros medibles."
+          },
+          {
+            "title": "Educación",
+            "body": "Título, institución, ciudad y país, y año de graduación si fue en los últimos 10 años."
+          },
+          {
+            "title": "Habilidades clave",
+            "body": "Habilidades específicas para el puesto: software, idiomas, conocimientos técnicos, certificaciones."
+          },
+          {
+            "title": "Opcional",
+            "body": "Certificaciones, idiomas o herramientas tecnológicas, solo si aportan valor para el puesto."
+          }
+        ]
+      },
+      {
+        "type": "myth",
+        "title": "¿Va en tu resume?",
+        "items": [
+          {
+            "q": "Tu fotografía",
+            "real": false,
+            "a": "No. En EE.UU. no se incluye y puede jugar en tu contra."
+          },
+          {
+            "q": "Tu edad o tu estado civil",
+            "real": false,
+            "a": "No. No es información requerida."
+          },
+          {
+            "q": "Tu CURP",
+            "real": false,
+            "a": "No. Evita datos personales innecesarios."
+          },
+          {
+            "q": "Logros con números",
+            "real": true,
+            "a": "Sí. Haz énfasis en lo que lograste, no solo en lo que hiciste."
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "title": "Notas de diseño",
+        "items": [
+          "Fuente: Arial o Calibri, tamaño 10–12.",
+          "Márgenes: 2.5 cm (1 pulgada) en todos los lados.",
+          "Espaciado sencillo, pero separación clara entre secciones.",
+          "No incluir foto ni información personal como edad, estado civil, etc."
+        ]
+      }
+    ],
+    "practice": {
+      "kind": "order",
+      "title": "Arma el resume",
+      "intro": "Toca las secciones en el orden en que van en un resume de EE.UU.",
+      "items": [
+        "Información de contacto",
+        "Perfil profesional",
+        "Experiencia laboral",
+        "Educación",
+        "Habilidades clave"
+      ],
+      "distractors": [
+        {
+          "text": "Fotografía y datos personales",
+          "why": "No va en un resume de EE.UU."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu contacto y tu perfil profesional",
+      "intro": "Escríbelo en español. En el paso 6 lo pasamos a inglés.",
+      "sections": [
+        {
+          "key": "contact",
+          "type": "fields",
+          "title": "Tu información de contacto",
+          "fields": [
+            {
+              "k": "name",
+              "label": "Nombre completo"
+            },
+            {
+              "k": "city",
+              "label": "Ciudad, Estado",
+              "placeholder": "Sin dirección completa"
+            },
+            {
+              "k": "email",
+              "label": "Correo electrónico",
+              "placeholder": "nombre.apellido@…",
+              "check": "email"
+            },
+            {
+              "k": "phone",
+              "label": "Teléfono",
+              "placeholder": "Con clave de país: +52 …",
+              "check": "phone_cc"
+            },
+            {
+              "k": "linkedin",
+              "label": "LinkedIn / Perfil profesional",
+              "optional": true
+            }
+          ]
+        },
+        {
+          "key": "summary",
+          "type": "template",
+          "title": "Tu perfil profesional",
+          "hint": "Un breve párrafo de 3–4 líneas que capture quién eres y qué ofreces.",
+          "template": "Profesional de [tu profesión] con [#] años de experiencia en [áreas clave]. Especializado/a en [habilidades principales]. Comprometido/a con [objetivo profesional o valor agregado].",
+          "slots": [
+            "tu profesión",
+            "#",
+            "áreas clave",
+            "habilidades principales",
+            "objetivo profesional o valor agregado"
+          ],
+          "example": "Ingeniero industrial con más de 5 años de experiencia en procesos de manufactura, optimización de líneas de producción y mejora continua. Especialista en metodologías Lean y Six Sigma.",
+          "min_chars": 160,
+          "max_chars": 480
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuál de estos datos NO va en tu resume en EE.UU.?",
+        "o": [
+          "Tu correo profesional",
+          "Tu fotografía",
+          "Tu ciudad y estado"
+        ],
+        "a": 1,
+        "why": "Fotografía, edad, estado civil o CURP no se incluyen y pueden jugar en tu contra."
+      },
+      {
+        "q": "¿Cuántas líneas tiene un buen perfil profesional?",
+        "o": [
+          "1",
+          "3 a 4",
+          "10 o más"
+        ],
+        "a": 1,
+        "why": "De 3 a 4 líneas: tu perfil, experiencia principal, especialidad y logros."
+      },
+      {
+        "q": "¿Cuántos años de experiencia incluyes?",
+        "o": [
+          "Toda tu vida laboral",
+          "Tus últimos 10 años",
+          "Solo el último empleo"
+        ],
+        "a": 1,
+        "why": "Tus últimos 10 años, del más reciente al más antiguo."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 3,
+    "of": 7,
+    "module_id": "b9a87a7f-d636-4fc2-9f4e-1b303285254a",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/d1e6d780371590401389d27d185e2dbd98b63f3f/file.mp4"
+    },
+    "more_video": null,
+    "original_activity_lesson_id": "e0dd0e81-ad95-4322-b465-78e6f2910a4b",
+    "kicker": "Paso 3 · Tu experiencia",
+    "title": "Tu experiencia en lenguaje de EE.UU.",
+    "minutes": 60,
+    "intro": "Adaptar tu historial al contexto de EE.UU. significa traducir no solo el idioma, sino también el enfoque, el tono y los logros.",
+    "builds": "Experiencia, educación y habilidades",
+    "keys": [
+      {
+        "t": "Traduce el enfoque",
+        "d": "No solo el idioma: también el tono y lo que destacas."
+      },
+      {
+        "t": "Funciones → resultados",
+        "d": "Lo que lograste pesa más que lo que te tocaba hacer."
+      },
+      {
+        "t": "Verbos de acción",
+        "d": "Cada línea empieza con uno: Lideré, Mejoré, Reduje."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "titles",
+        "title": "Nombra tu puesto como en EE.UU.",
+        "intro": "Toca un puesto o título para ver cómo se dice. Elige según lo que hacías, no por la palabra exacta.",
+        "items": [
+          {
+            "es": "Jefe de área de calidad",
+            "options": [
+              [
+                "Quality Supervisor",
+                "si coordinas a un equipo"
+              ],
+              [
+                "Quality Manager",
+                "si diriges el área y su presupuesto"
+              ]
+            ],
+            "note": "Agrega contexto: «Quality Supervisor at a 200-employee manufacturing plant»."
+          },
+          {
+            "es": "Licenciatura en Contaduría Pública",
+            "options": [
+              [
+                "Bachelor's Degree in Accounting",
+                "equivalente directo"
+              ]
+            ],
+            "note": "No traduzcas «Licenciatura» como «License»: en EE.UU. es «Bachelor's Degree»."
+          },
+          {
+            "es": "Ingeniero en Sistemas Computacionales",
+            "options": [
+              [
+                "Bachelor's in Computer Engineering",
+                "forma corta"
+              ],
+              [
+                "Computer Systems Engineering",
+                "«equivalent to a U.S. Bachelor's degree»"
+              ]
+            ],
+            "note": "Si tu título no tiene un nombre igual en EE.UU., agrega «equivalent to a U.S. Bachelor's degree»."
+          },
+          {
+            "es": "Gerente de ventas",
+            "options": [
+              [
+                "Sales Manager",
+                "diriges a vendedores"
+              ],
+              [
+                "Account Manager",
+                "atiendes cuentas clave"
+              ]
+            ],
+            "note": "Elige el título que describe lo que hacías, no la palabra exacta de tu tarjeta de presentación."
+          },
+          {
+            "es": "Auxiliar administrativo",
+            "options": [
+              [
+                "Administrative Assistant",
+                "el más común"
+              ],
+              [
+                "Office Assistant",
+                "en oficinas pequeñas"
+              ]
+            ],
+            "note": "«Auxiliar» casi nunca se traduce como «Auxiliary»."
+          }
+        ]
+      },
+      {
+        "type": "compare",
+        "title": "Enfócate en resultados, no solo en funciones",
+        "items": [
+          {
+            "bad": "Encargado de revisar la línea de producción.",
+            "good": "Implementé controles de calidad que redujeron el rechazo de piezas en un 20% en seis meses."
+          }
+        ]
+      },
+      {
+        "type": "phrases",
+        "title": "Verbos de acción",
+        "items": [
+          {
+            "en": "Led",
+            "es": "Lideré"
+          },
+          {
+            "en": "Implemented",
+            "es": "Implementé"
+          },
+          {
+            "en": "Improved",
+            "es": "Mejoré"
+          },
+          {
+            "en": "Reduced",
+            "es": "Reduje"
+          },
+          {
+            "en": "Developed",
+            "es": "Desarrollé"
+          },
+          {
+            "en": "Trained",
+            "es": "Capacité"
+          },
+          {
+            "en": "Coordinated",
+            "es": "Coordiné"
+          },
+          {
+            "en": "Increased",
+            "es": "Aumenté"
+          }
+        ]
+      },
+      {
+        "type": "para",
+        "text": "Evita frases pasivas como «fui responsable de…» y reemplázalas con acciones claras y directas."
+      }
+    ],
+    "practice": {
+      "kind": "pick",
+      "title": "Fortalece la línea",
+      "intro": "Elige la versión que pondrías en tu resume.",
+      "items": [
+        {
+          "weak": "Encargada de revisar la línea de producción.",
+          "options": [
+            "Fui responsable de revisar la línea de producción.",
+            "Implementé revisiones diarias que redujeron los defectos en un 15%.",
+            "Revisé la línea de producción todos los días."
+          ],
+          "answer": 1,
+          "why": "Empieza con un verbo de acción y muestra un resultado con número."
+        },
+        {
+          "weak": "Atención a clientes.",
+          "options": [
+            "Atendí a un promedio de 60 clientes por día con 95% de satisfacción.",
+            "Me encargaba de la atención a clientes.",
+            "Atención a clientes de manera amable."
+          ],
+          "answer": 0,
+          "why": "Dice cuánto (60 por día) y qué tan bien (95%)."
+        },
+        {
+          "weak": "Apoyo en el área de compras.",
+          "options": [
+            "Apoyé en compras.",
+            "Negocié con 12 proveedores y reduje el costo de materiales en un 8%.",
+            "Estuve en el área de compras por 3 años."
+          ],
+          "answer": 1,
+          "why": "Un verbo fuerte («Negocié») y el ahorro concreto que lograste."
+        },
+        {
+          "weak": "Responsable de capacitación.",
+          "options": [
+            "Capacité a 40 nuevos empleados y reduje su tiempo de adaptación de 4 a 2 semanas.",
+            "Fui el responsable de la capacitación.",
+            "Daba capacitaciones."
+          ],
+          "answer": 0,
+          "why": "Muestra a cuántas personas y el cambio que lograste."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu experiencia, educación y habilidades",
+      "intro": "Escríbelo en español. En el paso 6 lo pasamos a inglés y lo revisas.",
+      "sections": [
+        {
+          "key": "jobs",
+          "type": "jobs",
+          "title": "Experiencia",
+          "hint": "Tus últimos 10 años, del más reciente al más antiguo. 2 a 4 logros por puesto.",
+          "bullets": {
+            "min": 2,
+            "max": 4,
+            "checks": [
+              "action_verb",
+              "has_number",
+              "max_chars:170"
+            ]
+          }
+        },
+        {
+          "key": "education",
+          "type": "education",
+          "title": "Educación",
+          "hint": "Título, institución, ciudad y país, y año de graduación si fue en los últimos 10 años.",
+          "suggest_equivalent": true
+        },
+        {
+          "key": "certs",
+          "type": "list",
+          "title": "Certificaciones (opcional)",
+          "hint": "Nombre de la certificación – Institución – Año. Solo si agregan valor al puesto.",
+          "optional": true
+        },
+        {
+          "key": "skills",
+          "type": "chips",
+          "title": "Habilidades clave",
+          "hint": "6 a 8 habilidades que pide tu puesto: técnicas, software e idiomas.",
+          "min": 4,
+          "max": 10
+        },
+        {
+          "key": "verbs5",
+          "type": "pick_many",
+          "title": "Tus 5 verbos de acción",
+          "hint": "Los que mejor describen tu experiencia.",
+          "from": "phrases",
+          "count": 5
+        },
+        {
+          "key": "titles3",
+          "type": "list",
+          "title": "3 títulos en inglés que encajan con tu perfil",
+          "min": 3,
+          "max": 3
+        },
+        {
+          "key": "postings",
+          "type": "postings",
+          "title": "Busca 2 vacantes reales",
+          "hint": "En Indeed, LinkedIn o Glassdoor, busca 2 puestos de tu área en EE.UU. Las usarás en el paso 5.",
+          "count": 2,
+          "fields": [
+            "role",
+            "company",
+            "url",
+            "asks"
+          ],
+          "reflect": [
+            "¿Qué habilidades o requisitos mencionan estas vacantes que ya tienes?",
+            "¿Qué habilidades necesitas fortalecer?"
+          ]
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuál es la mejor forma de empezar un logro en tu resume?",
+        "o": [
+          "«Fui responsable de…»",
+          "Un verbo de acción en pasado",
+          "Tu puesto"
+        ],
+        "a": 1,
+        "why": "Evita frases pasivas: empieza con una acción clara."
+      },
+      {
+        "q": "Tu título de «Licenciatura en Contaduría Pública» en EE.UU. es…",
+        "o": [
+          "License in Public Accounting",
+          "Bachelor's Degree in Accounting",
+          "Accounting Diploma"
+        ],
+        "a": 1,
+        "why": "«Licenciatura» equivale a «Bachelor's Degree»."
+      },
+      {
+        "q": "¿Cuál línea es más fuerte?",
+        "o": [
+          "Fui responsable de calidad.",
+          "Implementé controles que redujeron el rechazo de piezas en un 20%.",
+          "Trabajé en producción."
+        ],
+        "a": 1,
+        "why": "Empieza con un verbo de acción y muestra un resultado medible."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 4,
+    "of": 7,
+    "module_id": "8329805d-dd16-441c-bd24-3b38889d1748",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/0d36b78ee99f746b9f6b83ae67bf393ee46c7423/file.mp4"
+    },
+    "more_video": {
+      "provider": "youtube",
+      "id": "DLwoMtIddVw",
+      "title": "¿Cómo evitar los errores más comunes en un CV?",
+      "channel": "Michelle Engelmann",
+      "lang": "es"
+    },
+    "original_activity_lesson_id": "2ed451cb-c40a-4c8d-b510-edcf25ed6665",
+    "kicker": "Paso 4 · Errores comunes",
+    "title": "Errores que cuestan entrevistas",
+    "minutes": 35,
+    "intro": "Un pequeño error puede costarte una gran oportunidad. Tu resume es tu carta de presentación inicial: si no pasa esa primera revisión, el resto de tu experiencia no tendrá oportunidad de brillar.",
+    "builds": "La revisión de tu resume",
+    "keys": [
+      {
+        "t": "Formato de CV",
+        "d": "Demasiadas páginas y demasiados detalles."
+      },
+      {
+        "t": "Datos personales",
+        "d": "Foto, edad o estado civil pueden descartarte."
+      },
+      {
+        "t": "No personalizarlo",
+        "d": "El mismo resume para todo no funciona."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "expand",
+        "title": "Los 4 errores más comunes",
+        "items": [
+          {
+            "icon": "doc",
+            "title": "Usar el formato de CV tradicional",
+            "body": "Evita listar 20 años de experiencia o todos tus cursos. Mejor: una o dos páginas máximo, con logros y roles clave de los últimos 10 años."
+          },
+          {
+            "icon": "user",
+            "title": "Incluir información personal",
+            "body": "En EE.UU. no se incluye estado civil, número de hijos, fotografía, nacionalidad ni fecha de nacimiento. Puede hacer que descarten tu resume."
+          },
+          {
+            "icon": "chat",
+            "title": "Errores de gramática o mala traducción",
+            "body": "Usa un corrector en inglés como Grammarly, pide a un hablante nativo que lo revise y usa frases simples y directas."
+          },
+          {
+            "icon": "spark",
+            "title": "No personalizarlo",
+            "body": "Ajusta tu perfil y habilidades a cada vacante, destaca logros relacionados y usa palabras clave de la oferta."
+          }
+        ]
+      },
+      {
+        "type": "quote",
+        "text": "Tu resume es tu carta de presentación inicial. Si no pasa esa primera revisión, el resto de tu experiencia no tendrá oportunidad de brillar."
+      }
+    ],
+    "practice": {
+      "kind": "spot",
+      "title": "Encuentra los 6 errores",
+      "intro": "Este resume tiene 6 errores. Tócalos para encontrarlos.",
+      "doc": [
+        {
+          "text": "JORGE RAMÍREZ SOTO",
+          "err": null
+        },
+        {
+          "text": "Fotografía · 34 años · Casado, 2 hijos · CURP RASJ900101",
+          "err": "Información personal: foto, edad, estado civil, hijos y CURP no van en un resume de EE.UU."
+        },
+        {
+          "text": "Calle Morelos 145, Col. Centro, León, Gto.",
+          "err": "Dirección completa: basta con ciudad y estado."
+        },
+        {
+          "text": "Objetivo: Busco un trabajo estable donde pueda crecer.",
+          "err": "Un «objetivo» genérico: en su lugar va un perfil profesional de 3–4 líneas con lo que ofreces."
+        },
+        {
+          "text": "Supervisor de Almacén · Distribuidora Bajío · 2019 – Presente",
+          "err": null
+        },
+        {
+          "text": "Fui responsable del inventario y de los montacarguistas.",
+          "err": "Solo funciones y en voz pasiva: empieza con un verbo y muestra un resultado (Reduje las mermas en un 12%…)."
+        },
+        {
+          "text": "Cursos: Excel básico (2009), Primeros auxilios (2011), Inglés I, II y III (2012), Office (2013)…",
+          "err": "Cursos antiguos e irrelevantes: incluye solo lo de los últimos 10 años que aporte al puesto."
+        },
+        {
+          "text": "Pasatiempos: futbol, leer, ver películas.",
+          "err": "Hobbies sin relación con el puesto: elimínalos."
+        },
+        {
+          "text": "Licenciatura en Administración · Universidad de León · 2014",
+          "err": null
+        }
+      ]
+    },
+    "build": {
+      "title": "La revisión de tu resume",
+      "intro": "Revisamos tu resume con la lista «Errores comunes a evitar». Lo que se puede revisar solo, la app lo marca; lo demás lo marcas tú.",
+      "sections": [
+        {
+          "key": "review",
+          "type": "autocheck",
+          "title": "Errores comunes a evitar",
+          "groups": [
+            {
+              "title": "Contenido",
+              "items": [
+                {
+                  "text": "¿Evitaste incluir información personal innecesaria (edad, estado civil, fotografía, número de identificación personal)?",
+                  "auto": "no_personal_data"
+                },
+                {
+                  "text": "¿Evitaste describir solo responsabilidades sin mostrar logros?",
+                  "auto": "bullets_have_numbers"
+                },
+                {
+                  "text": "¿Eliminaste experiencia laboral irrelevante o demasiado antigua (más de 10–15 años)?",
+                  "auto": "jobs_within_15y"
+                },
+                {
+                  "text": "¿No incluiste hobbies o intereses personales (a menos que sean directamente relevantes al puesto)?"
+                }
+              ]
+            },
+            {
+              "title": "Formato y estilo",
+              "items": [
+                {
+                  "text": "¿Tu Resume cabe en una sola página?",
+                  "auto": "fits_one_page"
+                },
+                {
+                  "text": "¿Usaste un diseño limpio y profesional, sin imágenes, gráficos excesivos ni colores llamativos?",
+                  "auto": "always_true_template"
+                },
+                {
+                  "text": "¿Utilizaste un solo tipo de fuente (como Calibri, Arial o Times New Roman) y tamaño consistente (10–12 puntos)?",
+                  "auto": "always_true_template"
+                },
+                {
+                  "text": "¿Tu formato es coherente? (Fechas, lugares, nombres de empresa, todo con el mismo estilo).",
+                  "auto": "dates_consistent"
+                }
+              ]
+            },
+            {
+              "title": "Redacción y estrategia",
+              "items": [
+                {
+                  "text": "¿Evitaste errores de ortografía y gramática?"
+                },
+                {
+                  "text": "¿Iniciaste cada punto de experiencia laboral con un verbo de acción?",
+                  "auto": "bullets_start_with_verb"
+                },
+                {
+                  "text": "¿Usaste tiempos verbales correctos? (Presente para trabajos actuales, pasado para trabajos anteriores)."
+                },
+                {
+                  "text": "¿Tu Resume está adaptado específicamente al puesto o industria a la que aplicas?"
+                },
+                {
+                  "text": "¿Incluiste palabras clave relevantes al sector o a la oferta de empleo?"
+                },
+                {
+                  "text": "¿Mantuviste todo el contenido enfocado en cómo aportas valor a la empresa?"
+                }
+              ]
+            }
+          ],
+          "done_text": "¡Si marcaste todas las casillas, tu Resume está listo para ser un verdadero reflejo de tu potencial profesional!",
+          "fix_link": "Cada punto sin marcar tiene un botón «Corregir» que abre el paso donde se edita."
+        },
+        {
+          "key": "reflect4",
+          "type": "reflect",
+          "title": "Reflexiona brevemente",
+          "prompts": [
+            "¿Cuántos cambios tuviste que hacer?",
+            "¿Qué error encontraste más común en tu propio documento?",
+            "¿Cómo mejoró tu Resume después de aplicar la lista de verificación?"
+          ],
+          "optional": true
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Cuál de estos errores puede hacer que descarten tu resume?",
+        "o": [
+          "Usar verbos de acción",
+          "Incluir tu fotografía y estado civil",
+          "Usar fuente Calibri"
+        ],
+        "a": 1,
+        "why": "En EE.UU. no se incluyen fotografía, estado civil ni fecha de nacimiento."
+      },
+      {
+        "q": "¿Qué tiempo verbal usas para un trabajo anterior?",
+        "o": [
+          "Presente",
+          "Pasado",
+          "Futuro"
+        ],
+        "a": 1,
+        "why": "Presente para trabajos actuales, pasado para trabajos anteriores."
+      },
+      {
+        "q": "¿Cómo evitas errores de traducción?",
+        "o": [
+          "Traducir palabra por palabra",
+          "Usar un corrector y pedir a un hablante nativo que lo revise",
+          "No revisarlo"
+        ],
+        "a": 1,
+        "why": "Usa un corrector en inglés, pide una revisión y usa frases simples."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 5,
+    "of": 7,
+    "module_id": "0511ec58-33be-4cff-ada8-e71ec2e87072",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/debf6206ccf08e6d8f612a535cc6a27923eb9a20/file.mp4"
+    },
+    "more_video": null,
+    "original_activity_lesson_id": "cf16bb3d-fd20-4102-aa23-d06b26bcd1cb",
+    "kicker": "Paso 5 · Una versión para cada oferta",
+    "title": "Una versión para cada oferta",
+    "minutes": 50,
+    "intro": "Un documento, varias versiones estratégicas. Personalizar no es reinventar tu historia, es presentarla con inteligencia.",
+    "builds": "Tus versiones para 3 vacantes",
+    "keys": [
+      {
+        "t": "Lee la oferta",
+        "d": "Responsabilidades, requisitos y palabras que se repiten."
+      },
+      {
+        "t": "Usa sus palabras",
+        "d": "Muchas empresas filtran resumes con sistemas automáticos."
+      },
+      {
+        "t": "15 minutos",
+        "d": "No reescribes todo: ajustas lo que importa."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "steps",
+        "title": "Un documento, varias versiones",
+        "items": [
+          {
+            "title": "Lee la oferta con cuidado",
+            "body": "Fíjate en las responsabilidades clave, los requisitos técnicos, las habilidades solicitadas y las palabras que se repiten."
+          },
+          {
+            "title": "Usa las palabras clave de la oferta",
+            "body": "Muchas empresas filtran resumes con sistemas automáticos. Si piden «manejo de procesos de mejora continua», usa esa misma frase."
+          },
+          {
+            "title": "Ajusta tu perfil profesional",
+            "body": "Es lo primero que lee el reclutador. Resalta lo más relevante para cada puesto: liderazgo en logística en uno, mejora de procesos en otro."
+          },
+          {
+            "title": "Destaca logros relacionados",
+            "body": "No reescribas todo: mueve hacia arriba el logro que responde a la vacante. Si piden inventario, sube tu sistema para reducir pérdidas en almacén."
+          }
+        ]
+      },
+      {
+        "type": "steps",
+        "title": "Tu reloj de 15 minutos",
+        "items": [
+          {
+            "title": "Minuto 1–3: Lee la oferta de trabajo",
+            "body": "Analiza la vacante con atención. Identifica las palabras clave que describen las habilidades, experiencia o certificaciones requeridas. Pregúntate: ¿qué busca exactamente esta empresa en un candidato?"
+          },
+          {
+            "title": "Minuto 4–6: Ajusta tu resumen profesional",
+            "body": "Modifica tu Resumen Profesional para incluir 2–3 palabras clave importantes de la oferta."
+          },
+          {
+            "title": "Minuto 7–10: Alinea tus habilidades y experiencia",
+            "body": "Ordena tu lista de Habilidades Clave para que las más relevantes para ese puesto estén primero. Reescribe uno o dos puntos de tu Experiencia Profesional usando el mismo lenguaje que aparece en la oferta."
+          },
+          {
+            "title": "Minuto 11–13: Ajusta tu educación y certificaciones (si aplica)",
+            "body": "Si la vacante solicita un título o certificación específica, asegúrate de que esté visible y claro en tu Resume. Puedes mover la sección de Educación más arriba si es un requisito clave."
+          },
+          {
+            "title": "Minuto 14–15: Revisión rápida final",
+            "body": "Lee tu Resume completo en voz alta. Asegúrate de que sea claro, conciso y que cada sección esté enfocada en el puesto al que aplicas."
+          }
+        ]
+      },
+      {
+        "type": "tip",
+        "title": "Consejos extra",
+        "text": "Guarda cada versión personalizada con un nombre diferente (ejemplo: Resume_NombreEmpresa.pdf). Si vas a aplicar a varias vacantes en un mismo día, organiza una carpeta con tus versiones personalizadas."
+      }
+    ],
+    "practice": {
+      "kind": "highlight",
+      "title": "Marca las palabras clave",
+      "intro": "Lee esta vacante (es un ejemplo, en inglés como las reales) y toca las palabras clave que pondrías en tu resume. Encuentra al menos 6.",
+      "ad_title": "Quality Engineer – Automotive Components",
+      "ad": "Quality Engineer – Automotive Components (San Antonio, TX). We are looking for a Quality Engineer to lead root cause analysis and continuous improvement projects on our production lines. Requirements: Bachelor's degree in Industrial or Mechanical Engineering; 3+ years of experience in automotive manufacturing; knowledge of Lean Manufacturing and Six Sigma; experience with PPAP and FMEA; strong data analysis skills (Minitab or Excel); ability to train production teams. Bilingual English/Spanish is a plus.",
+      "label": "EJEMPLO FICTICIO",
+      "keywords": [
+        "root cause analysis",
+        "continuous improvement",
+        "Industrial or Mechanical Engineering",
+        "automotive manufacturing",
+        "Lean Manufacturing",
+        "Six Sigma",
+        "PPAP",
+        "FMEA",
+        "data analysis",
+        "Minitab",
+        "train production teams",
+        "Bilingual English/Spanish"
+      ],
+      "min_found": 6
+    },
+    "build": {
+      "title": "Tus versiones para 3 vacantes",
+      "intro": "Usa las 2 vacantes del paso 3 y busca una más. Para cada una, pega el anuncio, marca sus palabras clave y ajusta tu resume.",
+      "sections": [
+        {
+          "key": "versions",
+          "type": "versions",
+          "count": 3,
+          "fields": [
+            "company",
+            "role",
+            "ad_text",
+            "keywords",
+            "changes",
+            "applied_on"
+          ],
+          "help": {
+            "keywords": "La app marca qué palabras clave ya aparecen en tu resume y cuáles faltan.",
+            "changes": "Resumen, habilidades, logros adaptados",
+            "applied_on": "Fecha de aplicación (opcional)"
+          },
+          "per_version": [
+            "summary_override",
+            "skills_order",
+            "bullet_rewrites"
+          ],
+          "file_name": "Resume_{Empresa}.pdf"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿Qué haces en los minutos 1–3 de la guía de 15 minutos?",
+        "o": [
+          "Revisar la ortografía",
+          "Leer la oferta e identificar sus palabras clave",
+          "Guardar el archivo en PDF"
+        ],
+        "a": 1,
+        "why": "Los primeros minutos son para analizar la vacante e identificar las palabras clave."
+      },
+      {
+        "q": "¿Por qué usas las mismas palabras de la oferta?",
+        "o": [
+          "Porque muchas empresas filtran resumes con sistemas automáticos",
+          "Para que sea más largo",
+          "No importa"
+        ],
+        "a": 0,
+        "why": "Los sistemas automáticos buscan esas palabras."
+      },
+      {
+        "q": "¿Qué significa personalizar tu resume?",
+        "o": [
+          "Inventar experiencia",
+          "Reescribir todo desde cero",
+          "Presentar tu historia con inteligencia para cada puesto"
+        ],
+        "a": 2,
+        "why": "Personalizar no es reinventar tu historia, es presentarla con inteligencia."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 6,
+    "of": 7,
+    "module_id": "5c92deba-1649-44b4-adca-d42fd18c19d7",
+    "video": {
+      "media_url": "https://embed-ssl.wistia.com/deliveries/dc2b20d4f7f8998b15794900958e16d50ea2cfc5/file.mp4"
+    },
+    "more_video": {
+      "provider": "youtube",
+      "id": "BAra_v1Px7w",
+      "title": "How to make a GOOD RESUME in 2025",
+      "channel": "Andrea Pilan",
+      "lang": "en"
+    },
+    "original_activity_lesson_id": "dd109ebf-dc38-4a13-9bc0-2bed9c4517ae",
+    "kicker": "Paso 6 · Tradúcelo, expórtalo y envíalo",
+    "title": "Tradúcelo, expórtalo y envíalo",
+    "minutes": 45,
+    "intro": "La forma también comunica. Ahora pasas tu resume al inglés, lo revisas línea por línea y lo descargas listo para enviar.",
+    "builds": "Tu resume final en inglés",
+    "keys": [
+      {
+        "t": "Traduce con sentido",
+        "d": "No palabra por palabra: natural y profesional."
+      },
+      {
+        "t": "Siempre en PDF",
+        "d": "Mantiene el diseño igual en cualquier dispositivo."
+      },
+      {
+        "t": "Nombre profesional",
+        "d": "MarianaLopez_Resume.pdf, no «CVnuevo2023final»."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "checklist",
+        "title": "Antes de enviarlo",
+        "items": [
+          {
+            "text": "Guardado en PDF, nunca en Word"
+          },
+          {
+            "text": "Nombre de archivo profesional, como MarianaLopez_Resume.pdf (no «CVnuevo2023final»)"
+          },
+          {
+            "text": "Fuente clara: Arial, Calibri, Helvetica o Times New Roman"
+          },
+          {
+            "text": "Tamaño de letra entre 10 y 12 puntos"
+          },
+          {
+            "text": "Márgenes estándar y espacios en blanco"
+          },
+          {
+            "text": "Encabezados en negritas para separar secciones"
+          },
+          {
+            "text": "Sin colores brillantes, tablas complejas, imágenes ni logos"
+          },
+          {
+            "text": "Cada línea tiene una razón para estar ahí"
+          }
+        ],
+        "done_text": "Tu resume está listo para enviar"
+      },
+      {
+        "type": "expand",
+        "title": "El resume de Carlos Mendoza, sección por sección",
+        "items": [
+          {
+            "icon": "user",
+            "title": "Contacto",
+            "body": "Carlos Mendoza · Houston, TX · carlos.mendoza@email.com · (555) 123-4567 · linkedin.com/in/carlosmendoza"
+          },
+          {
+            "icon": "spark",
+            "title": "Resumen profesional",
+            "body": "Ingeniero Industrial con 5 años de experiencia en optimización de procesos, gestión de proyectos y mejora continua. Experto en metodologías Lean y Six Sigma, con historial comprobado de reducción de costos y aumento de eficiencia. Comprometido con la innovación y la entrega de resultados medibles."
+          },
+          {
+            "icon": "check",
+            "title": "Habilidades clave",
+            "body": "Gestión de proyectos · Liderazgo de equipos · Análisis de procesos · Optimización de costos · Lean Manufacturing y Six Sigma · Reportes y métricas de desempeño"
+          },
+          {
+            "icon": "briefcase",
+            "title": "Ingeniero de Procesos · ABC Manufacturing",
+            "body": "Houston, TX | Enero 2021 – Presente. Lideré la implementación de proyectos Lean que redujeron costos de producción en un 15% en un año. Coordiné equipos multidisciplinarios de hasta 10 personas en proyectos de mejora continua. Desarrollé reportes de eficiencia mensual que mejoraron la toma de decisiones operativas."
+          },
+          {
+            "icon": "briefcase",
+            "title": "Analista de Producción · XYZ Industries",
+            "body": "Houston, TX | Agosto 2018 – Diciembre 2020. Analicé flujos de trabajo y propuse mejoras que incrementaron la eficiencia en un 20%. Capacité a operarios en procedimientos de calidad y reducción de desperdicios. Apoyé en la transición a nuevas líneas de producción con cero fallas durante el arranque."
+          },
+          {
+            "icon": "book",
+            "title": "Educación",
+            "body": "Licenciatura en Ingeniería Industrial · Universidad Tecnológica de Monterrey — Monterrey, México · Graduación: 2018"
+          },
+          {
+            "icon": "shield",
+            "title": "Certificaciones",
+            "body": "Six Sigma Green Belt – American Society for Quality (ASQ) – 2020"
+          }
+        ]
+      },
+      {
+        "type": "tip",
+        "title": "Recuerda",
+        "text": "El objetivo no es contar todo lo que has hecho en tu vida, sino mostrar por qué estás listo para el siguiente paso profesional."
+      }
+    ],
+    "practice": {
+      "kind": "pick",
+      "title": "¿Qué nombre de archivo usarías?",
+      "intro": "Elige la mejor opción en cada caso.",
+      "items": [
+        {
+          "weak": "Vas a enviar tu resume a una empresa.",
+          "options": [
+            "CVnuevo2023final.docx",
+            "MarianaLopez_Resume.pdf",
+            "resume (3).pdf"
+          ],
+          "answer": 1,
+          "why": "PDF, con tu nombre y la palabra Resume."
+        },
+        {
+          "weak": "Aplicas a Magna con una versión personalizada.",
+          "options": [
+            "Resume_Magna.pdf",
+            "Magna.docx",
+            "miresume.pdf"
+          ],
+          "answer": 0,
+          "why": "Una versión por empresa, con su nombre en el archivo."
+        },
+        {
+          "weak": "¿Qué fuente usas?",
+          "options": [
+            "Una fuente decorativa",
+            "Calibri, 11 puntos",
+            "Arial, 8 puntos"
+          ],
+          "answer": 1,
+          "why": "Fuente clara, entre 10 y 12 puntos."
+        }
+      ]
+    },
+    "build": {
+      "title": "Tu resume final en inglés",
+      "intro": "Primero tu resume en español queda completo. Luego lo traducimos con IA y tú revisas cada sección antes de aprobarla.",
+      "sections": [
+        {
+          "key": "translate",
+          "type": "ai_translate",
+          "title": "Traducir con IA",
+          "button": "Traducir mi resume al inglés",
+          "review": "section_by_section",
+          "review_questions": [
+            "¿La traducción mantiene el sentido profesional?",
+            "¿Las palabras clave y títulos están bien adaptados al mercado laboral en EE.UU.?"
+          ],
+          "rule": "No solo traduzcas palabra por palabra: asegúrate de que tu Resume suene natural, profesional y adaptado al inglés americano. Siempre haz una revisión personal final antes de enviar tu documento.",
+          "keep_spanish": [
+            "institution_names"
+          ]
+        },
+        {
+          "key": "improve",
+          "type": "ai_suggest",
+          "title": "Mejora tu resume con IA (opcional)",
+          "hint": "Sugerencias para mejorar el lenguaje, fortalecer los logros o reorganizar secciones. Tú decides qué cambios aplicar.",
+          "optional": true
+        },
+        {
+          "key": "export",
+          "type": "export",
+          "title": "Descarga y envía",
+          "file_name": "{Nombre}{Apellido}_Resume.pdf",
+          "formats": [
+            "pdf",
+            "docx"
+          ],
+          "send_to": "resume_review"
+        }
+      ]
+    },
+    "check": [
+      {
+        "q": "¿En qué formato envías tu resume?",
+        "o": [
+          "Word",
+          "PDF",
+          "Una foto"
+        ],
+        "a": 1,
+        "why": "El PDF mantiene el diseño igual en cualquier dispositivo."
+      },
+      {
+        "q": "¿Cómo debe sonar tu resume en inglés?",
+        "o": [
+          "Traducido palabra por palabra",
+          "Natural y profesional, en inglés americano",
+          "Lo más largo posible"
+        ],
+        "a": 1,
+        "why": "No traduzcas palabra por palabra."
+      },
+      {
+        "q": "Antes de enviar la traducción hecha con IA, tú…",
+        "o": [
+          "La envías sin leerla",
+          "La revisas completa",
+          "Le agregas tu foto"
+        ],
+        "a": 1,
+        "why": "La IA es un apoyo; la revisión final es tuya."
+      }
+    ]
+  },
+  {
+    "version": 1,
+    "step": 7,
+    "of": 7,
+    "module_id": "950c539e-62b0-4196-b8b5-c1122e95f7e9",
+    "video": null,
+    "more_video": null,
+    "original_activity_lesson_id": null,
+    "kicker": "Paso 7 · Tus siguientes pasos",
+    "title": "Tus siguientes pasos",
+    "minutes": 20,
+    "intro": "Ya tienes las herramientas. Ahora, actúa. Aplica. Ajusta. Mejora. Vuelve a aplicar. Tu historia profesional tiene valor.",
+    "builds": "Tu plan de búsqueda",
+    "keys": [
+      {
+        "t": "Aplica",
+        "d": "Lleva registro de dónde y cuándo aplicas."
+      },
+      {
+        "t": "Prepárate",
+        "d": "La entrevista es el siguiente paso."
+      },
+      {
+        "t": "Sigue aprendiendo",
+        "d": "Inglés, habilidades técnicas o mentoría."
+      }
+    ],
+    "essentials": [
+      {
+        "type": "list",
+        "title": "Lo que aprendiste",
+        "items": [
+          "Las diferencias entre un CV tradicional y un resume de EE.UU.",
+          "Cada sección del resume, del perfil profesional a tus logros.",
+          "Cómo traducir tu experiencia a un lenguaje que los empleadores valoran.",
+          "Los errores comunes y cómo evitarlos.",
+          "Cómo personalizar tu resume para cada vacante.",
+          "Cómo exportarlo y presentarlo de forma profesional."
+        ]
+      },
+      {
+        "type": "quote",
+        "text": "Tu resume es la llave que abre puertas. Ya diste el primer paso. Ahora es momento de presentarte con confianza."
+      }
+    ],
+    "practice": null,
+    "build": {
+      "title": "Tu plan de búsqueda",
+      "intro": "Marca cada paso cuando lo completes.",
+      "sections": [
+        {
+          "key": "next",
+          "type": "checklist",
+          "title": "Tus próximos pasos",
+          "items": [
+            {
+              "text": "Revisa tu resume con ojos frescos, como si fueras el reclutador"
+            },
+            {
+              "text": "Haz una lista de vacantes y lleva registro de dónde y cuándo aplicas",
+              "link": {
+                "label": "Mis versiones",
+                "step": 5
+              }
+            },
+            {
+              "text": "Personaliza tu resume para cada oportunidad (paso 5)"
+            },
+            {
+              "text": "Envía tu resume a la revisión con IA",
+              "link": {
+                "label": "Revisión de tu resume",
+                "tool": "resume_review"
+              }
+            },
+            {
+              "text": "Prepárate para la entrevista",
+              "link": {
+                "label": "Crack the Interview Code",
+                "course": "crack-the-u-s-interview-code"
+              }
+            },
+            {
+              "text": "Practica tu entrevista en voz alta",
+              "link": {
+                "label": "Practica tu entrevista",
+                "tool": "interview_practice"
+              }
+            },
+            {
+              "text": "Sigue aprendiendo: inglés, habilidades técnicas o mentoría",
+              "link": {
+                "label": "English for Business",
+                "course": "english-for-business"
+              }
+            }
+          ]
+        },
+        {
+          "key": "allcanza",
+          "type": "card",
+          "title": "Bolsa de trabajo de Allcanza (opcional)",
+          "text": "Si gustas, puedes subir tu resume final en inglés a la Bolsa de Trabajo de Allcanza para que puedas ser considerado en oportunidades laborales reales.",
+          "link": {
+            "label": "Ir a allcanzatn.com",
+            "url": "https://www.allcanzatn.com"
+          },
+          "needs_matt_confirm": true
+        }
+      ]
+    },
+    "check": null,
+    "finish": {
+      "title": "¡Terminaste From CV to U.S. Resume!",
+      "text": "Tu resume en inglés está listo. Siguiente etapa de tu ruta: Crack the U.S. Interview Code.",
+      "cta": {
+        "label": "Ir a la siguiente etapa",
+        "course": "crack-the-u-s-interview-code"
+      }
+    }
+  }
+]

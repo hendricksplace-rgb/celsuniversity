@@ -4,6 +4,7 @@
 import type { createClient } from "@/lib/supabase/server";
 import { HIDDEN_FROM_STUDENTS, dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import type { ThemeKey } from "@/lib/themes";
+import { guidedModules } from "@/lib/guided-modules";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -140,8 +141,11 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
     .order("sort_order")
     .order("sort_order", { referencedTable: "lessons" });
 
+  // Guided modules (CelsGLOBAL step template): their old lessons are hidden from students; the step page replaces them.
+  const guided = await guidedModules(supabase, (modules ?? []).map((m) => m.id));
   // Never the Teachersbook (or any teacher-only lesson) on these screens; drafts and empty lessons only for staff.
   const visible = (m: NonNullable<typeof modules>[number]) => {
+    if (!isStaff && guided.has(m.id)) return [];
     const ls = (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff) && (isStaff || !HIDDEN_FROM_STUDENTS.has(l.id)));
     return isStaff ? ls : studentLessons(ls);
   };
