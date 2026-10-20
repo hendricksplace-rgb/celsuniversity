@@ -1,0 +1,148 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Explaining Ethics",
+    "title_b": "in Action",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 6"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 6"
+    ],
+    "intro_en": "Record yourself as if you were in a job interview: introduce yourself, explain what business ethics means to you, and share one real or realistic example of how you would handle an ethical dilemma at work.",
+    "intro_es": "Grábate como si estuvieras en una entrevista de trabajo: preséntate, explica qué significa para ti la ética empresarial y comparte un ejemplo real o realista de cómo manejarías un dilema ético en el trabajo."
+  },
+  "must": [
+    {
+      "en": "Introduce yourself as if you're in an interview",
+      "es": "Preséntate como si estuvieras en una entrevista",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "What business ethics means to you",
+      "es": "Qué significa para ti la ética empresarial",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "One example of how you would handle an ethical dilemma at work (reporting a mistake, refusing to share confidential info, avoiding gossip)",
+      "es": "Un ejemplo de cómo manejarías un dilema ético en el trabajo (reportar un error, negarte a compartir información confidencial, evitar chismes)",
+      "color": "#1F7A4D"
+    }
+  ],
+  "tips": [
+    {
+      "icon": "phone",
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "icon": "mic",
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "icon": "sun",
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "icon": "shirt",
+      "en": "Dress for an interview",
+      "es": "Vístete como para una entrevista",
+      "desc_en": "Neat and presentable.",
+      "desc_es": "Limpio y presentable."
+    },
+    {
+      "icon": "eye",
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "desc_en": "And speak clearly, as if talking to an interviewer.",
+      "desc_es": "Y habla con claridad, como si hablaras con un entrevistador."
+    },
+    {
+      "icon": "smile",
+      "en": "Professional but personal",
+      "es": "Profesional pero personal",
+      "desc_en": "Be yourself; a smile shows confidence.",
+      "desc_es": "Sé tú mismo; una sonrisa muestra seguridad."
+    }
+  ],
+  "week": 6,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Professional but personal tone",
+        "Speak like you, not like a script."
+      ],
+      [
+        "Speak clearly",
+        "Look at the camera and don't rush."
+      ],
+      [
+        "A real or realistic example",
+        "One concrete story gives you credibility."
+      ]
+    ],
+    "es": [
+      [
+        "Tono profesional pero personal",
+        "Habla como tú, no como un guion."
+      ],
+      [
+        "Habla con claridad",
+        "Mira a la cámara y no corras."
+      ],
+      [
+        "Un ejemplo real o realista",
+        "Una historia concreta te da credibilidad."
+      ]
+    ]
+  },
+  "script_starter": {
+    "en": "Hello, my name is [name], and I'm a [role] with [number] years of experience in [field].\nTo me, business ethics means [your definition: honesty, responsibility, respect…].\nFor example, [describe the situation]. I [what you did or would do], because [why]. The result was [result].\nThat's why I believe [one-sentence ethics statement].",
+    "es": "Usa esta plantilla en inglés como punto de partida y reemplaza lo que está entre [corchetes] con tus propias palabras."
+  },
+  "original": {
+    "goal": "Record a 2–3 minute video where you introduce yourself as if you're in an interview, explain what business ethics means to you, and share one example of how you would handle an ethical dilemma at work.",
+    "goal_es": "Graba un video de 2 a 3 minutos donde te presentes como si estuvieras en una entrevista, expliques qué significa la ética empresarial para ti y compartas un ejemplo de cómo manejarías un dilema ético en el trabajo.",
+    "time": "1 hour",
+    "title": "Explaining Ethics in Action",
+    "title_es": "Explicando la Ética en Acción",
+    "body_en": "📹 Video Quiz\n\nTitle: Explaining Ethics in Action\nTime: 1 hour\n\nTask: Record a 2–3 minute video where you:\n\nIntroduce yourself as if you're in an interview.\n\nExplain what business ethics means to you.\n\nShare one example of how you would handle an ethical dilemma at work (e.g., reporting a mistake, refusing to share confidential info, avoiding gossip).\n\nTips:\n\nKeep tone professional but personal.\n\nLook at the camera and speak clearly.\n\nUse one real or realistic example for credibility.\n\nOptional Challenge:\nPractice with ChatGPT voice mode:\n\nDeliver your ethical example.\n\nAsk: \"Did I sound professional and confident? How can I improve my clarity?\"",
+    "body_es": "📹 Video Quiz\n\nTítulo: Explicando la Ética en Acción  \nTiempo: 1 hora\n\nTarea: Graba un video de 2 a 3 minutos donde:\n\nTe presentes como si estuvieras en una entrevista.\n\nExpliques qué significa la ética empresarial para ti.\n\nCompartas un ejemplo de cómo manejarías un dilema ético en el trabajo (por ejemplo, reportar un error, negarte a compartir información confidencial, evitar chismes).\n\nConsejos:\n\nMantén un tono profesional pero personal.\n\nMira a la cámara y habla claramente.\n\nUsa un ejemplo real o realista para dar credibilidad.\n\nDesafío Opcional:\nPractica con el modo de voz de ChatGPT:\n\nPresenta tu ejemplo ético.\n\nPregunta: \"¿Soné profesional y seguro? ¿Cómo puedo mejorar mi claridad?\""
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 6,
+  "script_source_lesson_id": "17856e08-9b63-4e00-ac26-b40e9ff6876e",
+  "ai_challenge": {
+    "intro_en": "Practice with ChatGPT voice mode: deliver your ethical example, then ask:",
+    "intro_es": "Practica con el modo de voz de ChatGPT: presenta tu ejemplo ético y luego pregunta:",
+    "prompts": [
+      "Did I sound professional and confident? How can I improve my clarity?"
+    ]
+  }
+}

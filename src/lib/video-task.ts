@@ -14,12 +14,20 @@ export type VideoTaskData = {
   auto_stop_s: number;
   /** Learners reading aloud: about 100 words per minute. */
   wpm: number;
-  must: { color: string; es: string; en: string }[];
-  tips: { icon: "phone" | "mic" | "sun" | "shirt" | "eye" | "smile"; es: string; en: string; desc_es: string; desc_en: string }[];
+  /** `ex` (week 3): an example line for the requirement. */
+  must: { color: string; es: string; en: string; ex?: string }[];
+  /** Icon names from the shell set; unknown names fall back. */
+  tips: { icon: string; es: string; en: string; desc_es: string; desc_en: string }[];
   delivery: { es: [string, string][]; en: [string, string][] };
   /** The Writing lesson whose submission pre-fills "Mi guion". */
   script_source_lesson_id: string;
   capstone_part: number;
+  /** Week 2: an example under the requirements. */
+  example_line?: Bi;
+  /** Optional "practice with ChatGPT voice mode" card. */
+  ai_challenge?: { intro_en: string; intro_es: string; prompts: string[] };
+  /** Week 6: an English template for "Mi guion" when there's no usable Writing text (`es` explains it). */
+  script_starter?: Bi;
 };
 
 export type VideoProof = {

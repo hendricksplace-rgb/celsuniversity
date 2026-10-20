@@ -9,55 +9,123 @@ import { stepPath } from "@/lib/guided";
 import { EpisodeScreen, PartList } from "@/components/course/EpisodeScreen";
 import { fill } from "@/components/course/kit";
 import { CelsusEpisode, type UsExtra } from "@/components/course/CelsusEpisode";
+import { completionPath } from "@/lib/episode-status";
+import { loadEpisodeDecks, tracksFromDecks, type RawCard } from "@/lib/celsus-cards";
 import { signStorageRefs } from "@/lib/storage";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Episode, UsRole } from "@/lib/course-page";
 
 const sentenceCase = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
+/** "Overcome your fears … · Principios de la democracia …" → the topic after the dot. */
+const bookTopic = (subtitle: string | null | undefined) => {
+  const parts = (subtitle ?? "").split(" · ");
+  return parts.length > 1 ? parts.slice(1).join(" · ").trim() : "";
+};
+const TRACKS = ["A", "B", "C"] as const;
 
 /**
- * CelsUS extras for the episode screen: the week's topic and printable PDFs (from the "⬇️ Descargar"
- * block of the flashcards lesson), the published interactive e-book for the CelsBook part, and the
- * "Material extra" rows.
+ * CelsUS extras for the episode screen: the week's topic (the CelsBook's subtitle, else the "⬇️ Descargar" block
+ * of the flashcards lesson) and printable PDFs, the week's questions (the same decks as the Tarjetas), the quiz
+ * size, how far the student is inside the current part, the next episode's topic, and the "Material extra" rows.
  */
 async function celsusDetails(
   supabase: Awaited<ReturnType<typeof createClient>>,
   viewer: NonNullable<Awaited<ReturnType<typeof getViewer>>>,
   courseId: string,
   episode: Episode,
+  nextEpisode: Episode | null,
   t: Dictionary["us"],
 ) {
   const cards = episode.parts.find((p) => p.role === "cards");
-  const [{ data: dl }, { data: ebook }] = await Promise.all([
-    cards
-      ? supabase.from("content_blocks").select("body").eq("lesson_id", cards.id).eq("block_type", "text").ilike("title", "%descargar%").limit(1).maybeSingle()
-      : Promise.resolve({ data: null }),
+  const nextCards = nextEpisode?.parts.find((p) => p.role === "cards");
+  const current = episode.parts.find((p) => !p.done) ?? null;
+  const lessonIds = [cards?.id, nextCards?.id].filter((x): x is string => !!x);
+  const slugs = [`celsus-celsbook-episode-${episode.n}`, ...(nextEpisode ? [`celsus-celsbook-episode-${nextEpisode.n}`] : [])];
+  const [{ data: blocks }, { data: books }, { data: me }, { data: currentBlocks }, { data: currentProgress }, decks] = await Promise.all([
+    lessonIds.length
+      ? supabase.from("content_blocks").select("lesson_id, block_type, title, body").in("lesson_id", lessonIds).eq("block_type", "text").eq("teacher_only", false)
+      : Promise.resolve({ data: [] as { lesson_id: string; block_type: string; title: string | null; body: string | null }[] }),
     // RLS: students only see published e-books.
-    supabase.from("ebooks").select("slug").eq("slug", `celsus-celsbook-episode-${episode.n}`).maybeSingle(),
+    supabase.from("ebooks").select("slug, subtitle, est_minutes, quiz").in("slug", slugs),
+    supabase.from("profiles").select("civics_track").eq("id", viewer.user.id).maybeSingle(),
+    current?.started && current.role !== "cards"
+      ? supabase.from("content_blocks").select("id").eq("lesson_id", current.id).eq("teacher_only", false)
+      : Promise.resolve({ data: null }),
+    current?.started
+      ? supabase.from("progress").select("parts, flashcard_state").eq("user_id", viewer.user.id).eq("lesson_id", current.id).maybeSingle()
+      : Promise.resolve({ data: null }),
+    cards ? loadEpisodeDecks(supabase, cards.id) : Promise.resolve({ en: [] as RawCard[], es: [] as RawCard[] }),
   ]);
-  const body = dl?.body ?? "";
-  const topic = body.match(/Semana\s*\d+\s*\/\s*Week\s*\d+\s*[—–-]\s*(.+)/)?.[1]?.trim() ?? "";
+  const track = TRACKS.find((x) => x === me?.civics_track) ?? null;
+  const ebook = books?.find((b) => b.slug === slugs[0]);
+  const nextBook = books?.find((b) => b.slug !== slugs[0]);
+  const of = (lessonId: string | undefined) => (blocks ?? []).filter((b) => b.lesson_id === lessonId);
+  const downloadOf = (lessonId: string | undefined) => {
+    const body = of(lessonId).find((b) => /descargar/i.test(b.title ?? ""))?.body ?? "";
+    const topic = body.match(/Semana\s*\d+\s*\/\s*Week\s*\d+\s*[—–-]\s*(.+)/)?.[1]?.trim() ?? "";
+    return { body, topic: topic ? sentenceCase(topic) : "" };
+  };
+  const { body } = downloadOf(cards?.id);
+  const topic = bookTopic(ebook?.subtitle) || downloadOf(cards?.id).topic;
   const pdf = (lang: string) => body.match(new RegExp(`${lang}:\\s*(storage://\\S+\\.pdf)`, "i"))?.[1] ?? null;
   const refs = [pdf("English"), pdf("Español")].filter((r): r is string => !!r);
   const signed = refs.length ? await signStorageRefs(supabase, new Set(refs), { courseId, viewer, access: true }) : new Map<string, string>();
 
-  const parts = episode.parts.map((p) => (p.role === "book" && ebook ? { ...p, href: `/app/libros/${ebook.slug}` } : p));
-  const subs: Partial<Record<UsRole, string>> = { ...t.subs, book: ebook ? t.subs.bookInteractive : t.subs.book, video: topic ? sentenceCase(topic) : t.subs.video };
+  // The week's questions: the English deck with the matching Spanish card (the Tarjetas' track A deck).
+  const deckByTrack = tracksFromDecks(decks.en, decks.es);
+  // The 2025 questions (with their USCIS number) first, then any older cards.
+  // Track C: only their starred (65/20) questions.
+  const starred = new Set(deckByTrack.C.map((c) => c.key));
+  const all = deckByTrack.A.filter((c) => track !== "C" || starred.has(c.key)).map((c) => ({ en: c.q, es: c.es?.q ?? "", no: c.no }));
+  const questions = [...all.filter((q) => q.no), ...all.filter((q) => !q.no)];
+  const quizCount = Array.isArray(ebook?.quiz) ? ebook.quiz.length : 0;
+  const myDeck = track ? deckByTrack[track] : deckByTrack.A;
+
+  // How far the student is inside the current part: cards answered (Tarjetas), else sections (content blocks) done.
+  let resumeMeta: { done: number; total: number; text: string } | null = null;
+  if (current?.role === "cards" && myDeck.length) {
+    const st = ((currentProgress?.flashcard_state ?? {}) as Record<string, Record<string, unknown> | undefined>)[track ?? "A"] ?? {};
+    const answered = myDeck.filter((c) => typeof st[c.key] === "boolean").length;
+    resumeMeta = { done: answered, total: myDeck.length, text: fill(t.cardsProgress, { n: answered, total: myDeck.length }) };
+  } else if (current?.role === "book" && ebook?.est_minutes) {
+    resumeMeta = { done: 0, total: 0, text: fill(t.bookMeta, { n: ebook.est_minutes }) };
+  } else if (current?.started && currentBlocks?.length) {
+    const doneIds = Object.keys((currentProgress?.parts as Record<string, unknown> | null) ?? {});
+    const ids = currentBlocks.map((b) => b.id);
+    const done = ids.filter((id) => doneIds.includes(id)).length;
+    resumeMeta = { done, total: ids.length, text: fill(t.sectionsMeta, { n: done, total: ids.length }) };
+  }
+
+  const subs: Partial<Record<UsRole, string>> = {
+    ...t.subs,
+    book: ebook ? (ebook.est_minutes ? `${t.subs.bookInteractive} · ${fill(t.bookMeta, { n: ebook.est_minutes })}` : t.subs.bookInteractive) : t.subs.book,
+    video: topic || t.subs.video,
+    cards: fill(t.cardsSub[track ?? "A"], { n: myDeck.length }),
+    quiz: quizCount ? `${t.subs.quiz} · ${fill(t.quizMeta, { n: quizCount })}` : t.subs.quiz,
+  };
 
   const extras: UsExtra[] = [];
   for (const p of episode.extra) {
     if (/^printable/i.test(p.title)) continue; // replaced by the PDFs below
-    if (/reading and writing/i.test(p.title)) extras.push({ href: p.href, label: t.readingWriting, tag: t.practice, icon: "✎" });
-    else if (/review/i.test(p.title)) extras.push({ href: p.href, label: t.review, tag: t.practice, icon: "↺" });
-    else if (p.type === "video") extras.push({ href: p.href, label: p.title.replace(/\s*-\s*Subtitulada$/i, ""), tag: t.video, icon: "▶" });
-    else extras.push({ href: p.href, label: p.title, tag: "", icon: "📄" });
+    if (/reading and writing/i.test(p.title)) extras.push({ href: p.href, label: t.readingWriting, tag: t.practice, icon: "writing" });
+    else if (/review/i.test(p.title)) extras.push({ href: p.href, label: t.review, tag: t.practice, icon: "review" });
+    else if (p.type === "video") extras.push({ href: p.href, label: p.title.replace(/\s*-\s*Subtitulada$/i, ""), tag: t.video, icon: "video" });
+    else extras.push({ href: p.href, label: p.title, tag: "", icon: "writing" });
   }
   const en = pdf("English");
   const es = pdf("Español");
-  if (en && signed.get(en)) extras.push({ href: signed.get(en)!, label: t.printableEn, tag: "PDF", icon: "🖨", external: true });
-  if (es && signed.get(es)) extras.push({ href: signed.get(es)!, label: t.printableEs, tag: "PDF", icon: "🖨", external: true });
+  if (en && signed.get(en)) extras.push({ href: signed.get(en)!, label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
+  if (es && signed.get(es)) extras.push({ href: signed.get(es)!, label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
 
-  return { topic: topic ? sentenceCase(topic) : "", subs, extras, episode: { ...episode, parts, next: parts.find((p) => p.id === episode.next?.id) ?? episode.next } };
+  return {
+    topic,
+    subs,
+    extras,
+    questions,
+    track,
+    resumeMeta,
+    nextTopic: bookTopic(nextBook?.subtitle) || downloadOf(nextCards?.id).topic,
+  };
 }
 
 type Props = { params: Promise<{ slug: string; n: string }>; searchParams: Promise<{ hecho?: string }> };
@@ -81,20 +149,29 @@ export default async function EpisodePage({ params, searchParams }: Props) {
   if (!(await canAccessCourse(supabase, viewer, page.course.id))) redirect(courseHref);
 
   if (page.layout === "citizenship") {
-    const us = await celsusDetails(supabase, viewer, page.course.id, episode, t.us);
+    const nextEpisode = page.episodes.find((e) => e.n > episode.n) ?? null;
+    const us = await celsusDetails(supabase, viewer, page.course.id, episode, nextEpisode, t.us);
+    const tarjetas = `${episodePath(page.course.slug, episode.n)}/tarjetas`;
     return (
       <CelsusEpisode
         t={t.us}
-        episode={us.episode}
+        episode={episode}
         title={us.topic || fill(t.us.kicker, { n: episode.n })}
         sub={t.us.sub}
         courseHref={courseHref}
-        nextHref={page.episodes.find((e) => e.n > episode.n)?.href ?? null}
+        next={nextEpisode ? { n: nextEpisode.n, href: nextEpisode.href, title: us.nextTopic || fill(t.us.kicker, { n: nextEpisode.n }) } : null}
         examHref="/app/examen-civico"
+        completionHref={completionPath(page.course.slug, episode.n)}
         extras={us.extras}
         subs={us.subs}
-        episodesDone={page.doneCount}
-        episodesTotal={page.episodes.length}
+        episodes={page.episodes.map((e) => ({ n: e.n, href: e.href, done: e.state === "done" }))}
+        questions={us.questions.slice(0, 3)}
+        questionCount={us.questions.length}
+        questionsHref={tarjetas}
+        track={us.track}
+        trackHref={`${tarjetas}?examen=1`}
+        resumeMeta={us.resumeMeta}
+        xp={episode.parts.reduce((s, p) => s + p.xpEarned, 0)}
       />
     );
   }

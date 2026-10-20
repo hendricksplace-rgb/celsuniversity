@@ -1,0 +1,142 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Explaining a Brand",
+    "title_b": "You Admire",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 8"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 8"
+    ],
+    "intro_en": "Record a 2–3 minute video about a brand you admire. Explain what makes its communication effective and share one way you'll use that approach in your own professional communication. Your Research notes and your brand message are a good base.",
+    "intro_es": "Graba un video de 2 a 3 minutos sobre una marca que admiras. Explica qué hace efectiva su comunicación y comparte una forma en que usarás ese enfoque en tu propia comunicación profesional. Tus notas de Research y tu mensaje de marca son una buena base."
+  },
+  "must": [
+    {
+      "en": "The name of a brand you admire",
+      "es": "El nombre de una marca que admiras",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "What makes its communication effective (tone, consistency, clarity, emotional appeal)",
+      "es": "Qué hace efectiva su comunicación (tono, consistencia, claridad, atractivo emocional)",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "A specific example: a campaign, an ad or a slogan",
+      "es": "Un ejemplo concreto: una campaña, un anuncio o un eslogan",
+      "color": "#C98A00"
+    },
+    {
+      "en": "One way you'll apply it in your own professional communication",
+      "es": "Una forma en que lo aplicarás en tu propia comunicación profesional",
+      "color": "#1F7A4D"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "icon": "mic",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "It doesn't need to be formal.",
+      "desc_es": "No tiene que ser formal."
+    },
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "As if talking to a colleague.",
+      "desc_es": "Como si hablaras con un colega."
+    },
+    {
+      "en": "Show your enthusiasm",
+      "es": "Muestra tu entusiasmo",
+      "icon": "smile",
+      "desc_en": "You admire this brand: let it show.",
+      "desc_es": "Admiras esta marca: que se note."
+    }
+  ],
+  "week": 8,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Conversational but professional",
+        "Talk like you would to a colleague."
+      ],
+      [
+        "Be specific",
+        "Name a campaign, an ad or a slogan."
+      ],
+      [
+        "End with a lesson",
+        "One idea you'll use in your career."
+      ]
+    ],
+    "es": [
+      [
+        "Conversacional, pero profesional",
+        "Habla como lo harías con un colega."
+      ],
+      [
+        "Sé específico",
+        "Menciona una campaña, un anuncio o un eslogan."
+      ],
+      [
+        "Termina con una lección",
+        "Una idea que usarás en tu carrera."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Explain in a 2–3 minute video what makes a brand's communication effective and how you can apply that approach in your own professional communication.",
+    "time": "1 hour",
+    "title": "Explaining a Brand You Admire",
+    "body_en": "📹 Video Quiz\n\nTitle: Explaining a Brand You Admire\nTime: 1 hour\n\nTask: Record a 2–3 minute video where you:\n\nName a brand you admire.\n\nExplain what makes their communication effective (tone, consistency, clarity, emotional appeal).\n\nShare one way you can apply that approach in your own professional communication.\n\nTips:\n\nBe specific (mention a campaign, ad, or slogan).\n\nKeep tone conversational but professional.\n\nEnd with one lesson you'll use in your own career.",
+    "body_es": "📹 Cuestionario en Video\n\nTítulo: Explicando una Marca que Admiras\nTiempo: 1 hora\n\nTarea: Graba un video de 2 a 3 minutos donde:\n\nNombres una marca que admiras.\n\nExpliques qué hace que su comunicación sea efectiva (tono, consistencia, claridad, atractivo emocional).\n\nCompartas una forma en que puedes aplicar ese enfoque en tu propia comunicación profesional.\n\nConsejos:\n\nSé específico (menciona una campaña, anuncio o eslogan).\n\nMantén un tono conversacional pero profesional.\n\nTermina con una lección que usarás en tu propia carrera.",
+    "goal_es": "Explicar en un video de 2 a 3 minutos qué hace efectiva la comunicación de una marca y cómo puedes aplicar ese enfoque en tu propia comunicación profesional.",
+    "title_es": "Explicando una Marca que Admiras"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 8,
+  "script_source_lesson_id": "83990641-6035-442e-90e8-9e2fa5011802"
+}

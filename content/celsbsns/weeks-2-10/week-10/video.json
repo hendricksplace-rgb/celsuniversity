@@ -1,0 +1,144 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Interview",
+    "title_b": "Simulation",
+    "chips_en": [
+      "1 hour",
+      "3:00 to 4:00 minutes",
+      "Your video stays with you",
+      "Capstone · Part 10"
+    ],
+    "chips_es": [
+      "1 hora",
+      "3:00 a 4:00 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 10"
+    ],
+    "intro_en": "Record a 3–4 minute interview simulation: introduce yourself with a professional summary, answer one common interview question with the STAR method, and share one long-term career goal. It's your dress rehearsal for the live mock interview.",
+    "intro_es": "Graba una simulación de entrevista de 3 a 4 minutos: preséntate con un resumen profesional, responde una pregunta común de entrevista con el método STAR y comparte un objetivo profesional a largo plazo. Es tu ensayo general para la entrevista simulada en vivo."
+  },
+  "must": [
+    {
+      "en": "A professional summary: who you are and what you do best",
+      "es": "Un resumen profesional: quién eres y qué haces mejor",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "One common interview question answered with STAR",
+      "es": "Una pregunta común de entrevista respondida con STAR",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "One long-term career goal",
+      "es": "Un objetivo profesional a largo plazo",
+      "color": "#1F7A4D"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Dress for a real interview",
+      "es": "Vístete como para una entrevista real",
+      "icon": "shirt",
+      "desc_en": "Wear what you would wear to the real interview.",
+      "desc_es": "Usa lo que te pondrías en la entrevista real."
+    },
+    {
+      "en": "Eye contact with the camera",
+      "es": "Contacto visual con la cámara",
+      "icon": "eye",
+      "desc_en": "Look at the lens, not at your own image.",
+      "desc_es": "Mira al lente, no a tu propia imagen."
+    },
+    {
+      "en": "Confident, professional tone",
+      "es": "Tono seguro y profesional",
+      "icon": "smile",
+      "desc_en": "Calm voice, a real smile, no rushing.",
+      "desc_es": "Voz tranquila, una sonrisa real, sin prisas."
+    },
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways, at eye level.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado, a la altura de tus ojos."
+    },
+    {
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "icon": "mic",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    }
+  ],
+  "week": 10,
+  "seconds": {
+    "max": 240,
+    "min": 180
+  },
+  "delivery": {
+    "en": [
+      [
+        "Clear STAR structure",
+        "Situation and task short; most of the time on your actions."
+      ],
+      [
+        "Interview body language",
+        "Sit up straight, hands relaxed, look at the camera."
+      ],
+      [
+        "Confident pacing",
+        "Pause between the three parts; don't rush the ending."
+      ]
+    ],
+    "es": [
+      [
+        "Estructura STAR clara",
+        "Situación y tarea cortas; la mayor parte del tiempo en tus acciones."
+      ],
+      [
+        "Lenguaje corporal de entrevista",
+        "Siéntate derecho, manos relajadas, mira a la cámara."
+      ],
+      [
+        "Ritmo seguro",
+        "Haz una pausa entre las tres partes; no apresures el final."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record a 3–4 minute video where you introduce yourself with a professional summary, answer one common interview question using the STAR method, and share one long-term career goal.",
+    "time": "1 hour",
+    "title": "Interview Simulation",
+    "body_en": "📹 Video Quiz\n\nTitle: Interview Simulation\nTime: 1 hour\n\nTask: Record a 3–4 minute video where you:\n\nIntroduce yourself with a professional summary.\n\nAnswer one common interview question using the STAR method.\n\nShare one long-term career goal.\n\nTips:\n\nDress as if for a real interview.\n\nMaintain eye contact with the camera.\n\nKeep tone confident and professional.\n\nOptional Challenge:\nUpload your video, then ask ChatGPT (voice mode):\n\"Did I sound clear and confident? Was my answer professional? How can I improve?\"",
+    "body_es": "📹 Cuestionario en Video\n\nTítulo: Simulación de Entrevista\nTiempo: 1 hora\n\nTarea: Graba un video de 3 a 4 minutos donde:\n\nTe presentes con un resumen profesional.\n\nRespondas una pregunta común de entrevista usando el método STAR.\n\nCompartas un objetivo profesional a largo plazo.\n\nConsejos:\n\nVístete como si fuera una entrevista real.\n\nMantén contacto visual con la cámara.\n\nMantén un tono seguro y profesional.\n\nDesafío Opcional:\nSube tu video, luego pregunta a ChatGPT (modo de voz):\n\"Did I sound clear and confident? Was my answer professional? How can I improve?\" (¿Soné claro y seguro? ¿Fue mi respuesta profesional? ¿Cómo puedo mejorar?)",
+    "goal_es": "Graba un video de 3 a 4 minutos donde te presentes con un resumen profesional, respondas una pregunta común de entrevista usando el método STAR y compartas un objetivo profesional a largo plazo.",
+    "title_es": "Simulación de Entrevista"
+  },
+  "auto_stop_s": 270,
+  "capstone_part": 10,
+  "script_source_lesson_id": "6d353a0e-7bb4-4bdd-a5db-56596d3ee785",
+  "ai_challenge": {
+    "intro_en": "Optional challenge: practice your answer out loud with ChatGPT in voice mode, then ask it:",
+    "intro_es": "Desafío opcional: practica tu respuesta en voz alta con ChatGPT en modo de voz y luego pregúntale:",
+    "prompts": [
+      "Did I sound clear and confident? Was my answer professional? How can I improve?"
+    ]
+  }
+}

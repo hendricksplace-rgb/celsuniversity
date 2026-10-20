@@ -10,7 +10,7 @@ import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
 import { fmtTime, grabFrames, jpegBlob, spokenSeconds, thumbPath, type VideoProof, type VideoTaskData } from "@/lib/video-task";
-import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
+import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, iconOr, shell as sh, useLangPref, useScrollSpy, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./video.module.css";
 
 type Props = {
@@ -33,11 +33,20 @@ const UI = {
     step: "PASO",
     s1: "Prepara tu guion",
     s1i: "Tu video debe incluir estas 4 cosas. Empezamos con tu correo de Writing: ajústalo para decirlo en voz alta.",
+    s1in: (n: number) => `Tu video debe incluir estas ${n} cosas. Si ya escribiste tu Writing, empezamos con ese texto: ajústalo para decirlo en voz alta.`,
+    s1is: (n: number) => `Tu video debe incluir estas ${n} cosas. Empieza con la plantilla de abajo y cámbiala con tus palabras.`,
     scrK: "MI GUION",
     scrSrc: "Tomado de tu correo de Writing",
+    scrSrcN: "Tomado de tu Writing",
+    scrStart: "Plantilla para empezar",
+    useStarter: "Usar la plantilla",
+    scrPhN: "Escribe aquí lo que vas a decir, en inglés.",
+    exK: "EJEMPLO",
+    aiK: "RETO OPCIONAL · CHATGPT EN MODO DE VOZ",
+    copied: "Copiado",
     scrPh: "Hi, my name is… and I'm a… on the… team.\n\nEscribe aquí lo que vas a decir. Si ya enviaste tu correo de Writing, aparecerá aquí.",
     tAt: "Al leerlo en voz alta: ",
-    tGoal: "Meta: 1:30 – 2:00",
+    tGoal: (a: string, b: string) => `Meta: ${a} – ${b}`,
     s2: "Prepárate para grabar",
     s2i: "Toca cada consejo cuando lo tengas listo.",
     ready: (a: number, b: number) => `${a} de ${b} listos`,
@@ -88,11 +97,20 @@ const UI = {
     step: "STEP",
     s1: "Prepare your script",
     s1i: "Your video needs these 4 things. We start with your Writing email: adjust it so it sounds natural out loud.",
+    s1in: (n: number) => `Your video needs these ${n} things. If you've written your Writing task, we start with that text: adjust it so it sounds natural out loud.`,
+    s1is: (n: number) => `Your video needs these ${n} things. Start with the template below and change it into your own words.`,
     scrK: "MY SCRIPT",
     scrSrc: "Taken from your Writing email",
+    scrSrcN: "Taken from your Writing",
+    scrStart: "Starter template",
+    useStarter: "Use the template",
+    scrPhN: "Write what you'll say here, in English.",
+    exK: "EXAMPLE",
+    aiK: "OPTIONAL CHALLENGE · CHATGPT VOICE MODE",
+    copied: "Copied",
     scrPh: "Hi, my name is… and I'm a… on the… team.\n\nWrite what you'll say here. If you've sent your Writing email, it will show up here.",
     tAt: "Read out loud: ",
-    tGoal: "Goal: 1:30 – 2:00",
+    tGoal: (a: string, b: string) => `Goal: ${a} – ${b}`,
     s2: "Get ready to record",
     s2i: "Tap each tip when you have it ready.",
     ready: (a: number, b: number) => `${a} of ${b} ready`,
@@ -154,8 +172,12 @@ export function InteractiveVideo(p: Props) {
 
   // ---------- the script: the saved one, else the Writing email; edits persist (row) or stay on this device ----------
   const draftKey = `celsu:video-script:${p.userId}:${p.lessonId}`;
+  // The script starts from: the saved one, else the Writing text, else (week 6) the week's starter template.
+  const starter = data.script_starter?.en ?? null;
   const fromWriting = !p.proof?.script && !!p.writing;
-  const [script, setScript] = useState(p.proof?.script ?? p.writing?.body ?? "");
+  const fromStarter = !p.proof?.script && !p.writing && !!starter;
+  const [script, setScript] = useState(p.proof?.script ?? p.writing?.body ?? starter ?? "");
+  const [copiedAi, setCopiedAi] = useState<number | null>(null);
   const [hasProof, setHasProof] = useState(!!p.proof);
   useEffect(() => {
     if (p.proof?.script) return;
@@ -436,15 +458,27 @@ export function InteractiveVideo(p: Props) {
             {/* ---------- step 1: the script ---------- */}
             <section id="v0" className={sh.step} aria-labelledby="vd-s1">
               <StepHead kicker={`${t.step} 1`} icon="doc" id="vd-s1" title={t.s1} />
-              <p className={sh.intro}>{t.s1i}</p>
-              <ol className={s.must}>
+              <p className={sh.intro}>{data.week === 1 ? t.s1i : fromStarter ? t.s1is(data.must.length) : t.s1in(data.must.length)}</p>
+              <ol className={s.must} style={{ "--n": data.must.length } as React.CSSProperties}>
                 {data.must.map((m, i) => (
                   <li key={i} style={{ "--c": m.color } as React.CSSProperties}>
                     <b aria-hidden>{i + 1}</b>
-                    {m[lang]}
+                    <span>
+                      {m[lang]}
+                      {m.ex && (
+                        <small className={s.mustEx} lang="en">
+                          “{m.ex}”
+                        </small>
+                      )}
+                    </span>
                   </li>
                 ))}
               </ol>
+              {data.example_line && (
+                <p className={s.exLine}>
+                  <b>{t.exK}</b> {data.example_line[lang]}
+                </p>
+              )}
               <div className={`${sh.card} ${s.scr}`}>
                 <div className={s.scrh}>
                   <label htmlFor="vd-script" className={s.scrK}>
@@ -453,11 +487,24 @@ export function InteractiveVideo(p: Props) {
                   {fromWriting && (
                     <span className={s.src}>
                       <Icon name="check" size={15} />
-                      {t.scrSrc}
+                      {data.week === 1 ? t.scrSrc : t.scrSrcN}
                     </span>
                   )}
+                  {fromStarter && (
+                    <span className={s.src}>
+                      <Icon name="doc" size={15} />
+                      {t.scrStart}
+                    </span>
+                  )}
+                  {starter && !fromStarter && script.trim() !== starter.trim() && (
+                    <button type="button" className={s.useStarter} onClick={() => onScript(starter)}>
+                      <Icon name="doc" size={15} />
+                      {t.useStarter}
+                    </button>
+                  )}
                 </div>
-                <textarea id="vd-script" value={script} placeholder={t.scrPh} lang="en" maxLength={6000} onChange={(e) => onScript(e.target.value)} />
+                {starter && data.script_starter && lang === "es" && <p className={s.starterNote}>{data.script_starter.es}</p>}
+                <textarea id="vd-script" value={script} placeholder={data.week === 1 ? t.scrPh : t.scrPhN} lang="en" maxLength={6000} onChange={(e) => onScript(e.target.value)} />
                 <div className={s.time} data-ok={inZone(est) || undefined}>
                   <span className={s.tt2}>
                     {t.tAt}
@@ -467,7 +514,7 @@ export function InteractiveVideo(p: Props) {
                     <span className={s.zone} style={{ left: `${(data.seconds.min / data.auto_stop_s) * 100}%`, width: `${((data.seconds.max - data.seconds.min) / data.auto_stop_s) * 100}%` }} />
                     <i style={{ width: `${Math.min(100, (est / data.auto_stop_s) * 100)}%` }} />
                   </span>
-                  <small>{t.tGoal}</small>
+                  <small>{t.tGoal(fmtTime(data.seconds.min), fmtTime(data.seconds.max))}</small>
                 </div>
               </div>
             </section>
@@ -486,7 +533,7 @@ export function InteractiveVideo(p: Props) {
                       onClick={() => setTips((cur) => (cur.includes(i) ? cur.filter((y) => y !== i) : [...cur, i]))}
                     >
                       <span className={s.ti3}>
-                        <Icon name={x.icon} size={20} />
+                        <Icon name={iconOr(x.icon, "check")} size={20} />
                       </span>
                       <b>{x[lang]}</b>
                       <span>{lang === "es" ? x.desc_es : x.desc_en}</span>
@@ -509,6 +556,32 @@ export function InteractiveVideo(p: Props) {
                   </li>
                 ))}
               </ul>
+              {data.ai_challenge && data.ai_challenge.prompts.length > 0 && (
+                <div className={s.ai}>
+                  <p className={s.aiK}>
+                    <Icon name="spark" size={16} /> {t.aiK}
+                  </p>
+                  <p>{lang === "es" ? data.ai_challenge.intro_es : data.ai_challenge.intro_en}</p>
+                  <div className={s.aiPrompts}>
+                    {data.ai_challenge.prompts.map((pr, j) => (
+                      <button
+                        key={pr}
+                        type="button"
+                        lang="en"
+                        data-ok={copiedAi === j || undefined}
+                        onClick={() => {
+                          void navigator.clipboard?.writeText(pr).catch(() => undefined);
+                          setCopiedAi(j);
+                        }}
+                      >
+                        <Icon name={copiedAi === j ? "check" : "copy"} size={16} />
+                        <span>“{pr}”</span>
+                        {copiedAi === j && <span className={sh.sr}> {t.copied}</span>}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </section>
 
             {/* ---------- step 3: record ---------- */}

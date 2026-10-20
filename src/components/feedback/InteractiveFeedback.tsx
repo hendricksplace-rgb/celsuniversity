@@ -11,7 +11,8 @@ import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { navTitle } from "@/lib/reading";
 import { fmtTime } from "@/lib/video-task";
-import type { Answer, FeedbackData, Reflection, WeekNumbers } from "@/lib/feedback";
+import { actionNote, type Answer, type FeedbackData, type Reflection, type WeekNumbers } from "@/lib/feedback";
+import { writingDone } from "@/lib/writing";
 import { dancing } from "@/components/bsns/fonts";
 import { Icon, Layout, Pager, RailCard, RailSteps, ShellPage, StepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy, type IconName, type Lang, type NavLink } from "@/components/bsns/shell";
 import s from "./feedback.module.css";
@@ -25,6 +26,8 @@ type Props = {
   prev: NavLink;
   nextWeekHref: string | null;
   capstoneHref: string;
+  /** Week 10: where "Next" goes once the course is over (the Capstone page, where the course closes). */
+  courseCloseHref?: string | null;
   numbers: WeekNumbers;
   reflection: Reflection;
   defaultLang: Lang;
@@ -37,13 +40,13 @@ const UI = {
     step: "PASO",
     s1: "Tu semana en números",
     s1i: "Esto es lo que hiciste. La app lo registró por ti.",
-    tiles: { read: "Lectura", write: "Writing", writeS: "Tu correo de presentación", res: "Research", resS: "2 presentaciones reales", vid: "Video", spk: "Speaking", spkS: "3 situaciones", com: "Tu compromiso" },
+    tiles: { read: "Lectura", write: "Writing", writeS: "Tu correo de presentación", res: "Research", resS: "2 presentaciones reales", vid: "Video", spk: "Speaking", spkS: (n: number) => `${n} situaciones`, com: "Tu compromiso" },
     signed: (d: string) => `Firmado el ${d}`,
     notes: "notas",
     phrases: "frases guardadas",
     tries: "intentos",
     words: "palabras",
-    sent: "Con tu coach",
+    fin: "Terminado",
     rev: "Revisado",
     done: "Completado",
     pending: "Pendiente",
@@ -56,12 +59,19 @@ const UI = {
     yn: ["Sí", "Tal vez", "Aún no"],
     s3: "Reflexión",
     s3i: "Escribe en inglés o en español. Lo importante es que lo pienses.",
+    noteOpt: "OPCIONAL",
+    w1K: "SEMANA 1 VS. HOY",
+    w1Conf: (a: number | null, b: number | null) => `Seguridad al hablar: ${a ?? "–"}/10 en la Semana 1 · ${b ?? "–"}/10 hoy`,
+    w1Yes: (a: number, b: number, n: number) => `Respondiste “Sí” a ${a} de ${n} frases en la Semana 1 y a ${b} de ${n} hoy.`,
+    w1None: "Cuando elijas tu número, lo verás junto al de tu Semana 1.",
     confQ: "¿Qué tan seguro te sientes hablando inglés en el trabajo, hoy?",
     confL: ["Nada seguro", "Muy seguro"],
     conf10: "Te lo volveremos a preguntar en la Semana 10 para que veas tu avance.",
     s4: "Lo que sigue",
     weekK: (n: number) => `SEMANA ${n}`,
+    finalK: "CIERRE DEL CURSO",
     goalL: (n: number) => `MI META PARA LA SEMANA ${n}`,
+    goalFinal: "MI META DESPUÉS DEL CURSO",
     goalPh: "Ej.: practicar 10 minutos de speaking cada día",
     focusL: "LO QUE MÁS QUIERO MEJORAR",
     exT: "Práctica extra con un asistente de voz (opcional)",
@@ -70,12 +80,19 @@ const UI = {
     copyAria: (p: string) => `Copiar: ${p}`,
     finish: (n: number) => `Cerrar mi semana ${n}`,
     finishing: "Guardando…",
-    finN: (n: number) => `Responde la autoevaluación (6) y escribe tu meta para la semana ${n}.`,
+    finN: (k: number, n: number | null) => `Responde la autoevaluación (${k}) y escribe tu meta ${n === null ? "después del curso" : `para la semana ${n}`}.`,
     finOk: "¡Listo para cerrar tu semana!",
     doneK: (n: number) => `SEMANA ${n} COMPLETA`,
     doneH: "¡Terminaste tu primera semana!",
     doneHn: (n: number) => `¡Terminaste tu semana ${n}!`,
+    doneHf: "¡Terminaste las 10 semanas!",
     doneP: (n: number) => `Diste el primer paso de tu Capstone y practicaste las 4 habilidades. Tu meta para la semana ${n}:`,
+    donePn: (n: number) => `Avanzaste en tu Capstone y practicaste las 4 habilidades. Tu meta para la semana ${n}:`,
+    donePf: "Practicaste las 4 habilidades durante 10 semanas. Lo que sigue: tu entrevista en vivo y tu certificado. Tu meta:",
+    closeCta: "Ir a mi Capstone",
+    capMissing: (n: number) => `Para cerrar tu semana, completa la Parte ${n} de tu Capstone.`,
+    capOk: (n: number) => `Capstone · Parte ${n} completa`,
+    capGo: (n: number) => `Completar la Parte ${n}`,
     goNext: (n: number) => `Ir a la Semana ${n}`,
     seeCap: "Ver mi Capstone",
     wk: "SEM",
@@ -83,7 +100,9 @@ const UI = {
     rail: "TU AVANCE",
     privH: "SOLO PARA TI",
     privP: "Tus respuestas son privadas. Te las mostraremos otra vez en la Semana 10 para que compares.",
+    privP10: "Tus respuestas son privadas. Solo tú las ves.",
     week: (n: number) => `Semana ${n}`,
+    close: "Cierre del curso",
     err: "No se pudo guardar. Revisa tu conexión.",
     chipsAria: "Detalles",
   },
@@ -93,13 +112,13 @@ const UI = {
     step: "STEP",
     s1: "Your week in numbers",
     s1i: "This is what you did. The app tracked it for you.",
-    tiles: { read: "Reading", write: "Writing", writeS: "Your introduction email", res: "Research", resS: "2 real introductions", vid: "Video", spk: "Speaking", spkS: "3 situations", com: "Your commitment" },
+    tiles: { read: "Reading", write: "Writing", writeS: "Your introduction email", res: "Research", resS: "2 real introductions", vid: "Video", spk: "Speaking", spkS: (n: number) => `${n} situations`, com: "Your commitment" },
     signed: (d: string) => `Signed on ${d}`,
     notes: "notes",
     phrases: "saved phrases",
     tries: "tries",
     words: "words",
-    sent: "With your coach",
+    fin: "Finished",
     rev: "Reviewed",
     done: "Complete",
     pending: "Pending",
@@ -112,12 +131,19 @@ const UI = {
     yn: ["Yes", "Maybe", "Not yet"],
     s3: "Reflection",
     s3i: "Write in English or Spanish. What matters is that you think about it.",
+    noteOpt: "OPTIONAL",
+    w1K: "WEEK 1 VS. TODAY",
+    w1Conf: (a: number | null, b: number | null) => `Confidence speaking: ${a ?? "–"}/10 in Week 1 · ${b ?? "–"}/10 today`,
+    w1Yes: (a: number, b: number, n: number) => `You answered “Yes” to ${a} of ${n} statements in Week 1 and to ${b} of ${n} today.`,
+    w1None: "Once you pick your number, you'll see it next to your Week 1 one.",
     confQ: "How confident do you feel speaking English at work, today?",
     confL: ["Not confident", "Very confident"],
     conf10: "We'll ask again in Week 10 so you can see your progress.",
     s4: "What's next",
     weekK: (n: number) => `WEEK ${n}`,
+    finalK: "COURSE CLOSE",
     goalL: (n: number) => `MY GOAL FOR WEEK ${n}`,
+    goalFinal: "MY GOAL AFTER THE COURSE",
     goalPh: "E.g. practice speaking 10 minutes every day",
     focusL: "WHAT I MOST WANT TO IMPROVE",
     exT: "Extra practice with a voice assistant (optional)",
@@ -126,12 +152,19 @@ const UI = {
     copyAria: (p: string) => `Copy: ${p}`,
     finish: (n: number) => `Close my Week ${n}`,
     finishing: "Saving…",
-    finN: (n: number) => `Answer the self-evaluation (6) and write your goal for Week ${n}.`,
+    finN: (k: number, n: number | null) => `Answer the self-evaluation (${k}) and write your goal ${n === null ? "for after the course" : `for Week ${n}`}.`,
     finOk: "Ready to close your week!",
     doneK: (n: number) => `WEEK ${n} COMPLETE`,
     doneH: "You finished your first week!",
     doneHn: (n: number) => `You finished Week ${n}!`,
+    doneHf: "You finished all 10 weeks!",
     doneP: (n: number) => `You took the first step of your Capstone and practiced all 4 skills. Your goal for Week ${n}:`,
+    donePn: (n: number) => `You moved your Capstone forward and practiced all 4 skills. Your goal for Week ${n}:`,
+    donePf: "You practiced all 4 skills for 10 weeks. What's next: your live interview and your certificate. Your goal:",
+    closeCta: "Go to my Capstone",
+    capMissing: (n: number) => `To close your week, complete Part ${n} of your Capstone.`,
+    capOk: (n: number) => `Capstone · Part ${n} complete`,
+    capGo: (n: number) => `Complete Part ${n}`,
     goNext: (n: number) => `Go to Week ${n}`,
     seeCap: "See my Capstone",
     wk: "WK",
@@ -139,19 +172,24 @@ const UI = {
     rail: "YOUR PROGRESS",
     privH: "JUST FOR YOU",
     privP: "Your answers are private. We'll show them to you again in Week 10 so you can compare.",
+    privP10: "Your answers are private. Only you can see them.",
     week: (n: number) => `Week ${n}`,
+    close: "Course close",
     err: "Couldn't save. Check your connection.",
     chipsAria: "About this page",
   },
 };
 type UIT = (typeof UI)["es"];
 const IDS = ["f0", "f1", "f2", "f3"];
-const Q_COLORS = ["#2C6BC4", "#1F7A4D", "#C98A00"];
+const Q_COLORS = ["#2C6BC4", "#1F7A4D", "#C98A00", "#7A4FD6", "#C2185B", "#007E98"];
 
 export function InteractiveFeedback(p: Props) {
   const { data, numbers: N } = p;
   const [lang, chooseLang] = useLangPref(p.userId, p.defaultLang);
   const t = UI[lang];
+  const final = !!data.next.final;
+  const note = actionNote(data);
+  const nq = data.questions.length;
   const sb = useRef<ReturnType<typeof createClient> | null>(null);
   const db = useCallback(() => (sb.current ??= createClient()), []);
   const [saveError, setSaveError] = useState(false);
@@ -227,7 +265,8 @@ export function InteractiveFeedback(p: Props) {
   };
 
   const evDone = ev.every((x) => x !== null);
-  const canClose = evDone && goal.trim().length > 2;
+  const capDone = N.capstone.done;
+  const canClose = evDone && goal.trim().length > 2 && capDone;
   const [closing, setClosing] = useState(false);
   const doneRef = useRef<HTMLDivElement>(null);
   const close = async () => {
@@ -246,10 +285,13 @@ export function InteractiveFeedback(p: Props) {
   const seen = [current > 0 || !!completedAt, evDone, answers.some((a) => a.trim()) || conf !== null, !!completedAt];
   const progress = completedAt ? 1 : Math.min(0.95, 0.15 + ev.filter((x) => x !== null).length * 0.07 + (goal.trim() ? 0.2 : 0));
   const autoOk = (k: FeedbackData["statements"][number]["auto"]) =>
-    k === "writing" ? N.writing.status === "submitted" || N.writing.status === "reviewed" : k === "video" ? N.video.done : k === "speaking" ? N.speaking.done : false;
+    k === "writing" ? writingDone(N.writing.status) : k === "video" ? N.video.done : k === "speaking" ? N.speaking.done : k === "research" ? N.research.done : false;
   const nextN = data.next.week;
+  const w1 = data.week === 1;
   const fmtDate = (iso: string | null) => (iso && mounted ? new Date(iso).toLocaleDateString(lang === "es" ? "es-MX" : "en-US", { day: "numeric", month: "short" }) : "");
-  const nextLink: NavLink = p.nextWeekHref ? { title: t.week(nextN), href: p.nextWeekHref } : null;
+  // Next: week N+1, or, after week 10, the course close.
+  const nextLink: NavLink = final ? (p.courseCloseHref ? { title: t.close, href: p.courseCloseHref } : null) : p.nextWeekHref ? { title: t.week(nextN), href: p.nextWeekHref } : null;
+  const writingOk = writingDone(N.writing.status);
 
   return (
     <ShellPage lang={lang} className={`${s.root} ${dancing.variable}`}>
@@ -306,25 +348,16 @@ export function InteractiveFeedback(p: Props) {
                   </p>
                   {N.reading.done && <span className={`${s.pill2} ${s.pOk}`}>✓ {t.done}</span>}
                 </Tile>
-                <Tile
-                  icon="mail"
-                  title={t.tiles.write}
-                  sub={t.tiles.writeS}
-                  ok={N.writing.status === "reviewed"}
-                  wait={N.writing.status === "submitted"}
-                  t={t}
-                  href={N.writing.href}
-                >
+                <Tile icon="mail" title={t.tiles.write} sub={w1 || !N.writing.title ? t.tiles.writeS : N.writing.title} ok={writingOk} t={t} href={N.writing.href}>
                   {N.writing.status !== "none" && (
                     <p className={s.big}>
                       {N.writing.words}
                       <span>{t.words}</span>
                     </p>
                   )}
-                  {N.writing.status === "reviewed" && <span className={`${s.pill2} ${s.pOk}`}>✓ {t.rev}</span>}
-                  {N.writing.status === "submitted" && <span className={`${s.pill2} ${s.pWait}`}>{t.sent}</span>}
+                  {writingOk && <span className={`${s.pill2} ${s.pOk}`}>✓ {N.writing.status === "reviewed" ? t.rev : t.fin}</span>}
                 </Tile>
-                <Tile icon="search" title={t.tiles.res} sub={t.tiles.resS} ok={N.research.done} t={t} href={N.research.href}>
+                <Tile icon="search" title={t.tiles.res} sub={w1 || !N.research.title ? t.tiles.resS : N.research.title} ok={N.research.done} t={t} href={N.research.href}>
                   <p className={s.big}>
                     {N.research.phrases}
                     <span>{t.phrases}</span>
@@ -342,7 +375,7 @@ export function InteractiveFeedback(p: Props) {
                     </div>
                   )}
                 </Tile>
-                <Tile icon="mic" title={t.tiles.spk} sub={t.tiles.spkS} ok={N.speaking.done} t={t} href={N.speaking.href}>
+                <Tile icon="mic" title={t.tiles.spk} sub={t.tiles.spkS(N.speaking.situations)} ok={N.speaking.done} t={t} href={N.speaking.href}>
                   <p className={s.big}>
                     {N.speaking.tries}
                     <span>{t.tries}</span>
@@ -424,6 +457,7 @@ export function InteractiveFeedback(p: Props) {
             <section id="f2" className={sh.step} aria-labelledby="fb-s3">
               <StepHead kicker={`${t.step} 3`} icon="pen" id="fb-s3" title={t.s3} />
               <p className={sh.intro}>{t.s3i}</p>
+              {data.answer_hint && <p className={`${sh.intro} ${s.hint}`}>{data.answer_hint[lang]}</p>}
               <div className={sh.card}>
                 {data.questions.map((q, i) => (
                   <div key={i} className={s.grp}>
@@ -446,6 +480,41 @@ export function InteractiveFeedback(p: Props) {
                     />
                   </div>
                 ))}
+                {note && (
+                  <div className={`${s.grp} ${s.note}`}>
+                    <label htmlFor="fb-note">
+                      <i style={{ "--c": "#C98A00" } as React.CSSProperties} aria-hidden>
+                        <Icon name="pen" size={14} />
+                      </i>
+                      <span>
+                        <b>{note.title[lang]}</b> <span className={s.optB}>{t.noteOpt}</span>
+                        <br />
+                        {note.prompt[lang]}
+                      </span>
+                    </label>
+                    {note.examples.length > 0 && (
+                      <ul className={s.noteEx}>
+                        {note.examples.map((x) => (
+                          <li key={x.en}>
+                            <span lang="en">“{x.en}”</span>
+                            {lang === "es" && x.es && x.es !== x.en && <small>{x.es}</small>}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    <textarea
+                      id="fb-note"
+                      className={s.inp}
+                      value={answers[nq] ?? ""}
+                      maxLength={2000}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setAnswers((cur) => cur.map((x, k) => (k === nq ? v : x)));
+                        schedule();
+                      }}
+                    />
+                  </div>
+                )}
                 <div className={s.conf} role="group" aria-labelledby="fb-conf">
                   <p id="fb-conf">{t.confQ}</p>
                   <div className={s.scale}>
@@ -468,9 +537,19 @@ export function InteractiveFeedback(p: Props) {
                     <span>{t.confL[0]}</span>
                     <span>{t.confL[1]}</span>
                   </p>
-                  <p className={s.w10}>
-                    <Icon name="flag" size={14} /> {t.conf10}
-                  </p>
+                  {N.week1 ? (
+                    <div className={s.w1cmp}>
+                      <p className={s.w1K}>{t.w1K}</p>
+                      <p>{conf === null && N.week1.confidence === null ? t.w1None : t.w1Conf(N.week1.confidence, conf)}</p>
+                      {N.week1.yes !== null && evDone && <p>{t.w1Yes(N.week1.yes, ev.filter((x) => x === 0).length, N.week1.of)}</p>}
+                    </div>
+                  ) : (
+                    data.week < 10 && (
+                      <p className={s.w10}>
+                        <Icon name="flag" size={14} /> {t.conf10}
+                      </p>
+                    )
+                  )}
                 </div>
               </div>
             </section>
@@ -487,15 +566,15 @@ export function InteractiveFeedback(p: Props) {
                       </svg>
                     </span>
                     <p className={s.doneK}>{t.doneK(data.week)}</p>
-                    <h3 className={s.doneH}>{data.week === 1 ? t.doneH : t.doneHn(data.week)}</h3>
+                    <h3 className={s.doneH}>{final ? t.doneHf : data.week === 1 ? t.doneH : t.doneHn(data.week)}</h3>
                     <p className={s.doneP}>
-                      {t.doneP(nextN)} <strong>“{goal}”</strong>
+                      {final ? t.donePf : w1 ? t.doneP(nextN) : t.donePn(nextN)} <strong>“{goal}”</strong>
                     </p>
                     <ol className={s.route} aria-label={t.routeAria} style={{ "--done": `${((data.week - 0.5) / 10) * 90}%` } as React.CSSProperties}>
                       {Array.from({ length: 10 }, (_, k) => {
-                        const kind = k + 1 <= data.week ? "d" : k + 1 === nextN ? "n" : k === 9 ? "c" : undefined;
+                        const kind = k + 1 <= data.week ? "d" : k + 1 === nextN && !final ? "n" : k === 9 ? "c" : undefined;
                         return (
-                          <li key={k} data-k={kind} aria-current={k + 1 === nextN ? "step" : undefined}>
+                          <li key={k} data-k={kind} aria-current={k + 1 === nextN && !final ? "step" : undefined}>
                             <i aria-hidden>{kind === "d" ? "✓" : k === 9 ? "★" : k + 1}</i>
                             <span>
                               {t.wk} {k + 1}
@@ -504,8 +583,9 @@ export function InteractiveFeedback(p: Props) {
                         );
                       })}
                     </ol>
+                    {final && <NextCard data={data} lang={lang} t={t} final />}
                     <div className={s.acts}>
-                      {p.nextWeekHref && (
+                      {!final && p.nextWeekHref && (
                         <Link href={p.nextWeekHref} className={s.btnP}>
                           {t.goNext(nextN)}
                           <Icon name="next" size={18} />
@@ -520,25 +600,10 @@ export function InteractiveFeedback(p: Props) {
                 ) : (
                   <>
                     <div className={s.next2}>
-                      <div className={s.w2}>
-                        <p className={s.w2k}>{t.weekK(nextN)}</p>
-                        <h3 lang="en">{data.next.title}</h3>
-                        <ul>
-                          {data.next.bullets[lang].map((b) => (
-                            <li key={b}>
-                              <Icon name="check" size={17} />
-                              <span>{b}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <p className={s.cap}>
-                          <Icon name="trophy" size={17} />
-                          {data.next.capstone[lang]}
-                        </p>
-                      </div>
+                      <NextCard data={data} lang={lang} t={t} final={final} />
                       <div>
                         <label htmlFor="fb-goal" className={s.lab}>
-                          {t.goalL(nextN)}
+                          {final ? t.goalFinal : t.goalL(nextN)}
                         </label>
                         <input
                           id="fb-goal"
@@ -623,12 +688,26 @@ export function InteractiveFeedback(p: Props) {
                         </ol>
                       )}
                     </div>
+                    <div className={s.capLine} data-ok={capDone || undefined}>
+                      <span className={s.capI}>
+                        <Icon name={capDone ? "check" : "trophy"} size={18} />
+                      </span>
+                      <p>{capDone ? t.capOk(N.capstone.part) : t.capMissing(N.capstone.part)}</p>
+                      {!capDone && (
+                        <Link href={`${p.capstoneHref}#p${N.capstone.part}`} className={s.btnO}>
+                          <Icon name="trophy" size={17} />
+                          {t.capGo(N.capstone.part)}
+                        </Link>
+                      )}
+                    </div>
                     <div className={s.finish}>
                       <button type="button" className={s.btnP} disabled={!canClose || closing} onClick={() => void close()}>
                         <Icon name="flag" size={18} />
                         {closing ? t.finishing : t.finish(data.week)}
                       </button>
-                      <p aria-live="polite">{canClose ? t.finOk : t.finN(nextN)}</p>
+                      <p aria-live="polite">
+                        {canClose ? t.finOk : evDone && goal.trim().length > 2 ? t.capMissing(N.capstone.part) : t.finN(data.statements.length, final ? null : nextN)}
+                      </p>
                     </div>
                   </>
                 )}
@@ -649,12 +728,36 @@ export function InteractiveFeedback(p: Props) {
               <RailSteps steps={t.steps} current={current} done={(i) => seen[i]} onGo={(i) => goTo(IDS[i])} />
             </RailCard>
             <RailCard title={t.privH}>
-              <p className={s.privP}>{t.privP}</p>
+              <p className={s.privP}>{data.week >= 10 ? t.privP10 : t.privP}</p>
             </RailCard>
           </>
         }
       />
     </ShellPage>
+  );
+}
+
+/** The next week's preview, or (week 10, `next.final`) the course close: the live mock interview and the certificate. */
+function NextCard({ data, lang, t, final }: { data: FeedbackData; lang: Lang; t: UIT; final: boolean }) {
+  return (
+    <div className={s.w2} data-final={final || undefined}>
+      <p className={s.w2k}>
+        {final && <Icon name="trophy" size={14} />} {final ? t.finalK : t.weekK(data.next.week)}
+      </p>
+      <h3 lang="en">{data.next.title}</h3>
+      <ul>
+        {data.next.bullets[lang].map((b) => (
+          <li key={b}>
+            <Icon name="check" size={17} />
+            <span>{b}</span>
+          </li>
+        ))}
+      </ul>
+      <p className={s.cap}>
+        <Icon name="trophy" size={17} />
+        {data.next.capstone[lang]}
+      </p>
+    </div>
   );
 }
 

@@ -1,4 +1,5 @@
-// CelsBSNS: a week is videos plus tasks a coach reviews (celsu-celsbook-us-bsns-spec.md §3).
+// CelsBSNS: a week is videos plus tasks (celsu-celsbook-us-bsns-spec.md §3). Since 2026-10-19 no task goes to a
+// coach; 'submitted' / 'reviewed' are older Writing rows.
 import type { Part } from "@/lib/course-page";
 
 /** Tasks the student answers on the task screen and hands to the coach. */
@@ -31,6 +32,8 @@ export function taskStatus(p: Part, sub: SubmissionRow | undefined): TaskStatus 
   if (p.type && SUBMISSION_TYPES.has(p.type)) {
     if (sub?.status === "reviewed") return "reviewed";
     if (sub?.status === "submitted") return "submitted";
+    // Writing saved as finished (no coach), or a Research / Video / Speaking lesson completed on its own page.
+    if (sub?.status === "finished" || p.done) return "done";
     return sub || p.started ? "progress" : "pending";
   }
   if (p.done) return "done";

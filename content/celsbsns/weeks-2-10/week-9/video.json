@@ -1,0 +1,150 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Explaining a",
+    "title_b": "Project Lifecycle",
+    "chips_en": [
+      "1 hour",
+      "2:00 to 3:00 minutes",
+      "Your video stays with you",
+      "Capstone · Part 9"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2:00 a 3:00 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 9"
+    ],
+    "intro_en": "Record yourself explaining the five stages of a project, with a real example from your experience. Use your Writing plan as a base and practice the words scope, milestone and deliverable.",
+    "intro_es": "Grábate explicando las cinco etapas de un proyecto, con un ejemplo real de tu experiencia. Usa tu plan de Writing como base y practica las palabras scope, milestone y deliverable."
+  },
+  "must": [
+    {
+      "en": "The five stages: initiation, planning, execution, monitoring, closing",
+      "es": "Las cinco etapas: inicio, planificación, ejecución, monitoreo, cierre",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "One example of a project you've been part of",
+      "es": "Un ejemplo de un proyecto en el que participaste",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "How project management helped, or could have helped, make it more successful",
+      "es": "Cómo la gestión de proyectos ayudó, o pudo haber ayudado, a que saliera mejor",
+      "color": "#1F7A4D"
+    },
+    {
+      "en": "The stage of project management you enjoy most",
+      "es": "La etapa de la gestión de proyectos que más disfrutas",
+      "color": "#C98A00"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "icon": "mic",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "It doesn't need to be formal.",
+      "desc_es": "No tiene que ser formal."
+    },
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "Count the five stages on your fingers if it helps.",
+      "desc_es": "Cuenta las cinco etapas con los dedos si te ayuda."
+    },
+    {
+      "en": "End with energy",
+      "es": "Termina con energía",
+      "icon": "smile",
+      "desc_en": "Smile when you say which stage you enjoy most.",
+      "desc_es": "Sonríe cuando digas qué etapa disfrutas más."
+    }
+  ],
+  "week": 9,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Clear structure",
+        "First, next, then, after that, finally."
+      ],
+      [
+        "Workplace vocabulary",
+        "Scope, milestone, deliverable."
+      ],
+      [
+        "Calm pacing",
+        "Pause between the five stages."
+      ]
+    ],
+    "es": [
+      [
+        "Estructura clara",
+        "First, next, then, after that, finally."
+      ],
+      [
+        "Vocabulario de trabajo",
+        "Scope, milestone, deliverable."
+      ],
+      [
+        "Ritmo tranquilo",
+        "Haz una pausa entre las cinco etapas."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record a 2–3 minute video explaining the five stages of a project lifecycle, with an example from your own experience.",
+    "time": "1 hour",
+    "title": "Explaining a Project Lifecycle",
+    "body_en": "📹 Video Quiz\n\nTitle: Explaining a Project Lifecycle\nTime: 1 hour\n\nTask: Record a 2–3 minute video where you:\n\nExplain the five stages of a project lifecycle (initiation, planning, execution, monitoring, closing).\n\nShare one example of a project you've been part of.\n\nDescribe how project management helped—or could have helped—make it more successful.\n\nTips:\n\nKeep explanations clear and structured.\n\nUse workplace vocabulary (scope, milestone, deliverable).\n\nEnd by stating what stage of project management you enjoy most.\n\nOptional Challenge:\nUse ChatGPT voice mode to explain your project lifecycle, then ask: \"Was my explanation clear? How could I sound more professional?\"",
+    "body_es": "📹 Video Quiz\n\nTítulo: Explicando el Ciclo de Vida de un Proyecto\nTiempo: 1 hora\n\nTarea: Graba un video de 2 a 3 minutos donde:\n\nExpliques las cinco etapas de un ciclo de vida de un proyecto (inicio, planificación, ejecución, monitoreo, cierre).\n\nCompartas un ejemplo de un proyecto en el que hayas participado.\n\nDescribas cómo la gestión de proyectos ayudó, o podría haber ayudado, a hacerlo más exitoso.\n\nConsejos:\n\nMantén las explicaciones claras y estructuradas.\n\nUsa vocabulario del lugar de trabajo (alcance, hito, entregable).\n\nTermina diciendo qué etapa de la gestión de proyectos disfrutas más.\n\nDesafío Opcional:\nUsa el modo de voz de ChatGPT para explicar tu ciclo de vida del proyecto, luego pregunta: \"Was my explanation clear? How could I sound more professional?\" (¿Fue clara mi explicación? ¿Cómo podría sonar más profesional?)",
+    "goal_es": "Grabar un video de 2 a 3 minutos explicando las cinco etapas del ciclo de vida de un proyecto, con un ejemplo de tu propia experiencia.",
+    "title_es": "Explicando el Ciclo de Vida de un Proyecto"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 9,
+  "script_source_lesson_id": "7f0e80c7-0b18-444d-8ce6-6b27f06accc9",
+  "ai_challenge": {
+    "intro_en": "Optional challenge: use ChatGPT voice mode to explain your project lifecycle, then ask:",
+    "intro_es": "Desafío opcional: usa el modo de voz de ChatGPT para explicar tu ciclo de vida del proyecto y luego pregunta:",
+    "prompts": [
+      "Was my explanation clear?",
+      "How could I sound more professional?"
+    ]
+  }
+}

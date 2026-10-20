@@ -1,0 +1,297 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try, so you can compare it with your Week 1 introductions.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares con tus presentaciones de la Semana 1."
+    },
+    "title_a": "Interview",
+    "title_b": "Roleplay",
+    "chips_en": [
+      "2 hours",
+      "3 interview questions",
+      "9 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 preguntas de entrevista",
+      "9 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Practice the three questions almost every U.S. interview includes. A partner (or ChatGPT) plays the interviewer. Answer out loud, see what you said, and repeat until it sounds concise and confident.",
+    "intro_es": "Practica las tres preguntas que aparecen en casi todas las entrevistas en EE. UU. Un compañero (o ChatGPT) hace de entrevistador. Responde en voz alta, mira lo que dijiste y repite hasta que suene conciso y seguro."
+  },
+  "week": 10,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Were my answers concise?",
+        "Did I sound confident?",
+        "Did I connect my goals to the company?"
+      ],
+      "es": [
+        "¿Mis respuestas fueron concisas?",
+        "¿Soné seguro?",
+        "¿Conecté mis metas con la empresa?"
+      ]
+    }
+  },
+  "max_s": 120,
+  "rules": [
+    {
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta",
+      "d_en": "Each question several times, until it flows.",
+      "d_es": "Cada pregunta varias veces, hasta que fluya."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "people",
+      "t_en": "A partner as interviewer",
+      "t_es": "Un compañero como entrevistador",
+      "d_en": "A friend, family member, or ChatGPT in voice mode.",
+      "d_es": "Un amigo, un familiar o ChatGPT en modo de voz."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 10.",
+      "d_es": "Las palabras de la Semana 10."
+    }
+  ],
+  "original": {
+    "goal": "Practice answering common interview questions with a partner playing the interviewer, and make your responses more concise and confident.",
+    "time": "2 hours",
+    "title": "Interview Roleplay",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Interview Roleplay\nTime: 2 hours\n\nDon't forget that ChatGPT is an invaluable resource in this area. Use it!\n\nActivity 1 – Tell Me About Yourself\nPartner plays interviewer. You answer in 90 seconds, highlighting strengths.\n\nActivity 2 – Weakness Question\nPartner asks: \"What's your biggest weakness?\" You practice giving an honest but positive answer.\n\nActivity 3 – Career Growth Discussion\nPartner asks: \"Where do you see yourself in 5 years?\" You connect goals to company success.\n\nReflection:\nWhich question was hardest to answer? How can you make your responses more concise and confident?",
+    "body_es": "🤝 Práctica de Conversación\n\nTítulo: Juego de Roles de Entrevista\nTiempo: 2 horas\n\nNo olvides que ChatGPT es un recurso invaluable en esta área. ¡Úsalo!\n\nActividad 1 – Háblame de Ti\nTu compañero hace de entrevistador. Respondes en 90 segundos, destacando tus fortalezas.\n\nActividad 2 – Pregunta de Debilidades\nTu compañero pregunta: \"What's your biggest weakness?\" (¿Cuál es tu mayor debilidad?) Practicas dando una respuesta honesta pero positiva.\n\nActividad 3 – Discusión sobre Crecimiento Profesional\nTu compañero pregunta: \"Where do you see yourself in 5 years?\" (¿Dónde te ves en 5 años?) Conectas tus metas con el éxito de la empresa.\n\nReflexión:\n¿Cuál pregunta fue la más difícil de responder? ¿Cómo puedes hacer tus respuestas más concisas y seguras?",
+    "goal_es": "Practicar respuestas a preguntas comunes de entrevista con un compañero como entrevistador, y hacer tus respuestas más concisas y seguras.",
+    "title_es": "Juego de Roles de Entrevista"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Answer in 90 seconds, highlighting your strengths. Practice 3 times and make it tighter each time.",
+        "es": "Responde en 90 segundos, destacando tus fortalezas. Practica 3 veces y hazlo más preciso cada vez."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Job Interview",
+          "es": "Zoom · Entrevista de trabajo"
+        },
+        "kind": "zoom",
+        "line": "Thanks for joining us today. So, tell me about yourself.",
+        "meta": {
+          "en": "90 s",
+          "es": "90 s"
+        },
+        "tile": {
+          "name": "Rachel · Hiring Manager",
+          "initials": "RM"
+        },
+        "speaker": {
+          "en": "RACHEL · HIRING MANAGER",
+          "es": "RACHEL · GERENTE DE CONTRATACIÓN"
+        }
+      },
+      "title": {
+        "en": "Tell Me About Yourself",
+        "es": "Háblame de ti"
+      },
+      "points": {
+        "en": [
+          "Who you are and your professional focus",
+          "Two or three strengths, with an example or a number",
+          "Why you're interested in this role"
+        ],
+        "es": [
+          "Quién eres y tu enfoque profesional",
+          "Dos o tres fortalezas, con un ejemplo o un número",
+          "Por qué te interesa este puesto"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: your full answer",
+          "Try 2: a stronger first sentence",
+          "Try 3: your best version, under 90 s"
+        ],
+        "es": [
+          "Intento 1: tu respuesta completa",
+          "Intento 2: una primera oración más fuerte",
+          "Intento 3: tu mejor versión, en menos de 90 s"
+        ]
+      },
+      "limit_s": [
+        60,
+        90
+      ],
+      "situation": {
+        "en": "Your partner plays the interviewer and opens with the classic first question. You have 90 seconds to answer, highlighting your strengths.",
+        "es": "Tu compañero hace de entrevistador y empieza con la primera pregunta clásica. Tienes 90 segundos para responder, destacando tus fortalezas."
+      }
+    },
+    {
+      "how": {
+        "en": "Give an honest but positive answer. Practice with your partner, then make it shorter and more confident.",
+        "es": "Da una respuesta honesta pero positiva. Practica con tu compañero y luego hazla más corta y segura."
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Interview · Panel",
+          "es": "Entrevista · Panel"
+        },
+        "kind": "meeting",
+        "line": "What's your biggest weakness?",
+        "meta": {
+          "en": "3 interviewers",
+          "es": "3 entrevistadores"
+        },
+        "speaker": {
+          "en": "DAVID · TEAM LEAD",
+          "es": "DAVID · LÍDER DE EQUIPO"
+        }
+      },
+      "title": {
+        "en": "The Weakness Question",
+        "es": "La pregunta de debilidades"
+      },
+      "points": {
+        "en": [
+          "A real weakness (not a strength in disguise)",
+          "What you are doing to improve it",
+          "The progress you've made so far"
+        ],
+        "es": [
+          "Una debilidad real (no una fortaleza disfrazada)",
+          "Qué estás haciendo para mejorarla",
+          "El avance que llevas hasta ahora"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: with your partner as interviewer",
+          "Try 2: more honest, less defensive",
+          "Try 3: your best version, positive ending"
+        ],
+        "es": [
+          "Intento 1: con tu compañero como entrevistador",
+          "Intento 2: más honesto, menos a la defensiva",
+          "Intento 3: tu mejor versión, con final positivo"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "In a panel interview, one of the interviewers asks: “What's your biggest weakness?” You want to be honest without hurting your chances.",
+        "es": "En una entrevista de panel, uno de los entrevistadores pregunta: “What's your biggest weakness?” Quieres ser honesto sin afectar tus posibilidades."
+      }
+    },
+    {
+      "how": {
+        "en": "Connect your goals to the company's success. Practice 3 times, using ideas from your Writing statement.",
+        "es": "Conecta tus metas con el éxito de la empresa. Practica 3 veces, usando ideas de tu declaración de Writing."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Final Interview",
+          "es": "Zoom · Entrevista final"
+        },
+        "kind": "zoom",
+        "line": "Where do you see yourself in 5 years?",
+        "meta": {
+          "en": "45–75 s",
+          "es": "45–75 s"
+        },
+        "tile": {
+          "name": "Rachel · Hiring Manager",
+          "initials": "RM"
+        },
+        "speaker": {
+          "en": "RACHEL · HIRING MANAGER",
+          "es": "RACHEL · GERENTE DE CONTRATACIÓN"
+        }
+      },
+      "title": {
+        "en": "Career Growth Discussion",
+        "es": "Conversación sobre crecimiento profesional"
+      },
+      "points": {
+        "en": [
+          "Where you see yourself in 5 years",
+          "How you plan to grow (skills, learning)",
+          "How your growth helps the company succeed"
+        ],
+        "es": [
+          "Dónde te ves en 5 años",
+          "Cómo planeas crecer (habilidades, aprendizaje)",
+          "Cómo tu crecimiento ayuda a que la empresa tenga éxito"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: from your Writing statement",
+          "Try 2: without reading",
+          "Try 3: your best version, more concise"
+        ],
+        "es": [
+          "Intento 1: a partir de tu declaración de Writing",
+          "Intento 2: sin leer",
+          "Intento 3: tu mejor versión, más concisa"
+        ]
+      },
+      "limit_s": [
+        45,
+        75
+      ],
+      "situation": {
+        "en": "Near the end of the interview, the hiring manager asks about your future. You want to show ambition and a real connection to the company.",
+        "es": "Cerca del final de la entrevista, la gerente de contratación te pregunta por tu futuro. Quieres mostrar ambición y una conexión real con la empresa."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "a55cb3db-820c-41d2-9451-110bae1c8399",
+  "reflection": {
+    "en": [
+      "Which question was hardest to answer?",
+      "How can you make your responses more concise and confident?"
+    ],
+    "es": [
+      "¿Cuál pregunta fue la más difícil de responder?",
+      "¿Cómo puedes hacer tus respuestas más concisas y seguras?"
+    ]
+  }
+}

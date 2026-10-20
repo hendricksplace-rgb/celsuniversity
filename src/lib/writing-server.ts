@@ -1,6 +1,7 @@
 import "server-only";
 import type { createClient } from "@/lib/supabase/server";
 import { emailToBackground } from "@/lib/capstone";
+import { writingFieldKey } from "@/lib/writing-capstone";
 import { type HistoryEntry, type SubmissionStatus, type WritingData, type WritingSubmission } from "@/lib/writing";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -48,7 +49,13 @@ export async function loadWriting(supabase: Client, userId: string, lessonId: st
   return {
     data,
     sub,
-    capstoneSaved: !!(sub && cap && sub.status === "reviewed" && cap.source_submission_id === sub.id && (cap.fields as Record<string, unknown> | null)?.bg === emailToBackground(sub.body)),
+    capstoneSaved: !!(
+      sub &&
+      cap &&
+      sub.status !== "draft" &&
+      cap.source_submission_id === sub.id &&
+      (cap.fields as Record<string, unknown> | null)?.[writingFieldKey(data.capstone_part)] === emailToBackground(sub.body)
+    ),
     coachName: list.find((p) => p.member_role === "teacher" && p.display_name)?.display_name ?? null,
     myPhrases: [...new Set((bank ?? []).map((b) => b.text))],
     reviewerName: sub?.reviewed_by ? (list.find((p) => p.user_id === sub.reviewed_by && p.display_name)?.display_name ?? null) : null,

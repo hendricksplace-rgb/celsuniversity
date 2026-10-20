@@ -1,0 +1,58 @@
+{
+  "part": 5,
+  "week": 5,
+  "title_es": "¿Dónde encajas? Rol ideal y habilidades",
+  "title_en": "Where do you fit? Ideal role and skills",
+  "preview_es": [
+    "Tu rol y departamento ideal",
+    "Tus 5 habilidades principales",
+    "Dónde estarías en el organigrama de una empresa"
+  ],
+  "preview_en": [
+    "Your ideal role and department",
+    "Your top 5 skills",
+    "Where you'd be on a company's org chart"
+  ],
+  "fields": [
+    {
+      "k": "role",
+      "label_es": "Tu rol y departamento ideal",
+      "label_en": "Your ideal role and department",
+      "hint_es": "El puesto y el departamento, en inglés. Ej.: Logistics Coordinator · Operations",
+      "hint_en": "The job title and department. E.g. Logistics Coordinator · Operations",
+      "type": "input",
+      "min": 10,
+      "fill_from": null
+    },
+    {
+      "k": "skills",
+      "label_es": "Tus 5 habilidades principales",
+      "label_en": "Your top 5 skills",
+      "hint_es": "Cinco habilidades en inglés, separadas por comas, que encajen con ese rol.",
+      "hint_en": "Five skills, separated by commas, that fit that role.",
+      "type": "textarea",
+      "min": 40,
+      "fill_from": null
+    },
+    {
+      "k": "orgplace",
+      "label_es": "Dónde estarías en el organigrama",
+      "label_en": "Where you'd be on the org chart",
+      "hint_es": "2–3 oraciones en inglés: el tipo de estructura, a quién le reportarías y si tendrías personas a tu cargo. Usa tu Research y tu video como base.",
+      "hint_en": "2–3 sentences: the type of structure, who you would report to, and whether you'd have direct reports. Use your Research and your video as a base.",
+      "type": "textarea",
+      "min": 100,
+      "fill_from": null
+    },
+    {
+      "k": "connect",
+      "label_es": "Cómo se conecta tu rol con otros departamentos",
+      "label_en": "How your role connects with other departments",
+      "hint_es": "Tu mejor intento de Speaking (actividad 2) ya está aquí. Mejóralo si quieres.",
+      "hint_en": "Your best Speaking try (Activity 2) is already here. Improve it if you want.",
+      "type": "textarea",
+      "min": 80,
+      "fill_from": "speaking"
+    }
+  ]
+}

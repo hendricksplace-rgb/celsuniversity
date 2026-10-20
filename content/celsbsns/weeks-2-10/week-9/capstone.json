@@ -1,0 +1,56 @@
+{
+  "part": 9,
+  "week": 9,
+  "title_es": "Tu estilo personal de organización",
+  "title_en": "Your personal organization style",
+  "preview_es": [
+    "Las herramientas que usas para organizarte",
+    "Cómo planearías un proyecto de 2 semanas"
+  ],
+  "preview_en": [
+    "The tools you use to stay organized",
+    "How you would plan a 2-week project"
+  ],
+  "fields": [
+    {
+      "k": "tools",
+      "type": "textarea",
+      "min": 80,
+      "fill_from": "research",
+      "label_es": "Las herramientas que usas para organizarte",
+      "label_en": "The tools you use to stay organized",
+      "hint_es": "Nombra 1 o 2 herramientas (por ejemplo, Trello, Asana, un calendario o una libreta) y para qué usas cada una. Escríbelo en inglés.",
+      "hint_en": "Name 1 or 2 tools (for example, Trello, Asana, a calendar or a notebook) and what you use each one for."
+    },
+    {
+      "k": "habit",
+      "type": "input",
+      "min": 30,
+      "fill_from": null,
+      "label_es": "Tu hábito de productividad",
+      "label_en": "Your productivity habit",
+      "hint_es": "Una oración en inglés. Ejemplo: “I plan my top three tasks each morning before starting work.”",
+      "hint_en": "One sentence. Example: “I plan my top three tasks each morning before starting work.”"
+    },
+    {
+      "k": "plan",
+      "type": "textarea",
+      "min": 200,
+      "fill_from": "writing",
+      "label_es": "Cómo planearías un proyecto de 2 semanas",
+      "label_en": "How you would plan a 2-week project",
+      "hint_es": "Incluye el alcance, al menos 3 hitos con fecha, los recursos y los entregables. Puedes partir de tu plan de mudanza de Writing.",
+      "hint_en": "Include the scope, at least 3 milestones with dates, the resources and the deliverables. You can start from your office-move plan in Writing."
+    },
+    {
+      "k": "stage",
+      "type": "textarea",
+      "min": 60,
+      "fill_from": "video",
+      "label_es": "La etapa del proyecto que más disfrutas y por qué",
+      "label_en": "The project stage you enjoy most, and why",
+      "hint_es": "Inicio, planificación, ejecución, monitoreo o cierre. Una o dos oraciones en inglés, como al final de tu video.",
+      "hint_en": "Initiation, planning, execution, monitoring or closing. One or two sentences, like the end of your video."
+    }
+  ]
+}

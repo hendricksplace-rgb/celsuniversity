@@ -1,0 +1,161 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "This page is just for you.",
+      "es": "Esta página es solo para ti."
+    },
+    "priv_p": {
+      "en": "Nobody grades it. It's your moment to look back at ten weeks, see how far you've come, and get ready for your mock interview.",
+      "es": "Nadie la califica. Es tu momento para mirar atrás estas diez semanas, ver cuánto has avanzado y prepararte para tu entrevista simulada."
+    },
+    "title_a": {
+      "en": "Your Week 10",
+      "es": "Tu semana 10"
+    },
+    "title_b": {
+      "en": "and your 10-week journey",
+      "es": "y tu camino de 10 semanas"
+    },
+    "chips_en": [
+      "1 hour",
+      "Final reflection",
+      "Only you see it"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Reflexión final",
+      "Solo tú lo ves"
+    ],
+    "intro_en": "This is the last stop before your live mock interview. Check your progress, reflect on your career journey, and write one commitment for your future.",
+    "intro_es": "Esta es la última parada antes de tu entrevista simulada en vivo. Revisa tu avance, reflexiona sobre tu trayectoria profesional y escribe un compromiso para tu futuro."
+  },
+  "next": {
+    "week": 10,
+    "final": true,
+    "title": "Your Live Mock Interview & Certificate",
+    "bullets": {
+      "en": [
+        "Your 50-minute live one-on-one mock interview",
+        "Present your complete Capstone profile and final resume",
+        "Earn your CelsUniversity Certificate of Completion"
+      ],
+      "es": [
+        "Tu entrevista simulada en vivo, uno a uno, de 50 minutos",
+        "Presenta tu perfil Capstone completo y tu currículum final",
+        "Obtén tu Certificado de Finalización de CelsUniversity"
+      ]
+    },
+    "capstone": {
+      "en": "Capstone · All 10 parts: your complete professional profile",
+      "es": "Capstone · Las 10 partes: tu perfil profesional completo"
+    }
+  },
+  "week": 10,
+  "original": {
+    "goal": "Final Capstone & Career Reflection: check your interview readiness, reflect on the course, and write a one-sentence commitment.",
+    "time": "1 hour",
+    "title": "Final Capstone & Career Reflection",
+    "body_en": "📈 Feedback & Progress\n\nYOUR NEXT STEPS:\n\nTitle: Final Capstone & Career Reflection\nTime: 1 hour\n\nStep 1 – Self-Check\n\nI can answer common U.S. interview questions with confidence.\n\nI practiced using the STAR method.\n\nI explained my career goals clearly.\n\nI roleplayed interview scenarios.\n\nI prepared my Capstone for submission.\n\nStep 2 – Reflection Questions\n\nWhich interview skill do you feel most confident in now?\n\nWhat's one area you will continue to practice before your mock interview?\n\nHow will you apply the skills from this 10-week course to your career journey?\n\nStep 3 – Action Note\nWrite a one-sentence commitment:\n\n\"I will prepare for every interview with STAR examples and clear goals.\"\n\n\"I will take initiative in my career by setting yearly growth targets.\"",
+    "body_es": "📈 Retroalimentación y Progreso\n\nTUS PRÓXIMOS PASOS:\n\nTítulo: Proyecto Final y Reflexión de Carrera\nTiempo: 1 hora\n\nPaso 1 – Autoevaluación\n\nPuedo responder preguntas comunes de entrevistas en EE. UU. con confianza.\n\nPractiqué usando el método STAR.\n\nExpliqué claramente mis objetivos de carrera.\n\nHice juegos de roles de escenarios de entrevistas.\n\nPreparé mi Proyecto Final para su entrega.\n\nPaso 2 – Preguntas de Reflexión\n\n¿En qué habilidad de entrevista te sientes más seguro ahora?\n\n¿Cuál es un área que continuarás practicando antes de tu entrevista simulada?\n\n¿Cómo aplicarás las habilidades de este curso de 10 semanas en tu trayectoria profesional?\n\nPaso 3 – Nota de Acción\nEscribe un compromiso de una oración:\n\n\"I will prepare for every interview with STAR examples and clear goals.\"\n\n\"I will take initiative in my career by setting yearly growth targets.\"",
+    "goal_es": "Proyecto Final y Reflexión de Carrera: revisa qué tan listo estás para entrevistas, reflexiona sobre el curso y escribe un compromiso de una oración.",
+    "title_es": "Proyecto Final y Reflexión de Carrera"
+  },
+  "questions": [
+    {
+      "en": "Which interview skill do you feel most confident in now?",
+      "es": "¿En qué habilidad de entrevista te sientes más seguro ahora?"
+    },
+    {
+      "en": "What's one area you will continue to practice before your mock interview?",
+      "es": "¿Cuál es un área que vas a seguir practicando antes de tu entrevista simulada?"
+    },
+    {
+      "en": "How will you apply the skills from this 10-week course to your career journey?",
+      "es": "¿Cómo vas a aplicar las habilidades de este curso de 10 semanas en tu trayectoria profesional?"
+    }
+  ],
+  "statements": [
+    {
+      "en": "I can answer common U.S. interview questions with confidence",
+      "es": "Puedo responder con seguridad preguntas comunes de entrevistas en EE. UU.",
+      "auto": null
+    },
+    {
+      "en": "I practiced using the STAR method",
+      "es": "Practiqué usando el método STAR",
+      "auto": "video"
+    },
+    {
+      "en": "I explained my career goals clearly",
+      "es": "Expliqué con claridad mis objetivos profesionales",
+      "auto": "writing"
+    },
+    {
+      "en": "I roleplayed interview scenarios",
+      "es": "Practiqué escenarios de entrevista en juego de roles",
+      "auto": "speaking"
+    },
+    {
+      "en": "I prepared my Capstone for submission",
+      "es": "Preparé mi Capstone para entregarlo",
+      "auto": null
+    }
+  ],
+  "ai_practice": {
+    "tip": {
+      "en": "Do a full practice round at least once before your live interview. If your answers fit in about two minutes and have a clear result, you're ready.",
+      "es": "Haz una ronda completa de práctica al menos una vez antes de tu entrevista en vivo. Si tus respuestas caben en unos dos minutos y tienen un resultado claro, estás listo."
+    },
+    "steps": {
+      "en": [
+        "Open ChatGPT on your phone and turn on voice mode.",
+        "Ask it to interview you for the job you want (tap the first phrase to copy).",
+        "Answer each question out loud, using STAR for “Tell me about a time…” questions.",
+        "Ask for feedback with one of these phrases (tap to copy):"
+      ],
+      "es": [
+        "Abre ChatGPT en tu teléfono y activa el modo de voz.",
+        "Pídele que te entreviste para el trabajo que quieres (toca la primera frase para copiarla).",
+        "Responde cada pregunta en voz alta, con STAR para las preguntas “Tell me about a time…”.",
+        "Pídele retroalimentación con una de estas frases (tócala para copiarla):"
+      ]
+    },
+    "prompts": [
+      "Act as a U.S. hiring manager and interview me for a [job title] position. Ask one question at a time.",
+      "Did I sound clear and confident? Was my answer professional? How can I improve?",
+      "Did my answer follow the STAR method? What was missing?"
+    ]
+  },
+  "focus_options": {
+    "en": [
+      "STAR answers",
+      "Concise answers",
+      "Pronunciation",
+      "Confidence speaking",
+      "Body language",
+      "Vocabulary"
+    ],
+    "es": [
+      "Respuestas STAR",
+      "Respuestas concisas",
+      "Pronunciación",
+      "Seguridad al hablar",
+      "Lenguaje corporal",
+      "Vocabulario"
+    ]
+  },
+  "goal_suggestions": {
+    "en": [
+      "I will prepare for every interview with STAR examples and clear goals.",
+      "I will take initiative in my career by setting yearly growth targets.",
+      "I will practice one interview question out loud every day until my mock interview.",
+      "I will send a thank-you email within two days after every interview."
+    ],
+    "es": [
+      "Me prepararé para cada entrevista con ejemplos STAR y metas claras.",
+      "Tomaré la iniciativa en mi carrera fijando metas de crecimiento cada año.",
+      "Practicaré en voz alta una pregunta de entrevista cada día hasta mi entrevista simulada.",
+      "Enviaré un correo de agradecimiento en los dos días siguientes a cada entrevista."
+    ]
+  }
+}

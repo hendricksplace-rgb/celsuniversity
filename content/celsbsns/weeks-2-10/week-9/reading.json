@@ -1,0 +1,604 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Scope",
+        "t_es": "Alcance",
+        "d_en": "Why every project starts by saying what is in, and what is out.",
+        "d_es": "Por qué todo proyecto empieza diciendo qué entra y qué no."
+      },
+      {
+        "t_en": "Milestones",
+        "t_es": "Hitos",
+        "d_en": "How a timeline with checkpoints keeps the team on track.",
+        "d_es": "Cómo un cronograma con puntos de control mantiene al equipo encaminado."
+      },
+      {
+        "t_en": "Trust",
+        "t_es": "Confianza",
+        "d_en": "How clear plans and updates make people rely on you.",
+        "d_es": "Cómo los planes claros y las actualizaciones hacen que confíen en ti."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 case studies",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 casos de estudio",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover why U.S. companies take project management so seriously, even when it isn't your job title. You read a short article, watch a video, and work through the story of two teams: one that improvises and one that plans.",
+    "intro_es": "En esta lectura descubres por qué las empresas en EE. UU. toman tan en serio la gestión de proyectos, aunque no sea tu puesto. Lees un artículo corto, ves un video y analizas la historia de dos equipos: uno que improvisa y otro que planea."
+  },
+  "week": 9,
+  "video": {
+    "slug": "tom_wujec_build_a_tower_build_a_team",
+    "event": "TED",
+    "extra": {
+      "slug": "bruce_feiler_agile_programming_for_your_family",
+      "event": "TED",
+      "title": "Agile programming -- for your family",
+      "source": 7,
+      "minutes": 18,
+      "speaker": "Bruce Feiler",
+      "provider": "ted"
+    },
+    "title": "Build a tower, build a team",
+    "source": 6,
+    "minutes": 7,
+    "speaker": "Tom Wujec",
+    "intro_en": "Watch the full talk inside the app. It's short: a team challenge with spaghetti, tape and one marshmallow. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Es corta: un reto de equipo con espagueti, cinta y un malvavisco. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "Why do some teams run out of time before the marshmallow goes on top?",
+      "What is the “marshmallow” in a project you work on, and how could you test it early?"
+    ],
+    "prompts_es": [
+      "¿Por qué algunos equipos se quedan sin tiempo antes de poner el malvavisco arriba?",
+      "¿Cuál es el “malvavisco” de un proyecto en el que trabajas y cómo podrías probarlo antes?"
+    ]
+  },
+  "vocab": {
+    "scope": {
+      "d": "The exact work a project includes, and what it does not include.",
+      "es": "alcance",
+      "ex": "Moving the printers is not in the scope of this project."
+    },
+    "deliverables": {
+      "d": "The concrete results a project must produce, such as a report, a product or a new office.",
+      "es": "entregables",
+      "ex": "The main deliverables are a new website and a training guide."
+    },
+    "milestones": {
+      "d": "Important checkpoints on a project timeline that show progress.",
+      "es": "hitos",
+      "ex": "We reached two milestones this week."
+    },
+    "stakeholders": {
+      "d": "People who are affected by a project or have an interest in its result.",
+      "es": "partes interesadas",
+      "ex": "We sent the plan to all the stakeholders for approval."
+    },
+    "scope creep": {
+      "d": "When a project slowly grows beyond what was agreed, usually without more time or money.",
+      "es": "crecimiento descontrolado del alcance",
+      "ex": "Small extra requests every week caused scope creep."
+    },
+    "status update": {
+      "d": "A short report on what is done, what is next and any problems.",
+      "es": "reporte de avance",
+      "ex": "I send a status update to my manager every Friday."
+    },
+    "blocker": {
+      "d": "A problem that stops you from moving forward until someone solves it.",
+      "es": "obstáculo, bloqueo",
+      "ex": "My only blocker is access to the shared drive."
+    },
+    "ahead of schedule": {
+      "d": "Finished earlier than the planned date.",
+      "es": "antes de lo previsto",
+      "ex": "The team delivered the app two days ahead of schedule."
+    },
+    "hedges": {
+      "d": "Words like 'maybe', 'kind of' or 'I think' that make a statement less direct.",
+      "es": "palabras que suavizan o evitan comprometerse",
+      "ex": "Too many hedges can make you sound unsure."
+    },
+    "on track": {
+      "d": "Progressing as planned.",
+      "es": "encaminado, al día",
+      "ex": "Are we still on track for the June 30 launch?"
+    },
+    "setbacks": {
+      "d": "Problems that delay progress.",
+      "es": "contratiempos",
+      "ex": "We've had some setbacks, but we are back on track."
+    },
+    "bottom line": {
+      "d": "The most important point or result.",
+      "es": "lo esencial, la conclusión principal",
+      "ex": "The bottom line is that we need the report by Friday."
+    },
+    "low-context": {
+      "d": "A culture where people say things directly and clearly, so you don't need to 'read between the lines'.",
+      "es": "de bajo contexto",
+      "ex": "The U.S. is a very low-context culture."
+    },
+    "at face value": {
+      "d": "Accepting words exactly as they are said, without looking for a hidden meaning.",
+      "es": "literalmente, tal como se dice",
+      "ex": "Americans usually take your words at face value."
+    },
+    "follow-through": {
+      "d": "Doing what you said you would do, completely and on time.",
+      "es": "cumplir hasta el final lo que prometes",
+      "ex": "Her follow-through earned her the team's trust."
+    },
+    "take ownership": {
+      "d": "Accept responsibility for a task or a problem and act on it.",
+      "es": "hacerte responsable",
+      "ex": "Good leaders take ownership when things go wrong."
+    }
+  },
+  "warmup": {
+    "q_en": "When your manager gives you a new task or project, you usually…",
+    "q_es": "Cuando tu jefe te da una tarea o proyecto nuevo, normalmente…",
+    "poll_en": [
+      "Start working right away and figure out the details as I go.",
+      "Make a quick list in my head of what I need to do.",
+      "Write down the goal, the steps, the dates and what I need before I start."
+    ],
+    "poll_es": [
+      "Empiezo a trabajar de inmediato y resuelvo los detalles sobre la marcha.",
+      "Hago una lista rápida en mi cabeza de lo que tengo que hacer.",
+      "Escribo el objetivo, los pasos, las fechas y lo que necesito antes de empezar."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: how do you start a project?",
+    "title_es": "Antes de leer: ¿cómo empiezas un proyecto?",
+    "note_q_en": "Think of a project at work, school or home that went badly. What was missing?",
+    "note_q_es": "Piensa en un proyecto del trabajo, la escuela o la casa que salió mal. ¿Qué faltó?",
+    "feedback_en": [
+      "Energy is great, and many people work this way. The risk is what happened to Javier's team in this week's case: confusion, missed dates and higher costs. Today you'll see a better way to start.",
+      "Good instinct: you think before you act. The next step is to put it on paper and share it, so your team and your manager can see the plan too.",
+      "Excellent starting point! This is how project managers think. This reading gives you the English words to explain your plan to a U.S. team."
+    ],
+    "feedback_es": [
+      "La energía es buena y mucha gente trabaja así. El riesgo es lo que le pasó al equipo de Javier en el caso de esta semana: confusión, plazos perdidos y costos más altos. Hoy vas a ver una mejor forma de empezar.",
+      "Buen instinto: piensas antes de actuar. El siguiente paso es ponerlo por escrito y compartirlo, para que tu equipo y tu jefe también vean el plan.",
+      "¡Excelente punto de partida! Así piensan los gerentes de proyecto. Esta lectura te da las palabras en inglés para explicar tu plan a un equipo en EE. UU."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Project Management Institute, Pulse of the Profession®, February 2020",
+      "url": "https://www.pmi.org/learning/thought-leadership/pulse/pulse-of-the-profession-2020",
+      "who": "Project Management Institute (PMI)",
+      "what": "“Ahead of the Curve: Forging a Future-Focused Culture”"
+    },
+    {
+      "id": 2,
+      "pub": "TechRepublic, June 10, 2021 (reports on PMI's 2021 Talent Gap report)",
+      "url": "https://www.techrepublic.com/article/25-million-new-project-professionals-are-needed-by-2030/",
+      "who": "Esther Shein",
+      "what": "“25 million new project professionals are needed by 2030”"
+    },
+    {
+      "id": 3,
+      "pub": "U.S. Bureau of Labor Statistics, Occupational Outlook Handbook",
+      "url": "https://www.bls.gov/ooh/business-and-financial/project-management-specialists.htm",
+      "who": "U.S. Department of Labor",
+      "what": "Project Management Specialists"
+    },
+    {
+      "id": 4,
+      "pub": "Project Management Institute · PMI.org",
+      "url": "https://www.pmi.org/about/what-is-project-management",
+      "who": "Project Management Institute (PMI)",
+      "what": "“What Is Project Management”"
+    },
+    {
+      "id": 5,
+      "pub": "Asana, January 14, 2026",
+      "url": "https://asana.com/resources/project-management-phases",
+      "who": "Team Asana",
+      "what": "“Project management phases: 5 steps to improve your workflow”"
+    },
+    {
+      "id": 6,
+      "pub": "TED2010 · TED.com",
+      "url": "https://www.ted.com/talks/tom_wujec_build_a_tower_build_a_team",
+      "who": "Tom Wujec",
+      "what": "“Build a tower, build a team”"
+    },
+    {
+      "id": 7,
+      "pub": "TEDSalon NY2013 · TED.com",
+      "url": "https://www.ted.com/talks/bruce_feiler_agile_programming_for_your_family",
+      "who": "Bruce Feiler",
+      "what": "“Agile programming -- for your family”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "The team's budget for the year",
+            "A list of the people on the team",
+            "What the project includes and what it doesn't"
+          ],
+          "es": [
+            "El presupuesto anual del equipo",
+            "Una lista de las personas del equipo",
+            "Lo que el proyecto incluye y lo que no"
+          ]
+        },
+        "q": {
+          "en": "The “scope” of a project is…",
+          "es": "El “alcance” de un proyecto es…"
+        },
+        "why": {
+          "en": "Right: scope draws the line. Without it, extra requests keep arriving and the project never ends.",
+          "es": "Así es: el alcance marca el límite. Sin él, llegan peticiones extra y el proyecto nunca termina."
+        }
+      },
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "Initiation, planning, execution, monitoring, closing",
+            "Planning, buying, selling, closing, reviewing",
+            "Idea, launch, celebration, vacation, report"
+          ],
+          "es": [
+            "Inicio, planificación, ejecución, monitoreo, cierre",
+            "Planificación, compra, venta, cierre, revisión",
+            "Idea, lanzamiento, celebración, vacaciones, informe"
+          ]
+        },
+        "q": {
+          "en": "Which list shows the five phases of a project, in order?",
+          "es": "¿Qué lista muestra las cinco fases de un proyecto, en orden?"
+        },
+        "why": {
+          "en": "Exactly. You will explain these five phases in this week's video.",
+          "es": "Exacto. Vas a explicar estas cinco fases en el video de esta semana."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "They never had any problems",
+            "They shared the risk early, with a new plan and a date",
+            "They waited until the deadline to tell the manager"
+          ],
+          "es": [
+            "Nunca tuvieron problemas",
+            "Avisaron del riesgo a tiempo, con un plan nuevo y una fecha",
+            "Esperaron a la fecha límite para avisarle al jefe"
+          ]
+        },
+        "q": {
+          "en": "In Case 3, Person B builds more trust because…",
+          "es": "En el caso 3, la persona B genera más confianza porque…"
+        },
+        "why": {
+          "en": "Yes: managers trust people who report problems early and arrive with a solution. No surprises.",
+          "es": "Sí: los jefes confían en quien avisa los problemas a tiempo y llega con una solución. Sin sorpresas."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: one project habit I will start using this week is…",
+      "es": "Mi conclusión: un hábito de proyecto que voy a empezar a usar esta semana es…"
+    }
+  },
+  "cases_intro": {
+    "en": "This week's case study is one story in three moments. Read each one, do the activity and, if you like, write down your ideas. The messages are in English, as you would see them at work.",
+    "es": "El caso de esta semana es una sola historia en tres momentos. Lee cada uno, haz la actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los verías en el trabajo."
+  },
+  "article": {
+    "dek": "Why U.S. companies treat planning as a core skill, the five phases every project goes through, and three habits you can use even if “project manager” is not your title.",
+    "title": "From Chaos to Delivery: Why Project Management Builds Success",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "Every company runs projects: a new product, a system upgrade, an office move. When those projects go wrong, the cost is real. In its 2020 Pulse of the Profession study, the Project Management Institute (PMI) reported that organizations waste 11.4 percent of their investment because of poor project performance.{1} That is why U.S. employers look for people who can plan and deliver, not only people who work hard.",
+        "es": "Toda empresa tiene proyectos: un producto nuevo, una actualización de sistemas, una mudanza de oficina. Cuando esos proyectos salen mal, el costo es real. En su estudio Pulse of the Profession de 2020, el Project Management Institute (PMI) informó que las organizaciones desperdician el 11.4 % de su inversión por un mal desempeño en sus proyectos. Por eso los empleadores en EE. UU. buscan personas que sepan planear y entregar, no solo personas que trabajen duro."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "A skill in high demand",
+        "en": "The demand is growing. PMI's Talent Gap report estimated that the world will need 25 million new project professionals by 2030.{2} In the United States, the Bureau of Labor Statistics counts more than one million project management specialists, who “coordinate the budget, schedule, staffing, and other details of a project,” and it expects the job to grow much faster than average.{3} And you don't need the title to use the skill: nurses, teachers, salespeople and engineers manage projects every week.",
+        "es": "La demanda está creciendo. El informe Talent Gap del PMI estimó que el mundo necesitará 25 millones de nuevos profesionales de proyectos para 2030. En Estados Unidos, la Oficina de Estadísticas Laborales (BLS) cuenta más de un millón de especialistas en gestión de proyectos, que coordinan el presupuesto, el calendario, el personal y otros detalles de un proyecto, y espera que este empleo crezca mucho más rápido que el promedio. Y no necesitas el título para usar la habilidad: enfermeras, maestros, vendedores e ingenieros gestionan proyectos cada semana."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "h": "What project management really is",
+        "en": "PMI defines project management as applying knowledge, skills, tools and techniques to project activities, and one of its first steps is defining the project [[scope]].{4} Most projects follow five phases: initiation (why are we doing this?), planning (what, who, when and how much?), execution (doing the work), monitoring (are we on track?) and closing (deliver, review and learn).{5} The plan names the [[deliverables]], sets [[milestones]] on a timeline, and tells every one of the [[stakeholders]] what to expect.",
+        "es": "El PMI define la gestión de proyectos como aplicar conocimientos, habilidades, herramientas y técnicas a las actividades de un proyecto, y uno de sus primeros pasos es definir el alcance. La mayoría de los proyectos siguen cinco fases: inicio (¿por qué lo hacemos?), planificación (¿qué, quién, cuándo y cuánto?), ejecución (hacer el trabajo), monitoreo (¿vamos bien?) y cierre (entregar, revisar y aprender). El plan nombra los entregables, pone hitos en un cronograma y les dice a todas las partes interesadas qué esperar."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think about your last project at work or school. Could you name its scope, its deliverables and one milestone?",
+        "q_es": "Piensa en tu último proyecto del trabajo o la escuela. ¿Podrías decir su alcance, sus entregables y un hito?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of people who deliver",
+        "items": [
+          {
+            "h": "1 · Define the scope before you start",
+            "icon": "target",
+            "en": "Write one or two sentences about what is included and what is not. A clear line protects the team from [[scope creep]]: the small extra requests that slowly eat your time and budget.{4}",
+            "es": "Escribe una o dos oraciones sobre lo que está incluido y lo que no. Un límite claro protege al equipo del crecimiento descontrolado del alcance: esas pequeñas peticiones extra que poco a poco se comen tu tiempo y tu presupuesto."
+          },
+          {
+            "h": "2 · Give every task an owner and a date",
+            "icon": "mega",
+            "en": "A task without a name and a deadline usually waits. Planning means deciding who does what, by when, and with which resources: people, money and tools. Then you set milestones so everyone can see progress.{5}",
+            "es": "Una tarea sin nombre y sin fecha normalmente se queda esperando. Planear es decidir quién hace qué, para cuándo y con qué recursos: personas, dinero y herramientas. Después pones hitos para que todos vean el avance."
+          },
+          {
+            "h": "3 · Test early and report often",
+            "icon": "shield",
+            "en": "In Tom Wujec's famous “marshmallow challenge,” teams that build and test small versions early do better than teams that spend all their time on one perfect plan.{6} At work, a short, honest [[status update]] does the same job: it shows problems while there is still time to fix them. Skip the [[hedges]] and give the [[bottom line]] first: are we [[on track]], and if not, what is the plan?",
+            "es": "En el famoso “reto del malvavisco” de Tom Wujec, a los equipos que construyen y prueban versiones pequeñas desde el principio les va mejor que a los que gastan todo su tiempo en un solo plan perfecto. En el trabajo, un reporte de avance corto y honesto hace lo mismo: muestra los problemas cuando todavía hay tiempo para resolverlos. Evita las palabras que suavizan y di lo esencial primero: ¿vamos al día? Y si no, ¿cuál es el plan?"
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same kickoff message",
+        "h_es": "Antes y después: el mismo mensaje de arranque",
+        "intro_en": "Tap “After” to see how the same message changes with these three habits.",
+        "intro_es": "Toca “Después” para ver cómo cambia el mismo mensaje con estos tres hábitos.",
+        "before": {
+          "to": "Project team",
+          "subject": "New project",
+          "body": [
+            "Hi all, ",
+            {
+              "m": 1,
+              "t": "we're starting the customer portal project this week"
+            },
+            ". ",
+            {
+              "m": 2,
+              "t": "Let's all jump in and figure out the details as we go"
+            },
+            ". ",
+            {
+              "m": 3,
+              "t": "We'll talk when we need to"
+            },
+            ". Thanks!"
+          ],
+          "marks": [
+            {
+              "en": "No scope: nobody knows what is included and what is not.",
+              "es": "Sin alcance: nadie sabe qué está incluido y qué no."
+            },
+            {
+              "en": "No owners, no dates, no deliverables.",
+              "es": "Sin responsables, sin fechas, sin entregables."
+            },
+            {
+              "en": "No plan to check progress, so problems appear late.",
+              "es": "Sin plan para revisar el avance: los problemas aparecen tarde."
+            }
+          ]
+        },
+        "after": {
+          "to": "Project team",
+          "subject": "Customer portal – scope, owners and milestones",
+          "body": [
+            "Hi all,\n",
+            {
+              "m": 1,
+              "t": "This project delivers a customer login page and a payment history screen. A mobile app is not in scope."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "Luis owns design (due May 9), Priya owns development (due May 23) and I own testing (due May 30)."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "We'll have a 15-minute check-in every Monday, and I'll send a status update every Friday."
+            },
+            "\nThanks,\nCarmen"
+          ],
+          "marks": [
+            {
+              "en": "Clear scope: what is in and what is out.",
+              "es": "Alcance claro: qué entra y qué no."
+            },
+            {
+              "en": "Every deliverable has an owner and a date.",
+              "es": "Cada entregable tiene responsable y fecha."
+            },
+            {
+              "en": "A simple rhythm to monitor progress.",
+              "es": "Un ritmo sencillo para monitorear el avance."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "You don't need a certification to think like a project manager. You need a clear scope, a realistic timeline, and the habit of telling people early when there is a [[blocker]]. Remember Week 1: the U.S. is a [[low-context]] culture, so managers take your updates [[at face value]]. When you [[take ownership]] of a task and show steady [[follow-through]], your plans become promises people can count on. In the case study below, you will see what happens to a team that skips these steps, and to one that finishes [[ahead of schedule]].",
+        "es": "No necesitas una certificación para pensar como gerente de proyecto. Necesitas un alcance claro, un cronograma realista y la costumbre de avisar a tiempo cuando hay un obstáculo. Recuerda la Semana 1: EE. UU. es una cultura de bajo contexto, así que los jefes toman tus reportes tal como se dicen. Cuando te haces responsable de una tarea y cumples hasta el final, tus planes se vuelven promesas con las que la gente puede contar. En el caso de estudio que sigue vas a ver qué le pasa a un equipo que se salta estos pasos, y a otro que termina antes de lo previsto."
+      }
+    ],
+    "minutes": 6,
+    "based_en": "Based on PMI, the U.S. Bureau of Labor Statistics, Asana and TED",
+    "based_es": "Basado en PMI, la Oficina de Estadísticas Laborales de EE. UU., Asana y TED",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Questions while reading",
+    "title": "Why Project Management Builds Success",
+    "body_en": "📚 Reading Assignment\n\nTitle: Why Project Management Builds Success\nTime: ~1 hour\n\nCase Study:\nJavier works for a U.S. tech company. His team launches a project without setting scope or clear deliverables. After weeks of confusion, deadlines are missed, and costs rise. Another team defines goals, assigns resources, and tracks milestones—delivering ahead of schedule. Javier realizes project management isn't just paperwork—it's the difference between chaos and success.\n\nQuestions while reading:\n\nWhat mistakes did Javier's team make?\n\nWhat habits helped the second team succeed?\n\nHow does project management build trust in the workplace?\n\nArticle Reference:\n🔗 Project Management Institute – Why Project Management Matters\n\nVideo Reference:\n🎥 YouTube – Project Management in Under 5 Minutes — https://www.youtube.com/watch?v=5d7LXzv3Vv8",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Por qué la Gestión de Proyectos Construye el Éxito\nTiempo: ~1 hora\n\nEstudio de Caso:\nJavier trabaja para una empresa de tecnología en EE. UU. Su equipo lanza un proyecto sin establecer el alcance ni entregables claros. Después de semanas de confusión, se pierden plazos y aumentan los costos. Otro equipo define objetivos, asigna recursos y sigue hitos, entregando antes de lo previsto. Javier se da cuenta de que la gestión de proyectos no es solo papeleo, es la diferencia entre el caos y el éxito.\n\nPreguntas mientras lees:\n\n¿Qué errores cometió el equipo de Javier?\n\n¿Qué hábitos ayudaron al segundo equipo a tener éxito?\n\n¿Cómo construye la gestión de proyectos confianza en el lugar de trabajo?\n\nReferencia del Artículo:\n🔗 Project Management Institute – Why Project Management Matters\n\nReferencia del Video:\n🎥 YouTube – Project Management in Under 5 Minutes — https://www.youtube.com/watch?v=5d7LXzv3Vv8",
+    "summary": "Javier works for a U.S. tech company. His team launches a project without setting scope or clear deliverables. After weeks of confusion, deadlines are missed, and costs rise. Another team defines goals, assigns resources, and tracks milestones—delivering ahead of schedule. Javier realizes project management isn't just paperwork—it's the difference between chaos and success.",
+    "title_es": "Por qué la Gestión de Proyectos Construye el Éxito",
+    "video_ref": "YouTube – Project Management in Under 5 Minutes — https://www.youtube.com/watch?v=5d7LXzv3Vv8",
+    "article_ref": "Project Management Institute – Why Project Management Matters",
+    "instructions": "Questions while reading: What mistakes did Javier's team make? What habits helped the second team succeed? How does project management build trust in the workplace?"
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "title_en": "Javier's Team: No Scope, No Plan",
+      "title_es": "El equipo de Javier: sin alcance, sin plan",
+      "scene": "Javier works for a U.S. tech company. His team launches a project without setting scope or clear deliverables. The kickoff message looks like this:",
+      "message": {
+        "from": "Team lead → Javier's team",
+        "text": "Hi team! We're starting the new client dashboard today. Let's just get going and figure out the details as we go. Ping me if you have questions!"
+      },
+      "outcome": "After weeks of confusion, deadlines are missed, and costs rise.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "model": "Hi team,\nToday we start the new client dashboard. Scope: a sales chart and a monthly report page for our top 20 clients; the mobile version is not included. Milestones: design approved by June 6, first version by June 20, launch on June 30. Javier owns testing. I'll send a status update every Friday.\nThanks,\nKevin",
+        "hints_en": [
+          "Say what is in and out of scope",
+          "Name the deliverables",
+          "Add 3 milestones with dates",
+          "Give at least one task an owner"
+        ],
+        "hints_es": [
+          "Di qué entra y qué no en el alcance",
+          "Nombra los entregables",
+          "Agrega 3 hitos con fecha",
+          "Asigna un responsable a al menos una tarea"
+        ],
+        "label_en": "My version of the kickoff message",
+        "label_es": "Mi versión del mensaje de arranque",
+        "prompt_en": "Rewrite the team lead's kickoff message so the project starts with a clear scope and plan.",
+        "prompt_es": "Reescribe el mensaje de arranque del líder para que el proyecto empiece con un alcance y un plan claros."
+      },
+      "questions": [
+        "What mistakes did Javier's team make?"
+      ],
+      "questions_es": [
+        "¿Qué errores cometió el equipo de Javier?"
+      ]
+    },
+    {
+      "id": "c2",
+      "title_en": "The Second Team: Goals, Resources, Milestones",
+      "title_es": "El segundo equipo: objetivos, recursos, hitos",
+      "scene": "Another team defines goals, assigns resources, and tracks milestones. This is their Friday status update:",
+      "message": {
+        "from": "Project lead → Manager",
+        "text": "Hi Laura, quick update on the billing app. Milestone 2 (payment screen) was completed on Wednesday, two days early. Ana and Raj are now on testing, and we're still within budget. Next milestone: user training on May 15. No blockers right now."
+      },
+      "outcome": "The team delivers ahead of schedule.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "prompt_en": "Tap the three parts of the update that show strong project habits.",
+        "prompt_es": "Toca las tres partes del reporte que muestran buenos hábitos de proyecto.",
+        "parts": [
+          {
+            "t": "Hi Laura, quick update on the billing app. "
+          },
+          {
+            "t": "Milestone 2 (payment screen) was completed on Wednesday, two days early.",
+            "why": {
+              "en": "It tracks progress against a milestone, with a date.",
+              "es": "Mide el avance contra un hito, con fecha."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "Ana and Raj are now on testing, and we're still within budget.",
+            "why": {
+              "en": "Resources are assigned: people and money are under control.",
+              "es": "Los recursos están asignados: personas y dinero bajo control."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "Next milestone: user training on May 15. No blockers right now.",
+            "why": {
+              "en": "It looks ahead and says clearly if anything is in the way.",
+              "es": "Mira hacia adelante y dice claramente si algo estorba."
+            }
+          }
+        ]
+      },
+      "questions": [
+        "What habits helped the second team succeed?"
+      ],
+      "questions_es": [
+        "¿Qué hábitos ayudaron al segundo equipo a tener éxito?"
+      ]
+    },
+    {
+      "id": "c3",
+      "title_en": "More Than Paperwork: Building Trust",
+      "title_es": "Más que papeleo: construir confianza",
+      "scene": "Javier realizes project management isn't just paperwork—it's the difference between chaos and success. Now his team has a milestone at risk. The manager asks: “Are we still on track?”",
+      "activity": {
+        "kind": "choose",
+        "prompt_en": "Tap the answer you would choose.",
+        "prompt_es": "Toca la respuesta que elegirías.",
+        "options": [
+          {
+            "lead": "One person says:",
+            "label_en": "Person A",
+            "label_es": "Persona A",
+            "correct": false,
+            "text": "Yeah, everything's fine. Don't worry about it."
+          },
+          {
+            "lead": "Another says:",
+            "label_en": "Person B",
+            "label_es": "Persona B",
+            "correct": true,
+            "text": "Mostly. We've had some [[setbacks]]: testing is two days behind because of a [[blocker]] with server access. I've asked IT to fix it today and moved Raj to help, so we can still meet the June 30 launch. I'll confirm on Thursday."
+          }
+        ],
+        "why": {
+          "en": "Person B builds trust: they share the risk early, explain the cause in one sentence, and arrive with a plan and a date. Person A sounds calm, but if the deadline is missed, the manager will feel surprised and stop trusting their updates.",
+          "es": "La persona B genera confianza: avisa del riesgo a tiempo, explica la causa en una oración y llega con un plan y una fecha. La persona A suena tranquila, pero si se pierde la fecha, el jefe se va a sentir sorprendido y dejará de confiar en sus reportes."
+        }
+      },
+      "questions": [
+        "How does project management build trust in the workplace?"
+      ],
+      "questions_es": [
+        "¿Cómo construye la gestión de proyectos confianza en el lugar de trabajo?"
+      ]
+    }
+  ]
+}

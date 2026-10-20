@@ -1,0 +1,610 @@
+{
+  "hero": {
+    "learn": [
+      {
+        "t_en": "Brand voice",
+        "t_es": "Voz de marca",
+        "d_en": "What a brand voice is, and how it differs from tone.",
+        "d_es": "Qué es la voz de marca y en qué se diferencia del tono."
+      },
+      {
+        "t_en": "Consistency",
+        "t_es": "Consistencia",
+        "d_en": "Why every call, email and post must repeat the same values.",
+        "d_es": "Por qué cada llamada, correo y publicación debe repetir los mismos valores."
+      },
+      {
+        "t_en": "Value",
+        "t_es": "Valor",
+        "d_en": "How to say clearly who you serve and what you offer them.",
+        "d_es": "Cómo decir con claridad a quién sirves y qué le ofreces."
+      }
+    ],
+    "chips_en": [
+      "1 hour",
+      "Article + video",
+      "3 case studies",
+      "Private notes"
+    ],
+    "chips_es": [
+      "1 hora",
+      "Artículo + video",
+      "3 casos de estudio",
+      "Notas privadas"
+    ],
+    "intro_en": "In this reading you discover why brand communication is not only a marketing job. Every time you talk to a client, you speak for the brand. You read a short article, watch a video, and follow Sofia's client call in three steps.",
+    "intro_es": "En esta lectura descubres por qué la comunicación de marca no es solo trabajo de marketing. Cada vez que hablas con un cliente, hablas en nombre de la marca. Lees un artículo corto, ves un video y sigues la llamada de Sofía con un cliente en tres pasos."
+  },
+  "week": 8,
+  "video": {
+    "slug": "simon_sinek_how_great_leaders_inspire_action",
+    "event": "TEDx",
+    "extra": {
+      "slug": "seth_godin_how_to_get_your_ideas_to_spread",
+      "event": "TED",
+      "title": "How to get your ideas to spread",
+      "source": 7,
+      "minutes": 17,
+      "speaker": "Seth Godin",
+      "provider": "ted"
+    },
+    "title": "How great leaders inspire action",
+    "source": 6,
+    "minutes": 18,
+    "speaker": "Simon Sinek",
+    "intro_en": "Watch the full talk inside the app. Notice how the speaker explains why some companies' messages inspire people more than others. Write down your ideas as you watch.",
+    "intro_es": "Mira la charla completa dentro de la app. Fíjate cómo el orador explica por qué los mensajes de algunas empresas inspiran más que otros. Mientras la ves, apunta tus ideas.",
+    "provider": "ted",
+    "prompts_en": [
+      "According to the speaker, why do people choose one company over another?",
+      "How could you explain the “why” of your company, or of your own work, in one sentence?"
+    ],
+    "prompts_es": [
+      "Según el orador, ¿por qué la gente elige una empresa y no otra?",
+      "¿Cómo podrías explicar el “por qué” de tu empresa, o de tu propio trabajo, en una oración?"
+    ]
+  },
+  "vocab": {
+    "brand promise": {
+      "d": "What customers can expect from a company every time they deal with it.",
+      "es": "promesa de marca",
+      "ex": "Our brand promise is fast, reliable delivery."
+    },
+    "brand voice": {
+      "d": "The personality a company shows in its words; it stays the same everywhere.",
+      "es": "voz de marca",
+      "ex": "Our brand voice is friendly but professional."
+    },
+    "tone": {
+      "d": "The attitude of a message; it changes with the situation and the reader's feelings.",
+      "es": "tono",
+      "ex": "Use a calmer tone when a customer is upset."
+    },
+    "touchpoints": {
+      "d": "All the moments when a customer has contact with a company: calls, emails, ads, posts, invoices.",
+      "es": "puntos de contacto",
+      "ex": "Every touchpoint should feel like the same company."
+    },
+    "target audience": {
+      "d": "The specific group of people a product or message is for.",
+      "es": "público objetivo",
+      "ex": "Our target audience is small business owners."
+    },
+    "value proposition": {
+      "d": "A short statement of the benefit a customer gets and why it is better than other options.",
+      "es": "propuesta de valor",
+      "ex": "Our value proposition is green products at normal prices."
+    },
+    "on-brand": {
+      "d": "Matching the style, values and message of the company.",
+      "es": "alineado con la marca",
+      "ex": "That reply was clear, kind and on-brand."
+    },
+    "vague": {
+      "d": "Not clear or specific; without details.",
+      "es": "vago, impreciso",
+      "ex": "Vague answers make clients feel unsure."
+    },
+    "hedges": {
+      "d": "Words like 'maybe', 'kind of' or 'I think' that make a statement less direct.",
+      "es": "palabras que suavizan o evitan comprometerse",
+      "ex": "Too many hedges can make you sound unsure.",
+      "review": true
+    },
+    "on track": {
+      "d": "Progressing as planned.",
+      "es": "encaminado, al día",
+      "ex": "The shipment is on track for Thursday.",
+      "review": true
+    },
+    "setbacks": {
+      "d": "Problems that delay progress.",
+      "es": "contratiempos",
+      "ex": "We've had some setbacks, but we are back on track.",
+      "review": true
+    },
+    "bottom line": {
+      "d": "The most important point or result.",
+      "es": "lo esencial, la conclusión principal",
+      "ex": "The bottom line is that every call is part of the brand.",
+      "review": true
+    },
+    "low-context": {
+      "d": "A culture where people say things directly and clearly, so you don't need to 'read between the lines'.",
+      "es": "de bajo contexto",
+      "ex": "The U.S. is a very low-context culture.",
+      "review": true
+    },
+    "at face value": {
+      "d": "Accepting words exactly as they are said, without looking for a hidden meaning.",
+      "es": "literalmente, tal como se dice",
+      "ex": "Clients take your promises at face value.",
+      "review": true
+    },
+    "follow-through": {
+      "d": "Doing what you said you would do, completely and on time.",
+      "es": "cumplir hasta el final lo que prometes",
+      "ex": "Good follow-through makes a brand promise real.",
+      "review": true
+    },
+    "take ownership": {
+      "d": "Accept responsibility for a task or a problem and act on it.",
+      "es": "hacerte responsable",
+      "ex": "On-brand employees take ownership of the customer's problem.",
+      "review": true
+    }
+  },
+  "warmup": {
+    "q_en": "When a client asks you a question about your company's service, you usually…",
+    "q_es": "Cuando un cliente te hace una pregunta sobre el servicio de tu empresa, normalmente…",
+    "poll_en": [
+      "Answer quickly with a short yes or no, and move on.",
+      "Explain everything I know in detail, so they have all the information.",
+      "Answer clearly and connect it to what my company promises, like speed or quality."
+    ],
+    "poll_es": [
+      "Contesto rápido con un sí o un no, y sigo con lo mío.",
+      "Explico todo lo que sé con detalle, para que tenga toda la información.",
+      "Contesto con claridad y lo conecto con lo que promete mi empresa, como rapidez o calidad."
+    ],
+    "intro_en": "There are no right or wrong answers. This helps you notice your starting point.",
+    "intro_es": "No hay respuestas buenas o malas. Esto es para que notes tu punto de partida.",
+    "title_en": "Before you read: how do you answer clients today?",
+    "title_es": "Antes de leer: ¿cómo contestas hoy a los clientes?",
+    "note_q_en": "Think of a brand you like. How does it “sound” when it talks to you?",
+    "note_q_es": "Piensa en una marca que te guste. ¿Cómo “suena” cuando te habla?",
+    "feedback_en": [
+      "Fast is good, but a short answer with no details can sound careless. Today you'll see what Sofia learned about this.",
+      "Being helpful is great. The challenge is choosing the details that matter to the client. The article shows how.",
+      "Excellent! That's exactly how strong brands sound. This reading helps you do it every time, not only on good days."
+    ],
+    "feedback_es": [
+      "Ser rápido está bien, pero una respuesta corta y sin detalles puede sonar descuidada. Hoy vas a ver lo que aprendió Sofía sobre esto.",
+      "Querer ayudar es muy bueno. El reto es elegir los detalles que le importan al cliente. El artículo te muestra cómo.",
+      "¡Excelente! Así suenan las marcas fuertes. Esta lectura te ayuda a hacerlo siempre, no solo en los días buenos."
+    ]
+  },
+  "sources": [
+    {
+      "id": 1,
+      "pub": "Edelman, June 18, 2019",
+      "url": "https://www.edelman.com/insights/trust-barometer-special-report-in-brands-we-trust",
+      "who": "Edelman",
+      "what": "“Edelman Trust Barometer Special Report: In Brands We Trust?”"
+    },
+    {
+      "id": 2,
+      "pub": "Nielsen Norman Group, July 17, 2016 (reviewed 2023)",
+      "url": "https://www.nngroup.com/articles/tone-of-voice-dimensions/",
+      "who": "Kate Moran",
+      "what": "“The Four Dimensions of Tone of Voice”"
+    },
+    {
+      "id": 3,
+      "pub": "Mailchimp Content Style Guide",
+      "url": "https://styleguide.mailchimp.com/voice-and-tone/",
+      "who": "Mailchimp",
+      "what": "“Voice and Tone”"
+    },
+    {
+      "id": 4,
+      "pub": "Harvard Business Review, September 2016",
+      "url": "https://hbr.org/2016/09/the-elements-of-value",
+      "who": "Eric Almquist, John Senior and Nicolas Bloch",
+      "what": "“The Elements of Value”"
+    },
+    {
+      "id": 5,
+      "pub": "Sprout Social, June 13, 2024 (cites The Sprout Social Index)",
+      "url": "https://sproutsocial.com/insights/social-media-response-time/",
+      "who": "Annette Chacko",
+      "what": "“Why you need to speed up your social media response time (and how)”"
+    },
+    {
+      "id": 6,
+      "pub": "TEDxPuget Sound, 2009 · TED.com",
+      "url": "https://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action",
+      "who": "Simon Sinek",
+      "what": "“How great leaders inspire action”"
+    },
+    {
+      "id": 7,
+      "pub": "TED2003 · TED.com",
+      "url": "https://www.ted.com/talks/seth_godin_how_to_get_your_ideas_to_spread",
+      "who": "Seth Godin",
+      "what": "“How to get your ideas to spread”"
+    }
+  ],
+  "checkpoint": {
+    "mcq": [
+      {
+        "a": 2,
+        "o": {
+          "en": [
+            "Its logo and colors",
+            "Its price",
+            "The same values and personality, in every message"
+          ],
+          "es": [
+            "Su logo y sus colores",
+            "Su precio",
+            "Los mismos valores y la misma personalidad, en cada mensaje"
+          ]
+        },
+        "q": {
+          "en": "A company's brand voice is mainly…",
+          "es": "La voz de marca de una empresa es sobre todo…"
+        },
+        "why": {
+          "en": "Right: voice is the personality in the words, and it stays the same everywhere. Tone is what changes with the situation.",
+          "es": "Así es: la voz es la personalidad en las palabras y se mantiene igual en todos lados. Lo que cambia según la situación es el tono."
+        }
+      },
+      {
+        "a": 0,
+        "o": {
+          "en": [
+            "Change your tone, not your voice",
+            "Change your voice to match the customer",
+            "Use the same cheerful message as in your ads"
+          ],
+          "es": [
+            "Cambias tu tono, no tu voz",
+            "Cambias tu voz para parecerte al cliente",
+            "Usas el mismo mensaje alegre de tus anuncios"
+          ]
+        },
+        "q": {
+          "en": "When a customer is upset, a professional brand should…",
+          "es": "Cuando un cliente está molesto, una marca profesional debe…"
+        },
+        "why": {
+          "en": "Exactly: you stay the same company, but you sound calmer and more serious.",
+          "es": "Exacto: sigues siendo la misma empresa, pero suenas más calmado y serio."
+        }
+      },
+      {
+        "a": 1,
+        "o": {
+          "en": [
+            "She answered too slowly",
+            "Her answers were vague and didn't connect to the company's values",
+            "She talked too much about prices"
+          ],
+          "es": [
+            "Contestó demasiado lento",
+            "Sus respuestas fueron vagas y no se conectaron con los valores de la empresa",
+            "Habló demasiado de precios"
+          ]
+        },
+        "q": {
+          "en": "In the case study, what did Sofia miss?",
+          "es": "En el caso de estudio, ¿qué le faltó a Sofía?"
+        },
+        "why": {
+          "en": "Yes: her colleague used the same facts, but tied every point to speed and reliability. That built trust.",
+          "es": "Sí: su colega usó los mismos datos, pero conectó cada punto con la rapidez y la confiabilidad. Eso generó confianza."
+        }
+      }
+    ],
+    "takeaway_q": {
+      "en": "My takeaway: in my next conversation with a client or colleague, I will show my company's values by…",
+      "es": "Mi conclusión: en mi próxima conversación con un cliente o colega, voy a mostrar los valores de mi empresa así…"
+    }
+  },
+  "cases_intro": {
+    "en": "Sofia's story has three moments. Read each one, do the activity and, if you like, write down your ideas. The messages are in English, as you would hear them at work.",
+    "es": "La historia de Sofía tiene tres momentos. Lee cada uno, haz la actividad y, si quieres, apunta tus ideas. Los mensajes están en inglés, como los escucharías en el trabajo."
+  },
+  "article": {
+    "dek": "What a brand really is, how U.S. companies keep one voice everywhere, and why your everyday words at work are part of it.",
+    "title": "Every Conversation Is a Brand Message",
+    "blocks": [
+      {
+        "id": "a1",
+        "type": "para",
+        "en": "When people hear the word “brand,” they often think of a logo or a slogan. But a brand is mostly a [[brand promise]]: what customers can expect every time they deal with a company. Trust in that promise matters. In a 2019 Edelman survey, 81% of consumers said they must be able to trust a brand to do what is right before they buy from it, but only about one in three said they trust most of the brands they use.{1}",
+        "es": "Cuando la gente escucha la palabra “marca”, muchas veces piensa en un logo o un eslogan. Pero una marca es sobre todo una promesa: lo que los clientes pueden esperar cada vez que tratan con una empresa. La confianza en esa promesa importa. En una encuesta de Edelman de 2019, el 81 % de los consumidores dijo que necesita confiar en que una marca hará lo correcto antes de comprarle, pero solo alrededor de uno de cada tres dijo que confía en la mayoría de las marcas que usa."
+      },
+      {
+        "id": "a2",
+        "type": "para",
+        "h": "Voice and tone are not the same",
+        "en": "U.S. companies often write a style guide to protect their [[brand voice]]. Mailchimp's public guide explains the idea simply: the voice stays the same in everything the company writes, while the [[tone]] changes with the situation and with how the reader feels.{3} Think of yourself: you are the same person with your boss and with your friends, but you don't talk to them in the same way. Researchers at Nielsen Norman Group describe four dimensions of tone: formal or casual, serious or funny, respectful or irreverent, and matter-of-fact or enthusiastic. In their study, small changes on these scales changed how friendly and how formal people felt a company was.{2}",
+        "es": "Las empresas de EE. UU. muchas veces escriben una guía de estilo para proteger su voz de marca. La guía pública de Mailchimp lo explica de forma sencilla: la voz es la misma en todo lo que escribe la empresa, mientras que el tono cambia según la situación y según cómo se siente el lector. Piensa en ti: eres la misma persona con tu jefe y con tus amigos, pero no les hablas igual. Investigadores de Nielsen Norman Group describen cuatro dimensiones del tono: formal o casual, serio o divertido, respetuoso o irreverente, y objetivo o entusiasta. En su estudio, pequeños cambios en estas escalas cambiaron qué tan amigable y qué tan formal le parecía una empresa a la gente."
+      },
+      {
+        "id": "a3",
+        "type": "para",
+        "en": "In a U.S. company, the brand voice is not only the marketing team's job. Customers meet the brand at many [[touchpoints]]: a sales call, an invoice, a delivery update, a reply on social media. If the ads promise “fast and reliable” but an employee gives a [[vague]] answer full of [[hedges]] on the phone, the customer hears two different companies, and trust goes down. Remember: U.S. clients take your words [[at face value]]. If you say “probably,” they hear “maybe not.”",
+        "es": "En una empresa de EE. UU., la voz de marca no es solo trabajo del equipo de marketing. Los clientes conocen la marca en muchos puntos de contacto: una llamada de ventas, una factura, un aviso de entrega, una respuesta en redes sociales. Si los anuncios prometen “rápido y confiable”, pero un empleado da por teléfono una respuesta vaga y llena de rodeos, el cliente escucha a dos empresas distintas, y la confianza baja. Recuerda: los clientes en EE. UU. toman tus palabras tal como las dices. Si dices “probably”, escuchan “tal vez no”."
+      },
+      {
+        "id": "pause",
+        "type": "pause",
+        "q_en": "Think of a company you buy from often. Which three words describe how it talks to you?",
+        "q_es": "Piensa en una empresa a la que le compras seguido. ¿Qué tres palabras describen cómo te habla?"
+      },
+      {
+        "id": "habits",
+        "type": "habits",
+        "h": "Three habits of on-brand communicators",
+        "items": [
+          {
+            "h": "1 · Know who it's for and what they get",
+            "icon": "target",
+            "en": "Strong messages start with a clear [[target audience]] and a clear [[value proposition]]. Research published in Harvard Business Review describes the value customers look for as a pyramid: practical, functional benefits at the base, and emotional benefits above them.{4} A good message names both: what the product does for the customer and how it makes them feel.",
+            "es": "Los mensajes fuertes empiezan con un público objetivo claro y una propuesta de valor clara. Una investigación publicada en Harvard Business Review describe el valor que buscan los clientes como una pirámide: beneficios prácticos y funcionales en la base, y beneficios emocionales arriba. Un buen mensaje nombra los dos: qué hace el producto por el cliente y cómo lo hace sentir."
+          },
+          {
+            "h": "2 · Consistency: repeat the same values everywhere",
+            "icon": "shield",
+            "en": "Choose two or three values your company wants to be known for, such as speed, quality or care, and repeat them in every conversation. In a [[low-context]] culture like the U.S., values must be said and shown, not implied. An [[on-brand]] answer uses concrete facts to prove those values: a time, a number, a next step, and then the [[follow-through]].",
+            "es": "Elige dos o tres valores por los que tu empresa quiere ser conocida, como rapidez, calidad o buen trato, y repítelos en cada conversación. En una cultura de bajo contexto como la de EE. UU., los valores se dicen y se demuestran; no se dan por entendidos. Una respuesta alineada con la marca usa datos concretos para demostrar esos valores: una hora, un número, un siguiente paso, y después cumplir lo prometido."
+          },
+          {
+            "h": "3 · Adjust your tone, not your voice",
+            "icon": "mega",
+            "en": "A happy customer and an angry customer need different tones from the same company. When there are [[setbacks]] or complaints, be calm, respectful and quick. Sprout Social reports that most consumers expect brands to answer them on social media within 24 hours or sooner.{5} A fast, polite and clear reply can turn a public complaint into proof of good service.",
+            "es": "Un cliente contento y un cliente enojado necesitan tonos distintos de la misma empresa. Ante contratiempos o quejas, sé calmado, respetuoso y rápido. Sprout Social informa que la mayoría de los consumidores espera que las marcas le respondan en redes sociales en 24 horas o menos. Una respuesta rápida, amable y clara puede convertir una queja pública en una prueba de buen servicio."
+          }
+        ]
+      },
+      {
+        "id": "compare",
+        "type": "compare",
+        "h_en": "Before and after: the same answer to a client",
+        "h_es": "Antes y después: la misma respuesta a un cliente",
+        "intro_en": "Tap “After” to see how the same answer changes when it reflects the brand's values of speed and reliability.",
+        "intro_es": "Toca “Después” para ver cómo cambia la misma respuesta cuando refleja los valores de la marca: rapidez y confiabilidad.",
+        "before": {
+          "to": "Mr. Lopez",
+          "subject": "Re: delivery",
+          "body": [
+            "Hi, ",
+            {
+              "m": 1,
+              "t": "yes, I think it should get there soon, probably this week"
+            },
+            ". ",
+            {
+              "m": 2,
+              "t": "It kind of depends on a few things on our side"
+            },
+            ". ",
+            {
+              "m": 3,
+              "t": "Let me know if you have more questions."
+            }
+          ],
+          "marks": [
+            {
+              "en": "Vague: no day, no time, and “I think” and “probably” sound unsure.",
+              "es": "Vago: no hay día ni hora, y “I think” y “probably” suenan inseguros."
+            },
+            {
+              "en": "It hides the process instead of showing the brand's reliability.",
+              "es": "Esconde el proceso en lugar de mostrar la confiabilidad de la marca."
+            },
+            {
+              "en": "It ends without a next step or a promise.",
+              "es": "Termina sin un siguiente paso ni un compromiso."
+            }
+          ]
+        },
+        "after": {
+          "to": "Mr. Lopez",
+          "subject": "Your delivery to Monterrey: Thursday by noon",
+          "body": [
+            "Hello Mr. Lopez,\n",
+            {
+              "m": 1,
+              "t": "Your order will arrive in Monterrey on Thursday before 12 p.m."
+            },
+            " ",
+            {
+              "m": 2,
+              "t": "Our trucks leave every morning at 6 a.m., and you can follow your shipment online at any time."
+            },
+            " ",
+            {
+              "m": 3,
+              "t": "If anything changes, I will call you the same day."
+            },
+            "\nBest regards,\nSofia"
+          ],
+          "marks": [
+            {
+              "en": "A clear answer first, with an exact day and time: speed.",
+              "es": "Primero una respuesta clara, con día y hora exactos: rapidez."
+            },
+            {
+              "en": "Concrete facts that prove the brand's value: reliability.",
+              "es": "Datos concretos que demuestran el valor de la marca: confiabilidad."
+            },
+            {
+              "en": "A promise and a next step: the client knows what to expect.",
+              "es": "Un compromiso y un siguiente paso: el cliente sabe qué esperar."
+            }
+          ]
+        }
+      },
+      {
+        "id": "a4",
+        "type": "para",
+        "h": "Your goal this week",
+        "en": "The [[bottom line]]: you represent a brand every day, even if “marketing” is not in your job title. And you are a brand too: colleagues and clients remember how you communicate. This week you'll write a brand message, analyze two famous brand voices, and start your own personal brand line for your Capstone.",
+        "es": "Lo esencial: representas una marca todos los días, aunque “marketing” no aparezca en tu puesto. Y tú también eres una marca: tus colegas y clientes recuerdan cómo te comunicas. Esta semana vas a escribir un mensaje de marca, analizar dos voces de marca famosas y empezar tu propia frase de marca personal para tu Capstone."
+      }
+    ],
+    "minutes": 7,
+    "based_en": "Based on Edelman, Nielsen Norman Group, Mailchimp, Harvard Business Review and Sprout Social",
+    "based_es": "Basado en Edelman, Nielsen Norman Group, Mailchimp, Harvard Business Review y Sprout Social",
+    "intro_en": "Read it in English. Tap the underlined words to see what they mean, and use “Ver en español” if a paragraph isn't clear.",
+    "intro_es": "Léelo en inglés. Toca las palabras subrayadas para ver su significado, y usa “Ver en español” si un párrafo no te queda claro."
+  },
+  "original": {
+    "time": "~1 hour",
+    "type": "Case Study + Reflection Questions",
+    "title": "Why Brand Communication Matters",
+    "body_en": "📚 Reading Assignment\n\nTitle: Why Brand Communication Matters\nTime: ~1 hour\n\nCase Study:\nSofia works for a logistics company. During a client call, she gives quick, vague answers. Later, a colleague answers the same questions with confidence, tying every point back to the company's values of speed and reliability. The client chooses to continue working with the company because of the stronger brand impression.\n\nQuestions while reading:\n\nWhat did Sofia miss in her communication?\n\nHow did her colleague strengthen the company's brand?\n\nWhat does this tell you about the connection between everyday communication and brand identity?\n\nArticle Reference:\n🔗 Forbes – Why Brand Communication Is Key to Business Success\n\nVideo Reference:\n🎥 YouTube – Branding Basics: What Makes a Strong Brand — https://www.youtube.com/watch?v=JKIAOZZritk",
+    "body_es": "📚 Tarea de Lectura\n\nTítulo: Por qué la Comunicación de Marca Importa\nTiempo: ~1 hora\n\nEstudio de Caso:\nSofia trabaja para una empresa de logística. Durante una llamada con un cliente, da respuestas rápidas y vagas. Más tarde, un colega responde las mismas preguntas con confianza, relacionando cada punto con los valores de la empresa de rapidez y confiabilidad. El cliente elige continuar trabajando con la empresa debido a la impresión más fuerte de la marca.\n\nPreguntas mientras lees:\n\n¿Qué le faltó a Sofia en su comunicación?\n\n¿Cómo fortaleció su colega la marca de la empresa?\n\n¿Qué te dice esto sobre la conexión entre la comunicación diaria y la identidad de marca?\n\nReferencia del Artículo:\n🔗 Forbes – Why Brand Communication Is Key to Business Success\n\nReferencia del Video:\n🎥 YouTube – Branding Basics: What Makes a Strong Brand — https://www.youtube.com/watch?v=JKIAOZZritk",
+    "summary": "A short case study about Sofia, who works for a logistics company, shows how everyday communication with clients builds or weakens a company's brand identity.",
+    "title_es": "Por qué la Comunicación de Marca Importa",
+    "video_ref": "YouTube – Branding Basics: What Makes a Strong Brand — https://www.youtube.com/watch?v=JKIAOZZritk",
+    "article_ref": "Forbes – Why Brand Communication Is Key to Business Success",
+    "instructions": "Read the case study and answer the three questions while reading: What did Sofia miss in her communication? How did her colleague strengthen the company's brand? What does this tell you about the connection between everyday communication and brand identity?"
+  },
+  "cases": [
+    {
+      "id": "c1",
+      "scene": "Sofia works for a logistics company. During a client call, she gives quick, vague answers. For example:",
+      "message": {
+        "from": "Sofia → Client",
+        "text": "Yeah, I think it should get there soon, probably this week. It kind of depends on a few things on our side."
+      },
+      "outcome": "The client hangs up without a clear idea of what the company will deliver, or when.",
+      "outcome_kind": "bad",
+      "activity": {
+        "kind": "rewrite",
+        "model": "Your order will arrive in Monterrey on Thursday before noon. We are known for fast, reliable delivery, so our trucks leave every morning at 6 a.m., and you can track your shipment online. If anything changes, I'll call you the same day.",
+        "hints_en": [
+          "Give an exact day or time",
+          "Mention speed or reliability",
+          "Add one concrete fact",
+          "Remove “I think”, “probably” and “kind of”"
+        ],
+        "hints_es": [
+          "Da un día o una hora exactos",
+          "Menciona la rapidez o la confiabilidad",
+          "Agrega un dato concreto",
+          "Quita “I think”, “probably” y “kind of”"
+        ],
+        "label_en": "My version of Sofia's answer",
+        "label_es": "Mi versión de la respuesta de Sofía",
+        "prompt_en": "Rewrite Sofia's answer so it is clear and shows the company's values of speed and reliability.",
+        "prompt_es": "Reescribe la respuesta de Sofía para que sea clara y muestre los valores de la empresa: rapidez y confiabilidad."
+      },
+      "title_en": "The Vague Answer",
+      "title_es": "La respuesta vaga",
+      "questions": [
+        "What did Sofia miss in her communication?"
+      ],
+      "questions_es": [
+        "¿Qué le faltó a Sofía en su comunicación?"
+      ]
+    },
+    {
+      "id": "c2",
+      "scene": "Later, a colleague answers the same questions with confidence, tying every point back to the company's values of speed and reliability:",
+      "message": {
+        "from": "Colleague → Client",
+        "text": "Great question. Your order leaves our warehouse tomorrow at 6 a.m. and arrives Thursday before noon. Speed and reliability are what we're known for, so you'll get a tracking link today, and I'll personally confirm delivery."
+      },
+      "outcome": "The client chooses to continue working with the company because of the stronger brand impression.",
+      "outcome_kind": "good",
+      "activity": {
+        "kind": "spot",
+        "parts": [
+          {
+            "t": "Great question. "
+          },
+          {
+            "t": "Your order leaves our warehouse tomorrow at 6 a.m. and arrives Thursday before noon.",
+            "why": {
+              "en": "Exact times: the answer proves the value of speed.",
+              "es": "Horas exactas: la respuesta demuestra el valor de la rapidez."
+            }
+          },
+          {
+            "t": " "
+          },
+          {
+            "t": "Speed and reliability are what we're known for,",
+            "why": {
+              "en": "It names the brand's values out loud.",
+              "es": "Dice en voz alta los valores de la marca."
+            }
+          },
+          {
+            "t": " so you'll get a tracking link today, and "
+          },
+          {
+            "t": "I'll personally confirm delivery.",
+            "why": {
+              "en": "A personal promise: reliability the client can feel.",
+              "es": "Un compromiso personal: confiabilidad que el cliente puede sentir."
+            }
+          }
+        ],
+        "prompt_en": "Tap the three parts of the colleague's answer that strengthen the brand.",
+        "prompt_es": "Toca las tres partes de la respuesta del colega que fortalecen la marca."
+      },
+      "title_en": "The Confident Colleague",
+      "title_es": "El colega seguro",
+      "questions": [
+        "How did her colleague strengthen the company's brand?"
+      ],
+      "questions_es": [
+        "¿Cómo fortaleció su colega la marca de la empresa?"
+      ]
+    },
+    {
+      "id": "c3",
+      "scene": "Same company, same promise: speed and reliability. A client writes in the chat: “Where is my shipment?” Two employees could answer.",
+      "activity": {
+        "kind": "choose",
+        "why": {
+          "en": "Employee B is on-brand: a fast, exact answer and a next step prove speed and reliability. Employee A sounds like a different company: no information, and they don't take ownership. Everyday messages like these, not only ads, create the brand identity clients remember.",
+          "es": "El empleado B está alineado con la marca: una respuesta rápida y exacta, con un siguiente paso, demuestra rapidez y confiabilidad. El empleado A suena como otra empresa: sin información y sin hacerse responsable. Los mensajes de todos los días, no solo los anuncios, crean la identidad de marca que los clientes recuerdan."
+        },
+        "options": [
+          {
+            "lead": "Employee A answers:",
+            "text": "Not sure, that's not my area. Maybe try calling tomorrow.",
+            "correct": false,
+            "label_en": "Employee A",
+            "label_es": "Empleado A"
+          },
+          {
+            "lead": "Employee B answers:",
+            "text": "I just checked: it's [[on track]], in Dallas now, and will arrive tomorrow by 10 a.m. Here is your tracking link. I'll message you when it's delivered.",
+            "correct": true,
+            "label_en": "Employee B",
+            "label_es": "Empleado B"
+          }
+        ],
+        "prompt_en": "Which answer is on-brand? Tap the one you would choose.",
+        "prompt_es": "¿Cuál respuesta está alineada con la marca? Toca la que elegirías."
+      },
+      "title_en": "Everyday Words, Brand Identity",
+      "title_es": "Palabras diarias, identidad de marca",
+      "questions": [
+        "What does this tell you about the connection between everyday communication and brand identity?"
+      ],
+      "questions_es": [
+        "¿Qué te dice esto sobre la conexión entre la comunicación diaria y la identidad de marca?"
+      ]
+    }
+  ]
+}

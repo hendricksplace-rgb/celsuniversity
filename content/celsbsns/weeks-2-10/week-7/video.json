@@ -1,0 +1,149 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Explaining Finance",
+    "title_b": "in Your Own Words",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 7"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 7"
+    ],
+    "intro_en": "Record yourself explaining one financial term (profit, ROI, budget or cash flow) with a simple real-world example, and say why it matters in your role. Use your ROI email from Writing as a base.",
+    "intro_es": "Grábate explicando un término financiero (profit, ROI, budget o cash flow) con un ejemplo sencillo de la vida real, y di por qué importa en tu puesto. Usa tu correo sobre el ROI de Writing como base."
+  },
+  "must": [
+    {
+      "en": "Define one financial term (profit, ROI, budget or cash flow)",
+      "es": "Define un término financiero (profit, ROI, budget o cash flow)",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "A simple, specific real-world example",
+      "es": "Un ejemplo sencillo y concreto de la vida real",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "Why that concept matters in your role",
+      "es": "Por qué ese concepto importa en tu puesto",
+      "color": "#1F7A4D"
+    },
+    {
+      "en": "One thing you learned about finance this week",
+      "es": "Una cosa que aprendiste sobre finanzas esta semana",
+      "color": "#C98A00"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "en": "A quiet space",
+      "es": "Lugar silencioso",
+      "icon": "mic",
+      "desc_en": "Check your mic before you record.",
+      "desc_es": "Revisa tu micrófono antes de grabar."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "It doesn't need to be formal.",
+      "desc_es": "No tiene que ser formal."
+    },
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "As if explaining it to a coworker.",
+      "desc_es": "Como si se lo explicaras a un compañero."
+    },
+    {
+      "en": "Smile once or twice",
+      "es": "Sonríe una o dos veces",
+      "icon": "smile",
+      "desc_en": "Numbers sound friendlier with a smile.",
+      "desc_es": "Los números suenan más amables con una sonrisa."
+    }
+  ],
+  "week": 7,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Slow and clear",
+        "Finance terms are new and need precision."
+      ],
+      [
+        "Be specific",
+        "“My department spent $500, and we saved $200 by negotiating.”"
+      ],
+      [
+        "End strong",
+        "Say one thing you learned about finance this week."
+      ]
+    ],
+    "es": [
+      [
+        "Despacio y claro",
+        "Los términos financieros son nuevos y necesitan precisión."
+      ],
+      [
+        "Sé concreto",
+        "“My department spent $500, and we saved $200 by negotiating.”"
+      ],
+      [
+        "Cierra con fuerza",
+        "Di una cosa que aprendiste sobre finanzas esta semana."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record a 2–3 minute video defining one financial term, giving a simple real-world example, and explaining why it matters in your role.",
+    "time": "1 hour",
+    "title": "Explaining Finance in Your Own Words",
+    "body_en": "📹 Video Quiz\n\nTitle: Explaining Finance in Your Own Words\nTime: 1 hour\n\nTask: Record a 2–3 minute video where you:\n\nDefine one financial term (e.g., profit, ROI, budget, or cash flow).\n\nGive a simple real-world example.\n\nExplain why that concept matters in your role.\n\nTips:\n\nKeep your example specific (e.g., \"My department spent $500, and we saved $200 by negotiating.\").\n\nSpeak slowly and clearly—finance terms are new and need precision.\n\nEnd by saying one thing you learned about finance this week.\n\nOptional Challenge:\nPractice with ChatGPT voice mode:\n\nDeliver your definition and example.\n\nAsk: \"Was my explanation clear? How can I make it more professional?\"",
+    "body_es": "📹 Video Quiz\n\nTítulo: Explicando Finanzas en Tus Propias Palabras\nTiempo: 1 hora\n\nTarea: Graba un video de 2 a 3 minutos donde:\n\nDefine un término financiero (por ejemplo, profit (ganancia), ROI (retorno de inversión), budget (presupuesto) o cash flow (flujo de efectivo)).\n\nDa un ejemplo sencillo del mundo real.\n\nExplica por qué ese concepto es importante en tu rol.\n\nConsejos:\n\nMantén tu ejemplo específico (por ejemplo, \"My department spent $500, and we saved $200 by negotiating.\" (Mi departamento gastó $500 y ahorramos $200 negociando)).\n\nHabla despacio y claramente—los términos financieros son nuevos y necesitan precisión.\n\nTermina diciendo una cosa que aprendiste sobre finanzas esta semana.\n\nDesafío Opcional:\nPractica con el modo de voz de ChatGPT:\n\nPresenta tu definición y ejemplo.\n\nPregunta: \"Was my explanation clear? How can I make it more professional?\" (¿Fue clara mi explicación? ¿Cómo puedo hacerla más profesional?)",
+    "goal_es": "Grabar un video de 2 a 3 minutos que defina un término financiero, dé un ejemplo sencillo del mundo real y explique por qué es importante en tu rol.",
+    "title_es": "Explicando Finanzas en Tus Propias Palabras"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 7,
+  "script_source_lesson_id": "5561cf32-788d-4656-a37a-cdd456121eca",
+  "ai_challenge": {
+    "intro_en": "Open ChatGPT in voice mode, deliver your definition and example, then ask:",
+    "intro_es": "Abre ChatGPT en modo de voz, presenta tu definición y tu ejemplo, y luego pregunta:",
+    "prompts": [
+      "Was my explanation clear? How can I make it more professional?"
+    ]
+  }
+}

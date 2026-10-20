@@ -1,0 +1,283 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Roleplay:",
+    "title_b": "Finance in Daily Work",
+    "chips_en": [
+      "2 hours",
+      "3 situations",
+      "9 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 situaciones",
+      "9 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Roleplay 3 everyday moments where finance comes up at work in the U.S.: cutting costs, explaining ROI and explaining the P&L. Practice out loud, see what you said, and repeat until it sounds clear and simple.",
+    "intro_es": "Practica 3 momentos cotidianos en los que las finanzas aparecen en el trabajo en EE. UU.: recortar costos, explicar el ROI y explicar el estado de resultados. Practica en voz alta, mira lo que dijiste y repite hasta que suene claro y sencillo."
+  },
+  "week": 7,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Which activity was hardest to explain?",
+        "Did you use simple words and a number?",
+        "Did practicing out loud help you improve?"
+      ],
+      "es": [
+        "¿Cuál actividad fue la más difícil de explicar?",
+        "¿Usaste palabras sencillas y un número?",
+        "¿Practicar en voz alta te ayudó a mejorar?"
+      ]
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta",
+      "d_en": "Several times, until it sounds simple.",
+      "d_es": "Varias veces, hasta que suene sencillo."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "people",
+      "t_en": "With a partner or ChatGPT",
+      "t_es": "Con un compañero o con ChatGPT",
+      "d_en": "No partner? Use ChatGPT in voice mode.",
+      "d_es": "¿Sin compañero? Usa ChatGPT en modo de voz."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "Budget, revenue, ROI, bottom line…",
+      "d_es": "Budget, revenue, ROI, bottom line…"
+    }
+  ],
+  "original": {
+    "goal": "Roleplay everyday finance conversations at work: budget awareness, ROI and the P&L.",
+    "time": "2 hours",
+    "title": "Roleplay: Finance in Daily Work",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplay: Finance in Daily Work\nTime: 2 hours\n\nRemember: If you do not have a partner to practice with, open ChatGPT and use it in voice mode to get the most out of your experience.\n\nActivity 1 – Budget Awareness\nPartner as manager: \"We need to cut project costs.\"\nYou respond with one practical suggestion to save money without lowering quality.\n\nActivity 2 – ROI Example\nPartner as coworker: \"Why does ROI matter?\"\nYou explain ROI in simple terms, with a short example.\n\nActivity 3 – Profit and Loss\nPartner as team member: \"I don't understand the P&L.\"\nYou explain what revenue, expenses, and profit mean in plain language.\n\nReflection:\nWhich activity was hardest to explain? How did practicing out loud help you improve?",
+    "body_es": "🤝 Práctica de Hablar\n\nTítulo: Juego de Roles: Finanzas en el Trabajo Diario\nTiempo: 2 horas\n\nRecuerda: Si no tienes un compañero para practicar, abre ChatGPT y úsalo en modo de voz para aprovechar al máximo tu experiencia.\n\nActividad 1 – Conciencia del Presupuesto\nCompañero como gerente: \"We need to cut project costs.\"\nTú respondes con una sugerencia práctica para ahorrar dinero sin bajar la calidad.\n\nActividad 2 – Ejemplo de ROI\nCompañero como colega: \"Why does ROI matter?\"\nTú explicas el ROI en términos simples, con un ejemplo corto.\n\nActividad 3 – Ganancias y Pérdidas\nCompañero como miembro del equipo: \"I don't understand the P&L.\"\nTú explicas qué significan ingresos, gastos y ganancias en lenguaje sencillo.\n\nReflexión:\n¿Cuál actividad fue la más difícil de explicar? ¿Cómo te ayudó practicar en voz alta a mejorar?",
+    "goal_es": "Practicar con juegos de roles conversaciones cotidianas de finanzas en el trabajo: conciencia del presupuesto, ROI y estado de resultados.",
+    "title_es": "Juego de Roles: Finanzas en el Trabajo Diario"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Practice 3 times. Try a different money-saving idea each time and keep the one that sounds most practical.",
+        "es": "Practica 3 veces. Prueba una idea de ahorro distinta cada vez y quédate con la que suene más práctica."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Project Budget Review",
+          "es": "Zoom · Project Budget Review"
+        },
+        "kind": "zoom",
+        "line": "We need to cut project costs.",
+        "meta": {
+          "en": "1:1 with your manager",
+          "es": "1:1 con tu jefa"
+        },
+        "tile": {
+          "name": "Linda · Manager",
+          "initials": "LM"
+        },
+        "speaker": {
+          "en": "LINDA · MANAGER",
+          "es": "LINDA · MANAGER"
+        }
+      },
+      "title": {
+        "en": "Budget Awareness",
+        "es": "Conciencia del presupuesto"
+      },
+      "points": {
+        "en": [
+          "Acknowledge the request",
+          "One practical way to save money",
+          "How quality stays the same"
+        ],
+        "es": [
+          "Reconoce la petición",
+          "Una forma práctica de ahorrar dinero",
+          "Cómo se mantiene la calidad"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: supplies or materials",
+          "Try 2: time or process",
+          "Try 3: your best idea, with a number"
+        ],
+        "es": [
+          "Intento 1: suministros o materiales",
+          "Intento 2: tiempo o proceso",
+          "Intento 3: tu mejor idea, con un número"
+        ]
+      },
+      "limit_s": [
+        20,
+        40
+      ],
+      "situation": {
+        "en": "Your manager says: “We need to cut project costs.” You respond with one practical suggestion to save money without lowering quality.",
+        "es": "Tu jefa te dice: “We need to cut project costs.” Respondes con una sugerencia práctica para ahorrar dinero sin bajar la calidad."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times: first the definition, then add an example, then make it shorter and clearer.",
+        "es": "Practica 3 veces: primero la definición, luego agrega un ejemplo y después hazlo más corto y claro."
+      },
+      "icon": "elev",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Elevator · Floor 8",
+          "es": "Elevador · Piso 8"
+        },
+        "kind": "elevator",
+        "line": "Why does ROI matter?",
+        "meta": {
+          "en": "30–45 s",
+          "es": "30–45 s"
+        },
+        "speaker": {
+          "en": "A COWORKER",
+          "es": "UN COLEGA"
+        }
+      },
+      "title": {
+        "en": "ROI Example",
+        "es": "Ejemplo de ROI"
+      },
+      "points": {
+        "en": [
+          "What ROI means, in simple words",
+          "A short example with numbers",
+          "Why it matters for decisions"
+        ],
+        "es": [
+          "Qué significa ROI, en palabras sencillas",
+          "Un ejemplo corto con números",
+          "Por qué importa para decidir"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: the definition",
+          "Try 2: add an example",
+          "Try 3: shorter and clearer"
+        ],
+        "es": [
+          "Intento 1: la definición",
+          "Intento 2: agrega un ejemplo",
+          "Intento 3: más corto y claro"
+        ]
+      },
+      "limit_s": [
+        30,
+        45
+      ],
+      "situation": {
+        "en": "A coworker asks you: “Why does ROI matter?” You explain ROI in simple terms, with a short example.",
+        "es": "Un colega te pregunta: “Why does ROI matter?” Explicas el ROI en términos simples, con un ejemplo corto."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times: once in the mirror, once with a partner or ChatGPT, and once as your best version.",
+        "es": "Practica 3 veces: una frente al espejo, otra con un compañero o con ChatGPT, y otra como tu mejor versión."
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Team Meeting · Monthly Numbers",
+          "es": "Team Meeting · Monthly Numbers"
+        },
+        "kind": "meeting",
+        "line": "I don't understand the P&L.",
+        "meta": {
+          "en": "5 people",
+          "es": "5 personas"
+        },
+        "speaker": {
+          "en": "TOM · TEAM MEMBER",
+          "es": "TOM · TEAM MEMBER"
+        }
+      },
+      "title": {
+        "en": "Profit and Loss",
+        "es": "Ganancias y pérdidas"
+      },
+      "points": {
+        "en": [
+          "What revenue means",
+          "What expenses are",
+          "What profit (the bottom line) is"
+        ],
+        "es": [
+          "Qué son los ingresos (revenue)",
+          "Qué son los gastos (expenses)",
+          "Qué es la ganancia (el bottom line)"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: in the mirror",
+          "Try 2: with a partner or ChatGPT",
+          "Try 3: your best version"
+        ],
+        "es": [
+          "Intento 1: frente al espejo",
+          "Intento 2: con un compañero o con ChatGPT",
+          "Intento 3: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "A team member says: “I don't understand the P&L.” You explain what revenue, expenses and profit mean in plain language.",
+        "es": "Un compañero de equipo dice: “I don't understand the P&L.” Explicas qué significan ingresos, gastos y ganancias en lenguaje sencillo."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "dcb5b713-79ec-4db0-ae1b-6ad8307d1e50"
+}

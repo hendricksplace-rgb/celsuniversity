@@ -1,0 +1,371 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Practicing Respect & Adaptability",
+    "title_b": "in Conversations",
+    "chips_en": [
+      "2 hours",
+      "4 situations",
+      "8 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "4 situaciones",
+      "8 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Roleplay 4 real situations at a U.S. workplace: small talk, asking for clarification, feedback and a difficult conversation. Practice out loud, see what you said, and adjust your style until it sounds respectful, direct and confident.",
+    "intro_es": "Representa 4 situaciones reales de un trabajo en EE. UU.: charla informal, pedir aclaraciones, retroalimentación y una conversación difícil. Practica en voz alta, mira lo que dijiste y ajusta tu estilo hasta que suene respetuoso, directo y seguro."
+  },
+  "week": 2,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Were you polite and professional?",
+        "Were you clear and direct?",
+        "Did you focus on solutions?"
+      ],
+      "es": [
+        "¿Fuiste amable y profesional?",
+        "¿Fuiste claro y directo?",
+        "¿Te enfocaste en soluciones?"
+      ]
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "icon": "people",
+      "t_en": "Practice with someone",
+      "t_es": "Practica con alguien",
+      "d_en": "A classmate, colleague, friend or family member.",
+      "d_es": "Un compañero de clase, colega, amigo o familiar."
+    },
+    {
+      "icon": "repeat",
+      "t_en": "At least twice this week",
+      "t_es": "Al menos dos veces esta semana",
+      "d_en": "Each situation, two tries.",
+      "d_es": "Cada situación, dos intentos."
+    },
+    {
+      "icon": "mic",
+      "t_en": "Record and evaluate yourself",
+      "t_es": "Grábate y evalúate",
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto."
+    },
+    {
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario",
+      "d_en": "The words from Week 2.",
+      "d_es": "Las palabras de la Semana 2."
+    }
+  ],
+  "original": {
+    "goal": "Roleplay workplace scenarios to practice adapting your communication style, showing respect, and fitting into U.S. business culture.",
+    "time": "2 hours",
+    "title": "Practicing Respect & Adaptability in Conversations",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Practicing Respect & Adaptability in Conversations\nTime: 2 hours\nObjective: Roleplay workplace scenarios to practice adapting your communication style, showing respect, and fitting into U.S. business culture.\n\nActivity 1: Small Talk at Work (10–15 min)\n\nPair with a classmate, colleague, or even practice with a friend/family member.\n\nOne person plays the role of a coworker, the other introduces themselves and starts a short workplace-friendly conversation.\n\nPrompts:\n\n\"Hi, I'm [Name]. I just joined the [Department]. What projects are you working on?\"\n\n\"How long have you been with the company?\"\n\n\"What do you enjoy about working here?\"\n\n⚡ Focus: Keep it polite, light, and professional. Avoid overly personal questions.\n\nActivity 2: Asking for Clarification (15–20 min)\n\nRoleplay a meeting situation where something isn't clear.\n\nScenario:\n\nPartner plays the \"manager\" giving instructions.\n\nYou practice asking for clarification in a respectful way.\n\n❌ Don't say: \"That makes no sense.\"\n✅ Say: \"I want to make sure I understood correctly. Could you walk me through that step again?\"\n\n⚡ Focus: Stay calm, direct, and professional.\n\nActivity 3: Giving & Receiving Feedback (20–25 min)\n\nPartner plays your teammate.\n\nPractice giving constructive feedback.\n\nExample:\n\n❌ \"This report is wrong.\"\n\n✅ \"I think this section could be clearer if we added more data. What do you think?\"\n\nThen switch roles. Practice receiving feedback without being defensive:\n\n\"Thanks for pointing that out. I'll adjust it.\"\n\n⚡ Focus: Solution-oriented tone.\n\nActivity 4: Difficult Conversation (20–25 min)\n\nScenario: You are behind schedule on a project. Your boss (partner) asks why.\n\n❌ \"It's not my fault.\"\n✅ \"I've run into delays with X, but I'm reorganizing priorities so we stay on track. I'd also appreciate your feedback.\"\n\n⚡ Focus: Honesty + accountability + solutions.\n\nSelf-Reflection Prompt\n\nAfter finishing the roleplays, answer out loud (or write):\n\nWhich situation felt easiest?\n\nWhich one challenged you most?\n\nHow will you adjust your tone and clarity next time?\n\nWhy This Matters:\n\nThese speaking drills mirror real U.S. workplace interactions. The more you practice, the more natural respectful, direct, and confident communication will feel in English.\n\n👉 Practice these at least twice this week, and if possible, record one of your roleplays to evaluate yourself.",
+    "body_es": "🤝 Práctica de Conversación\n\nTítulo: Practicando Respeto y Adaptabilidad en Conversaciones\nTiempo: 2 horas\nObjetivo: Representar escenarios laborales para practicar la adaptación de tu estilo de comunicación, mostrar respeto e integrarte en la cultura empresarial de EE.UU.\n\nActividad 1: Charla Informal en el Trabajo (10–15 min)\n\nEmpareja con un compañero de clase, colega, o incluso practica con un amigo/familiar.\n\nUna persona juega el papel de un compañero de trabajo, la otra se presenta y comienza una breve conversación adecuada para el lugar de trabajo.\n\nSugerencias:\n\n\"Hi, I'm [Name]. I just joined the [Department]. What projects are you working on?\"\n\n\"How long have you been with the company?\"\n\n\"What do you enjoy about working here?\"\n\n⚡ Enfoque: Mantén la conversación educada, ligera y profesional. Evita preguntas demasiado personales.\n\nActividad 2: Pidiendo Aclaraciones (15–20 min)\n\nRepresenta una situación de reunión donde algo no está claro.\n\nEscenario:\n\nTu compañero juega el papel del \"gerente\" dando instrucciones.\n\nPractica pedir aclaraciones de manera respetuosa.\n\n❌ No digas: \"That makes no sense.\"\n✅ Di: \"I want to make sure I understood correctly. Could you walk me through that step again?\"\n\n⚡ Enfoque: Mantente calmado, directo y profesional.\n\nActividad 3: Dar y Recibir Retroalimentación (20–25 min)\n\nTu compañero juega el papel de tu compañero de equipo.\n\nPractica dar retroalimentación constructiva.\n\nEjemplo:\n\n❌ \"This report is wrong.\"\n\n✅ \"I think this section could be clearer if we added more data. What do you think?\"\n\nLuego cambia de roles. Practica recibir retroalimentación sin ponerte a la defensiva:\n\n\"Thanks for pointing that out. I'll adjust it.\"\n\n⚡ Enfoque: Tono orientado a soluciones.\n\nActividad 4: Conversación Difícil (20–25 min)\n\nEscenario: Estás atrasado en un proyecto. Tu jefe (compañero) pregunta por qué.\n\n❌ \"It's not my fault.\"\n✅ \"I've run into delays with X, but I'm reorganizing priorities so we stay on track. I'd also appreciate your feedback.\"\n\n⚡ Enfoque: Honestidad + responsabilidad + soluciones.\n\nPregunta de Autorreflexión\n\nDespués de terminar las representaciones, responde en voz alta (o escribe):\n\n¿Cuál situación te resultó más fácil?\n\n¿Cuál te desafió más?\n\n¿Cómo ajustarás tu tono y claridad la próxima vez?\n\nPor Qué Esto Importa:\n\nEstos ejercicios de conversación reflejan interacciones reales en el lugar de trabajo en EE.UU. Cuanto más practiques, más natural te parecerá comunicarte de manera respetuosa, directa y segura en inglés.\n\n👉 Practica esto al menos dos veces esta semana, y si es posible, graba una de tus representaciones para evaluarte a ti mismo.",
+    "goal_es": "Representar escenarios laborales para practicar la adaptación de tu estilo de comunicación, mostrar respeto e integrarte en la cultura empresarial de EE.UU.",
+    "title_es": "Practicando Respeto y Adaptabilidad en Conversaciones"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Focus: keep it polite, light and professional. Avoid overly personal questions.",
+        "es": "Enfoque: mantén la conversación educada, ligera y profesional. Evita preguntas demasiado personales."
+      },
+      "icon": "elev",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Elevator · Floor 4",
+          "es": "Elevador · Piso 4"
+        },
+        "kind": "elevator",
+        "line": "Hi! I don't think we've met. Are you new here?",
+        "meta": {
+          "en": "Small talk",
+          "es": "Charla informal"
+        },
+        "speaker": {
+          "en": "A COWORKER",
+          "es": "UN COMPAÑERO DE TRABAJO"
+        }
+      },
+      "title": {
+        "en": "Small Talk at Work",
+        "es": "Charla informal en el trabajo"
+      },
+      "points": {
+        "en": [
+          "Introduce yourself and your department",
+          "Ask about their projects or time with the company",
+          "Ask what they enjoy about working there"
+        ],
+        "es": [
+          "Preséntate y di tu departamento",
+          "Pregunta por sus proyectos o su tiempo en la empresa",
+          "Pregunta qué disfruta de trabajar ahí"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: use the prompts",
+          "Try 2: in your own words"
+        ],
+        "es": [
+          "Intento 1: usa las frases sugeridas",
+          "Intento 2: con tus propias palabras"
+        ]
+      },
+      "limit_s": [
+        20,
+        40
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "One person plays a coworker. You introduce yourself and start a short, workplace-friendly conversation.",
+        "es": "Una persona hace el papel de compañero de trabajo. Tú te presentas y empiezas una conversación breve y adecuada para el trabajo."
+      },
+      "prompts": [
+        "Hi, I'm [Name]. I just joined the [Department]. What projects are you working on?",
+        "How long have you been with the company?",
+        "What do you enjoy about working here?"
+      ]
+    },
+    {
+      "how": {
+        "en": "Focus: stay calm, direct and professional.",
+        "es": "Enfoque: mantente tranquilo, directo y profesional."
+      },
+      "icon": "people",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Project Kickoff · Marketing",
+          "es": "Project Kickoff · Marketing"
+        },
+        "kind": "meeting",
+        "line": "So, pull the numbers from the usual place and have the report ready by Friday.",
+        "meta": {
+          "en": "5 people",
+          "es": "5 personas"
+        },
+        "speaker": {
+          "en": "ALEX · MANAGER",
+          "es": "ALEX · GERENTE"
+        }
+      },
+      "title": {
+        "en": "Asking for Clarification",
+        "es": "Pedir aclaraciones"
+      },
+      "points": {
+        "en": [
+          "Show you want to understand correctly",
+          "Name exactly what isn't clear",
+          "Ask them to explain again, politely"
+        ],
+        "es": [
+          "Muestra que quieres entender bien",
+          "Di exactamente qué no está claro",
+          "Pide que te lo expliquen de nuevo, con amabilidad"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: use the model phrase",
+          "Try 2: ask about a different detail"
+        ],
+        "es": [
+          "Intento 1: usa la frase modelo",
+          "Intento 2: pregunta por otro detalle"
+        ]
+      },
+      "limit_s": [
+        15,
+        30
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "In a meeting, your partner plays the manager giving instructions. Something isn't clear, and you ask for clarification in a respectful way.",
+        "es": "En una junta, tu compañero hace el papel del gerente que da instrucciones. Algo no está claro y pides una aclaración de manera respetuosa."
+      },
+      "avoid_say": {
+        "dont": "That makes no sense.",
+        "do": "I want to make sure I understood correctly. Could you walk me through that step again?"
+      }
+    },
+    {
+      "how": {
+        "en": "Focus: a solution-oriented tone. Then switch roles and receive feedback without being defensive.",
+        "es": "Enfoque: un tono orientado a soluciones. Luego cambien de roles y recibe la retroalimentación sin ponerte a la defensiva."
+      },
+      "icon": "video",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Report Review",
+          "es": "Zoom · Report Review"
+        },
+        "kind": "zoom",
+        "line": "Here's my draft of the report. What do you think?",
+        "meta": {
+          "en": "1:1 with a teammate",
+          "es": "1:1 con un compañero"
+        },
+        "tile": {
+          "name": "Sam · Marketing",
+          "initials": "SM"
+        },
+        "speaker": {
+          "en": "SAM",
+          "es": "SAM"
+        }
+      },
+      "title": {
+        "en": "Giving & Receiving Feedback",
+        "es": "Dar y recibir retroalimentación"
+      },
+      "points": {
+        "en": [
+          "Start with something that works",
+          "Suggest one clear improvement",
+          "Ask for their opinion"
+        ],
+        "es": [
+          "Empieza con algo que funciona",
+          "Sugiere una mejora clara",
+          "Pide su opinión"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: give constructive feedback",
+          "Try 2: switch roles and receive it"
+        ],
+        "es": [
+          "Intento 1: da retroalimentación constructiva",
+          "Intento 2: cambien de roles y recíbela"
+        ]
+      },
+      "limit_s": [
+        20,
+        40
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "Your partner plays your teammate and shares a report. Practice giving constructive feedback. Then switch roles and practice receiving feedback, for example: “Thanks for pointing that out. I'll adjust it.”",
+        "es": "Tu compañero hace el papel de tu compañero de equipo y comparte un informe. Practica dar retroalimentación constructiva. Luego cambien de roles y practica recibirla, por ejemplo: “Thanks for pointing that out. I'll adjust it.”"
+      },
+      "avoid_say": {
+        "dont": "This report is wrong.",
+        "do": "I think this section could be clearer if we added more data. What do you think?"
+      }
+    },
+    {
+      "how": {
+        "en": "Focus: honesty + accountability + solutions.",
+        "es": "Enfoque: honestidad + responsabilidad + soluciones."
+      },
+      "icon": "user2",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Weekly Check-in",
+          "es": "Zoom · Weekly Check-in"
+        },
+        "kind": "zoom",
+        "line": "I see we're behind schedule on the project. What happened?",
+        "meta": {
+          "en": "1:1 with your boss",
+          "es": "1:1 con tu jefe"
+        },
+        "tile": {
+          "name": "Alex · Manager",
+          "initials": "AJ"
+        },
+        "speaker": {
+          "en": "ALEX",
+          "es": "ALEX"
+        }
+      },
+      "title": {
+        "en": "Difficult Conversation",
+        "es": "Conversación difícil"
+      },
+      "points": {
+        "en": [
+          "Be honest about the delay",
+          "Take responsibility (no blaming)",
+          "Share your plan to get back on track"
+        ],
+        "es": [
+          "Sé honesto sobre el retraso",
+          "Hazte responsable (sin culpar a nadie)",
+          "Comparte tu plan para ponerte al día"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: use the model answer",
+          "Try 2: your own words and a real example"
+        ],
+        "es": [
+          "Intento 1: usa la respuesta modelo",
+          "Intento 2: tus propias palabras y un ejemplo real"
+        ]
+      },
+      "limit_s": [
+        25,
+        45
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "You are behind schedule on a project. Your boss (your partner) asks why.",
+        "es": "Estás atrasado en un proyecto. Tu jefe (tu compañero) te pregunta por qué."
+      },
+      "avoid_say": {
+        "dont": "It's not my fault.",
+        "do": "I've run into delays with X, but I'm reorganizing priorities so we stay on track. I'd also appreciate your feedback."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "a4ae1301-e25c-4be4-a19d-f1cfd0c294e8",
+  "reflection": {
+    "en": [
+      "Which situation felt easiest?",
+      "Which one challenged you most?",
+      "How will you adjust your tone and clarity next time?"
+    ],
+    "es": [
+      "¿Cuál situación te resultó más fácil?",
+      "¿Cuál te desafió más?",
+      "¿Cómo ajustarás tu tono y claridad la próxima vez?"
+    ]
+  }
+}

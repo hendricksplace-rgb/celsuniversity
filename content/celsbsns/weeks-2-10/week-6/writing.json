@@ -1,0 +1,215 @@
+{
+  "hero": {
+    "title_a": "Responding to an Ethical Dilemma",
+    "title_b": "by Email",
+    "chips_en": [
+      "1–2 hours",
+      "120–150 words",
+      "Saved to your week",
+      "Capstone · Part 6"
+    ],
+    "chips_es": [
+      "1–2 horas",
+      "120–150 palabras",
+      "Se guarda en tu semana",
+      "Capstone · Parte 6"
+    ],
+    "intro_en": "You discovered a mistake in a report your team already sent to a client. Write a professional email to your manager that explains the mistake, takes accountability and suggests a solution. Honesty and accountability protect your reputation.",
+    "intro_es": "Descubriste un error en un informe que tu equipo ya envió a un cliente. Escribe un correo profesional a tu gerente que explique el error, asuma la responsabilidad y proponga una solución. La honestidad y la responsabilidad protegen tu reputación."
+  },
+  "week": 6,
+  "parts": [
+    {
+      "en": "A greeting",
+      "es": "Un saludo",
+      "color": "#2C6BC4",
+      "hint": {
+        "en": "Professional, using your manager's name.",
+        "es": "Profesional, con el nombre de tu gerente."
+      },
+      "example": "Hi Laura,",
+      "phrases": [
+        "Hi [name],",
+        "Hello [name],",
+        "Good morning, [name],"
+      ]
+    },
+    {
+      "en": "Explain the mistake clearly",
+      "es": "Explica el error con claridad",
+      "color": "#7A4FD6",
+      "hint": {
+        "en": "What, where and when, in the first lines.",
+        "es": "Qué, dónde y cuándo, en las primeras líneas."
+      },
+      "example": "I found an error in the Q3 cost report we sent to Brightway yesterday…",
+      "phrases": [
+        "I found an error in the [report] we sent to [client] on [day].",
+        "On page [number], the [item] shows [wrong number], but the correct amount is [right number].",
+        "I wanted to let you know about a mistake in [document]."
+      ]
+    },
+    {
+      "en": "Why it matters",
+      "es": "Por qué importa",
+      "color": "#00A3C4",
+      "hint": {
+        "en": "The possible impact on the client or the team.",
+        "es": "El posible impacto en el cliente o en el equipo."
+      },
+      "example": "Brightway plans to use this report on Friday, so…",
+      "phrases": [
+        "[Client] plans to use this report for [purpose], so the mistake could affect [result].",
+        "If we don't correct it, [possible problem].",
+        "This could create confusion about [topic]."
+      ]
+    },
+    {
+      "en": "Take accountability",
+      "es": "Asume la responsabilidad",
+      "color": "#1F7A4D",
+      "hint": {
+        "en": "Own your part, without excuses or blame.",
+        "es": "Reconoce tu parte, sin excusas ni culpar a nadie."
+      },
+      "example": "I prepared that table, so I wanted to bring this to your attention right away.",
+      "phrases": [
+        "I wanted to bring this to your attention right away.",
+        "I prepared [section], so I take responsibility for the error.",
+        "I should have double-checked [item] before we sent it."
+      ]
+    },
+    {
+      "en": "Suggest a solution",
+      "es": "Propón una solución",
+      "color": "#C98A00",
+      "hint": {
+        "en": "At least one concrete next step, with a time.",
+        "es": "Al menos un paso concreto, con un tiempo."
+      },
+      "example": "I suggest that we send a corrected version today…",
+      "phrases": [
+        "I suggest that we send [client] a corrected version today.",
+        "I have already updated the file, and I can [action] by [time].",
+        "To avoid this in the future, I will [new step]."
+      ]
+    },
+    {
+      "en": "A polite closing",
+      "es": "Un cierre cortés",
+      "color": "#C2185B",
+      "hint": {
+        "en": "Ask how to proceed and sign off.",
+        "es": "Pregunta cómo seguir y despídete."
+      },
+      "example": "Please let me know how you would like to proceed. Best regards,",
+      "phrases": [
+        "Please let me know how you would like to proceed.",
+        "I'm happy to talk about it whenever you're available.",
+        "Best regards,",
+        "Thank you,"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "icon": "smile",
+      "t_en": "Clear and factual",
+      "t_es": "Claro y con hechos",
+      "d_en": "Main point first. Facts, not blame.",
+      "d_es": "Idea principal primero. Hechos, no culpas."
+    },
+    {
+      "icon": "star",
+      "t_en": "Honest and accountable",
+      "t_es": "Honesto y responsable",
+      "d_en": "Use “I” for your part. No excuses.",
+      "d_es": "Usa “I” para tu parte. Sin excusas."
+    },
+    {
+      "icon": "nob",
+      "t_en": "Email format",
+      "t_es": "Formato de correo",
+      "d_en": "Paragraph spacing, no bullet points or emojis.",
+      "d_es": "Párrafos separados, sin viñetas ni emojis."
+    }
+  ],
+  "words": {
+    "max": 150,
+    "min": 120
+  },
+  "example": {
+    "subject": "Correction needed – Brightway Q3 report",
+    "paragraphs": [
+      [
+        [
+          0,
+          "Hi Laura,"
+        ]
+      ],
+      [
+        [
+          1,
+          "I found an error in the Q3 cost report we sent to Brightway yesterday. On page 4, the shipping total shows $48,200, but the correct amount is $42,800 because two numbers were switched."
+        ],
+        [
+          2,
+          "Brightway plans to use this report in their budget meeting on Friday, so the mistake could affect their decisions."
+        ]
+      ],
+      [
+        [
+          3,
+          "I prepared that table, and I should have double-checked it before we sent it, so I wanted to bring this to your attention right away."
+        ],
+        [
+          4,
+          "I suggest that we send Brightway a corrected version today with a short note explaining the change. I have already updated the file, and I can draft the note for your review by 2 PM."
+        ]
+      ],
+      [
+        [
+          5,
+          "Please let me know how you would like to proceed."
+        ]
+      ],
+      [
+        [
+          5,
+          "Best regards,"
+        ],
+        [
+          null,
+          "Ana"
+        ]
+      ]
+    ]
+  },
+  "original": {
+    "goal": "U.S. employers value honesty and accountability. Taking responsibility shows integrity and protects your reputation.",
+    "goal_es": "Los empleadores en EE. UU. valoran la honestidad y la responsabilidad. Asumir la responsabilidad demuestra integridad y protege tu reputación.",
+    "time": "1–2 hours",
+    "title": "Responding to an Ethical Dilemma by Email",
+    "title_es": "Responder a un Dilema Ético por Correo Electrónico",
+    "submission": "Write a professional email (120–150 words) to your manager that explains the mistake clearly, takes accountability for bringing it to their attention, and suggests at least one possible solution.",
+    "body_en": "✍️ Writing Task\n\nTitle: Responding to an Ethical Dilemma by Email\nTime: 1–2 hours\n\nScenario:\nYou've discovered a mistake in a report that your team already sent to a client. You know this mistake could create problems if not corrected.\n\nYour Task: Write a professional email (120–150 words) to your manager that:\n\nExplains the mistake clearly.\n\nTakes accountability for bringing it to their attention.\n\nSuggests at least one possible solution.\n\nWhy This Matters:\nU.S. employers value honesty and accountability. Taking responsibility shows integrity and protects your reputation.",
+    "body_es": "✍️ Tarea de Escritura\n\nTítulo: Responder a un Dilema Ético por Correo Electrónico\nTiempo: 1–2 horas\n\nEscenario:\nHas descubierto un error en un informe que tu equipo ya envió a un cliente. Sabes que este error podría crear problemas si no se corrige.\n\nTu Tarea: Escribe un correo electrónico profesional (120–150 palabras) a tu gerente que:\n\nExplique claramente el error.\n\nAsuma la responsabilidad de haberlo señalado.\n\nSugiera al menos una posible solución.\n\nPor Qué Es Importante:\nLos empleadores en EE. UU. valoran la honestidad y la responsabilidad. Asumir la responsabilidad demuestra integridad y protege tu reputación."
+  },
+  "scenario": {
+    "en": "You've discovered a mistake in a report that your team already sent to a client. You know this mistake could create problems if not corrected. Write to your manager.",
+    "es": "Descubriste un error en un informe que tu equipo ya envió a un cliente. Sabes que este error podría crear problemas si no se corrige. Escríbele a tu gerente.",
+    "from": "Laura",
+    "quote": "Great job on the Brightway report, everyone. It went to the client yesterday!",
+    "role_en": "your manager",
+    "role_es": "tu gerente",
+    "initials": "LC"
+  },
+  "to_label": "Laura Chen (Manager)",
+  "to_initials": "LC",
+  "subject_hint": "Correction needed – Client report",
+  "capstone_part": 6,
+  "capstone_title": {
+    "en": "Values and professionalism",
+    "es": "Valores y profesionalismo"
+  }
+}

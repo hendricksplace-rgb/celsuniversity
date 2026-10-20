@@ -1,0 +1,142 @@
+{
+  "wpm": 100,
+  "hero": {
+    "priv_b": {
+      "en": "Your video never leaves your device.",
+      "es": "Tu video nunca sale de tu dispositivo."
+    },
+    "priv_p": {
+      "en": "It isn't uploaded or evaluated. We only save a thumbnail as proof that you recorded it.",
+      "es": "No se sube ni se evalúa. Solo guardamos una miniatura como prueba de que lo grabaste."
+    },
+    "title_a": "Explaining Where You Fit",
+    "title_b": "in a Company",
+    "chips_en": [
+      "1 hour",
+      "2 to 3 minutes",
+      "Your video stays with you",
+      "Capstone · Part 5"
+    ],
+    "chips_es": [
+      "1 hora",
+      "2 a 3 minutos",
+      "Tu video se queda contigo",
+      "Capstone · Parte 5"
+    ],
+    "intro_en": "Record yourself as if it's your first week at a new company. Explain the company's structure, your role and who you report to. Use your Writing email and your Research as a base.",
+    "intro_es": "Grábate como si fuera tu primera semana en una empresa nueva. Explica la estructura de la empresa, tu rol y a quién le reportas. Usa tu correo de Writing y tu Research como base."
+  },
+  "must": [
+    {
+      "en": "Introduce yourself as if it's your first week at a new company",
+      "es": "Preséntate como si fuera tu primera semana en una empresa nueva",
+      "color": "#7A4FD6"
+    },
+    {
+      "en": "The company's structure: functional, flat, matrix or divisional",
+      "es": "La estructura de la empresa: funcional, plana, matricial o divisional",
+      "color": "#00A3C4"
+    },
+    {
+      "en": "Your role and who you would report to",
+      "es": "Tu rol y a quién le reportarías",
+      "color": "#1F7A4D"
+    },
+    {
+      "en": "End with one question you would ask HR or your manager about your role",
+      "es": "Termina con una pregunta que le harías a Recursos Humanos o a tu jefe sobre tu rol",
+      "color": "#C98A00"
+    }
+  ],
+  "tips": [
+    {
+      "en": "Look at the camera",
+      "es": "Mira a la cámara",
+      "icon": "eye",
+      "desc_en": "Not at the screen.",
+      "desc_es": "No a la pantalla."
+    },
+    {
+      "en": "Clear and confident",
+      "es": "Claro y seguro",
+      "icon": "smile",
+      "desc_en": "Speak clearly, with confidence.",
+      "desc_es": "Habla con claridad y confianza."
+    },
+    {
+      "en": "Low background noise",
+      "es": "Poco ruido de fondo",
+      "icon": "mic",
+      "desc_en": "Find a quiet space and check your mic.",
+      "desc_es": "Busca un lugar silencioso y revisa tu micrófono."
+    },
+    {
+      "en": "Light in front",
+      "es": "Luz de frente",
+      "icon": "sun",
+      "desc_en": "Face a window or a lamp.",
+      "desc_es": "Ponte frente a una ventana o lámpara."
+    },
+    {
+      "en": "Camera horizontal",
+      "es": "Cámara en horizontal",
+      "icon": "phone",
+      "desc_en": "Use your phone's camera, sideways.",
+      "desc_es": "Usa la cámara de tu teléfono, de lado."
+    },
+    {
+      "en": "Neat and presentable",
+      "es": "Ropa limpia y presentable",
+      "icon": "shirt",
+      "desc_en": "Dress as you would for your first week.",
+      "desc_es": "Vístete como lo harías en tu primera semana."
+    }
+  ],
+  "week": 5,
+  "seconds": {
+    "max": 180,
+    "min": 120
+  },
+  "delivery": {
+    "en": [
+      [
+        "Clear, confident voice",
+        "Speak slowly; don't rush."
+      ],
+      [
+        "Simple order",
+        "Who you are → structure → role → your question."
+      ],
+      [
+        "Natural pacing",
+        "Pause between ideas."
+      ]
+    ],
+    "es": [
+      [
+        "Voz clara y segura",
+        "Habla despacio; no corras."
+      ],
+      [
+        "Orden sencillo",
+        "Quién eres → estructura → rol → tu pregunta."
+      ],
+      [
+        "Ritmo natural",
+        "Haz pausas entre ideas."
+      ]
+    ]
+  },
+  "original": {
+    "goal": "Record a 2–3 minute video explaining where you fit in a company: the organizational structure, your role, and who you would report to.",
+    "time": "1 hour",
+    "title": "Explaining Where You Fit in a Company",
+    "body_en": "📹 Video Quiz\n\nTitle: Explaining Where You Fit in a Company\nTime: 1 hour\n\nTask: Record a 2–3 minute video where you:\n\nIntroduce yourself as if it's your first week in a new company.\n\nExplain what kind of organizational structure the company uses (functional, flat, matrix, divisional).\n\nDescribe your role and who you would report to.\n\nTips:\n\nLook directly at the camera, not the screen.\n\nSpeak clearly, confidently, and keep background noise low.\n\nEnd by sharing one question you would ask HR or your manager about your role.\n\n📝 Submission:\nUpload your video (MP4 or MOV preferred) to the course platform.\n\n👉 https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODA4OTY1MjA4MzE4/details",
+    "body_es": "📹 Cuestionario en Video\n\nTítulo: Explicando Dónde Encajas en una Empresa\nTiempo: 1 hora\n\nTarea: Graba un video de 2 a 3 minutos donde:\n\nTe presentes como si fuera tu primera semana en una nueva empresa.\n\nExpliques qué tipo de estructura organizacional utiliza la empresa (funcional, plana, matricial, divisional).\n\nDescribas tu rol y a quién reportarías.\n\nConsejos:\n\nMira directamente a la cámara, no a la pantalla.\n\nHabla con claridad, confianza y mantén el ruido de fondo bajo.\n\nTermina compartiendo una pregunta que le harías a Recursos Humanos o a tu gerente sobre tu rol.\n\n📝 Entrega:\nSube tu video (MP4 o MOV preferido) a la plataforma del curso.\n\n👉 https://classroom.google.com/c/NzgzNjY5MDgwMDkx/a/ODA4OTY1MjA4MzE4/details",
+    "goal_es": "Graba un video de 2 a 3 minutos explicando dónde encajas en una empresa: la estructura organizacional, tu rol y a quién reportarías.",
+    "title_es": "Explicando Dónde Encajas en una Empresa"
+  },
+  "auto_stop_s": 210,
+  "capstone_part": 5,
+  "script_source_lesson_id": "5b219653-cc82-4ae9-9b46-0867481ffc26"
+}

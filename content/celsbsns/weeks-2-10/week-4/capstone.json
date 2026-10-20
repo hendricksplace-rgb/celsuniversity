@@ -1,0 +1,58 @@
+{
+  "part": 4,
+  "week": 4,
+  "title_es": "Tu historial laboral en forma de currículum",
+  "title_en": "Your work history in resume form",
+  "preview_es": [
+    "Tus últimos puestos: cargo, empresa, fechas",
+    "2 logros por puesto, con números si puedes",
+    "Tu educación y certificaciones"
+  ],
+  "preview_en": [
+    "Your recent jobs: title, company, dates",
+    "2 achievements per job, with numbers if you can",
+    "Your education and certifications"
+  ],
+  "fields": [
+    {
+      "k": "jobs",
+      "label_es": "Tus últimos puestos",
+      "label_en": "Your recent jobs",
+      "hint_es": "Uno por línea, el más reciente primero: cargo | empresa | ciudad | fechas. Puedes tomarlo de tu currículum de Writing.",
+      "hint_en": "One per line, most recent first: title | company | city | dates. You can take it from your Writing resume.",
+      "type": "textarea",
+      "min": 60,
+      "fill_from": "writing"
+    },
+    {
+      "k": "achievements",
+      "label_es": "2 logros por puesto",
+      "label_en": "2 achievements per job",
+      "hint_es": "En inglés, con viñetas: verbo de acción + resultado, con números si puedes.",
+      "hint_en": "In English, as bullets: action verb + result, with numbers if you can.",
+      "type": "textarea",
+      "min": 120,
+      "fill_from": "writing"
+    },
+    {
+      "k": "education",
+      "label_es": "Educación y certificaciones",
+      "label_en": "Education and certifications",
+      "hint_es": "Título, escuela, ciudad y año. Agrega certificaciones si las tienes.",
+      "hint_en": "Degree, school, city and year. Add certifications if you have them.",
+      "type": "textarea",
+      "min": 30,
+      "fill_from": "writing"
+    },
+    {
+      "k": "pitch",
+      "label_es": "Tu pitch profesional de 1 minuto",
+      "label_en": "Your 1-minute career pitch",
+      "hint_es": "Tu mejor intento de Speaking (feria de empleo) ya está aquí. Mejóralo si quieres.",
+      "hint_en": "Your best Speaking try (career fair) is already here. Improve it if you want.",
+      "type": "textarea",
+      "min": 80,
+      "fill_from": "speaking"
+    }
+  ]
+}

@@ -1,0 +1,285 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Talk About Your Career",
+    "title_b": "with Confidence",
+    "chips_en": [
+      "2 hours",
+      "3 situations",
+      "10 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 situaciones",
+      "10 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Simulate 3 real hiring situations in the U.S.: a phone screen, your first day with HR and a career fair. Practice out loud, see what you said, and repeat until it sounds natural.",
+    "intro_es": "Simula 3 situaciones reales de contratación en EE. UU.: una entrevista telefónica, tu primer día con Recursos Humanos y una feria de empleo. Practica en voz alta, mira lo que dijiste y repite hasta que suene natural."
+  },
+  "week": 4,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Was it clear?",
+        "Did you mention a result with a number?",
+        "Did your career goal sound confident?"
+      ],
+      "es": [
+        "¿Fue claro?",
+        "¿Mencionaste un resultado con un número?",
+        "¿Tu meta profesional sonó segura?"
+      ]
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "d_en": "Several times, even if it feels strange.",
+      "d_es": "Varias veces, aunque te sientas raro.",
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta"
+    },
+    {
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto.",
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz"
+    },
+    {
+      "d_en": "A friend, classmate or family member.",
+      "d_es": "Un amigo, compañero o familiar.",
+      "icon": "people",
+      "t_en": "With someone if you can",
+      "t_es": "Con alguien si puedes"
+    },
+    {
+      "d_en": "The words from Week 4.",
+      "d_es": "Las palabras de la Semana 4.",
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario"
+    }
+  ],
+  "original": {
+    "goal": "Practice talking about your work history and career goals in real hiring situations.",
+    "time": "2 Hours",
+    "title": "Talk About Your Career with Confidence",
+    "body_en": "[Built by CelsU from the CelsBSNS syllabus. The original Kajabi lesson was empty: \"Content pending — this lesson was empty in the original Kajabi course.\"]\n\n🤝 Speaking Practice – Week 4\n\nTitle: Talk About Your Career with Confidence\nEstimated Time: 2 Hours\nGoal: Practice talking about your work history and career goals in real hiring situations.\n\nSyllabus line (Week 4):\nWeek 4 – Human Resources & Hiring\nThe hiring process, onboarding, employee benefits\nCapstone Part 4: Your work history in resume form\nReading: Sample resumes and job ads\nWriting: First draft of your U.S.-style resume\nSpeaking: 1-minute pitch about your career goals\n\nInstructions (CelsU):\nComplete 3 speaking exercises: (1) a phone screen where a recruiter asks you to walk through your resume (3 tries); (2) an onboarding meeting where you ask HR about benefits and your first week (2 tries); (3) a career fair where a hiring manager asks what role you're looking for (5 tries, your 1-minute pitch).",
+    "body_es": "[Creado por CelsU a partir del programa de CelsBSNS. La lección original de Kajabi estaba vacía: \"Contenido pendiente: esta lección estaba vacía en el curso original de Kajabi.\"]\n\n🤝 Práctica de Hablar – Semana 4\n\nTítulo: Habla de tu carrera con seguridad\nTiempo Estimado: 2 Horas\nObjetivo: Practicar cómo hablar de tu historial laboral y tus metas profesionales en situaciones reales de contratación.\n\nLínea del programa (Semana 4):\nSemana 4 – Recursos Humanos y Contratación\nEl proceso de contratación, la incorporación (onboarding) y las prestaciones para empleados\nCapstone Parte 4: Tu historial laboral en forma de currículum\nLectura: Ejemplos de currículums y anuncios de empleo\nEscritura: Primer borrador de tu currículum al estilo de EE. UU.\nExpresión oral: Pitch de 1 minuto sobre tus metas profesionales\n\nInstrucciones (CelsU):\nCompleta 3 ejercicios de habla: (1) una entrevista telefónica en la que una reclutadora te pide que le expliques tu currículum (3 intentos); (2) una reunión de incorporación en la que le preguntas a Recursos Humanos sobre prestaciones y tu primera semana (2 intentos); (3) una feria de empleo en la que un gerente te pregunta qué puesto buscas (5 intentos, tu pitch de 1 minuto).",
+    "goal_es": "Practicar cómo hablar de tu historial laboral y tus metas profesionales en situaciones reales de contratación.",
+    "title_es": "Habla de tu carrera con seguridad"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Practice 3 times. Follow your resume, but don't read it: tell it like a short story.",
+        "es": "Practica 3 veces. Sigue tu currículum, pero no lo leas: cuéntalo como una historia corta."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Phone Screen",
+          "es": "Zoom · Phone Screen"
+        },
+        "kind": "zoom",
+        "line": "Thanks for joining, it's nice to meet you! Can you walk me through your resume?",
+        "meta": {
+          "en": "Recruiter call",
+          "es": "Llamada con reclutadora"
+        },
+        "tile": {
+          "name": "Laura · Recruiter",
+          "initials": "LG"
+        },
+        "speaker": {
+          "en": "LAURA",
+          "es": "LAURA"
+        }
+      },
+      "title": {
+        "en": "Phone Screen with a Recruiter",
+        "es": "Entrevista telefónica con una reclutadora"
+      },
+      "points": {
+        "en": [
+          "Your current or last role",
+          "One achievement with a number",
+          "Why you're interested in this job"
+        ],
+        "es": [
+          "Tu puesto actual o último",
+          "Un logro con un número",
+          "Por qué te interesa este empleo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: follow your resume",
+          "Try 2: add a number",
+          "Try 3: shorter and more confident"
+        ],
+        "es": [
+          "Intento 1: sigue tu currículum",
+          "Intento 2: agrega un número",
+          "Intento 3: más corto y más seguro"
+        ]
+      },
+      "limit_s": [
+        40,
+        60
+      ],
+      "situation": {
+        "en": "A recruiter calls you for a first interview on Zoom. She asks you to walk her through your resume in about one minute.",
+        "es": "Una reclutadora te llama para una primera entrevista por Zoom. Te pide que le expliques tu currículum en un minuto aproximadamente."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice once looking in the mirror, once with someone else.",
+        "es": "Practica una vez frente al espejo y otra con otra persona."
+      },
+      "icon": "people",
+      "reps": 2,
+      "scene": {
+        "bar": {
+          "en": "Onboarding · HR Orientation",
+          "es": "Onboarding · HR Orientation"
+        },
+        "kind": "meeting",
+        "line": "Welcome to the team! Do you have any questions about your benefits or your first week?",
+        "meta": {
+          "en": "Day 1",
+          "es": "Día 1"
+        },
+        "speaker": {
+          "en": "MARIA · HR MANAGER",
+          "es": "MARIA · HR MANAGER"
+        }
+      },
+      "title": {
+        "en": "Onboarding Meeting with HR",
+        "es": "Reunión de incorporación con Recursos Humanos"
+      },
+      "points": {
+        "en": [
+          "Thank HR and introduce yourself briefly",
+          "Ask one question about your benefits",
+          "Ask one question about your first week"
+        ],
+        "es": [
+          "Agradece y preséntate brevemente",
+          "Haz una pregunta sobre tus prestaciones",
+          "Haz una pregunta sobre tu primera semana"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: in the mirror",
+          "Try 2: with someone else"
+        ],
+        "es": [
+          "Intento 1: frente al espejo",
+          "Intento 2: con otra persona"
+        ]
+      },
+      "limit_s": [
+        25,
+        45
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "It's your first day at a U.S. company. The HR manager finishes the orientation and asks if you have any questions. You want to sound polite, clear and organized.",
+        "es": "Es tu primer día en una empresa de EE. UU. La gerente de Recursos Humanos termina la orientación y te pregunta si tienes dudas. Quieres sonar amable, claro y organizado."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 5 times, changing words slightly each time. This is your 1-minute career pitch: make it sound natural and confident, even if you make a mistake.",
+        "es": "Practica 5 veces, cambiando un poco las palabras cada vez. Es tu pitch profesional de 1 minuto: que suene natural y seguro, aunque te equivoques."
+      },
+      "icon": "elev",
+      "reps": 5,
+      "scene": {
+        "bar": {
+          "en": "Career Fair · Booth 12",
+          "es": "Feria de empleo · Stand 12"
+        },
+        "kind": "elevator",
+        "line": "So, what kind of role are you looking for?",
+        "meta": {
+          "en": "About 1 min",
+          "es": "1 min aprox."
+        },
+        "speaker": {
+          "en": "A HIRING MANAGER",
+          "es": "UN GERENTE DE CONTRATACIÓN"
+        }
+      },
+      "title": {
+        "en": "Career Fair Pitch",
+        "es": "Pitch en una feria de empleo"
+      },
+      "points": {
+        "en": [
+          "Your name and professional focus",
+          "Your strongest experience or result",
+          "The role you want next, and why"
+        ],
+        "es": [
+          "Tu nombre y enfoque profesional",
+          "Tu experiencia o resultado más fuerte",
+          "El puesto que quieres y por qué"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1",
+          "Try 2: change the opening",
+          "Try 3: change the ending",
+          "Try 4: shorter",
+          "Try 5: your best version"
+        ],
+        "es": [
+          "Intento 1",
+          "Intento 2: cambia el inicio",
+          "Intento 3: cambia el final",
+          "Intento 4: más corto",
+          "Intento 5: tu mejor versión"
+        ]
+      },
+      "limit_s": [
+        45,
+        70
+      ],
+      "situation": {
+        "en": "At a career fair, a hiring manager asks: “So, what kind of role are you looking for?” You have about one minute to share your career goals.",
+        "es": "En una feria de empleo, un gerente de contratación te pregunta: “So, what kind of role are you looking for?”. Tienes un minuto aproximadamente para compartir tus metas profesionales."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "1ac74ef4-7317-4bd0-ab80-415582a6ae37"
+}

@@ -1,0 +1,287 @@
+{
+  "hero": {
+    "priv_b": {
+      "en": "Your voice is not saved.",
+      "es": "Tu voz no se guarda."
+    },
+    "priv_p": {
+      "en": "The app listens to show you the text of what you said. We only save the text of your best try so you can compare it in Week 10.",
+      "es": "La app escucha para mostrarte el texto de lo que dijiste. Solo guardamos el texto de tu mejor intento para que lo compares en la Semana 10."
+    },
+    "title_a": "Finding Your Place",
+    "title_b": "in the Structure",
+    "chips_en": [
+      "2 hours",
+      "3 roleplays",
+      "9 tries in total",
+      "We only save your text"
+    ],
+    "chips_es": [
+      "2 horas",
+      "3 juegos de roles",
+      "9 intentos en total",
+      "Solo guardamos tu texto"
+    ],
+    "intro_en": "Roleplay 3 real situations: clarifying your reporting line, connecting with another department, and collaborating across teams. If you don't have a partner, practice each roleplay with ChatGPT.",
+    "intro_es": "Practica 3 situaciones reales: aclarar tu línea de reporte, conectar con otro departamento y colaborar entre equipos. Si no tienes compañero, practica cada juego de roles con ChatGPT."
+  },
+  "week": 5,
+  "bonus": {
+    "options": {
+      "en": [
+        "Yes",
+        "Kind of",
+        "Not yet"
+      ],
+      "es": [
+        "Sí",
+        "Más o menos",
+        "Todavía no"
+      ]
+    },
+    "questions": {
+      "en": [
+        "Did Activity 1 (your manager) feel natural?",
+        "Did Activity 2 (another department) feel natural?",
+        "Did Activity 3 (cross-functional) feel natural?"
+      ],
+      "es": [
+        "¿La actividad 1 (tu jefe) se sintió natural?",
+        "¿La actividad 2 (otro departamento) se sintió natural?",
+        "¿La actividad 3 (entre departamentos) se sintió natural?"
+      ]
+    },
+    "reflect": {
+      "en": "Which scenario required you to adjust your tone or approach?",
+      "es": "¿Cuál escenario requirió que ajustaras tu tono o enfoque?"
+    }
+  },
+  "max_s": 90,
+  "rules": [
+    {
+      "d_en": "Several times, even if it feels strange.",
+      "d_es": "Varias veces, aunque te sientas raro.",
+      "icon": "repeat",
+      "t_en": "Practice out loud",
+      "t_es": "Practica en voz alta"
+    },
+    {
+      "d_en": "Tap the mic and see your text.",
+      "d_es": "Toca el micrófono y mira tu texto.",
+      "icon": "mic",
+      "t_en": "Record your voice",
+      "t_es": "Graba tu voz"
+    },
+    {
+      "d_en": "No partner? Practice each roleplay with ChatGPT.",
+      "d_es": "¿Sin compañero? Practica cada juego de roles con ChatGPT.",
+      "icon": "people",
+      "t_en": "With a partner or ChatGPT",
+      "t_es": "Con un compañero o ChatGPT"
+    },
+    {
+      "d_en": "The words from Week 5.",
+      "d_es": "Las palabras de la Semana 5.",
+      "icon": "book",
+      "t_en": "Use your vocabulary",
+      "t_es": "Usa tu vocabulario"
+    }
+  ],
+  "original": {
+    "goal": "Roleplay finding your place in the structure: clarify your reporting line, connect with another department, and collaborate across functions.",
+    "time": "2 hours",
+    "title": "Roleplay: Finding Your Place in the Structure",
+    "body_en": "🤝 Speaking Practice\n\nTitle: Roleplay: Finding Your Place in the Structure\nTime: 2 hours\n\nRemember: If you don't have a partner to practice with, use ChatGPT with each roleplay.\n\nActivity 1 – Reporting Line Clarification\nPartner plays your manager, you ask:\n\"Would you like me to send progress updates directly to you, or also to the project lead?\"\n\nActivity 2 – Department Interaction\nPartner plays someone from another department. You practice introducing yourself and explaining how your role connects with theirs.\n\nActivity 3 – Cross-Functional Collaboration\nRoleplay a short scenario where Marketing, Sales, and Finance must collaborate on a campaign. Practice sharing information clearly across departments.\n\nReflection:\nWhich scenario was most natural for you? Which required you to adjust your tone or approach?",
+    "body_es": "🤝 Práctica de Habla\n\nTítulo: Juego de Roles: Encontrando tu Lugar en la Estructura\nTiempo: 2 horas\n\nRecuerda: Si no tienes un compañero para practicar, usa ChatGPT con cada juego de roles.\n\nActividad 1 – Aclaración de la Línea de Reporte\nEl compañero juega el papel de tu gerente, tú preguntas:\n\"Would you like me to send progress updates directly to you, or also to the project lead?\" (¿Te gustaría que te enviara actualizaciones de progreso directamente a ti, o también al líder del proyecto?)\n\nActividad 2 – Interacción entre Departamentos\nEl compañero juega el papel de alguien de otro departamento. Practicas presentándote y explicando cómo tu rol se conecta con el de ellos.\n\nActividad 3 – Colaboración Interfuncional\nJuego de roles en un escenario corto donde Marketing, Ventas y Finanzas deben colaborar en una campaña. Practica compartiendo información claramente entre departamentos.\n\nReflexión:\n¿Cuál escenario fue más natural para ti? ¿Cuál requirió que ajustaras tu tono o enfoque?",
+    "goal_es": "Practica con juegos de roles cómo encontrar tu lugar en la estructura: aclarar tu línea de reporte, conectar con otro departamento y colaborar entre áreas.",
+    "title_es": "Juego de Roles: Encontrando tu Lugar en la Estructura"
+  },
+  "exercises": [
+    {
+      "how": {
+        "en": "Your partner (or ChatGPT) plays your manager. Ask the question 3 times: first as written, then in your own words, then add what you'll do next.",
+        "es": "Tu compañero (o ChatGPT) hace el papel de tu jefe. Haz la pregunta 3 veces: primero tal como está escrita, luego con tus palabras y luego agregando qué vas a hacer después."
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "1:1 · Your manager",
+          "es": "1:1 · Tu jefe"
+        },
+        "kind": "meeting",
+        "line": "So, how's your first week going? Any questions about how we work?",
+        "meta": {
+          "en": "15 minutes",
+          "es": "15 minutos"
+        },
+        "speaker": {
+          "en": "DAVID · MANAGER",
+          "es": "DAVID · MANAGER"
+        }
+      },
+      "title": {
+        "en": "Reporting Line Clarification",
+        "es": "Aclarar tu línea de reporte"
+      },
+      "points": {
+        "en": [
+          "Thank them and give a little context",
+          "Ask: “Would you like me to send progress updates directly to you, or also to the project lead?”",
+          "Confirm what you'll do next"
+        ],
+        "es": [
+          "Agradece y da un poco de contexto",
+          "Pregunta: “Would you like me to send progress updates directly to you, or also to the project lead?”",
+          "Confirma qué vas a hacer después"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: the question as written",
+          "Try 2: in your own words",
+          "Try 3: add your next step"
+        ],
+        "es": [
+          "Intento 1: la pregunta tal cual",
+          "Intento 2: con tus palabras",
+          "Intento 3: agrega tu siguiente paso"
+        ]
+      },
+      "limit_s": [
+        15,
+        30
+      ],
+      "situation": {
+        "en": "Your partner plays your manager. You ask: “Would you like me to send progress updates directly to you, or also to the project lead?”",
+        "es": "Tu compañero hace el papel de tu jefe. Tú preguntas: “Would you like me to send progress updates directly to you, or also to the project lead?” (¿Quieres que te envíe las actualizaciones de avance directamente a ti, o también al líder del proyecto?)"
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times. Change the tone each time to find what feels natural with someone you don't know yet.",
+        "es": "Practica 3 veces. Cambia el tono cada vez para encontrar lo que se siente natural con alguien que todavía no conoces."
+      },
+      "icon": "video",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Zoom · Quick intro",
+          "es": "Zoom · Presentación rápida"
+        },
+        "kind": "zoom",
+        "line": "Hi, I'm Priya from Finance. I don't think we've met. What do you do?",
+        "meta": {
+          "en": "Starts in 0:30",
+          "es": "Empieza en 0:30"
+        },
+        "tile": {
+          "name": "Priya · Finance",
+          "initials": "PS"
+        },
+        "speaker": {
+          "en": "PRIYA",
+          "es": "PRIYA"
+        }
+      },
+      "title": {
+        "en": "Department Interaction",
+        "es": "Interacción entre departamentos"
+      },
+      "points": {
+        "en": [
+          "Your name and role",
+          "Your department and who you report to",
+          "How your role connects with theirs"
+        ],
+        "es": [
+          "Tu nombre y tu rol",
+          "Tu departamento y a quién le reportas",
+          "Cómo se conecta tu rol con el suyo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: more formal",
+          "Try 2: friendlier",
+          "Try 3: shorter"
+        ],
+        "es": [
+          "Intento 1: más formal",
+          "Intento 2: más amigable",
+          "Intento 3: más corto"
+        ]
+      },
+      "limit_s": [
+        25,
+        45
+      ],
+      "situation": {
+        "en": "Your partner plays someone from another department. Introduce yourself and explain how your role connects with theirs.",
+        "es": "Tu compañero hace el papel de alguien de otro departamento. Preséntate y explica cómo tu rol se conecta con el suyo."
+      }
+    },
+    {
+      "how": {
+        "en": "Practice 3 times, once as each department. Share information clearly: what you bring, what you need, and by when.",
+        "es": "Practica 3 veces, una por cada departamento. Comparte la información con claridad: qué aportas, qué necesitas y para cuándo."
+      },
+      "icon": "people",
+      "reps": 3,
+      "scene": {
+        "bar": {
+          "en": "Campaign kickoff · Marketing + Sales + Finance",
+          "es": "Arranque de campaña · Marketing + Ventas + Finanzas"
+        },
+        "kind": "meeting",
+        "line": "Let's do a quick round. What does each team need for the spring campaign?",
+        "meta": {
+          "en": "3 departments",
+          "es": "3 departamentos"
+        },
+        "speaker": {
+          "en": "ALEX · PROJECT LEAD",
+          "es": "ALEX · PROJECT LEAD"
+        }
+      },
+      "title": {
+        "en": "Cross-Functional Collaboration",
+        "es": "Colaboración interfuncional"
+      },
+      "points": {
+        "en": [
+          "The department you represent",
+          "The information you'll share with the others",
+          "What you need from the other teams, and by when"
+        ],
+        "es": [
+          "El departamento que representas",
+          "La información que vas a compartir con los demás",
+          "Lo que necesitas de los otros equipos y para cuándo"
+        ]
+      },
+      "twists": {
+        "en": [
+          "Try 1: as Marketing",
+          "Try 2: as Sales",
+          "Try 3: as Finance"
+        ],
+        "es": [
+          "Intento 1: como Marketing",
+          "Intento 2: como Ventas",
+          "Intento 3: como Finanzas"
+        ]
+      },
+      "limit_s": [
+        30,
+        60
+      ],
+      "manual_ok": true,
+      "situation": {
+        "en": "Marketing, Sales and Finance must collaborate on a campaign. Practice sharing information clearly across departments.",
+        "es": "Marketing, Ventas y Finanzas deben colaborar en una campaña. Practica compartir información con claridad entre departamentos."
+      }
+    }
+  ],
+  "vocab_from_lesson_id": "cf1c7dc6-5e8c-46eb-b98f-606039d0f6bd"
+}

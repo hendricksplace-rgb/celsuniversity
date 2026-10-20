@@ -1,0 +1,56 @@
+{
+  "part": 8,
+  "week": 8,
+  "title_es": "Cómo te representas profesionalmente",
+  "title_en": "How you represent yourself professionally",
+  "preview_es": [
+    "Tu frase de marca personal (titular de LinkedIn)",
+    "3 palabras que quieres que la gente asocie contigo"
+  ],
+  "preview_en": [
+    "Your personal brand line (LinkedIn headline)",
+    "3 words you want people to associate with you"
+  ],
+  "fields": [
+    {
+      "k": "headline",
+      "label_es": "Tu frase de marca personal (titular de LinkedIn)",
+      "label_en": "Your personal brand line (LinkedIn headline)",
+      "hint_es": "En inglés, una línea: tu rol + a quién ayudas + tu valor. Ej.: “Logistics Coordinator | Helping teams deliver on time, every time”.",
+      "hint_en": "In English, one line: your role + who you help + your value. E.g. “Logistics Coordinator | Helping teams deliver on time, every time”.",
+      "type": "input",
+      "min": 25,
+      "fill_from": null
+    },
+    {
+      "k": "words",
+      "label_es": "3 palabras que quieres que la gente asocie contigo",
+      "label_en": "3 words you want people to associate with you",
+      "hint_es": "En inglés, separadas por comas. Ej.: reliable, clear, creative.",
+      "hint_en": "In English, separated by commas. E.g. reliable, clear, creative.",
+      "type": "input",
+      "min": 12,
+      "fill_from": null
+    },
+    {
+      "k": "statement",
+      "label_es": "Tu marca personal de comunicación",
+      "label_en": "Your personal communication brand",
+      "hint_es": "1–2 oraciones en inglés sobre cómo te comunicas con colegas y clientes. Puedes usar tu nota de acción de Feedback.",
+      "hint_en": "1–2 sentences in English about how you communicate with colleagues and clients. You can use your Feedback action note.",
+      "type": "textarea",
+      "min": 80,
+      "fill_from": null
+    },
+    {
+      "k": "pitch",
+      "label_es": "Tu propuesta de valor en 30 segundos",
+      "label_en": "Your 30-second value pitch",
+      "hint_es": "Tu mejor intento del elevator pitch de Speaking ya está aquí. Cámbialo para hablar de ti y de tu valor profesional.",
+      "hint_en": "Your best elevator pitch try from Speaking is already here. Adapt it to talk about you and your professional value.",
+      "type": "textarea",
+      "min": 100,
+      "fill_from": "speaking"
+    }
+  ]
+}
