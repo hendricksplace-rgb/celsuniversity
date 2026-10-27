@@ -16,47 +16,6 @@ import { BookPart } from "@/components/part/BookPart";
 import { CelsBookPart, type CelsBook, type BookSection } from "@/components/part/CelsBookPart";
 import { CelsusQuizRoute } from "@/components/celsbook/QuizRoute";
 
-/** CelsCast (block `celscast`, version 1): lines with speaker and per-word start times (`wt`). */
-function celscastTrack(data: Record<string, unknown>, sign: (ref: string) => string | null): Track {
-  const speakers = (data.speakers ?? {}) as Record<string, string>;
-  const lines = (Array.isArray(data.lines) ? data.lines : []) as { speaker?: string; text?: string; start?: number; wt?: number[] }[];
-  const cues: Cue[] = lines
-    .filter((l) => typeof l.text === "string" && typeof l.start === "number")
-    .map((l) => {
-      const parts = l.text!.split(/\s+/).filter(Boolean);
-      const wt = Array.isArray(l.wt) ? l.wt.filter((x) => typeof x === "number") : [];
-      return {
-        start: l.start!,
-        text: l.text!,
-        speaker: l.speaker ? (speakers[l.speaker] ?? l.speaker) : undefined,
-        words: wt.length === parts.length ? parts.map((text, i) => ({ start: wt[i], text })) : undefined,
-      };
-    });
-  const chapters = (Array.isArray(data.chapters) ? data.chapters : []) as Chapter[];
-  return {
-    key: "celscast",
-    label: "CelsCast",
-    src: typeof data.audio === "string" ? sign(data.audio) : null,
-    cues,
-    chapters: chapters.filter((c) => typeof c?.start === "number" && typeof c?.title === "string"),
-    voice: Object.values(speakers).join(" y "),
-  };
-}
-
-type Timed = { start?: unknown; text?: unknown };
-/** audio_transcripts.words → player lines, each with its own words (by start time). */
-function transcriptCues(w: unknown): Cue[] {
-  const ok = (x: Timed): x is { start: number; text: string } => typeof x?.start === "number" && typeof x?.text === "string" && !!x.text.trim();
-  const data = (w ?? {}) as { segments?: Timed[]; words?: Timed[] };
-  const segs = (Array.isArray(data.segments) ? data.segments : []).filter(ok);
-  const words = (Array.isArray(data.words) ? data.words : []).filter(ok);
-  return segs.map((s, i) => {
-    const end = segs[i + 1]?.start ?? Infinity;
-    const mine = words.filter((x) => x.start >= s.start && x.start < end).map((x) => ({ start: x.start, text: x.text.trim() }));
-    return { start: s.start, text: s.text.trim(), words: mine.length ? mine : undefined };
-  });
-}
-
 /** Interactive CelsBook (block `celsbook`, version 1) with signed audio. "Episode 6: Let's eat" → kicker + "Let's eat". */
 function toCelsBook(data: Record<string, unknown>, episode: { title: string; artwork: string | null }, sign: (ref: string) => string | null, kicker: string): CelsBook {
   const str = (v: unknown) => (typeof v === "string" ? v : "");
@@ -93,6 +52,7 @@ function toCelsBook(data: Record<string, unknown>, episode: { title: string; art
   };
 }
 import { AudioPart, type Chapter, type Cue, type Track } from "@/components/part/AudioPart";
+import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
 
 // Same list as the exercise renderers (components/lesson/activities/Grammar.tsx).

@@ -11,8 +11,10 @@ import { fill } from "@/components/course/kit";
 import { Empty, FinishButton, usePartShell } from "./PartShell";
 
 /** A transcript line; `words` (with their start times) light up one by one while the line plays. */
-export type Cue = { start: number; text: string; words?: { start: number; text: string }[]; speaker?: string };
-export type Track = { key: string; label: string; src: string | null; cues: Cue[]; chapters: Chapter[]; voice: string | null };
+/** `es`: a Spanish subtitle (CelsUS CelsCast). */
+export type Cue = { start: number; text: string; words?: { start: number; text: string }[]; speaker?: string; es?: string };
+/** `ref`: the storage:// file behind `src`, when the player signs it on request (/app/archivo). */
+export type Track = { key: string; label: string; src: string | null; ref?: string | null; cues: Cue[]; chapters: Chapter[]; voice: string | null };
 // CelsCast hosts: Amy in pink, Brian in cyan; anyone else in white.
 const SPEAKER_COLOR: Record<string, string> = { Amy: "#FF7AB8", Brian: "#5CE1FF" };
 export type Chapter = { start: number; title: string };

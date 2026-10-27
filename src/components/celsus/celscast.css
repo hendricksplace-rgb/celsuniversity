@@ -1,0 +1,308 @@
+/* CelsUS CelsCast (C-005). Scoped under .ccu. Amy gold, Brian navy; no pink or cyan. */
+.ccu {
+  --navy: #0e2547;
+  --blue: #1e4e8c;
+  --gold: #f2c230;
+  --goldS: #fbf1cf;
+  --goldD: #8a5a00;
+  --line: #e4e0d4;
+  --txt: #1b2333;
+  --mut: #5b6578;
+  --serif: var(--font-serif), "Source Serif 4", Georgia, serif;
+  display: grid;
+  gap: 12px;
+  color: var(--txt);
+}
+.ccu button {
+  font: inherit;
+  cursor: pointer;
+}
+.ccu button:focus-visible,
+.ccu input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+.ccu .tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ccu .tabs button {
+  min-height: 44px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  font-weight: 700;
+  font-size: 15px;
+}
+.ccu .tabs button[aria-selected="true"] {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+.ccu .card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(14, 37, 71, 0.08);
+}
+.ccu .hd {
+  background: linear-gradient(180deg, var(--navy), #12305e);
+  color: #fff;
+  border-bottom: 4px solid var(--gold);
+  padding: 18px 20px 16px;
+}
+.ccu .kick {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.ccu .hd h2 {
+  margin: 4px 0 2px;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.2;
+}
+.ccu .with {
+  margin: 0;
+  font-size: 14px;
+  color: #d5dcea;
+}
+.ccu .chap {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 16px 4px;
+  scrollbar-width: none;
+}
+.ccu .chap::-webkit-scrollbar {
+  display: none;
+}
+.ccu .chap button {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fbfaf6;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ccu .chap button[aria-current="true"] {
+  background: var(--goldS);
+  border-color: var(--gold);
+}
+.ccu .chap .ct {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--mut);
+  font-variant-numeric: tabular-nums;
+}
+.ccu .lines {
+  list-style: none;
+  margin: 8px 12px 0;
+  padding: 4px;
+  max-height: 340px;
+  overflow-y: auto;
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+.ccu .lines button {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  padding: 10px 12px;
+  color: var(--txt);
+  opacity: 0.62;
+  transition: background 0.15s, opacity 0.15s;
+}
+.ccu .lines button.past {
+  opacity: 0.8;
+}
+.ccu .lines button.on {
+  opacity: 1;
+  background: #f6f3ea;
+}
+.ccu .who {
+  justify-self: start;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin-bottom: 2px;
+  background: #e9edf4;
+  color: var(--navy);
+}
+.ccu .who.amy {
+  background: var(--gold);
+  color: var(--navy);
+}
+.ccu .who.brian {
+  background: var(--blue);
+  color: #fff;
+}
+.ccu .en {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--navy);
+}
+.ccu .w {
+  border-radius: 5px;
+}
+.ccu .w.said {
+  color: var(--blue);
+}
+.ccu .w.now {
+  background: var(--gold);
+  color: var(--navy);
+}
+.ccu .es {
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--mut);
+}
+.ccu .turn {
+  margin: 8px 16px 0;
+  min-height: 22px;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--goldD);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.ccu .turn.show {
+  opacity: 1;
+}
+.ccu .bar {
+  position: relative;
+  margin: 8px 16px 0;
+}
+.ccu .bar input {
+  width: 100%;
+  accent-color: var(--navy);
+}
+.ccu .tick {
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: var(--gold);
+  pointer-events: none;
+}
+.ccu .times {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mut);
+  font-variant-numeric: tabular-nums;
+}
+.ccu .ctl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 4px;
+}
+.ccu .sp {
+  min-width: 56px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fbfaf6;
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 15px;
+}
+.ccu .sp.ghost {
+  visibility: hidden;
+}
+.ccu .sk {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--navy);
+  font-size: 22px;
+}
+.ccu .pp {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 4px solid #fff;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold), 0 12px 24px rgba(14, 37, 71, 0.25);
+}
+.ccu .tap {
+  margin: 6px 16px 14px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mut);
+}
+.ccu .seal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 16px 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--goldS);
+  border: 1px solid var(--gold);
+  color: var(--navy);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 18px;
+}
+.ccu .seal span {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: var(--gold);
+  font-family: inherit;
+}
+@media (min-width: 900px) {
+  .ccu .lines {
+    max-height: 420px;
+  }
+  .ccu .en {
+    font-size: 19px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ccu .lines button,
+  .ccu .turn {
+    transition: none;
+  }
+}
