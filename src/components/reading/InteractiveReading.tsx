@@ -7,8 +7,9 @@ import { createPortal } from "react-dom";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
-import { mergeReadingState, navTitle, plain, tedEmbed, tokenize, type ArticleBlock, type Email, type Lang, type ReadingCase, type ReadingData, type ReadingState, type Talk } from "@/lib/reading";
+import { mergeReadingState, navTitle, plain, tedEmbed, tokenize, youtubeEmbed, youtubeWatch, type ArticleBlock, type Email, type Lang, type ReadingCase, type ReadingData, type ReadingState, type Talk } from "@/lib/reading";
 import { montserrat } from "@/components/bsns/fonts";
+import { reportError } from "@/lib/report-error";
 import { Icon, Layout, Sheet, Pager, RailCard, RailSteps, ShellPage, StepHead as ShellStepHead, StepRowText, TopBar, goTo, shell as sh, useLangPref, useScrollSpy } from "@/components/bsns/shell";
 import s from "./reading.module.css";
 
@@ -50,7 +51,7 @@ const UI = {
     subject: "Asunto",
     sources: "FUENTES",
     source: "Ver fuente",
-    disc: "Este artículo fue escrito por CelsU con base en las fuentes citadas. Las cifras provienen de esas publicaciones. Las charlas se reproducen con el reproductor oficial de TED.",
+    disc: "Este artículo fue escrito por CelsU con base en las fuentes citadas. Las cifras provienen de esas publicaciones. Las charlas se reproducen con el reproductor oficial de TED o de YouTube.",
     video: "El video",
     play: "Ver la charla",
     playSub: "Se reproduce aquí mismo · subtítulos en inglés y español",
@@ -58,6 +59,9 @@ const UI = {
     extra: "Para profundizar (opcional)",
     extraBtn: "Ver charla",
     extraHide: "Ocultar charla",
+    ytOpens: "Este video se abre en YouTube",
+    ytBtn: "Ver en YouTube",
+    newTab: "se abre en otra pestaña",
     cases: "Tres casos reales",
     caseLab: "CASO",
     rq: "PREGUNTAS DE REFLEXIÓN",
@@ -123,7 +127,7 @@ const UI = {
     subject: "Subject",
     sources: "SOURCES",
     source: "See source",
-    disc: "This article was written by CelsU based on the sources cited. Figures come from those publications. Talks play through TED's official player.",
+    disc: "This article was written by CelsU based on the sources cited. Figures come from those publications. Talks play through TED's or YouTube's official player.",
     video: "The video",
     play: "Watch the talk",
     playSub: "Plays right here · English and Spanish subtitles",
@@ -131,6 +135,9 @@ const UI = {
     extra: "Go deeper (optional)",
     extraBtn: "Watch talk",
     extraHide: "Hide talk",
+    ytOpens: "This video opens on YouTube",
+    ytBtn: "Watch on YouTube",
+    newTab: "opens in a new tab",
     cases: "Three real cases",
     caseLab: "CASE",
     rq: "REFLECTION QUESTIONS",
@@ -930,18 +937,8 @@ function Compare({ b, lang, t }: { b: Extract<ArticleBlock, { type: "compare" }>
 
 function TedPlayer({ talk, lang, t, big }: { talk: Talk; lang: Lang; t: UIT; big?: boolean }) {
   const [on, setOn] = useState(false);
-  if (on)
-    return (
-      <div className={s.player}>
-        <iframe
-          src={tedEmbed(talk.slug, lang)}
-          title={`${talk.title} · ${talk.speaker} (TED)`}
-          allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-        />
-      </div>
-    );
+  if (talk.link_only && talk.yt) return <YouTubeCard id={talk.yt} talk={talk} t={t} />;
+  if (on) return <TalkFrame talk={talk} lang={lang} t={t} />;
   return (
     <button type="button" className={`${s.player} ${s.poster}`} onClick={() => setOn(true)} data-big={big || undefined}>
       <span className={s.playCircle}>
@@ -957,8 +954,90 @@ function TedPlayer({ talk, lang, t, big }: { talk: Talk; lang: Lang; t: UIT; big
   );
 }
 
+/** TED's player, or for a YouTube-only TEDx talk the YouTube player itself, which can report a failure. */
+function TalkFrame({ talk, lang, t }: { talk: Talk; lang: Lang; t: UIT }) {
+  const title = `${talk.title} · ${talk.speaker} (${talk.event})`;
+  if (talk.youtube_only && talk.yt) return <YouTubeFrame id={talk.yt} talk={talk} title={title} t={t} />;
+  return (
+    <div className={s.player}>
+      <iframe src={tedEmbed(talk.slug, lang)} title={title} allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowFullScreen loading="lazy" />
+    </div>
+  );
+}
+
+const YT_ORIGIN = /^https:\/\/www\.youtube(-nocookie)?\.com$/;
+
+/**
+ * YouTube embed that listens to the player's own messages (no YouTube script on our page). An `onError`
+ * (removed, private, embedding off), or no answer within 8 s, swaps in the "Ver en YouTube" card.
+ */
+function YouTubeFrame({ id, talk, title, t }: { id: string; talk: Talk; title: string; t: UIT }) {
+  const frame = useRef<HTMLIFrameElement>(null);
+  const [origin, setOrigin] = useState<string | null>(null);
+  const [state, setState] = useState<"load" | "ok" | "fail">("load");
+  useEffect(() => setOrigin(window.location.origin), []);
+  useEffect(() => {
+    if (!origin) return;
+    const onMsg = (e: MessageEvent) => {
+      if (!YT_ORIGIN.test(e.origin) || e.source !== frame.current?.contentWindow) return;
+      let d: { event?: string; info?: unknown } | null = null;
+      try {
+        d = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+      } catch {
+        return;
+      }
+      if (d?.event === "onError") {
+        setState("fail");
+        reportError(`YouTube embed failed: ${id} (${JSON.stringify(d.info)})`);
+      } else if (d?.event === "onReady" || d?.event === "initialDelivery" || d?.event === "infoDelivery") setState((v) => (v === "load" ? "ok" : v));
+    };
+    window.addEventListener("message", onMsg);
+    // The player only starts talking after a "listening" message, sent until it answers.
+    const hello = setInterval(() => frame.current?.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), "*"), 300);
+    const timeout = setTimeout(() => {
+      setState((v) => {
+        if (v === "load") reportError(`YouTube embed did not answer in 8 s: ${id}`);
+        return v === "load" ? "fail" : v;
+      });
+    }, 8000);
+    return () => {
+      window.removeEventListener("message", onMsg);
+      clearInterval(hello);
+      clearTimeout(timeout);
+    };
+  }, [origin, id]);
+  if (state === "fail") return <YouTubeCard id={id} talk={talk} t={t} />;
+  return (
+    <div className={s.player}>
+      {origin && <iframe ref={frame} src={youtubeEmbed(id, origin)} title={title} allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowFullScreen />}
+    </div>
+  );
+}
+
+/** Clean card instead of a black "Video unavailable" box: thumbnail and a "Ver en YouTube ↗" button. */
+function YouTubeCard({ id, talk, t }: { id: string; talk: Talk; t: UIT }) {
+  return (
+    <a className={`${s.player} ${s.ytCard}`} href={youtubeWatch(id)} target="_blank" rel="noopener noreferrer">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={`https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`} alt="" loading="lazy" />
+      <span className={s.ytShade} aria-hidden />
+      <span className={s.ytBody}>
+        <span className={s.ytNote}>{t.ytOpens}</span>
+        <span className={s.ytTitle}>
+          {talk.title} · {talk.speaker}
+        </span>
+        <span className={s.ytBtn}>
+          {t.ytBtn} <span aria-hidden>↗</span>
+        </span>
+        <span className={sh.sr}> ({t.newTab})</span>
+      </span>
+    </a>
+  );
+}
+
 function ExtraTalk({ talk, lang, t }: { talk: Talk; lang: Lang; t: UIT }) {
   const [on, setOn] = useState(false);
+  const linkOnly = talk.link_only && talk.yt;
   return (
     <div className={s.extra}>
       <div className={s.extraRow}>
@@ -976,15 +1055,18 @@ function ExtraTalk({ talk, lang, t }: { talk: Talk; lang: Lang; t: UIT }) {
             )}
           </span>
         </div>
-        <button type="button" className={s.ghostBtn} aria-expanded={on} onClick={() => setOn((o) => !o)}>
-          {on ? t.extraHide : t.extraBtn}
-        </button>
+        {linkOnly ? (
+          <a className={s.ghostBtn} href={youtubeWatch(talk.yt!)} target="_blank" rel="noopener noreferrer">
+            {t.ytBtn} <span aria-hidden>↗</span>
+            <span className={sh.sr}> ({t.newTab})</span>
+          </a>
+        ) : (
+          <button type="button" className={s.ghostBtn} aria-expanded={on} onClick={() => setOn((o) => !o)}>
+            {on ? t.extraHide : t.extraBtn}
+          </button>
+        )}
       </div>
-      {on && (
-        <div className={s.player}>
-          <iframe src={tedEmbed(talk.slug, lang)} title={`${talk.title} · ${talk.speaker} (TED)`} allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowFullScreen />
-        </div>
-      )}
+      {on && !linkOnly && <TalkFrame talk={talk} lang={lang} t={t} />}
     </div>
   );
 }

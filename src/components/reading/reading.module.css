@@ -616,6 +616,61 @@
   font-size: 12.5px;
   color: #d4e1f5;
 }
+/* "Ver en YouTube" card (C-017): shown instead of a black "Video unavailable" box. */
+.ytCard {
+  color: #fff !important;
+  text-decoration: none !important;
+}
+.ytCard img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.ytShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 34, 68, 0.35), rgba(15, 34, 68, 0.88));
+}
+.ytBody {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 18px;
+  text-align: left;
+}
+.ytNote {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #d4e1f5;
+}
+.ytTitle {
+  font-family: var(--title);
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.25;
+}
+.ytBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 800;
+}
+.ytCard:hover .ytBtn,
+.ytCard:focus-visible .ytBtn {
+  background: #ffe9a8;
+}
 .vidCap {
   display: flex;
   justify-content: space-between;
@@ -1341,4 +1396,15 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   vertical-align: 3px;
+}
+@media (max-width: 480px) {
+  .extraRow {
+    flex-wrap: wrap;
+  }
+  .extraRow .extraTxt {
+    flex: 1 1 200px;
+  }
+  .extraRow .ghostBtn {
+    margin-left: 46px;
+  }
 }

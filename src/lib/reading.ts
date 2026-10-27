@@ -35,7 +35,23 @@ export type ArticleBlock =
 /** `review` (week 8): a week-1 word brought back for review, labeled "Repaso" on its card. */
 export type Vocab = { es: string; d: string; ex: string; review?: boolean };
 export type Source = { id: number; who: string; what: string; pub: string; url: string };
-export type Talk = { provider: "ted"; slug: string; title: string; speaker: string; event: string; minutes: number; source?: number };
+/**
+ * A talk shown in the reading. TED talks play in TED's player. Some TEDx talks on ted.com are only a YouTube
+ * video (no TED stream): for those `yt` holds the YouTube id and `youtube_only` is true, and the page embeds the
+ * YouTube video directly so it can tell when it fails (C-017). `link_only`: no player, only "Ver en YouTube".
+ */
+export type Talk = {
+  provider: "ted";
+  slug: string;
+  title: string;
+  speaker: string;
+  event: string;
+  minutes: number;
+  source?: number;
+  yt?: string;
+  youtube_only?: boolean;
+  link_only?: boolean;
+};
 
 export type CaseActivity =
   | {
@@ -131,6 +147,9 @@ export function mergeReadingState(a: ReadingState, b: ReadingState): ReadingStat
 export type NavLink = { title: string; href: string } | null;
 
 /** The TED player for a talk, with subtitles in the student's language where TED has them. */
+export const youtubeEmbed = (id: string, origin: string) =>
+  `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?enablejsapi=1&playsinline=1&rel=0&modestbranding=1&origin=${encodeURIComponent(origin)}`;
+export const youtubeWatch = (id: string) => `https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;
 export const tedEmbed = (slug: string, lang: Lang) => `https://embed.ted.com/talks/lang/${lang}/${encodeURIComponent(slug)}?language=${lang}`;
 
 /** Splits English text with [[vocab]] and {n} citations into tokens. */
