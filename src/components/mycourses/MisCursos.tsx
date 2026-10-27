@@ -138,7 +138,7 @@ function Resume({ t, u, r }: { t: T; u: U; r: NonNullable<MyCoursesData["resume"
       <h2 className={s.secTitle}>{t.whereYouLeft}</h2>
       <div className={s.feat} data-state={state}>
         <div className={s.featIn}>
-          <div className={s.art}>{c.cover && <Image src={c.cover} alt={c.title} fill sizes="(max-width: 760px) 100vw, 600px" priority />}</div>
+          <div className={s.art}>{r.art && <Image src={r.art} alt={c.title} fill sizes="(max-width: 760px) 100vw, 600px" priority />}</div>
           <div>
             <div className={s.kick}>{kick}</div>
             <h3 className={s.featTitle}>{c.title}</h3>

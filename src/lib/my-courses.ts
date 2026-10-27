@@ -149,7 +149,15 @@ export async function loadMyCourses(supabase: Client, userId: string) {
     const now = parts.findIndex((p) => p.state === "now");
     const from = Math.max(0, Math.min(now - 2, parts.length - MAX_PARTS));
     const shown = parts.length > MAX_PARTS ? parts.slice(from, from + MAX_PARTS) : parts;
-    resume = { course: r.course, next: { id: r.next.id, part: partName(r.next.title) }, unit: moduleIndex + 1, parts: shown, moreParts: parts.length - shown.length };
+    resume = {
+      course: r.course,
+      next: { id: r.next.id, part: partName(r.next.title) },
+      unit: moduleIndex + 1,
+      parts: shown,
+      moreParts: parts.length - shown.length,
+      // The episode's picture when it has one (C-016), else the course cover.
+      art: r.course.modules[moduleIndex]?.artwork ?? r.course.cover,
+    };
   }
 
   // Bookshelf: one shelf per program, in course order; each course's main e-book first, then guides.

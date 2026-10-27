@@ -12,6 +12,8 @@ const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v
 export type ModuleStats = {
   id: string;
   title: string;
+  /** The episode's picture (modules.artwork_url): the one source for every image of an episode (C-016). */
+  artwork?: string | null;
   lessons: number;
   done: number;
   complete: boolean;
@@ -91,7 +93,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     supabase.from("courses").select("id, slug, title, description, cover_art_url, sort_order").in("id", courseIds),
     supabase
       .from("modules")
-      .select("id, course_id, title, kind, sort_order, lessons(id, title, sort_order, status, teacher_only, has_content)")
+      .select("id, course_id, title, kind, sort_order, artwork_url, lessons(id, title, sort_order, status, teacher_only, has_content)")
       .in("course_id", courseIds)
       .eq("status", "published")
       .order("sort_order"),
@@ -135,7 +137,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         // The step's first lesson stands for the step: /app/lecciones/<id> opens the step page.
         order.push({ id: rep.id, title, done: isDone, moduleId: m.id });
         const stepLast = [row?.updated_at ?? null, ...own.map((l) => prog.get(l.id)?.last_activity ?? null)].filter((x): x is string => !!x).sort().pop() ?? null;
-        ms.push({ id: m.id, title: m.title, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
+        ms.push({ id: m.id, title: m.title, artwork: m.artwork_url, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
         weekIds.add(m.id);
         continue;
       }
@@ -159,7 +161,7 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         }
         order.push({ id: l.id, title: l.title, done: isDone, moduleId: m.id });
       }
-      ms.push({ id: m.id, title: m.title, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length, started, lastActivity: modLast });
+      ms.push({ id: m.id, title: m.title, artwork: m.artwork_url, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length, started, lastActivity: modLast });
       if (m.kind === "lesson_week") weekIds.add(m.id);
     }
     const lessons = order.length;

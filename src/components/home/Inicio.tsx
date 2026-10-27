@@ -97,8 +97,8 @@ function ContinueCard({ t, lesson }: { t: T; lesson: ContinueLesson }) {
             {lesson.started ? t.go : t.start} <span aria-hidden>→</span>
           </Link>
         </div>
-        <div className={s.thumb} aria-hidden>
-          <Image src={m.src} alt="" width={m.w} height={m.h} sizes="74px" />
+        <div className={`${s.thumb}${lesson.art ? ` ${s.thumbArt}` : ""}`} aria-hidden>
+          {lesson.art ? <Image src={lesson.art} alt="" fill sizes="160px" /> : <Image src={m.src} alt="" width={m.w} height={m.h} sizes="74px" />}
         </div>
       </div>
     </div>

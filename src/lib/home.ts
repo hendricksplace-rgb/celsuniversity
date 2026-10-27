@@ -48,6 +48,8 @@ export type ContinueLesson = {
   started: boolean;
   /** Share of the episode (module) done, 0–1. */
   progress: number;
+  /** The episode's picture, when it has one (CelsTV); else the program mark shows. */
+  art: string | null;
 };
 export type OpenAssignment = {
   id: string;
@@ -204,6 +206,7 @@ export async function loadHome(supabase: Client, userId: string) {
           brand: f.course.brand,
           started: f.course.started,
           progress: f.module ? f.module.done / f.module.lessons : f.course.lessons ? f.course.done / f.course.lessons : 0,
+          art: f.module?.artwork ?? null,
         }
       : null;
 

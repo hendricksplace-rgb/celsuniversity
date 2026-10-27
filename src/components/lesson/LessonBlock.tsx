@@ -46,7 +46,8 @@ export function youtubeEmbed(url: string | null) {
   const m =
     /(?:youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/.exec(url);
   // enablejsapi: the lesson tracker listens for the player's progress (90 % watched counts as done).
-  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?enablejsapi=1` : null;
+  // playsinline keeps iPhone from forcing full screen; rel=0 shows only this channel's videos at the end.
+  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?enablejsapi=1&playsinline=1&rel=0&modestbranding=1` : null;
 }
 
 /**
