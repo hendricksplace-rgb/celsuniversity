@@ -4,7 +4,7 @@
 // the section's band, the narration bar, and the section's own interactions (Blocks.tsx). Progress is saved
 // where the e-book reader saves it (ebook_answers: last_screen, completed_at, and the seen pages in answers._seen).
 import "./celsbook.css";
-import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -13,7 +13,8 @@ import type { Json } from "@/lib/supabase/types";
 import { answerKey } from "@/lib/ebook-format";
 import { SECTIONS, clock, leadOf, sectionOf, two, type SectionKey } from "@/lib/celsbook";
 import { clearLocal, finishLesson, keepLocal, readLocal } from "@/lib/offline";
-import { SignedUrls, useMediaSrc } from "@/components/reader/media";
+import { SignedUrls, useSignedRef } from "@/components/reader/media";
+import { reportError } from "@/lib/report-error";
 import { ReaderBlock } from "@/components/reader/ReaderBlocks";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { BookBlock, BookCtx, type Local } from "./Blocks";
@@ -430,19 +431,25 @@ const isOwn = (t: string) => OWN.has(t);
 const SPEEDS = [1, 0.8, 1.2];
 /** "▶ Escuchar esta página": narration.audio with a 52 px play button and a speed toggle. */
 function Listen({ refPath, onTime }: { refPath: string | null; onTime?: (t: number) => void }) {
-  const urls = useContext(SignedUrls);
-  const src = useMediaSrc(refPath ? urls[refPath] : undefined);
+  const src = useSignedRef(refPath);
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [dur, setDur] = useState<number | null>(null);
   const [speed, setSpeed] = useState(0);
-  if (!src) return null;
+  // A file that can't load hides the player (no dead button) and is logged for staff.
+  const [failed, setFailed] = useState(false);
+  if (!src || failed) return null;
   return (
     <div className="listen">
       <audio
         ref={audio}
         src={src}
         preload="metadata"
+        onError={(e) => {
+          if (e.currentTarget.getAttribute("src") !== src) return;
+          setFailed(true);
+          reportError(`CelsBook audio did not load: ${refPath} (media error ${e.currentTarget.error?.code ?? "?"})`);
+        }}
         onLoadedMetadata={(e) => Number.isFinite(e.currentTarget.duration) && setDur(e.currentTarget.duration)}
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}

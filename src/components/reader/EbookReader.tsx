@@ -8,7 +8,7 @@ import type { Json } from "@/lib/supabase/types";
 import { answerKey, quizKey } from "@/lib/ebook-format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { ReaderBlock } from "./ReaderBlocks";
-import { SignedUrls, useMediaSrc } from "./media";
+import { SignedUrls, useFreshMedia } from "./media";
 import {
   clearLocal,
   downloadBook,
@@ -154,7 +154,7 @@ export function EbookReader({ ebook, userId, initial, moduleId, signed, resource
   const progress = Math.round((Math.min(step, total) / total) * 100);
   const screen = step < screens.length ? screens[step] : null;
   const pdfUrl = ebook.pdf_path ? signed[ebook.pdf_path] : undefined;
-  const audio = useMediaSrc(screen?.narration?.audio ? signed[screen.narration.audio] : undefined);
+  const audio = useFreshMedia(screen?.narration?.audio, screen?.narration?.audio ? signed[screen.narration.audio] : undefined);
 
   return (
     <SignedUrls.Provider value={signed}>
