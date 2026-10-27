@@ -5,6 +5,8 @@
 // C (65/20): only the starred 2025 questions, in Spanish, plus "Practicar mis 20 preguntas" (all 20, from the
 // "Examen 65/20 (2025)" evaluation). Flip, listen, "Ya me la sé / Todavía no", progress, an end screen and a
 // review of the missed cards. No pronunciation scoring.
+// Side arrows, swipe and ←/→ move between cards; tap, Space or Enter flips. Screen labels follow the ES/EN
+// toggle, or the track when the student never picked one (A → English, B and C → Spanish).
 import "./tarjetas.css";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -13,7 +15,7 @@ import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { afterPartFinished } from "@/app/app/cursos/[slug]/episodio/[n]/terminado/actions";
 import { setCivicsTrack } from "@/app/app/cursos/[slug]/episodio/[n]/tarjetas/actions";
-import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
 import { fill } from "@/components/course/kit";
 import { Immersive } from "@/components/celsbook/Immersive";
 
@@ -48,7 +50,7 @@ type EpisodeMode = {
   /** Starred questions in this episode (deduped across the English and Spanish decks). */
   starredCount: number;
   twentyHref: string;
-  next: { label: string; href: string } | null;
+  next: { role: keyof T["roles"]; href: string } | null;
 };
 /** "Practicar mis 20 preguntas": saved as known / review question numbers, like the civics exam cards. */
 type TwentyMode = {
@@ -59,11 +61,14 @@ type TwentyMode = {
 };
 
 export type TarjetasProps = {
-  t: T;
+  texts: Record<Lang, T>;
+  /** The ES/EN toggle, if the student ever used it. */
+  langChoice: Lang | null;
   userId: string;
   track: Track | null;
   backHref: string;
-  backLabel: string;
+  /** "Volver al episodio N"; without it, "Volver al curso". */
+  backEpisode?: number;
   signed: Record<string, string>;
   refreshAudio: () => Promise<Record<string, string>>;
   mode: EpisodeMode | TwentyMode;
@@ -72,6 +77,13 @@ export type TarjetasProps = {
 const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 const REFRESH_AFTER_MS = 8 * 60 * 1000;
 const ES_KEY = "celsu:tarjetas:es";
+const SWIPE_PX = 50;
+
+const Chevron = ({ left }: { left?: boolean }) => (
+  <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden focusable="false">
+    <path d={left ? "M14.5 5.5 8 12l6.5 6.5" : "M9.5 5.5 16 12l-6.5 6.5"} fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 function shuffled<X>(xs: X[]) {
   const a = xs.slice();
@@ -104,10 +116,14 @@ function useAudio(initial: Record<string, string>, refresh: () => Promise<Record
 }
 
 export function Tarjetas(p: TarjetasProps) {
-  const { t, mode } = p;
+  const { mode } = p;
   const router = useRouter();
   const twenty = mode.kind === "twenty";
   const [track, setTrack] = useState<Track | null>(twenty ? "C" : p.track);
+  // Screen labels: the student's ES/EN choice, else the track (card content always follows the track).
+  const uiLang: Lang = p.langChoice ?? (track === "A" ? "en" : "es");
+  const t = p.texts[uiLang];
+  const backLabel = p.backEpisode ? fill(t.back, { n: p.backEpisode }) : t.backCourse;
   const [choosing, setChoosing] = useState(!twenty && !p.track);
   const audio = useAudio(p.signed, p.refreshAudio);
 
@@ -135,6 +151,8 @@ export function Tarjetas(p: TarjetasProps) {
     return k < 0 ? 0 : k;
   });
   const [flipped, setFlipped] = useState(false);
+  /** Which side the current card slid in from (none on the first card or after a restart). */
+  const [from, setFrom] = useState<"left" | "right" | null>(null);
   const [end, setEnd] = useState(false);
   const [showEs, setShowEs] = useState(false);
   const [finish, setFinish] = useState<{ complete: boolean; href: string } | null>(null);
@@ -160,6 +178,7 @@ export function Tarjetas(p: TarjetasProps) {
     const k = cards.findIndex((c) => r[c.key] === undefined);
     setI(keep && k > 0 ? k : 0);
     setFlipped(false);
+    setFrom(null);
     setEnd(false);
   };
 
@@ -234,10 +253,52 @@ export function Tarjetas(p: TarjetasProps) {
   };
 
   const go = (k: number) => {
+    if (k < 0) return;
     audio.stop();
     setFlipped(false);
     if (k >= deck.length) void reachEnd();
-    else setI(Math.max(0, k));
+    else {
+      setFrom(k > i ? "right" : "left");
+      setI(k);
+    }
+  };
+  const goRef = useRef(go);
+  goRef.current = go;
+  const iRef = useRef(i);
+  iRef.current = i;
+
+  // ← and → move between cards (not while typing, choosing a track or on the end screen).
+  const onDeck = !choosing && !end && deck.length > 0;
+  useEffect(() => {
+    if (!onDeck) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey || e.defaultPrevented) return;
+      const el = e.target as HTMLElement | null;
+      if (el?.closest("input, textarea, select, [contenteditable='true']")) return;
+      if (e.key === "ArrowLeft") goRef.current(iRef.current - 1);
+      else if (e.key === "ArrowRight") goRef.current(iRef.current + 1);
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onDeck]);
+
+  // Swipe: more than 50 px sideways moves (left = next, right = previous) and doesn't flip the card.
+  const touch = useRef<{ x: number; y: number } | null>(null);
+  const swiped = useRef(false);
+  const onPointerDown = (e: React.PointerEvent) => {
+    touch.current = { x: e.clientX, y: e.clientY };
+    swiped.current = false;
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    const s = touch.current;
+    touch.current = null;
+    if (!s) return;
+    const dx = e.clientX - s.x;
+    if (Math.abs(dx) <= SWIPE_PX || Math.abs(dx) <= Math.abs(e.clientY - s.y)) return;
+    swiped.current = true;
+    go(dx < 0 ? i + 1 : i - 1);
   };
   const mark = (v: boolean) => {
     const c = deck[i];
@@ -295,7 +356,7 @@ export function Tarjetas(p: TarjetasProps) {
         <div className="bar">
           <Link className="back" href={p.backHref}>
             <i aria-hidden>‹</i>
-            {p.backLabel}
+            {backLabel}
           </Link>
           {!choosing && !end && deck.length > 1 && (
             <button type="button" className="shuf" onClick={() => startDeck(track, shuffled(deck), false)}>
@@ -332,7 +393,7 @@ export function Tarjetas(p: TarjetasProps) {
     if (c.a.length > 1)
       return (
         <div className="ans">
-          <small>{t.anyOf[lang]}</small>
+          <small>{t.anyOf}</small>
           <ul className="opts">
             {c.a.map((x) => (
               <li key={x}>{cap(x)}</li>
@@ -449,7 +510,7 @@ export function Tarjetas(p: TarjetasProps) {
                       </Link>
                     ) : mode.next ? (
                       <Link className="big ghost" href={mode.next.href}>
-                        {fill(t.nextPart, { part: mode.next.label })}
+                        {fill(t.nextPart, { part: t.roles[mode.next.role] })}
                       </Link>
                     ) : (
                       <Link className="big ghost" href={p.backHref}>
@@ -458,7 +519,7 @@ export function Tarjetas(p: TarjetasProps) {
                     ))}
                   {mode.kind === "twenty" && (
                     <Link className="big ghost" href={p.backHref}>
-                      {p.backLabel}
+                      {backLabel}
                     </Link>
                   )}
                   <button type="button" className="big ghost" onClick={() => startDeck(track, fullDeck, false)}>
@@ -483,62 +544,102 @@ export function Tarjetas(p: TarjetasProps) {
                       </span>
                     </div>
                   </div>
-                  <div className="scene">
-                    <div
-                      className={`fcard${flipped ? " flip" : ""}`}
-                      onClick={(e) => {
-                        if ((e.target as HTMLElement).closest("button, a")) return;
-                        setFlipped((f) => !f);
-                      }}
-                    >
-                      <div className="face front" aria-hidden={flipped} lang={lang === "A" ? "en" : "es"}>
-                        <div className="lab">
-                          <span>
-                            {t.question[lang]}
-                            {card.no ? ` ${card.no}` : ""}
-                          </span>
-                          {card.starred && track !== "C" && <span className="star">★ 65/20</span>}
-                        </div>
-                        <div className="q">{card.q}</div>
-                        {track === "A" && showEs && card.es?.q && (
-                          <div className="es" lang="es">
-                            {card.es.q}
+                  <div className="stage">
+                    <button type="button" className="arrow prev" disabled={i === 0} onClick={() => go(i - 1)} aria-label={t.prevCard}>
+                      <span className="disc">
+                        <Chevron left />
+                      </span>
+                      <span className="albl" aria-hidden>
+                        {t.prev}
+                      </span>
+                    </button>
+                    <div key={i} className={`scene${from ? ` from-${from}` : ""}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => (touch.current = null)}>
+                      <div
+                        className={`fcard${flipped ? " flip" : ""}`}
+                        role="group"
+                        aria-roledescription={t.cardRole}
+                        aria-label={`${fill(t.count, { n: i + 1, total: deck.length })} · ${flipped ? t.revealQ : t.reveal}`}
+                        tabIndex={0}
+                        onClick={(e) => {
+                          if (swiped.current) {
+                            swiped.current = false;
+                            return;
+                          }
+                          if ((e.target as HTMLElement).closest("button, a")) return;
+                          setFlipped((f) => !f);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.target !== e.currentTarget || (e.key !== "Enter" && e.key !== " ")) return;
+                          e.preventDefault();
+                          setFlipped((f) => !f);
+                        }}
+                      >
+                        <div className="face front" aria-hidden={flipped} lang={lang === "A" ? "en" : "es"}>
+                          <div className="lab" lang={uiLang}>
+                            <span>
+                              {t.question}
+                              {card.no ? ` ${card.no}` : ""}
+                            </span>
+                            {card.starred && track !== "C" && <span className="star">★ 65/20</span>}
                           </div>
-                        )}
-                        {audio.has(card.qAudio) && (
-                          <button type="button" className="listen" tabIndex={flipped ? -1 : 0} onClick={() => void audio.play(card.qAudio)}>
-                            🔊 {t.listenQ}
-                          </button>
-                        )}
-                        {track === "A" && card.es && (
-                          <button type="button" className="esb" tabIndex={flipped ? -1 : 0} onClick={toggleEs} aria-pressed={showEs}>
-                            {showEs ? t.hideEs : t.showEs}
-                          </button>
-                        )}
-                        <p className="hint">{t.tapHint}</p>
-                      </div>
-                      <div className="face rear" aria-hidden={!flipped} lang={lang === "A" ? "en" : "es"}>
-                        <div className="lab">
-                          <span>{t.answer[lang]}</span>
+                          <div className="q">{card.q}</div>
+                          {track === "A" && showEs && card.es?.q && (
+                            <div className="es" lang="es">
+                              {card.es.q}
+                            </div>
+                          )}
+                          {audio.has(card.qAudio) && (
+                            <button type="button" className="listen" lang={uiLang} tabIndex={flipped ? -1 : 0} onClick={() => void audio.play(card.qAudio)}>
+                              🔊 {t.listenQ}
+                            </button>
+                          )}
+                          {track === "A" && card.es && (
+                            <button type="button" className="esb" lang={uiLang} tabIndex={flipped ? -1 : 0} onClick={toggleEs} aria-pressed={showEs}>
+                              {showEs ? t.hideEs : t.showEs}
+                            </button>
+                          )}
+                          <p className="hint" lang={uiLang}>
+                            {t.tapHint}
+                          </p>
                         </div>
-                        {answer(card)}
-                        {track === "A" && showEs && card.es?.a && (
-                          <div className="es" lang="es">
-                            {card.es.a}
+                        <div className="face rear" aria-hidden={!flipped} lang={lang === "A" ? "en" : "es"}>
+                          <div className="mark" aria-hidden>
+                            {/* eslint-disable-next-line @next/next/no-img-element -- small static logo */}
+                            <img src="/brand/celsus-navy.png" alt="" width={363} height={132} />
                           </div>
-                        )}
-                        {audio.has(card.aAudio) && (
-                          <button type="button" className="listen" tabIndex={flipped ? 0 : -1} onClick={() => void audio.play(card.aAudio)}>
-                            🔊 {t.listenA}
-                          </button>
-                        )}
-                        {track === "A" && card.es && (
-                          <button type="button" className="esb" tabIndex={flipped ? 0 : -1} onClick={toggleEs} aria-pressed={showEs}>
-                            {showEs ? t.hideEs : t.showEs}
-                          </button>
-                        )}
+                          <div className="lab" lang={uiLang}>
+                            <span>{t.answer}</span>
+                          </div>
+                          {answer(card)}
+                          {track === "A" && showEs && card.es?.a && (
+                            <div className="es" lang="es">
+                              {card.es.a}
+                            </div>
+                          )}
+                          {audio.has(card.aAudio) && (
+                            <button type="button" className="listen" lang={uiLang} tabIndex={flipped ? 0 : -1} onClick={() => void audio.play(card.aAudio)}>
+                              🔊 {t.listenA}
+                            </button>
+                          )}
+                          {track === "A" && card.es && (
+                            <button type="button" className="esb" lang={uiLang} tabIndex={flipped ? 0 : -1} onClick={toggleEs} aria-pressed={showEs}>
+                              {showEs ? t.hideEs : t.showEs}
+                            </button>
+                          )}
+                          <p className="hint" lang={uiLang}>
+                            {t.tapHintBack}
+                          </p>
+                        </div>
                       </div>
                     </div>
+                    <button type="button" className="arrow next" onClick={() => go(i + 1)} aria-label={t.nextCard}>
+                      <span className="disc">
+                        <Chevron />
+                      </span>
+                      <span className="albl" aria-hidden>
+                        {t.next}
+                      </span>
+                    </button>
                   </div>
                   <div className="acts">
                     {!flipped ? (
@@ -555,14 +656,6 @@ export function Tarjetas(p: TarjetasProps) {
                         </button>
                       </div>
                     )}
-                    <div className="nav">
-                      <button type="button" disabled={i === 0} onClick={() => go(i - 1)}>
-                        {t.prev}
-                      </button>
-                      <button type="button" onClick={() => go(i + 1)}>
-                        {t.skip}
-                      </button>
-                    </div>
                   </div>
                 </>
               )

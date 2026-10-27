@@ -1,13 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLangChoice } from "@/lib/i18n/server";
+import { dictionaries } from "@/lib/i18n/dictionaries";
 import { canAccessCourse, getViewer } from "@/lib/access";
 import { themeForCourse } from "@/lib/themes";
 import { episodePath, loadCoursePage } from "@/lib/course-page";
 import { signStorageRefs } from "@/lib/storage";
 import { deckAudioRefs, loadEpisodeDecks, starredCount, tracksFromDecks } from "@/lib/celsus-cards";
 import { Tarjetas, type Track } from "@/components/celsus/Tarjetas";
-import { fill } from "@/components/course/kit";
 import { refreshCardsAudio } from "./actions";
 
 type Props = { params: Promise<{ slug: string; n: string }>; searchParams: Promise<{ examen?: string }> };
@@ -19,7 +19,6 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
   const { slug, n: raw } = await params;
   const { examen } = await searchParams;
   const n = Number(raw);
-  const { t } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=${episodePath(slug, n)}/tarjetas`);
@@ -55,11 +54,12 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
 
   return (
     <Tarjetas
-      t={t.usCards}
+      texts={{ es: dictionaries.es.usCards, en: dictionaries.en.usCards }}
+      langChoice={await getLangChoice()}
       userId={viewer.user.id}
       track={examen === "1" ? null : track}
       backHref={episodeHref}
-      backLabel={fill(t.usCards.back, { n })}
+      backEpisode={n}
       signed={Object.fromEntries(signed)}
       refreshAudio={refreshCardsAudio.bind(null, page.course.slug, n)}
       mode={{
@@ -73,7 +73,7 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
         saved,
         starredCount: starredCount(en, es),
         twentyHref: `/app/cursos/${page.course.slug}/mis-20-preguntas?ep=${n}`,
-        next: after?.role ? { label: t.usCards.roles[after.role], href: after.href } : null,
+        next: after?.role ? { role: after.role, href: after.href } : null,
       }}
     />
   );

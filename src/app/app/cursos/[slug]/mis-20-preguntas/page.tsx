@@ -1,13 +1,13 @@
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getDictionary } from "@/lib/i18n/server";
+import { getDictionary, getLangChoice } from "@/lib/i18n/server";
+import { dictionaries } from "@/lib/i18n/dictionaries";
 import { getViewer } from "@/lib/access";
 import { episodePath } from "@/lib/course-page";
 import { examLessons, loadCardState, loadExam, signExamAudio } from "@/lib/civics-server";
 import { EXAM_6520_ID, twentyDeck } from "@/lib/celsus-cards";
 import { Tarjetas } from "@/components/celsus/Tarjetas";
 import { refreshExamAudio } from "@/app/app/examen-civico/actions";
-import { fill } from "@/components/course/kit";
 
 type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ ep?: string }> };
 
@@ -19,7 +19,6 @@ type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ ep?: s
 export default async function TwentyQuestions({ params, searchParams }: Props) {
   const { slug } = await params;
   const { ep } = await searchParams;
-  const { t } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}/mis-20-preguntas`);
@@ -31,15 +30,16 @@ export default async function TwentyQuestions({ params, searchParams }: Props) {
 
   const n = Number(ep);
   const courseSlug = loaded.course.slug ?? slug;
-  const back = Number.isInteger(n) && n > 0 ? { href: episodePath(courseSlug, n), label: fill(t.usCards.back, { n }) } : { href: `/app/cursos/${courseSlug}`, label: t.usCards.backCourse };
+  const backEpisode = Number.isInteger(n) && n > 0 ? n : undefined;
 
   return (
     <Tarjetas
-      t={t.usCards}
+      texts={{ es: dictionaries.es.usCards, en: dictionaries.en.usCards }}
+      langChoice={await getLangChoice()}
       userId={viewer.user.id}
       track="C"
-      backHref={back.href}
-      backLabel={back.label}
+      backHref={backEpisode ? episodePath(courseSlug, backEpisode) : `/app/cursos/${courseSlug}`}
+      backEpisode={backEpisode}
       signed={signed}
       refreshAudio={refreshExamAudio.bind(null, EXAM_6520_ID)}
       mode={{ kind: "twenty", deck: twentyDeck(loaded.exam.questions), examLessons: lessons, cardState }}

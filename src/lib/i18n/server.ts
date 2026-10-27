@@ -11,3 +11,9 @@ export async function getDictionary() {
   const lang = await getLang();
   return { lang, t: dictionaries[lang] };
 }
+
+/** The language the student picked with the ES/EN toggle, or null if they never picked one. */
+export async function getLangChoice(): Promise<Lang | null> {
+  const value = (await cookies()).get(LANG_COOKIE)?.value;
+  return isLang(value) ? value : null;
+}

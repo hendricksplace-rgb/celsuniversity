@@ -230,10 +230,107 @@
   background: #fdecef;
   color: #9e0e28;
 }
-/* card */
-.tj .scene {
-  perspective: 1400px;
+/* card + side arrows */
+.tj .stage {
+  --arrow: 68px;
+  --gutter: 34px;
+  position: relative;
+  padding: 0 var(--gutter);
   margin: 6px 0 18px;
+}
+.tj .scene {
+  position: relative;
+  z-index: 1;
+  perspective: 1400px;
+  touch-action: pan-y;
+}
+.tj .scene.from-right {
+  animation: tj-in-right 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.tj .scene.from-left {
+  animation: tj-in-left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes tj-in-right {
+  from {
+    transform: translateX(60px);
+    opacity: 0;
+  }
+}
+@keyframes tj-in-left {
+  from {
+    transform: translateX(-60px);
+    opacity: 0;
+  }
+}
+.tj .fcard:focus-visible {
+  outline: none;
+}
+.tj .fcard:focus-visible .face {
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+}
+.tj .arrow {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  width: var(--arrow);
+  height: var(--arrow);
+  margin-top: calc(var(--arrow) / -2);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tj .arrow.prev {
+  left: calc(var(--gutter) - var(--arrow) / 2);
+}
+.tj .arrow.next {
+  right: calc(var(--gutter) - var(--arrow) / 2);
+}
+.tj .arrow .disc {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--gold);
+  color: #0e2147;
+  border: 4px solid #fff;
+  box-shadow: 0 10px 22px rgba(14, 33, 71, 0.28);
+  transition: transform 0.15s ease;
+}
+.tj .arrow:hover:not([disabled]) .disc {
+  transform: scale(1.07);
+}
+.tj .arrow:active:not([disabled]) .disc {
+  transform: scale(0.94);
+}
+.tj .arrow:focus-visible {
+  outline: none;
+}
+.tj .arrow:focus-visible .disc {
+  outline: 3px solid #0e2147;
+  outline-offset: 3px;
+}
+.tj .arrow[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+.tj .albl {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0e2147;
+  background: #fff4d6;
+  border: 1px solid #f2d27a;
+  border-radius: 999px;
+  padding: 3px 10px;
+  pointer-events: none;
 }
 .tj .fcard {
   position: relative;
@@ -252,7 +349,7 @@
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   border-radius: 30px;
-  padding: 30px 34px;
+  padding: 30px 46px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -273,6 +370,32 @@
   border: 2px solid rgba(242, 194, 48, 0.35);
   pointer-events: none;
   z-index: -1;
+}
+/* the CelsUS logo, faded into the back of every card */
+.tj .rear .mark {
+  position: absolute;
+  z-index: -1;
+  right: -14%;
+  bottom: -10%;
+  width: 78%;
+  transform: rotate(-12deg);
+  pointer-events: none;
+}
+.tj .rear .mark::before {
+  content: "";
+  position: absolute;
+  inset: -30% -10%;
+  background: radial-gradient(closest-side, rgba(242, 194, 48, 0.22), transparent);
+}
+.tj .rear .mark img {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0.13;
+  filter: drop-shadow(0 2px 4px rgba(14, 33, 71, 0.25));
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
 }
 .tj .rear {
   transform: rotateY(180deg);
@@ -487,22 +610,6 @@
   background: linear-gradient(180deg, #2e9b63, #1f7a4d) !important;
   color: #fff !important;
   box-shadow: 0 14px 26px rgba(31, 122, 77, 0.35);
-}
-.tj .nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-}
-.tj .nav button {
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--navy);
-  padding: 12px 6px;
-  min-height: 48px;
-}
-.tj .nav button[disabled] {
-  opacity: 0.35;
-  cursor: default;
 }
 /* chooser */
 .tj .choose {
@@ -772,7 +879,7 @@
     min-height: 430px;
   }
   .tj .face {
-    padding: 24px 20px;
+    padding: 24px 40px;
     border-radius: 26px;
   }
   .tj .q {
@@ -823,7 +930,21 @@
     padding: 20px 16px;
   }
 }
+@media (max-width: 479px) {
+  .tj .stage {
+    --arrow: 56px;
+    --gutter: 22px;
+  }
+  .tj .face {
+    padding: 24px 32px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .tj .scene.from-right,
+  .tj .scene.from-left {
+    animation: none;
+  }
+  .tj .arrow .disc,
   .tj .fcard,
   .tj .pbar i,
   .tj .opt {
