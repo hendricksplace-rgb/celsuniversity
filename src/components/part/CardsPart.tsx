@@ -5,13 +5,15 @@
 // photo when there is one) while Amy says it; then "Ahora dilo tú": Web Speech scores the pronunciation
 // (85 % or more earns XP). "Repasar" sends the card to the back of the deck, "Lo sé" takes it out.
 import Image from "next/image";
+import { FreshImg, fileRoute } from "@/components/reader/media";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { fill } from "@/components/course/kit";
 import { usePartShell } from "./PartShell";
 import { reducedMotion, sfx } from "./fx";
 
-export type Card = { id: string; front: string; back: string; cat: Cat; audio: string | null; image: string | null };
+/** `imageRef`: the storage:// file behind `image`, signed again on request (C-009). */
+export type Card = { id: string; front: string; back: string; cat: Cat; audio: string | null; audioRef?: string | null; image: string | null; imageRef?: string | null };
 type Cat = "words" | "verbs" | "phrases";
 const CATS: Cat[] = ["words", "verbs", "phrases"];
 const CAT_BG: Record<Cat, string> = {
@@ -64,19 +66,10 @@ function recognizer(): SR | null {
   return C ? new C() : null;
 }
 
+/** The card's recording; a card without one stays silent (never a browser voice, C-010). */
 function say(card: Card) {
-  if (card.audio) {
-    const a = new Audio(card.audio);
-    a.play().catch(() => speakEn(card.back));
-  } else speakEn(card.back);
-}
-function speakEn(text: string) {
-  if (!("speechSynthesis" in window)) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "en-US";
-  u.rate = 0.9;
-  speechSynthesis.speak(u);
+  if (!card.audio) return;
+  void new Audio(card.audioRef ? fileRoute(card.audioRef) : card.audio).play().catch(() => undefined);
 }
 
 function Ribbons() {
@@ -305,8 +298,7 @@ export function CardsPart({ cards }: { cards: Card[] }) {
               {/* back */}
               <span aria-hidden={!flipped} className="absolute inset-0 overflow-hidden rounded-[28px] bg-[#0F2A3A] shadow-2xl [backface-visibility:hidden] [transform:rotateY(180deg)]">
                 {card.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={card.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                  <FreshImg storageRef={card.imageRef} signedUrl={card.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
                 ) : (
                   <span aria-hidden className="absolute inset-0 opacity-40" style={{ background: CAT_BG[card.cat] }} />
                 )}
@@ -315,7 +307,7 @@ export function CardsPart({ cards }: { cards: Card[] }) {
                 <span className="absolute inset-x-4 bottom-6 text-center">
                   <span className="block text-[clamp(2.2rem,11vw,3.4rem)] font-extrabold leading-tight">{card.back}</span>
                   <span className="mt-1 block text-sm font-semibold text-white/80">{card.front}</span>
-                  <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-sm font-bold">🔊 {t.hear}</span>
+                  {card.audio && <span className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3.5 py-1.5 text-sm font-bold">🔊 {t.hear}</span>}
                 </span>
               </span>
             </button>

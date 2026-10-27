@@ -6,6 +6,7 @@
 // with a "bing"; a right answer gets confetti, "¡Correcto!" and +10 XP. The end shows the score, the
 // streak, "Siguiente: Episodio N+1" and "Intentar de nuevo".
 import Link from "next/link";
+import { FreshImg, fileRoute } from "@/components/reader/media";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { QuizQ, Voice } from "@/lib/quiz";
@@ -22,30 +23,15 @@ function useReader(text: string, voice?: Voice) {
   const read = useCallback(() => {
     if (voice) {
       player.current?.pause();
-      const a = new Audio(voice.url);
+      const a = new Audio(voice.ref ? fileRoute(voice.ref) : voice.url);
       player.current = a;
       a.ontimeupdate = () => setWord(voice.wt.findLastIndex((s) => s <= a.currentTime + 0.05));
       a.onended = () => setWord(-1);
       void a.play().catch(() => setWord(-1));
-      return;
     }
-    if (!text || typeof window === "undefined" || !("speechSynthesis" in window)) return;
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-US";
-    u.rate = 0.92;
-    const starts = [...text.matchAll(/\S+/g)].map((m) => m.index ?? 0);
-    u.onboundary = (e) => setWord(starts.findLastIndex((s) => s <= e.charIndex));
-    u.onend = () => setWord(-1);
-    speechSynthesis.speak(u);
-  }, [text, voice]);
-  useEffect(
-    () => () => {
-      player.current?.pause();
-      if (typeof window !== "undefined" && "speechSynthesis" in window) speechSynthesis.cancel();
-    },
-    [],
-  );
+    // No recording: nothing is read aloud (never a browser voice, C-010).
+  }, [voice]);
+  useEffect(() => () => player.current?.pause(), []);
   return { word, read };
 }
 
@@ -69,9 +55,11 @@ function Prompt({ text, voice, label }: { text: string; voice?: Voice; label: st
           ),
         )}
       </p>
-      <button type="button" onClick={read} aria-label={label} className="kit-focus-light grid size-10 shrink-0 place-items-center rounded-full bg-white/10">
-        🔊
-      </button>
+      {voice && (
+        <button type="button" onClick={read} aria-label={label} className="kit-focus-light grid size-10 shrink-0 place-items-center rounded-full bg-white/10">
+          🔊
+        </button>
+      )}
     </div>
   );
 }
@@ -103,17 +91,16 @@ function Choice({ q, onAnswer }: { q: Extract<QuizQ, { kind: "choose" | "listen"
     picked === null ? "" : i === q.answer ? "ring-[3px] ring-[#7CC94A] bg-[#7CC94A]/20" : i === picked ? "ring-[3px] ring-[#FF5C7A] bg-[#FF5C7A]/15" : "opacity-50";
   return (
     <div className="space-y-3">
-      {q.kind === "listen" && (
+      {q.kind === "listen" && q.audio && (
         <button
           type="button"
           onClick={() => {
             if (!q.audio) return;
             audio.current?.pause();
-            audio.current = new Audio(q.audio);
+            audio.current = new Audio(q.audioRef ? fileRoute(q.audioRef) : q.audio);
             void audio.current.play();
           }}
-          disabled={!q.audio}
-          className="kit-focus-light mx-auto flex size-20 items-center justify-center rounded-full bg-[#D6006A] text-3xl shadow-lg disabled:opacity-40"
+          className="kit-focus-light mx-auto flex size-20 items-center justify-center rounded-full bg-[#D6006A] text-3xl shadow-lg"
           aria-label={t.hear}
         >
           🔊
@@ -131,12 +118,7 @@ function Choice({ q, onAnswer }: { q: Extract<QuizQ, { kind: "choose" | "listen"
               className={`kit-drop kit-focus-light overflow-hidden rounded-2xl bg-white/10 transition ${state(i)}`}
               style={delay(i)}
             >
-              {o.img ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={o.img} alt={o.alt} className="aspect-square w-full object-cover" />
-              ) : (
-                <span className="grid aspect-square place-items-center p-3 text-sm font-bold">{o.alt}</span>
-              )}
+              <QuizPicture opt={o} />
             </button>
           ))}
         </div>
@@ -450,5 +432,30 @@ export function QuizPart({ questions }: { questions: QuizQ[] }) {
         </div>
       )}
     </div>
+  );
+}
+
+/** A picture option: soft skeleton while it loads, the alt text as a caption below, a clean card if it fails. */
+function QuizPicture({ opt }: { opt: { img: string | null; ref: string | null; alt: string } }) {
+  const [loaded, setLoaded] = useState(false);
+  const missing = (
+    <span aria-hidden className="grid size-full place-items-center bg-white/10 text-3xl opacity-60">
+      🖼
+    </span>
+  );
+  return (
+    <span className="block">
+      <span className={`relative block aspect-square overflow-hidden ${loaded ? "" : "animate-pulse bg-white/15 motion-reduce:animate-none"}`}>
+        <FreshImg
+          storageRef={opt.ref}
+          signedUrl={opt.img}
+          alt=""
+          className="absolute inset-0 size-full object-cover"
+          fallback={missing}
+          onLoad={() => setLoaded(true)}
+        />
+      </span>
+      <span className="block px-2 py-2 text-center text-sm font-bold leading-tight">{opt.alt}</span>
+    </span>
   );
 }

@@ -324,28 +324,17 @@ function EbookLinkButton({ link }: { link: EbookLink }) {
   );
 }
 
-/**
- * Pronunciation: the recorded ElevenLabs file when the item has one (offline cache first),
- * otherwise the device's own voices (Web Speech API), so nothing leaves the browser.
- */
-function Speak({ text, lang, audioRef, t, dark }: { text: string; lang: string; audioRef?: string | null; t: T; dark?: boolean }) {
+/** Pronunciation: the recorded ElevenLabs file (offline cache first). No file, no button (never a browser voice, C-010). */
+function Speak({ audioRef, t, dark }: { text: string; lang: string; audioRef?: string | null; t: T; dark?: boolean }) {
   const src = useSignedRef(audioRef);
+  if (!src) return null;
   return (
     <button
       type="button"
       aria-label={t.speak}
       title={t.speak}
       onClick={() => {
-        if (src) {
-          void new Audio(src).play();
-          return;
-        }
-        if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang;
-        u.rate = 0.9;
-        window.speechSynthesis.speak(u);
+        void new Audio(src).play();
       }}
       className={dark ? "grid size-11 shrink-0 place-items-center rounded-xl bg-[rgba(235,208,140,.16)] text-base" : "t-btn-ghost shrink-0 !px-2 !py-1 text-sm"}
     >

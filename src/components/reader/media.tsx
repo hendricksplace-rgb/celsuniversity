@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { cachedMediaUrl } from "@/lib/offline";
+import { reportError } from "@/lib/report-error";
 
 /** storage:// ref → signed URL, for every audio file the book uses. */
 export const SignedUrls = createContext<Record<string, string>>({});
@@ -43,4 +44,44 @@ export function useFreshMedia(ref: string | null | undefined, signedUrl: string 
 export function useSignedRef(ref: string | null | undefined) {
   const signed = useContext(SignedUrls);
   return useFreshMedia(ref, ref ? signed[ref] : undefined);
+}
+
+/**
+ * A stored picture that keeps working however long the page stays open (C-009): the offline copy when saved,
+ * otherwise /app/archivo (signed on request). One retry on error; then `fallback` shows and the failure is logged.
+ * `signedUrl` only says the page may use the file and is the offline cache key.
+ */
+export function FreshImg({
+  storageRef,
+  signedUrl,
+  alt,
+  className,
+  fallback = null,
+  onLoad,
+}: {
+  storageRef: string | null | undefined;
+  signedUrl: string | null | undefined;
+  alt: string;
+  className?: string;
+  fallback?: React.ReactNode;
+  onLoad?: () => void;
+}) {
+  const src = useFreshMedia(storageRef, signedUrl ?? undefined);
+  const [tries, setTries] = useState(0);
+  if (!src || tries > 1) return <>{fallback}</>;
+  const url = tries && !src.startsWith("blob:") ? `${src}&retry=${tries}` : src;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- private storage file, signed on request
+    <img
+      key={url}
+      src={url}
+      alt={alt}
+      className={className}
+      onLoad={onLoad}
+      onError={() => {
+        if (tries === 1) reportError(`Image did not load: ${storageRef}`);
+        setTries((n) => n + 1);
+      }}
+    />
+  );
 }
