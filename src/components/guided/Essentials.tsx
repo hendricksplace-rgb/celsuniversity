@@ -6,7 +6,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { Block, EbookLink } from "@/lib/ebook-format";
-import type { MoreVideo } from "@/lib/guided";
+import { clockOf, posterSrc, type MoreVideo } from "@/lib/guided";
 import { Ico, say } from "./ui";
 import s from "./guided.module.css";
 
@@ -411,7 +411,7 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
             <div className={`${s.mv} ${s.mvPlay}`} key={m.key} data-block="more_video">
               <div className={s.th}>
                 {m.wistia ? (
-                  <video src={m.media_url} controls autoPlay playsInline aria-label={m.title} />
+                  <video src={m.media_url} controls autoPlay playsInline poster={posterSrc(m.poster_url) ?? undefined} aria-label={m.title} />
                 ) : (
                   <iframe src={`https://www.youtube-nocookie.com/embed/${m.id}?autoplay=1`} title={m.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
                 )}
@@ -428,6 +428,10 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
                   /* eslint-disable-next-line @next/next/no-img-element -- YouTube's own thumbnail, loaded only here */
                   <img src={`https://i.ytimg.com/vi/${m.id}/hqdefault.jpg`} alt="" loading="lazy" onError={(e) => e.currentTarget.remove()} />
                 )}
+                {m.wistia && m.poster_url && (
+                  /* eslint-disable-next-line @next/next/no-img-element -- the step's poster (C-020), signed by /app/archivo */
+                  <img src={posterSrc(m.poster_url)!} alt="" />
+                )}
                 <i>
                   <Ico n="play" />
                 </i>
@@ -436,6 +440,7 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
                 <b>{m.title}</b>
                 <span>
                   {m.channel && m.channel !== "—" ? m.channel : m.wistia ? "CelsGLOBAL" : "YouTube"}
+                  {m.duration_s ? ` · ${clockOf(m.duration_s)}` : ""}
                   <em className={s.lg}>{m.lang === "en" ? "EN INGLÉS" : "EN ESPAÑOL"}</em>
                 </span>
                 {m.about && <p>{m.about}</p>}

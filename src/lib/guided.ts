@@ -90,14 +90,16 @@ export type Section =
 export type AnswerForm = "star" | "present_past_future" | "strength_weakness" | "five_years" | "free";
 export type AnswerQ = { en: string; es: string; form: AnswerForm; prefill_from?: string };
 export type SimQ = { en: string | null; audio?: string; surprise?: boolean; note?: string };
-export type MoreVideo = { provider: string; id?: string; media_url?: string; title: string; channel?: string; lang?: string; about?: string };
+/** C-020: a designed poster (storage:// ref or URL) and the video's real length, shown before play. */
+export type VideoPoster = { poster_url?: string | null; duration_s?: number | null; part?: number | null };
+export type MoreVideo = { provider: string; id?: string; media_url?: string; title: string; channel?: string; lang?: string; about?: string } & VideoPoster;
 
 export type GuidedStep = {
   version: number;
   step: number;
   of: number;
   module_id: string;
-  video: { media_url: string } | null;
+  video: ({ media_url: string } & VideoPoster) | null;
   /** Shown under the video, e.g. a lesson whose video isn't uploaded yet. */
   video_note?: string;
   /** An audio summary at the top of "Lo esencial": `storage` is a course-media ref, signed into `url` by the step page. */
@@ -129,6 +131,11 @@ export type GuidedStep = {
 export const visibleSections = (s: GuidedStep) => s.build.sections.filter((x) => !(x.type === "card" && x.needs_matt_confirm));
 
 // ---------- theme and product (courses.theme): the colors, the hero and what the course builds ----------
+
+/** "m:ss" from seconds. */
+export const clockOf = (sec: number) => `${Math.floor(sec / 60)}:${String(Math.round(sec % 60)).padStart(2, "0")}`;
+/** A poster from the data: storage refs go through /app/archivo (signed per request). */
+export const posterSrc = (ref: string | null | undefined) => (!ref ? null : ref.startsWith("storage://") ? `/app/archivo?ref=${encodeURIComponent(ref)}` : ref);
 
 export type GuidedTheme = "resume" | "interview" | "finanzas" | "visa_tn";
 export const themeOf = (v: string | null | undefined): GuidedTheme => (v === "interview" || v === "finanzas" || v === "visa_tn" ? v : "resume");

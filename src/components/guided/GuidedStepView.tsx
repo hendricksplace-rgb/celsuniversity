@@ -9,7 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { EssBlock, MoreVideos } from "./Essentials";
-import { PRODUCT, docModel, productPath, stepPath, titlesOf, visibleSections, type GuidedStep, type GuidedTheme, type Lang, type MoreVideo, type ResumeData, type StepState } from "@/lib/guided";
+import { PRODUCT, clockOf, docModel, posterSrc, productPath, stepPath, titlesOf, visibleSections, type GuidedStep, type GuidedTheme, type Lang, type MoreVideo, type ResumeData, type StepState } from "@/lib/guided";
 import { PracticeView, pickScore, practiceDone, sortScore } from "./Practice";
 import { BuildSection, type BuildCtx } from "./Build";
 import { BudgetExample } from "./BuildFinance";
@@ -224,7 +224,7 @@ export function GuidedStepView(p: StepPageProps) {
 
           <section className={s.sec} id="vid">
             <Head n={partNo(parts, "vid")} small={step.video?.media_url ? t.parts.vid : t.parts.nutshell} h={step.video?.media_url ? step.title : t.partH.nutshell} />
-            {step.video?.media_url && <StepVideo url={step.video.media_url} title={step.title} n={n} minutes={step.minutes} />}
+            {step.video?.media_url && <StepVideo url={step.video.media_url} title={step.title} n={n} poster={step.video.poster_url} duration={step.video.duration_s} part={step.video.part} />}
             {step.video_note && (
               <div className={s.gdisc} data-video-note>
                 <Ico n="alert" />
@@ -462,26 +462,40 @@ function Head({ n, small, h }: { n: number; small: string; h: string }) {
   );
 }
 
-/** The step's video (Wistia delivery file or a direct .mp4), inline after a tap on the poster. */
-function StepVideo({ url, title, n, minutes }: { url: string; title: string; n: number; minutes: number }) {
+/**
+ * The step's video (Wistia delivery file or a direct .mp4). Before play: the step's designed poster (C-020), the
+ * course play button at 76 % (never over the title) and the real length; a tap plays it inline, with the same poster
+ * on the <video> so there's no black flash. Without a poster, the dark box with the same button.
+ */
+function StepVideo({ url, title, n, poster, duration, part }: { url: string; title: string; n: number; poster?: string | null; duration?: number | null; part?: number | null }) {
   const [play, setPlay] = useState(false);
+  // A poster that fails to load is tried once more, then the dark box shows (never a broken image).
+  const [tries, setTries] = useState(0);
   const file = directMedia(url);
+  const src = tries < 2 ? posterSrc(poster) : null;
+  const img = src && tries === 1 ? `${src}&r=1` : src;
   return (
-    <div className={s.vid}>
+    <div className={`${s.vid}${img ? ` ${s.vidPoster}` : ""}`}>
       {play ? (
         file ? (
-          <video controls autoPlay playsInline src={file} aria-label={title} />
+          <video controls autoPlay playsInline src={file} poster={img ?? undefined} aria-label={title} />
         ) : (
           <iframe src={url} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
         )
       ) : (
-        <button type="button" className={s.vidBtn} onClick={() => setPlay(true)} aria-label="Reproducir el video" data-action="play">
+        <button type="button" className={s.vidBtn} onClick={() => setPlay(true)} aria-label={`Reproducir el video: ${title}`} data-action="play">
+          {/* eslint-disable-next-line @next/next/no-img-element -- signed per request by /app/archivo */}
+          {img && <img src={img} alt="" className={s.vposter} onError={() => setTries((n) => n + 1)} />}
+          <span className={s.vshade} aria-hidden />
           <span className={s.pl2}>
             <Ico n="play" />
           </span>
           <span className={s.vcap}>
-            <b>Video del paso {n} · CelsGLOBAL</b>
-            <span>{minutes} min en total</span>
+            <b>
+              Video del paso {n}
+              {part ? ` · parte ${part}` : ""} · CelsGLOBAL
+            </b>
+            {duration ? <span className={s.vdur}>{clockOf(duration)}</span> : null}
           </span>
         </button>
       )}
