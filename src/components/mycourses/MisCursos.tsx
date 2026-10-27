@@ -196,7 +196,7 @@ function Resume({ t, u, r }: { t: T; u: U; r: NonNullable<MyCoursesData["resume"
               </div>
               <span className={s.pct}>{pct}%</span>
             </div>
-            <Link className={s.btn} href={`/app/lecciones/${r.next.id}`}>
+            <Link className={s.btn} href={r.next.href}>
               {c.started ? t.continue : t.start} →
             </Link>
           </div>

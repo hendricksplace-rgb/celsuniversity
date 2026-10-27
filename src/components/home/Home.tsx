@@ -170,7 +170,7 @@ function Assignments({ t, items }: { t: T; items: OpenAssignment[] }) {
             )}
           </div>
           <Link
-            href={a.lessonId ? `/app/lecciones/${a.lessonId}` : `/app/cursos/${a.courseSlug}`}
+            href={a.href}
             className="inline-flex shrink-0 justify-center rounded-full bg-[#14182B] px-5 py-3 text-sm font-extrabold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C]"
           >
             {t.startTask} →

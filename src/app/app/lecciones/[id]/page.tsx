@@ -9,6 +9,7 @@ import { getDictionary } from "@/lib/i18n/server";
 import { canAccessCourse, getViewer, one } from "@/lib/access";
 import { loadLessonContent } from "@/lib/lesson-content";
 import { themeForCourse } from "@/lib/themes";
+import { lessonHref, lessonPagePath } from "@/lib/lesson-href";
 import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
 import { InteractiveFeedback, InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
@@ -59,6 +60,12 @@ export default async function LessonPage({ params, searchParams }: Props) {
   }
 
   const theme = themeForCourse(course);
+  // C-021: a lesson that lives somewhere else now (a CelsTV part screen, a CelsBSNS task) never renders here:
+  // old bookmarks, emails and history go to its current page. CelsUS redirects its own parts below.
+  if (course.slug && course.layout !== "citizenship_modules" && !(viewer.isStaff && original === "1")) {
+    const href = await lessonHref(supabase, { userId: viewer.user.id, isStaff: viewer.isStaff }, lesson.id);
+    if (href !== lessonPagePath(lesson.id)) redirect(href);
+  }
   // CelsBSNS: "Course Dictionary" (and the old "Course Dictionary (2)" note) open the Dictionary page.
   if (theme === "celsbsns" && course.slug && isDictionaryLesson(lesson.id)) redirect(dictionaryPath(course.slug));
   const access = await canAccessCourse(supabase, viewer, course.id);

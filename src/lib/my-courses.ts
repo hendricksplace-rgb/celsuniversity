@@ -7,6 +7,7 @@ import { accessibleCourses, courseStats, nextLesson, resumeCourse, type CourseSt
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { ROUTE_PROGRAM } from "@/lib/route";
 import { BSNS_SLUG, bsnsHomeHref } from "@/lib/bsns";
+import { lessonHrefs, lessonPagePath } from "@/lib/lesson-href";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -28,7 +29,7 @@ export function hrefOf(c: CourseStats) {
   // CelsBSNS has no course page any more: its week page is home (celsu-celsbsns-semana-brief).
   if (c.slug === BSNS_SLUG) return bsnsHomeHref(c);
   const n = nextLesson(c);
-  return c.completed || !n ? `/app/cursos/${c.slug}` : `/app/lecciones/${n.id}`;
+  return c.completed || !n ? `/app/cursos/${c.slug}` : (c.nextHref ?? lessonPagePath(n.id));
 }
 
 /** "CelsCards" for a CelsTV part, else the lesson's own title. */
@@ -96,6 +97,12 @@ export async function loadMyCourses(supabase: Client, userId: string) {
   ]);
   const stats = await courseStats(supabase, userId, access.ids);
   const all = [...stats.values()].sort((a, b) => a.sort - b.sort);
+  // "Continuar" goes to each next lesson's current page (C-021).
+  const hrefs = await lessonHrefs(supabase, { userId, isStaff: false }, all.map((c) => nextLesson(c)?.id));
+  for (const c of all) {
+    const n = nextLesson(c);
+    if (n) c.nextHref = hrefs.get(n.id);
+  }
   const bySlug = new Map(all.map((c) => [c.slug, c]));
 
   const live = (enrollments ?? []).filter((e) => !e.expires_at || new Date(e.expires_at) > new Date());
@@ -151,7 +158,7 @@ export async function loadMyCourses(supabase: Client, userId: string) {
     const shown = parts.length > MAX_PARTS ? parts.slice(from, from + MAX_PARTS) : parts;
     resume = {
       course: r.course,
-      next: { id: r.next.id, part: partName(r.next.title) },
+      next: { id: r.next.id, href: r.course.nextHref && nextLesson(r.course)?.id === r.next.id ? r.course.nextHref : lessonPagePath(r.next.id), part: partName(r.next.title) },
       unit: moduleIndex + 1,
       parts: shown,
       moreParts: parts.length - shown.length,

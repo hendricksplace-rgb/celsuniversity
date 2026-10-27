@@ -24,6 +24,8 @@ export type ModuleStats = {
 };
 export type CourseStats = {
   id: string;
+  /** The next lesson's current route, when a page resolved it (lib/lesson-href.ts, C-021). */
+  nextHref?: string;
   slug: string;
   title: string;
   description: string | null;

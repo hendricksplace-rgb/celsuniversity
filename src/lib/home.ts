@@ -2,6 +2,7 @@
 // activity and goal, the medals, the updates band, open class assignments and the civics pre-test link.
 import type { Client } from "@/lib/supabase/types";
 import type { ThemeKey } from "@/lib/themes";
+import { lessonHrefs, lessonPagePath } from "@/lib/lesson-href";
 import { accessibleCourses, courseStats, myAssignments, nextLesson, todayIndex, weekIndex, weekStart, type CourseStats } from "@/lib/learning";
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { guidedModules } from "@/lib/guided-modules";
@@ -26,7 +27,8 @@ export type HomeCourse = {
   done: number;
   total: number;
 };
-export type NextUp = { lessonId: string; part: string; started: boolean };
+/** href: the lesson's current route (lib/lesson-href.ts, C-021), never the old lesson page when it has a new one. */
+export type NextUp = { lessonId: string; href: string; part: string; started: boolean };
 export type HomeProgram = {
   brand: ThemeKey;
   courses: HomeCourse[];
@@ -40,6 +42,7 @@ export type HomeProgram = {
 };
 export type ContinueLesson = {
   lessonId: string;
+  href: string;
   lessonTitle: string;
   part: string;
   module: string | null;
@@ -58,6 +61,7 @@ export type OpenAssignment = {
   note: string | null;
   dueAt: string | null;
   lessonId: string | null;
+  href: string;
 };
 export type Medal = {
   code: string;
@@ -185,6 +189,7 @@ export async function loadHome(supabase: Client, userId: string) {
       next: f?.next
         ? {
             lessonId: f.next.id,
+            href: lessonPagePath(f.next.id),
             part: partName(f.next.title),
             started: f.course.started,
           }
@@ -199,6 +204,7 @@ export async function loadHome(supabase: Client, userId: string) {
     f && f.next
       ? {
           lessonId: f.next.id,
+          href: lessonPagePath(f.next.id),
           lessonTitle: f.next.title,
           part: partName(f.next.title),
           module: f.module?.title ?? null,
@@ -222,6 +228,7 @@ export async function loadHome(supabase: Client, userId: string) {
         note: a.note,
         dueAt: a.dueAt,
         lessonId: nextLesson(c)?.id ?? null,
+        href: `/app/cursos/${c.slug}`,
       },
     ];
   });
@@ -283,6 +290,12 @@ export async function loadHome(supabase: Client, userId: string) {
   if (l && mod) band.push({ kind: "fresh", part: partName(l.title), episode: mod.title });
   if (weeklyXp < goal) band.push({ kind: "goal", n: goal - weeklyXp });
   if (band.every((b) => b.kind === "app" || b.kind === "goal")) band.push({ kind: "keepGoing" });
+
+  // Every "Continuar" goes to the lesson's current page (C-021).
+  const hrefs = await lessonHrefs(supabase, { userId, isStaff: false }, [continueLesson?.lessonId, ...programs.map((p) => p.next?.lessonId), ...open.map((a) => a.lessonId)]);
+  if (continueLesson) continueLesson.href = hrefs.get(continueLesson.lessonId) ?? continueLesson.href;
+  for (const p of programs) if (p.next) p.next.href = hrefs.get(p.next.lessonId) ?? p.next.href;
+  for (const a of open) if (a.lessonId) a.href = hrefs.get(a.lessonId) ?? a.href;
 
   const civics = setting("civics_pretest_url");
   const url = typeof civics === "string" && /^(https:\/\/|\/)/.test(civics) ? civics : null;

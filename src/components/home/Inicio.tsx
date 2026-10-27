@@ -93,7 +93,7 @@ function ContinueCard({ t, lesson }: { t: T; lesson: ContinueLesson }) {
           <div className={s.bar} role="progressbar" aria-label={lesson.module ?? lesson.courseTitle} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(lesson.progress * 100)}>
             <i className={s.shine} style={{ width: `${w}%` }} />
           </div>
-          <Link href={`/app/lecciones/${lesson.lessonId}`} className={s.btn}>
+          <Link href={lesson.href} className={s.btn}>
             {lesson.started ? t.go : t.start} <span aria-hidden>→</span>
           </Link>
         </div>
@@ -298,7 +298,7 @@ function ProgramCard({ t, p }: { t: T; p: HomeProgram }) {
           </Link>
         ) : (
           p.next && (
-            <Link href={`/app/lecciones/${p.next.lessonId}`} className={s.pcLink} aria-label={`${p.next.started ? t.openIt : t.start}: ${p.next.part} · ${p.focus?.title ?? ""}`}>
+            <Link href={p.next.href} className={s.pcLink} aria-label={`${p.next.started ? t.openIt : t.start}: ${p.next.part} · ${p.focus?.title ?? ""}`}>
               {p.next.started ? t.openIt : t.start} <span aria-hidden>→</span>
             </Link>
           )
