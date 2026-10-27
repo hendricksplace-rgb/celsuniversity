@@ -290,7 +290,7 @@ export default async function LessonPage({ params }: Props) {
                   </Part>
                 );
               })}
-              {signed.size > 0 && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
+              {signed.size > 0 && !cast && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
             </div>
           )}
         </LessonProgress>
