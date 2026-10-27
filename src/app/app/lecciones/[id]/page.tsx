@@ -20,6 +20,9 @@ import { loadSpeaking } from "@/lib/speaking-server";
 import { GUIDE_LAYOUT, guidePlaceOfLesson } from "@/lib/teacher-guide-server";
 import { LockedCard } from "@/components/celsus/TeacherGuide";
 import { loadFeedback } from "@/lib/feedback-server";
+import { CelsCast } from "@/components/celsus/CelsCast";
+import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
+import type { Cue, Track } from "@/components/part/AudioPart";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -62,6 +65,7 @@ export default async function LessonPage({ params }: Props) {
   // CelsUS core parts: the Tarjetas, CelsBook and quiz have their own screens; the video, audio and class stay
   // here and report to the episode's completion flow when finished (afterPartFinished).
   let celsus: { courseSlug: string; n: number } | null = null;
+  let usPart: { role: string | undefined; episodeTitle: string } | null = null;
   if (access && course.layout === "citizenship_modules" && lessonModule.kind === "lesson_week" && course.slug) {
     const page = await loadCoursePage(supabase, viewer.user.id, course.slug, theme, viewer.isStaff);
     const ep = page?.episodes.find((e) => e.id === lessonModule.id);
@@ -69,6 +73,7 @@ export default async function LessonPage({ params }: Props) {
     if (ep && part) {
       if (part.role === "cards" || part.role === "quiz" || part.role === "book") redirect(part.href);
       celsus = { courseSlug: course.slug, n: ep.n };
+      usPart = { role: part.role, episodeTitle: ep.title || `${t.episode.tag.replace("{n}", String(ep.n))}` };
     }
   }
 
@@ -184,6 +189,24 @@ export default async function LessonPage({ params }: Props) {
   const videoSoon = track && partIds.length === 0 && (lesson.lesson_type === "video" || visible.some((b) => b.block_type === "video"));
   const backHref = await moduleHref(supabase, course, lessonModule.id);
 
+  // CelsUS CelsAudio with a CelsCast (C-005): one player, CelsCast first and the original recording as the
+  // second tab, standing in for both blocks. Finishing either track completes the part.
+  const cast = usPart?.role === "audio" ? visible.find((b) => b.block_type === "celscast") : undefined;
+  let castPlayer: React.ReactNode = null;
+  if (cast) {
+    const orig = visible.find((b) => b.block_type === "audio");
+    const media = typeof orig?.data.media_url === "string" ? orig.data.media_url : null;
+    let cues: Cue[] = [];
+    if (media?.startsWith("storage://course-media/")) {
+      const { data: tr } = await supabase.from("audio_transcripts").select("words").eq("path", media.slice("storage://course-media/".length)).eq("status", "done").maybeSingle();
+      cues = transcriptCues(tr?.words);
+    }
+    const original: Track = { key: "original", label: t.part.originalAudio, src: media ? (signed.get(media) ?? null) : null, ref: media, cues, chapters: [], voice: null };
+    const tracks = [celscastTrack(cast.data, (r) => signed.get(r) ?? null, lang === "en" ? "en" : "es"), original];
+    castPlayer = <CelsCast tracks={tracks} title={usPart!.episodeTitle} t={t.part} />;
+  }
+  const shown = cast ? visible.filter((b) => b.block_type !== "celscast" && b.block_type !== "audio") : visible;
+
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
   const prev = index > 0 ? siblings![index - 1] : null;
   const next = index >= 0 && index < (siblings?.length ?? 0) - 1 ? siblings![index + 1] : null;
@@ -207,7 +230,8 @@ export default async function LessonPage({ params }: Props) {
               {!visible.some((b) => b.block_type === "video") && <p className="t-muted text-sm">{t.lesson.videoSoon}</p>}
             </div>
           )}
-          {visible.map((block) => (
+          {castPlayer}
+          {shown.map((block) => (
             <div key={block.id}>
               <LessonBlock
                 block={block}
@@ -227,17 +251,22 @@ export default async function LessonPage({ params }: Props) {
       ) : (
         <LessonProgress
           lessonId={lesson.id}
-          partIds={partIds}
+          partIds={cast ? [cast.id, ...partIds.filter((id) => shown.some((b) => b.id === id))] : partIds}
           initialParts={(progress?.parts ?? {}) as Record<string, unknown>}
           initialStatus={progress?.status ?? null}
           t={{ parts: t.lesson.partsDone, finish: t.lesson.markDone, finished: t.lesson.finished, xp: t.lesson.xpEarned }}
           celsus={celsus ? { ...celsus, t: t.lesson.celsus } : null}
         >
-          {visible.length === 0 ? (
+          {shown.length === 0 && !castPlayer ? (
             <p className="t-card t-muted">{t.lesson.empty}</p>
           ) : (
             <div className="space-y-5">
-              {visible.map((block) => {
+              {cast && (
+                <Part id={cast.id} kind="activity">
+                  {castPlayer}
+                </Part>
+              )}
+              {shown.map((block) => {
                 const kind = kinds.get(block.id)!;
                 const node = (
                   <LessonBlock
@@ -261,7 +290,7 @@ export default async function LessonPage({ params }: Props) {
                   </Part>
                 );
               })}
-              {signed.size > 0 && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
+              {signed.size > 0 && !cast && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
             </div>
           )}
         </LessonProgress>
