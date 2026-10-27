@@ -79,6 +79,22 @@ export type TarjetasProps = {
 };
 
 const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+/** Several accepted answers: the ";" list, or one answer that is really a list ("Cherokee, Navajo, Sioux, …"). */
+function answerItems(a: string[]) {
+  if (a.length !== 1 || (a[0].match(/,/g) ?? []).length <= 3) return a;
+  return a[0]
+    .split(",")
+    .map((x) => x.trim().replace(/^(and|y)\s+/i, "").replace(/\.$/, ""))
+    .filter(Boolean);
+}
+/** The Spanish line says the same as the English (proper names): ignore case, accents and punctuation. */
+const bare = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+const sameText = (es: string, en: string) => bare(es) === bare(en);
 const REFRESH_AFTER_MS = 8 * 60 * 1000;
 const ES_KEY = "celsu:tarjetas:es";
 const SWIPE_PX = 50;
@@ -391,12 +407,13 @@ export function Tarjetas(p: TarjetasProps) {
           </p>
         </div>
       );
-    if (c.a.length > 1)
+    const items = answerItems(c.a);
+    if (items.length > 1)
       return (
         <div className="ans">
           <small>{t.anyOf}</small>
-          <ul className="opts">
-            {c.a.map((x) => (
+          <ul className={`opts${items.length > 8 ? " many" : ""}`}>
+            {items.map((x) => (
               <li key={x}>{cap(x)}</li>
             ))}
           </ul>
@@ -404,7 +421,7 @@ export function Tarjetas(p: TarjetasProps) {
       );
     return (
       <div className="ans">
-        <div className="one">{cap(c.a[0] ?? "")}</div>
+        <div className="one">{cap(items[0] ?? "")}</div>
       </div>
     );
   };
@@ -606,13 +623,13 @@ export function Tarjetas(p: TarjetasProps) {
                         <div className="face rear" aria-hidden={!flipped} lang={lang === "A" ? "en" : "es"}>
                           <div className="mark" aria-hidden>
                             {/* eslint-disable-next-line @next/next/no-img-element -- small static logo */}
-                            <img src="/brand/celsus-navy.png" alt="" width={363} height={132} />
+                            <img src="/brand/celsus-white.png" alt="" width={363} height={132} />
                           </div>
                           <div className="lab" lang={uiLang}>
                             <span>{t.answer}</span>
                           </div>
                           {answer(card)}
-                          {track === "A" && showEs && card.es?.a && (
+                          {track === "A" && showEs && card.es?.a && !sameText(card.es.a, card.a.join(" ")) && (
                             <div className="es" lang="es">
                               {card.es.a}
                             </div>
