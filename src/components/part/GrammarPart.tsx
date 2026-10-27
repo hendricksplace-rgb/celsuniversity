@@ -11,6 +11,7 @@ import { fill } from "@/components/course/kit";
 import { usePartShell } from "./PartShell";
 import { sfx } from "./fx";
 import { GrammarTable, isTableExercise } from "./GrammarTable";
+import { SectionDone } from "./SectionDone";
 
 export type GrammarRule = { title: string; text: string[]; examples: string[]; en: string | null; es: string | null };
 type GType = keyof Dictionary["part"]["gtypes"];
@@ -28,12 +29,19 @@ export function GrammarPart({
   urls,
   activityT,
   seed,
+  sd,
+  xpReward,
+  streak,
 }: {
   rule: GrammarRule;
   exercises: Record<string, unknown>[];
   urls: Record<string, string>;
   activityT: Dictionary["activity"];
   seed: string;
+  /** C-022: "¡Sección terminada!" after each section. */
+  sd: Dictionary["sd"];
+  xpReward: number;
+  streak: number;
 }) {
   const { t, episodeN, setProgress, setCounter, finish } = usePartShell();
   const [step, setStep] = useState(-1); // -1 rule
@@ -47,6 +55,11 @@ export function GrammarPart({
   }, [step, review, n, setProgress, setCounter, t.section]);
 
   const label = (i: number) => t.gtypes[String(exercises[i]?.type) as GType] ?? fill(t.section, { n: i + 1, total: n });
+  // Each section with its own name: a type used more than once gets its number ("Elige lo que escuchas · 2").
+  const names = exercises.map((_, i) => {
+    const same = exercises.map((_, j) => j).filter((j) => label(j) === label(i));
+    return same.length > 1 ? `${label(i)} · ${same.indexOf(i) + 1}` : label(i);
+  });
 
   if (step < 0)
     return (
@@ -109,41 +122,26 @@ export function GrammarPart({
     );
 
   if (review) {
-    const last = step === n - 1;
+    const share = Math.floor(xpReward / Math.max(1, n));
     return (
-      <div className="my-auto py-6">
-        <p className="text-center text-5xl" aria-hidden>
-          ✨
-        </p>
-        <h2 className="mt-2 text-center text-2xl font-extrabold">{t.sectionDone}</h2>
-        <p className="mt-6 text-xs font-extrabold uppercase tracking-wider text-white/70">{t.topics}</p>
-        <ul className="mt-2 space-y-3">
-          {exercises.map((_, i) => (
-            <li key={i}>
-              <div className="flex justify-between text-sm font-bold">
-                <span>{label(i)}</span>
-                <span className="text-white/70">{i <= step ? "100%" : "0%"}</span>
-              </div>
-              <div className="mt-1 h-2 overflow-hidden rounded-full bg-white/10">
-                <div className="h-full rounded-full bg-gradient-to-r from-[#A88BFF] to-[#FFEF05] transition-[width] duration-500" style={{ width: i <= step ? "100%" : "0%" }} />
-              </div>
-            </li>
-          ))}
-        </ul>
-        <button
-          type="button"
-          onClick={() => {
-            if (last) void finish();
-            else {
-              setReview(false);
-              setStep(step + 1);
-            }
-          }}
-          className="kit-focus-light mt-7 w-full rounded-2xl bg-[#FFEF05] py-3.5 font-extrabold text-[#1B1830]"
-        >
-          {last ? fill(t.finish, { part: "Grammar" }) : t.continue}
-        </button>
-      </div>
+      <SectionDone
+        t={sd}
+        part="Grammar"
+        names={names}
+        index={step}
+        done={new Set(exercises.map((_, i) => i).filter((i) => i <= step))}
+        score={null}
+        xp={step === n - 1 ? xpReward - share * (n - 1) : share}
+        streak={streak}
+        onNext={() => {
+          if (step === n - 1) void finish();
+          else {
+            setReview(false);
+            setStep(step + 1);
+          }
+        }}
+        onReview={() => setReview(false)}
+      />
     );
   }
 
@@ -151,7 +149,7 @@ export function GrammarPart({
   return (
     <div className="flex flex-1 flex-col gap-4 pt-3">
       <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#C9B8FF]">
-        {fill(t.section, { n: step + 1, total: n })} · {label(step)}
+        {fill(t.section, { n: step + 1, total: n })} · {names[step]}
       </p>
       <div data-theme="celstv" className="rounded-3xl bg-white/[.05] p-4" style={{ ["--t-surface" as string]: "rgba(255,255,255,.06)" }}>
         {table ? (

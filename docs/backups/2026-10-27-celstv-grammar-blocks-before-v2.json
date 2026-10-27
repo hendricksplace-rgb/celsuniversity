@@ -1,0 +1,2092 @@
+[
+ {
+  "id": "204ed923-33f6-4c07-96c8-794da97e7735",
+  "lesson_id": "4beda6bb-fa51-4aec-bcac-d47e7d327c03",
+  "data": {
+   "settings": {
+    "id": "2",
+    "title": "Grammar",
+    "subtitle": "I Am Human",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "He are my brother.",
+         "correct": false
+        },
+        {
+         "text": "He is my brother.",
+         "correct": true
+        },
+        {
+         "text": "He am my brother.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "I am a man.",
+        "You are a student.",
+        "He is my friend.",
+        "She is a teacher."
+       ],
+       "description": "This week, you're continuing to use the verb \"to be\" (am, is, are), but now with personal pronouns like I, you, he, she to describe people and relationships.\n\nWe use these structures to talk about who someone is:",
+       "questionText": "Which sentence is correct?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "He",
+         "correct": false
+        },
+        {
+         "text": "I",
+         "correct": false
+        },
+        {
+         "text": "You",
+         "correct": true
+        }
+       ],
+       "examples": [
+        "I am a student.",
+        "You are my friend.",
+        "He is a good boy.",
+        "She is my mom.",
+        "We are family.",
+        "They are neighbors."
+       ],
+       "description": "Here's how to match subject pronouns with the correct form of \"to be\":\n\n**Pronoun** | **Verb** | **Example**\nI | am | I am a student.\nYou | are | You are my friend.\nHe | is | He is a good boy.\nShe | is | She is my mom.\nWe | are | We are family.\nThey | are | They are neighbors.",
+       "explanation": "You → are.",
+       "table_audio": [
+        {
+         "wt": [
+          0,
+          0.197,
+          0.337,
+          0.418
+         ],
+         "row": 1,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r1.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.221,
+          0.383,
+          0.569
+         ],
+         "row": 2,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r2.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.209,
+          0.337,
+          0.418,
+          0.615
+         ],
+         "row": 3,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r3.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.232,
+          0.372,
+          0.534
+         ],
+         "row": 4,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r4.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.197,
+          0.372
+         ],
+         "row": 5,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r5.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.255,
+          0.43
+         ],
+         "row": 6,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/r6.mp3"
+        }
+       ],
+       "questionText": "Which pronoun goes with \"are\"?"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-02/q.mp3"
+     },
+     {
+      "id": 3,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "She'm",
+         "correct": false
+        },
+        {
+         "text": "She're",
+         "correct": false
+        },
+        {
+         "text": "She's",
+         "correct": true
+        }
+       ],
+       "sections": [
+        {
+         "name": "In English, we often use contractions when speaking casually. Here's how:",
+         "examples": [
+          "I am → I'm",
+          "You are → You're",
+          "He is → He's",
+          "She is → She's",
+          "We are → We're",
+          "They are → They're"
+         ]
+        },
+        {
+         "name": "Examples:",
+         "examples": [
+          "I'm happy.",
+          "She's kind.",
+          "You're amazing."
+         ]
+        }
+       ],
+       "questionText": "What is the contraction of \"She is\"?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 4,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " Mateo.",
+         "textBefore": "Hi! My name ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " a boy.",
+         "textBefore": "I ",
+         "highlightedText": "am"
+        },
+        {
+         "textAfter": " my sister, Ana.",
+         "textBefore": "This ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " ten years old.",
+         "textBefore": "She ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " a teacher.",
+         "textBefore": "My mom ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " at home.",
+         "textBefore": "My dad ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " a happy family.",
+         "textBefore": "We ",
+         "highlightedText": "are"
+        }
+       ],
+       "description": "Read this paragraph:"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/c079187ebf_697464317_gram_ep_02_listen_only_1.mp3"
+     },
+     {
+      "id": 5,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This week's sounds help you connect letters and people words clearly.",
+       "wordFamilies": [
+        {
+         "name": "Letters and Example Words",
+         "words": [
+          {
+           "word": "A – Apple – Ape",
+           "phonetic": "/æ/"
+          },
+          {
+           "word": "B – Boy",
+           "phonetic": "/b/"
+          },
+          {
+           "word": "C – Cat",
+           "phonetic": "/k/"
+          },
+          {
+           "word": "D – Dog",
+           "phonetic": "/d/"
+          }
+         ]
+        },
+        {
+         "name": "**Practice Tip:** Say each word clearly, focusing on the first sound. Try this exercise",
+         "words": [
+          {
+           "word": "A is for Apple",
+           "phonetic": "/æ/"
+          },
+          {
+           "word": "B is for Boy",
+           "phonetic": "/b/"
+          },
+          {
+           "word": "C is for Cat",
+           "phonetic": "/k/"
+          },
+          {
+           "word": "D is for Dog",
+           "phonetic": "/d/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/11fc265017_96f9d64b9_gram_ep_02_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Introducing People & Using “To Be” with Pronouns",
+    "totalExercises": 5
+   }
+  }
+ },
+ {
+  "id": "15fb75b3-ec26-440d-b032-60b7cf1fc8d5",
+  "lesson_id": "5d62f23c-f355-4e6f-9c8a-06b772ed99e3",
+  "data": {
+   "settings": {
+    "id": "3",
+    "title": "Grammar",
+    "subtitle": "My Day",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "I eat breakfast.",
+         "correct": true
+        },
+        {
+         "text": "I eats breakfast.",
+         "correct": false
+        },
+        {
+         "text": "I am eat breakfast.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "I eat breakfast.",
+        "I wake up early.",
+        "I go to work."
+       ],
+       "description": "This week we focus on using **verbs to describe daily actions**, especially in the morning and afternoon. You'll continue using **\"to be\"** and add **action verbs** like eat, wake up, and go.",
+       "questionText": "Which sentence is correct?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "She eat toast.",
+         "correct": false
+        },
+        {
+         "text": "She eats toast.",
+         "correct": true
+        },
+        {
+         "text": "She eating toast.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "I wake up early.",
+        "You take a shower.",
+        "He eats toast for breakfast.",
+        "She drinks juice.",
+        "We cook eggs in the morning.",
+        "They go to work on time."
+       ],
+       "description": "Here are verbs in simple present form for routines:\n\n**Subject** | **Verb Example** | **Complete Sentence**\nI | wake up | I wake up early.\nYou | take | You take a shower.\nHe | eats | He eats toast for breakfast.\nShe | drinks | She drinks juice.\nWe | cook | We cook eggs in the morning.\nThey | go | They go to work on time.",
+       "explanation": "He / she / it → add -s: eats.",
+       "table_audio": [
+        {
+         "wt": [
+          0,
+          0.151,
+          0.337,
+          0.441
+         ],
+         "row": 1,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r1.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.221,
+          0.418,
+          0.488
+         ],
+         "row": 2,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r2.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.186,
+          0.395,
+          0.615,
+          0.72
+         ],
+         "row": 3,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r3.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.232,
+          0.546
+         ],
+         "row": 4,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r4.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.186,
+          0.395,
+          0.615,
+          0.697,
+          0.801
+         ],
+         "row": 5,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r5.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.255,
+          0.395,
+          0.488,
+          0.708,
+          0.824
+         ],
+         "row": 6,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/r6.mp3"
+        }
+       ],
+       "questionText": "Which is correct for \"she\"?"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-03/q.mp3"
+     },
+     {
+      "id": 3,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "He go to work.",
+         "correct": false
+        },
+        {
+         "text": "He goes to work.",
+         "correct": true
+        },
+        {
+         "text": "He going to work.",
+         "correct": false
+        }
+       ],
+       "sections": [
+        {
+         "name": "In the **present tense**, when the subject is **he, she, or it**, you usually add **-s** to the verb:",
+         "examples": [
+          "He eats",
+          "She drinks",
+          "It starts"
+         ]
+        },
+        {
+         "name": "Also:",
+         "examples": [
+          "Go → Goes",
+          "Do → Does",
+          "Have → Has"
+         ]
+        },
+        {
+         "name": "Examples:",
+         "examples": [
+          "He eats breakfast.",
+          "She drinks coffee.",
+          "It starts at 8 AM.",
+          "He goes to work.",
+          "She does her homework.",
+          "It has four wheels."
+         ]
+        }
+       ],
+       "questionText": "Which is correct?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 4,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " early every day.",
+         "textBefore": "Hi, I'm Lily. I ",
+         "highlightedText": "wake up"
+        },
+        {
+         "textAfter": " eggs and toast for breakfast.",
+         "textBefore": "I ",
+         "highlightedText": "eat"
+        },
+        {
+         "textAfter": " a shower and go to work.",
+         "textBefore": "Then, I ",
+         "highlightedText": "take"
+        },
+        {
+         "textAfter": " a book or watch TV.",
+         "textBefore": "After work, I ",
+         "highlightedText": "read"
+        },
+        {
+         "textAfter": " my day!",
+         "textBefore": "I ",
+         "highlightedText": "like"
+        }
+       ],
+       "description": "Read this paragraph:"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/a88b5d1a98_3613c14f5_gram_ep_03_listen_only_1.mp3"
+     },
+     {
+      "id": 5,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This week's sound family:",
+       "wordFamilies": [
+        {
+         "name": "This week's sound family:",
+         "words": [
+          {
+           "word": "Egg",
+           "phonetic": "/e/"
+          },
+          {
+           "word": "Eagle",
+           "phonetic": "/i/"
+          },
+          {
+           "word": "Frank",
+           "phonetic": "/f/"
+          },
+          {
+           "word": "Good",
+           "phonetic": "/g/"
+          },
+          {
+           "word": "Hendricks",
+           "phonetic": "/h/"
+          }
+         ]
+        },
+        {
+         "name": "**Practice Tip:** Repeat these words out loud. Match them with new verbs like \"eat,\" \"go,\" and \"have.\" Use flashcards to remember the sound and spelling.",
+         "words": [
+          {
+           "word": "eat",
+           "phonetic": "/iːt/"
+          },
+          {
+           "word": "go",
+           "phonetic": "/ɡoʊ/"
+          },
+          {
+           "word": "have",
+           "phonetic": "/hæv/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/c6c85b627b_507c82ed5_gram_ep_03_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Talking About Daily Actions with Verbs",
+    "totalExercises": 5
+   }
+  }
+ },
+ {
+  "id": "277cec75-9a71-487e-a8ba-808e581ce66a",
+  "lesson_id": "d4e1f138-982f-460a-84c0-1f4385e02aec",
+  "data": {
+   "settings": {
+    "id": "4",
+    "title": "Grammar",
+    "subtitle": "Awesome Family",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "My dad is happy.",
+         "correct": true
+        },
+        {
+         "text": "My dad are happy.",
+         "correct": false
+        },
+        {
+         "text": "My dad am happy.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "My dad is happy.",
+        "My mom is kind.",
+        "My brothers are funny."
+       ],
+       "description": "This week we continue practicing the **verb \"to be\"** and now combine it with **family vocabulary** and **descriptive adjectives**. You'll learn how to talk about who people are and describe them.",
+       "questionText": "Which sentence is correct?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "This are my aunt.",
+         "correct": false
+        },
+        {
+         "text": "This is my aunt.",
+         "correct": true
+        },
+        {
+         "text": "This am my aunt.",
+         "correct": false
+        }
+       ],
+       "examples": [],
+       "description": "Let's use \"to be\" with **family nouns** and adjectives:\n\n**Subject** | **Verb** | **Example Sentence**\nMy mom | is | My mom is sweet.\nMy brothers | are | My brothers are funny.\nThis | is | This is my sister.\nThey | are | They are my grandparents.\nWe | are | We are a big family.",
+       "explanation": "One person (this) → is.",
+       "table_audio": [
+        {
+         "wt": [
+          0,
+          0.209,
+          0.418,
+          0.522
+         ],
+         "row": 1,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/r1.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.221,
+          0.592,
+          0.731
+         ],
+         "row": 2,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/r2.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.255,
+          0.372,
+          0.522
+         ],
+         "row": 3,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/r3.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.209,
+          0.337,
+          0.453
+         ],
+         "row": 4,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/r4.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.36,
+          0.557,
+          0.627,
+          0.836
+         ],
+         "row": 5,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/r5.mp3"
+        }
+       ],
+       "questionText": "Which is correct?"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-04/q.mp3"
+     },
+     {
+      "id": 3,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "These are my grandparents.",
+         "correct": true
+        },
+        {
+         "text": "This is my grandparents.",
+         "correct": false
+        },
+        {
+         "text": "This are my grandparents.",
+         "correct": false
+        }
+       ],
+       "sections": [
+        {
+         "name": "Use **\"this is\"** when introducing one person:",
+         "examples": [
+          "This is my brother.",
+          "This is my cousin."
+         ]
+        },
+        {
+         "name": "Use **\"these are\"** for more than one:",
+         "examples": [
+          "These are my parents.",
+          "These are my uncles."
+         ]
+        },
+        {
+         "name": "Also, remember:",
+         "examples": [
+          "She is my grandma. → She's my grandma.",
+          "They are my cousins. → They're my cousins."
+         ]
+        }
+       ],
+       "questionText": "Which sentence introduces more than one person?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 4,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " Sofia.",
+         "textBefore": "Hello! ",
+         "highlightedText": "I’m"
+        },
+        {
+         "textAfter": " My family.",
+         "textBefore": "This ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " a mechanic.",
+         "textBefore": "My dad ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " a teacher.",
+         "textBefore": "And my mom ",
+         "highlightedText": "is"
+        },
+        {
+         "textAfter": " one sister and two brothers.",
+         "textBefore": "I ",
+         "highlightedText": "have"
+        },
+        {
+         "textAfter": " sweet.",
+         "textBefore": "My grandparents ",
+         "highlightedText": "are"
+        },
+        {
+         "textAfter": " a big family.",
+         "textBefore": "We ",
+         "highlightedText": "are"
+        },
+        {
+         "textAfter": " them all!",
+         "textBefore": "And I ",
+         "highlightedText": "love"
+        }
+       ],
+       "description": "Read this paragraph"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/c412366eed_f5b42b427_gram_ep_04_listen_only_1.mp3"
+     },
+     {
+      "id": 5,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This week's consonants",
+       "wordFamilies": [
+        {
+         "name": "Letter Sounds",
+         "words": [
+          {
+           "word": "Victory",
+           "phonetic": "V –"
+          },
+          {
+           "word": "Watcher",
+           "phonetic": "W –"
+          },
+          {
+           "word": "X-ray",
+           "phonetic": "X –"
+          },
+          {
+           "word": "Young",
+           "phonetic": "Y –"
+          }
+         ]
+        },
+        {
+         "name": "**Practice Tip:** Use these sounds in family words and names",
+         "words": [
+          {
+           "word": "Victor",
+           "phonetic": "V is for"
+          },
+          {
+           "word": "Wendy",
+           "phonetic": "W is for"
+          },
+          {
+           "word": "Xavier",
+           "phonetic": "X is for"
+          },
+          {
+           "word": "Yara",
+           "phonetic": "Y is for"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/be924823d9_503630e31_gram_ep_04_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Talking About Family and Describing People",
+    "totalExercises": 5
+   }
+  }
+ },
+ {
+  "id": "1c52db00-c08f-43a9-837c-0cbbe87f23e1",
+  "lesson_id": "55ab7c4e-8edb-475d-8dba-e0349dc432b1",
+  "data": {
+   "settings": {
+    "id": "5",
+    "title": "Grammar",
+    "subtitle": "My Basic Needs",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "drag_drop_single",
+      "content": {
+       "instructions": [
+        [
+         {
+          "text": "We use \"need to\" plus a verb to talk about things that are necessary for our body, health, or feelings.",
+          "type": "paragraph"
+         },
+         {
+          "text": "For example:",
+          "type": "paragraph"
+         },
+         {
+          "type": "list",
+          "items": [
+           "I need to sleep.",
+           "You need to drink water.",
+           "We need to breathe clean air."
+          ],
+          "style": "custom-blue"
+         },
+         {
+          "type": "audios",
+          "english": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/9db084e080_14e3ec7d1_gram_ep_05_english_instruction_1.mp3",
+          "spanish": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/a615bfbad6_662322624_gram_ep_05_spanish_instruction_1.mp3"
+         }
+        ]
+       ],
+       "correctSentence": "I need to drink water"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/e34e98ee41_46cf2f666_gram_ep_05_drag_and_drop_single_1.mp3"
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "I need sleep.",
+         "correct": false
+        },
+        {
+         "text": "I need to sleep.",
+         "correct": true
+        },
+        {
+         "text": "I am sleep.",
+         "correct": false
+        },
+        {
+         "text": "I need to sleeping.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "I need to rest.",
+        "She is washing her face.",
+        "They are wearing jackets."
+       ],
+       "description": "This week, you're learning how to express what you need using \"need to\" and how to talk about what you’re doing with present continuous (am/is/are + verb-ing)."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/3e37816ff4_57d511aab_gram_ep_05_choose_text_from_audio_1.mp3"
+     },
+     {
+      "id": 3,
+      "type": "drag_drop_multiple",
+      "content": {
+       "sentences": [
+        {
+         "correct": "washing",
+         "options": [
+          "brush",
+          "drink",
+          "washing"
+         ],
+         "textAfter": "my face.",
+         "textBefore": "I am"
+        },
+        {
+         "correct": "rest",
+         "options": [
+          "rest",
+          "wash",
+          "play"
+         ],
+         "textAfter": "soon.",
+         "textBefore": "He needs to"
+        },
+        {
+         "correct": "wearing",
+         "options": [
+          "cooking",
+          "wearing",
+          "eating"
+         ],
+         "textAfter": "jackets today.",
+         "textBefore": "They are"
+        }
+       ],
+       "description": "Choose the word that best completes each sentence."
+      }
+     },
+     {
+      "id": 4,
+      "type": "listening_select_inverted",
+      "content": {
+       "sentence": "She is brushing her teeth.",
+       "description": "Choose the word that best completes the sentence you hear.",
+       "audioOptions": [
+        {
+         "id": "audio2",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/1b7dce5426_0fb31c1be_gram_ep_05_listening_select_inverted_3.mp3",
+         "value": "option2"
+        },
+        {
+         "id": "audio1",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4a12011b2c_6271f40d2_gram_ep_05_listening_select_inverted_2.mp3",
+         "value": "option1"
+        },
+        {
+         "id": "audio3",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/520d5f4f8c_edbe0d1d9_gram_ep_05_listening_select_inverted_1.mp3",
+         "value": "option3"
+        }
+       ],
+       "correctAnswer": "option1",
+       "highlightedWord": "brushing"
+      }
+     },
+     {
+      "id": 5,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " eat healthy food.",
+         "textBefore": "I ",
+         "highlightedText": "need to"
+        },
+        {
+         "textAfter": " his room.",
+         "textBefore": "He is in ",
+         "highlightedText": "sleeping"
+        },
+        {
+         "textAfter": " clean clothes.",
+         "textBefore": "They are ",
+         "highlightedText": "wearing"
+        },
+        {
+         "textAfter": " her hair.",
+         "textBefore": "She is ",
+         "highlightedText": "brushing"
+        },
+        {
+         "textAfter": " rest after school.",
+         "textBefore": "We ",
+         "highlightedText": "need to"
+        }
+       ],
+       "description": "Read these five sentences"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/321764f877_430814993_gram_ep_05_listen_only_1.mp3"
+     },
+     {
+      "id": 6,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This is how you say it. Listen and repeat.",
+       "wordFamilies": [
+        {
+         "name": "Word family \"L\"",
+         "words": [
+          {
+           "word": "Live",
+           "phonetic": "/lɪv/"
+          },
+          {
+           "word": "Love",
+           "phonetic": "/lʌv/"
+          },
+          {
+           "word": "Learn",
+           "phonetic": "/lɜrn/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"M\"",
+         "words": [
+          {
+           "word": "Marry",
+           "phonetic": "/ˈmæri/"
+          },
+          {
+           "word": "Make",
+           "phonetic": "/meɪk/"
+          },
+          {
+           "word": "Move",
+           "phonetic": "/muːv/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"N\"",
+         "words": [
+          {
+           "word": "Need",
+           "phonetic": "/niːd/"
+          },
+          {
+           "word": "Nap",
+           "phonetic": "/næp/"
+          },
+          {
+           "word": "Name",
+           "phonetic": "/neɪm/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/47c1d89db2_be0a5777a_gram_ep_05_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Expressing needs using \"need\" + infinitive and present continuous (am/is/are + verb-ing)",
+    "totalExercises": 6
+   }
+  }
+ },
+ {
+  "id": "b9dd138e-1614-42d3-ad7b-ce314b88b019",
+  "lesson_id": "35fe756f-1868-4222-b852-052f6b18869d",
+  "data": {
+   "settings": {
+    "id": "6",
+    "title": "Grammar",
+    "subtitle": "Imperatives",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "drag_drop_single",
+      "content": {
+       "instructions": [
+        [
+         {
+          "text": "Imperatives are used to give instructions, commands, or suggestions.",
+          "type": "paragraph"
+         },
+         {
+          "text": "For example:",
+          "type": "paragraph"
+         },
+         {
+          "type": "list",
+          "items": [
+           "Fry the potatoes.",
+           "Don’t forget the cheese.",
+           "Let’s eat!"
+          ],
+          "style": "custom-blue"
+         },
+         {
+          "type": "audios",
+          "english": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/a5fc0fc441_0e38f989a_gram_ep_06_english_instruction_1.mp3",
+          "spanish": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/42c22c6911_7941b6738_gram_ep_06_spanish_instruction_1.mp3"
+         }
+        ]
+       ],
+       "correctSentence": "let’s make a sandwich"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/8a8638d884_c2b3eb028_gram_ep_06_drag_and_drop_single_1.mp3"
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "We bake pizza.",
+         "correct": false
+        },
+        {
+         "text": "Let’s bake a pizza.",
+         "correct": true
+        },
+        {
+         "text": "Baking a pizza.",
+         "correct": false
+        },
+        {
+         "text": "Let’s baking pizza.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "Let’s make a sandwich.",
+        "Don’t eat too fast.",
+        "Grill the chicken."
+       ],
+       "description": "This week we are learning how to use imperatives to express actions like ordering or preparing food."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/6270f5c994_8d2891021_gram_ep_06_choose_text_from_audio_1.mp3"
+     },
+     {
+      "id": 3,
+      "type": "drag_drop_multiple",
+      "content": {
+       "sentences": [
+        {
+         "correct": "eat",
+         "options": [
+          "eats",
+          "eat",
+          "eating"
+         ],
+         "textAfter": "the fries.",
+         "textBefore": "Please"
+        },
+        {
+         "correct": "eat",
+         "options": [
+          "make",
+          "do",
+          "eat"
+         ],
+         "textAfter": "lunch together.",
+         "textBefore": "Let’s"
+        },
+        {
+         "correct": "forget",
+         "options": [
+          "forget",
+          "drop",
+          "use"
+         ],
+         "textAfter": "the butter.",
+         "textBefore": "Don’t"
+        }
+       ],
+       "description": "Choose the correct word to complete each sentence."
+      }
+     },
+     {
+      "id": 4,
+      "type": "listening_select_inverted",
+      "content": {
+       "sentence": "Don’t boil the potatoes.",
+       "description": "Choose the word you hear in the sentence.",
+       "audioOptions": [
+        {
+         "id": "audio1",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4c1734df52_ab51a3896_gram_ep_06_grill.mp3",
+         "value": "option1"
+        },
+        {
+         "id": "audio2",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/95c72a499d_b55dacde9_gram_ep_06_boil.mp3",
+         "value": "option2"
+        },
+        {
+         "id": "audio3",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/63b527638c_5fd2a729a_gram_ep_06_mix.mp3",
+         "value": "option3"
+        }
+       ],
+       "correctAnswer": "option2",
+       "highlightedWord": "boil"
+      }
+     },
+     {
+      "id": 5,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": ".",
+         "textBefore": "Fry the chicken",
+         "highlightedText": "carefully"
+        },
+        {
+         "textAfter": " the butter.",
+         "textBefore": "Don’t ",
+         "highlightedText": "forget"
+        },
+        {
+         "textAfter": " the hot dogs.",
+         "textBefore": "Let’s ",
+         "highlightedText": "grill"
+        },
+        {
+         "textAfter": " your food.",
+         "textBefore": "Eat ",
+         "highlightedText": "slowly and enjoy"
+        },
+        {
+         "textAfter": " the napkins.",
+         "textBefore": "Please ",
+         "highlightedText": "pass"
+        }
+       ],
+       "description": "Read these five imperative sentences."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4a61ca59c1_baf12fb58_gram_ep_06_listen_only_1.mp3"
+     },
+     {
+      "id": 6,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This is how you say it. Listen and repeat.",
+       "wordFamilies": [
+        {
+         "name": "Word family \"O\"",
+         "words": [
+          {
+           "word": "Otter",
+           "phonetic": "/ˈɑː.tər/"
+          },
+          {
+           "word": "Oatmeal",
+           "phonetic": "/ˈoʊt.miːl/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"M\"",
+         "words": [
+          {
+           "word": "Mix",
+           "phonetic": "/mɪks/"
+          },
+          {
+           "word": "Matt",
+           "phonetic": "/mæt/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"N\"",
+         "words": [
+          {
+           "word": "Napkin",
+           "phonetic": "/ˈnæp.kɪn/"
+          },
+          {
+           "word": "Nick",
+           "phonetic": "/nɪk/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"P\"",
+         "words": [
+          {
+           "word": "Pizza",
+           "phonetic": "/ˈpiːt.sə/"
+          },
+          {
+           "word": "Paul",
+           "phonetic": "/pɔːl/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4768e94af5_7e59e6f92_gram_ep_06_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Imperatives",
+    "totalExercises": 6
+   }
+  }
+ },
+ {
+  "id": "b55e8a53-57ba-4050-9404-a236c8784e78",
+  "lesson_id": "f5ab788e-4ffd-407b-b254-9a7715f13e8c",
+  "data": {
+   "settings": {
+    "id": "7",
+    "title": "Grammar",
+    "subtitle": "My Friends and What We Do",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "drag_drop_single",
+      "content": {
+       "instructions": [
+        [
+         {
+          "text": "We use the present progressive to talk about what’s happening right now. Use am, is, or are followed by a verb ending in -ing.",
+          "type": "paragraph"
+         },
+         {
+          "text": "Examples:",
+          "type": "paragraph"
+         },
+         {
+          "type": "list",
+          "items": [
+           "I am eating.",
+           "We are playing.",
+           "She is dancing."
+          ],
+          "style": "custom-blue"
+         },
+         {
+          "type": "audios",
+          "english": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/84246fde97_241682cdf_gram_ep_07_english_instruction_1.mp3",
+          "spanish": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/b5612a22ab_9a4cfb124_gram_ep_07_spanish_instruction_1.mp3"
+         }
+        ]
+       ],
+       "correctSentence": "my friends and I are having a party"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/e3d6943475_ee693ca52_gram_ep_07_drag_and_drop_single_1.mp3"
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "We is hang out.",
+         "correct": false
+        },
+        {
+         "text": "We hanging out.",
+         "correct": false
+        },
+        {
+         "text": "We are hang out.",
+         "correct": false
+        },
+        {
+         "text": "We are hanging out.",
+         "correct": true
+        }
+       ],
+       "examples": [
+        "I am playing video games.",
+        "They are dancing.",
+        "She is singing."
+       ],
+       "description": "Listen and choose the sentence that uses the present progressive correctly."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/970a788b64_5748d0fc1_gram_ep_07_choose_text_from_audio_1.mp3"
+     },
+     {
+      "id": 3,
+      "type": "drag_drop_multiple",
+      "content": {
+       "sentences": [
+        {
+         "correct": "singing",
+         "options": [
+          "sings",
+          "sang",
+          "singing"
+         ],
+         "textAfter": "karaoke.",
+         "textBefore": "I am"
+        },
+        {
+         "correct": "playing",
+         "options": [
+          "play",
+          "playing",
+          "plays"
+         ],
+         "textAfter": "at the park.",
+         "textBefore": "They are"
+        },
+        {
+         "correct": "playing",
+         "options": [
+          "playing",
+          "play",
+          "plays"
+         ],
+         "textAfter": "video games.",
+         "textBefore": "She is"
+        }
+       ],
+       "description": "Choose the word that best completes each sentence."
+      }
+     },
+     {
+      "id": 4,
+      "type": "listening_select_inverted",
+      "content": {
+       "sentence": "He is dancing with his friends.",
+       "description": "Choose the correct word you hear in the sentence.",
+       "audioOptions": [
+        {
+         "id": "audio1",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/0ee8e13ab8_db4995a6c_gram_ep_07_jumping.mp3",
+         "value": "option1"
+        },
+        {
+         "id": "audio2",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/2a437f29f7_2627e778e_gram_ep_07_dancing.mp3",
+         "value": "option2"
+        },
+        {
+         "id": "audio3",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4377ed7046_093f15a11_gram_ep_07_running.mp3",
+         "value": "option3"
+        }
+       ],
+       "correctAnswer": "option2",
+       "highlightedWord": "dancing"
+      }
+     },
+     {
+      "id": 5,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " pizza with my best friend.",
+         "textBefore": "I am",
+         "highlightedText": "eating"
+        },
+        {
+         "textAfter": " a movie.",
+         "textBefore": "They are",
+         "highlightedText": "watching"
+        },
+        {
+         "textAfter": " at the party.",
+         "textBefore": "She is",
+         "highlightedText": "dancing"
+        },
+        {
+         "textAfter": " at the park.",
+         "textBefore": "We are",
+         "highlightedText": "hanging out"
+        },
+        {
+         "textAfter": " his friend now.",
+         "textBefore": "He is",
+         "highlightedText": "calling"
+        }
+       ],
+       "description": "Read these five sentences using present progressive."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/6fd0b3a766_4b102ef43_gram_ep_07_listen_only_1.mp3"
+     },
+     {
+      "id": 6,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This is how you say it. Listen and repeat.",
+       "wordFamilies": [
+        {
+         "name": "Word family \"I\"",
+         "words": [
+          {
+           "word": "I",
+           "phonetic": "/aɪ/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"You\"",
+         "words": [
+          {
+           "word": "You",
+           "phonetic": "/ju/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"He\"",
+         "words": [
+          {
+           "word": "He",
+           "phonetic": "/hi/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"She\"",
+         "words": [
+          {
+           "word": "She",
+           "phonetic": "/ʃi/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"We\"",
+         "words": [
+          {
+           "word": "We",
+           "phonetic": "/wi/"
+          }
+         ]
+        },
+        {
+         "name": "Word family \"They\"",
+         "words": [
+          {
+           "word": "They",
+           "phonetic": "/ðeɪ/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/8b33abdcee_a9e2c1add_gram_ep_07_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Present Progressive (am/is/are + verb-ing)",
+    "totalExercises": 6
+   }
+  }
+ },
+ {
+  "id": "04b9ec25-01d1-432a-8bf0-1ce3db2e0312",
+  "lesson_id": "d7ff0605-094a-481b-b925-5a89459789f3",
+  "data": {
+   "settings": {
+    "id": "8",
+    "title": "Grammar",
+    "subtitle": "Review of Simple Present vs. Present Progressive",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "drag_drop_single",
+      "content": {
+       "instructions": [
+        [
+         {
+          "text": "We use the present progressive to describe what is happening now, and the simple present to describe routines or facts.",
+          "type": "paragraph"
+         },
+         {
+          "text": "For example:",
+          "type": "paragraph"
+         },
+         {
+          "type": "list",
+          "items": [
+           "She is watching a movie now.",
+           "He works at the office every day.",
+           "They are playing soccer right now."
+          ],
+          "style": "custom-blue"
+         },
+         {
+          "type": "audios",
+          "english": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/ec4f04a016_e378e27e8_gram_ep_08_english_instruction_1.mp3",
+          "spanish": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/452d40150f_dc65b06db_gram_ep_08_spanish_instruction_1.mp3"
+         }
+        ]
+       ],
+       "correctSentence": "She is watching a movie now"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/8553a66443_06f646761_gram_ep_08_drag_and_drop_single_1.mp3"
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "I brush my teeth now.",
+         "correct": false
+        },
+        {
+         "text": "I brushing my teeth.",
+         "correct": false
+        },
+        {
+         "text": "I am brush my teeth.",
+         "correct": false
+        },
+        {
+         "text": "I am brushing my teeth.",
+         "correct": true
+        }
+       ],
+       "examples": [
+        "I am brushing my teeth.",
+        "She watches TV every evening.",
+        "They are playing soccer now."
+       ],
+       "description": "Listen and choose the correct sentence using either the simple present or present progressive."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/fda4a6d85c_4317e9766_gram_ep_08_choose_text_from_audio_1.mp3"
+     },
+     {
+      "id": 3,
+      "type": "drag_drop_multiple",
+      "content": {
+       "sentences": [
+        {
+         "correct": "watching",
+         "options": [
+          "watching",
+          "watches"
+         ],
+         "textAfter": "a movie now.",
+         "textBefore": "She is"
+        },
+        {
+         "correct": "watches",
+         "options": [
+          "watches",
+          "watching"
+         ],
+         "textAfter": "movies every Saturday.",
+         "textBefore": "Joe"
+        }
+       ],
+       "description": "Choose the word that best completes each sentence."
+      }
+     },
+     {
+      "id": 4,
+      "type": "listening_select_inverted",
+      "content": {
+       "sentence": "They are playing soccer.",
+       "description": "Choose the word that best completes the sentence you hear.",
+       "audioOptions": [
+        {
+         "id": "audio1",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/896c5b60a1_8ac12be9b_gram_ep_08_listening_select_inverted_1.mp3",
+         "value": "option1",
+         "fullSentence": "He is sleeping in his room."
+        },
+        {
+         "id": "audio2",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/15270526d4_fee418f75_gram_ep_08_listening_select_inverted_2.mp3",
+         "value": "option2",
+         "fullSentence": "They are playing soccer."
+        },
+        {
+         "id": "audio3",
+         "file": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/58fdecc26e_166b5544b_gram_ep_08_listening_select_inverted_3.mp3",
+         "value": "option3",
+         "fullSentence": "She is working at the office."
+        }
+       ],
+       "correctAnswer": "option2",
+       "highlightedWord": "playing"
+      }
+     },
+     {
+      "id": 5,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textAfter": " at 7am.",
+         "textBefore": "I ",
+         "highlightedText": "wake up"
+        },
+        {
+         "textAfter": " soccer right now.",
+         "textBefore": "We ",
+         "highlightedText": "are playing"
+        },
+        {
+         "textAfter": " moronga.",
+         "textBefore": "She ",
+         "highlightedText": "doesn't eat"
+        },
+        {
+         "textAfter": " salsa.",
+         "textBefore": "He ",
+         "highlightedText": "isn't dancing"
+        },
+        {
+         "textAfter": " beer.",
+         "textBefore": "They ",
+         "highlightedText": "don't drink"
+        }
+       ],
+       "description": "Read these five sentences and identify the verb tense."
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/927d96a394_e1282665d_gram_ep_08_listen_only_1.mp3"
+     },
+     {
+      "id": 6,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This is how you say it. Listen and repeat.",
+       "wordFamilies": [
+        {
+         "name": "Vowel Sound Family \"A\"",
+         "words": [
+          {
+           "word": "Cat",
+           "phonetic": "/æ/"
+          },
+          {
+           "word": "Make",
+           "phonetic": "/eɪ/"
+          }
+         ]
+        },
+        {
+         "name": "Vowel Sound Family \"E\"",
+         "words": [
+          {
+           "word": "Bed",
+           "phonetic": "/ɛ/"
+          },
+          {
+           "word": "See",
+           "phonetic": "/i/"
+          }
+         ]
+        },
+        {
+         "name": "Vowel Sound Family \"I\"",
+         "words": [
+          {
+           "word": "Sit",
+           "phonetic": "/ɪ/"
+          },
+          {
+           "word": "Like",
+           "phonetic": "/aɪ/"
+          }
+         ]
+        },
+        {
+         "name": "Vowel Sound Family \"O\"",
+         "words": [
+          {
+           "word": "Hot",
+           "phonetic": "/ɑ/"
+          },
+          {
+           "word": "Go",
+           "phonetic": "/oʊ/"
+          }
+         ]
+        },
+        {
+         "name": "Vowel Sound Family \"U\"",
+         "words": [
+          {
+           "word": "Cut",
+           "phonetic": "/ʌ/"
+          },
+          {
+           "word": "Use",
+           "phonetic": "/ju/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/58332087de_12bb4c07e_gram_ep_08_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Simple Present vs. Present Progressive"
+   }
+  }
+ },
+ {
+  "id": "4c198149-195a-436c-89d4-df8736149d29",
+  "lesson_id": "eb1df430-8e95-4da5-9675-de3a8c781ba4",
+  "data": {
+   "settings": {
+    "id": "1",
+    "title": "Grammar",
+    "subtitle": "Greetings, Introductions, and 'To Be'",
+    "exercises": [
+     {
+      "id": 1,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "I am a student.",
+         "correct": true
+        },
+        {
+         "text": "I are a student.",
+         "correct": false
+        },
+        {
+         "text": "I is a student.",
+         "correct": false
+        }
+       ],
+       "examples": [
+        "I am Carla.",
+        "You are my friend.",
+        "He is happy."
+       ],
+       "description": "We use 'to be' to describe people and things.\n\nExamples:"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 2,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "is",
+         "correct": false
+        },
+        {
+         "text": "am",
+         "correct": false
+        },
+        {
+         "text": "are",
+         "correct": true
+        }
+       ],
+       "examples": [],
+       "description": "Let's see how 'to be' works with different subjects:\n\n**Subject** | **Verb** | **Example**\nI | am | I am Alex.\nYou | are | You are welcome.\nHe | is | He is my teacher.\nShe | is | She is very kind.\nIt | is | It is cold today.\nWe | are | We are ready.\nThey | are | They are students.",
+       "explanation": "They → are.",
+       "table_audio": [
+        {
+         "wt": [
+          0,
+          0.163,
+          0.325
+         ],
+         "row": 1,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r1.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.337,
+          0.499
+         ],
+         "row": 2,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r2.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.197,
+          0.325,
+          0.464
+         ],
+         "row": 3,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r3.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.221,
+          0.36,
+          0.627
+         ],
+         "row": 4,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r4.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.197,
+          0.36,
+          0.639
+         ],
+         "row": 5,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r5.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.209,
+          0.36
+         ],
+         "row": 6,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r6.mp3"
+        },
+        {
+         "wt": [
+          0,
+          0.441,
+          0.627
+         ],
+         "row": 7,
+         "audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/r7.mp3"
+        }
+       ],
+       "questionText": "What's the correct verb for 'they'?"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-tables/ep-01/q.mp3"
+     },
+     {
+      "id": 3,
+      "type": "choose_text_from_audio",
+      "content": {
+       "options": [
+        {
+         "text": "I're tired",
+         "correct": false
+        },
+        {
+         "text": "I'm tired",
+         "correct": true
+        },
+        {
+         "text": "I is tired",
+         "correct": false
+        }
+       ],
+       "sections": [
+        {
+         "name": "'To be' is **irregular**, which means it doesn't follow standard grammar rules. That's why it changes depending on the subject.",
+         "examples": []
+        },
+        {
+         "name": "We also use **contractions** in everyday speech:",
+         "examples": [
+          "I am → I'm",
+          "You are → You're",
+          "He is → He's",
+          "She is → She's",
+          "We are → We're",
+          "They are → They're"
+         ]
+        },
+        {
+         "name": "Examples:",
+         "examples": [
+          "I'm ready.",
+          "She's my friend.",
+          "We're happy to be here."
+         ]
+        }
+       ],
+       "questionText": "Which of these is a correct contraction?"
+      },
+      "audioFile": ""
+     },
+     {
+      "id": 4,
+      "type": "listen_only",
+      "content": {
+       "title": "Reading",
+       "sentences": [
+        {
+         "textBefore": "Hello! My name is Diego."
+        },
+        {
+         "textAfter": " From Mexico.",
+         "highlightedText": "I am"
+        },
+        {
+         "textAfter": " happy to meet you.",
+         "highlightedText": "I'm"
+        },
+        {
+         "textAfter": " my friend Sara.",
+         "highlightedText": "This is"
+        },
+        {
+         "textAfter": " a teacher.",
+         "highlightedText": "She is"
+        },
+        {
+         "textAfter": " students.",
+         "highlightedText": "We are"
+        },
+        {
+         "textAfter": " in the right place.",
+         "highlightedText": "You are"
+        },
+        {
+         "textBefore": "Welcome!"
+        }
+       ],
+       "description": "Read this paragraph:"
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/99269e8cf1_e5be76dd0_gram_ep_01_listen_only_1.mp3"
+     },
+     {
+      "id": 5,
+      "type": "funics",
+      "content": {
+       "title": "Funics",
+       "description": "This week's sound family",
+       "wordFamilies": [
+        {
+         "name": "The /eɪ/ sound",
+         "words": [
+          {
+           "word": "OK",
+           "phonetic": "/oʊ keɪ/"
+          },
+          {
+           "word": "Pay",
+           "phonetic": "/peɪ/"
+          },
+          {
+           "word": "They",
+           "phonetic": "/ðeɪ/"
+          },
+          {
+           "word": "May",
+           "phonetic": "/meɪ/"
+          },
+          {
+           "word": "Say",
+           "phonetic": "/seɪ/"
+          }
+         ]
+        },
+        {
+         "name": "**Practice Tip** \n\n Say each word three times slowly and clearly. Stretch the vowel:",
+         "words": [
+          {
+           "word": "\"Paaaay,\"",
+           "phonetic": "/peɪ/"
+          },
+          {
+           "word": "\"Saaaay,\"",
+           "phonetic": "/seɪ/"
+          },
+          {
+           "word": "\"Oooookaaaay.\"",
+           "phonetic": "/oʊ keɪ/"
+          }
+         ]
+        }
+       ]
+      },
+      "audioFile": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/a72f181cd2_c19e8c436_gram_ep_01_funics_1.mp3"
+     }
+    ],
+    "grammarTopic": "Introductions",
+    "totalExercises": 5
+   }
+  }
+ }
+]

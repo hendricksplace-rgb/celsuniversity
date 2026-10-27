@@ -54,6 +54,8 @@ function toCelsBook(data: Record<string, unknown>, episode: { title: string; art
 import { AudioPart, type Chapter, type Cue, type Track } from "@/components/part/AudioPart";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
+import { GrammarV2Part } from "@/components/part/GrammarV2";
+import { isGrammarV2, type GrammarV2 } from "@/lib/grammar-v2";
 import { withoutPipeTable } from "@/lib/grammar-table";
 
 // Same list as the exercise renderers (components/lesson/activities/Grammar.tsx).
@@ -201,6 +203,11 @@ export default async function PartPage({ params, searchParams }: Props) {
     body = (
       <AudioPart tracks={tracks} title={episode.title || fill(t.episode.tag, { n: episode.n })} episodeKey={episodePath(page.course.slug, episode.n)} finishLabel={finishLabel} />
     );
+  } else if (key === "grammar" && blocks.some((b) => b.block_type === "grammar" && isGrammarV2(b.data.v2))) {
+    // Grammar v2 (episodes 1–8): every section with Amy's audio and its own name, then "¡Sección terminada!".
+    const v2 = blocks.find((b) => b.block_type === "grammar" && isGrammarV2(b.data.v2))!.data.v2 as GrammarV2;
+    const { data: game } = await supabase.from("gamification").select("current_streak").eq("user_id", viewer.user.id).maybeSingle();
+    body = <GrammarV2Part data={v2} g2={t.g2} sd={t.sd} xpReward={part.xpReward} streak={game?.current_streak ?? 0} />;
   } else if (key === "grammar" && blocks.some((b) => b.block_type === "grammar")) {
     const g = settingsOf(blocks.find((b) => b.block_type === "grammar")!);
     const exercises = (Array.isArray(g.exercises) ? (g.exercises as Record<string, unknown>[]) : []).filter((e) => GRAMMAR_TYPES.has(String(e?.type)));
@@ -211,6 +218,9 @@ export default async function PartPage({ params, searchParams }: Props) {
         urls={urlsFor(g, content.signed)}
         activityT={t.activity}
         seed={part.id}
+        sd={t.sd}
+        xpReward={part.xpReward}
+        streak={(await supabase.from("gamification").select("current_streak").eq("user_id", viewer.user.id).maybeSingle()).data?.current_streak ?? 0}
       />
     );
   } else if (!blocks.length) {
