@@ -102,7 +102,7 @@ function ProgramCard({ t, brand, compact }: { t: T; brand: ThemeKey; compact?: b
   );
 }
 
-export function StudentHome({ t, data }: { t: T; data: HomeData }) {
+export function StudentHome({ t, data, leader }: { t: T; data: HomeData; leader?: React.ReactNode }) {
   return (
     <Page>
       <StudentHero t={t} data={data} />
@@ -113,6 +113,7 @@ export function StudentHome({ t, data }: { t: T; data: HomeData }) {
         before={
           <div className="mb-10 space-y-4 empty:hidden">
             <InstallCardSlot />
+            {leader}
             {data.assignments.length > 0 && <Assignments t={t} items={data.assignments} />}
           </div>
         }

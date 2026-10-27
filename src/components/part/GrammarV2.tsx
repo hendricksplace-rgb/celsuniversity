@@ -7,48 +7,16 @@
 import "./grammar-v2.css";
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import { fileRoute } from "@/components/reader/media";
 import { fill } from "@/components/course/kit";
 import { taskItems, type G2Block, type G2Section, type G2Task, type GrammarV2 } from "@/lib/grammar-v2";
 import { usePartShell } from "./PartShell";
 import { SectionDone } from "./SectionDone";
 import { sfx } from "./fx";
+import { playClip, stopClip } from "./clip";
 
 type L = Dictionary["g2"]["es"];
 type Lang = "en" | "es";
 const LANG_KEY = "celsu_g2_lang";
-
-/* ---------- audio: one clip at a time, the word being said from currentTime on every frame ---------- */
-let current: { a: HTMLAudioElement; stop: () => void } | null = null;
-function playClip(ref: string | undefined, onWord?: (k: number) => void, wt?: number[], done?: () => void) {
-  current?.stop();
-  if (!ref) return done?.();
-  const a = new Audio(fileRoute(ref));
-  let raf = 0;
-  let ended = false;
-  const stop = () => {
-    if (ended) return;
-    ended = true;
-    cancelAnimationFrame(raf);
-    a.pause();
-    if (current?.a === a) current = null;
-    done?.();
-  };
-  current = { a, stop };
-  if (onWord && wt?.length) {
-    const tick = () => {
-      const t = a.currentTime;
-      let k = -1;
-      for (let i = 0; i < wt.length; i++) if (t >= wt[i] - 0.02) k = i;
-      onWord(k);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-  }
-  a.onended = stop;
-  a.onerror = stop;
-  void a.play().catch(stop);
-}
 
 const Play = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -598,13 +566,13 @@ export function GrammarV2Part({ data, g2, sd, xpReward, streak }: { data: Gramma
     setProgress(done.size / n);
     setCounter(fill(t.section, { n: (showDone ?? sec) + 1, total: n }));
   }, [done, n, sec, showDone, setProgress, setCounter, t.section]);
-  useEffect(() => () => current?.stop(), []);
+  useEffect(() => () => void stopClip(), []);
 
   const section: G2Section = sections[sec];
   const items = taskItems(section.task);
   const ready = items === 0 || !!result[sec]?.ready;
   const go = (i: number) => {
-    current?.stop();
+    stopClip();
     setShowDone(null);
     setSec(i);
     window.scrollTo({ top: 0 });
@@ -670,7 +638,7 @@ export function GrammarV2Part({ data, g2, sd, xpReward, streak }: { data: Gramma
         className="g2-cta"
         disabled={!ready}
         onClick={() => {
-          current?.stop();
+          stopClip();
           sfx.correct();
           setDone((d) => new Set(d).add(sec));
           setShowDone(sec);

@@ -42,6 +42,8 @@ export const sfx = {
   wrong: () => tone(196, 0, 0.25, "sawtooth", 0.035),
   flip: () => tone(520, 0, 0.12, "sine", 0.05),
   finish: () => [523, 659, 784, 1046].forEach((f, i) => tone(f, i * 0.11, 0.3, "triangle", 0.06)),
+  /** A cheer sent or received (C-026). */
+  cheer: () => [880, 1175, 1568].forEach((f, i) => tone(f, i * 0.07, 0.35, "triangle", 0.08)),
 };
 
 export const reducedMotion = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

@@ -15,6 +15,8 @@ import { courseCopy } from "@/lib/guided-copy";
 import { ROUTE_CARDS } from "@/lib/my-courses";
 import { guidedStage } from "@/lib/guided-copy";
 import { GuidedCourseView } from "@/components/guided/GuidedCourseView";
+import { courseLabel, leaderCard } from "@/lib/leaderboard";
+import { LeaderCard } from "@/components/leaderboard/LeaderCard";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -73,9 +75,11 @@ export default async function CoursePage({ params }: Props) {
     );
   }
   const tool = AI_TOOL_OF_SLUG[slug];
+  const card = access ? await leaderCard(supabase, { id: page.course.id, slug: page.course.slug, label: courseLabel(theme, page.course.title) }) : null;
   const notice = (
     <>
       {!access && <AccessNotice userId={viewer.user.id} courseId={page.course.id} slug={page.course.slug} fallback={t.course.noAccess} />}
+      {card && <LeaderCard t={t.lb} d={card} />}
       {tool && <AiToolCard href={tool.href} icon={tool.icon} kicker={t.route.aiKicker} title={t.route[tool.title]} text={t.route[tool.text]} />}
     </>
   );

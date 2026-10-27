@@ -1194,6 +1194,114 @@ export type Database = {
         }
         Relationships: []
       }
+      cheer_phrases: {
+        Row: {
+          active: boolean
+          audio: string | null
+          code: string
+          emoji: string
+          en: string
+          es: string
+          note: string
+          sort_order: number
+          wt: Json
+        }
+        Insert: {
+          active?: boolean
+          audio?: string | null
+          code: string
+          emoji: string
+          en: string
+          es: string
+          note?: string
+          sort_order?: number
+          wt?: Json
+        }
+        Update: {
+          active?: boolean
+          audio?: string | null
+          code?: string
+          emoji?: string
+          en?: string
+          es?: string
+          note?: string
+          sort_order?: number
+          wt?: Json
+        }
+        Relationships: []
+      }
+      cheers: {
+        Row: {
+          course_id: string
+          created_at: string
+          from_user: string
+          id: number
+          period_start: string
+          phrase_code: string
+          seen_at: string | null
+          sent_on: string
+          thank_seen_at: string | null
+          thanked_at: string | null
+          to_user: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          from_user: string
+          id?: number
+          period_start: string
+          phrase_code: string
+          seen_at?: string | null
+          sent_on: string
+          thank_seen_at?: string | null
+          thanked_at?: string | null
+          to_user: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          from_user?: string
+          id?: number
+          period_start?: string
+          phrase_code?: string
+          seen_at?: string | null
+          sent_on?: string
+          thank_seen_at?: string | null
+          thanked_at?: string | null
+          to_user?: string
+        }
+        Relationships: []
+      }
+      xp_events: {
+        Row: {
+          amount: number
+          course_id: string
+          created_at: string
+          id: number
+          lesson_id: string | null
+          source: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          course_id: string
+          created_at?: string
+          id?: number
+          lesson_id?: string | null
+          source: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          course_id?: string
+          created_at?: string
+          id?: number
+          lesson_id?: string | null
+          source?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tn_plans: {
         Row: {
           data: Json
@@ -2081,7 +2189,9 @@ export type Database = {
           preferred_language: Database["public"]["Enums"]["lang"]
           requested_plan: string | null
           requested_plan_at: string | null
+          receive_cheers: boolean
           role: Database["public"]["Enums"]["user_role"]
+          show_on_leaderboard: boolean
           starting_level: Database["public"]["Enums"]["cefr_level"] | null
           updated_at: string
         }
@@ -2102,7 +2212,9 @@ export type Database = {
           preferred_language?: Database["public"]["Enums"]["lang"]
           requested_plan?: string | null
           requested_plan_at?: string | null
+          receive_cheers?: boolean
           role?: Database["public"]["Enums"]["user_role"]
+          show_on_leaderboard?: boolean
           starting_level?: Database["public"]["Enums"]["cefr_level"] | null
           updated_at?: string
         }
@@ -2123,7 +2235,9 @@ export type Database = {
           preferred_language?: Database["public"]["Enums"]["lang"]
           requested_plan?: string | null
           requested_plan_at?: string | null
+          receive_cheers?: boolean
           role?: Database["public"]["Enums"]["user_role"]
+          show_on_leaderboard?: boolean
           starting_level?: Database["public"]["Enums"]["cefr_level"] | null
           updated_at?: string
         }
@@ -3211,6 +3325,14 @@ export type Database = {
           level: string
         }[]
       }
+      leaderboard: { Args: { p_course: string; p_period?: string; p_scope?: string }; Returns: Json }
+      send_cheer: { Args: { p_to: string; p_course: string; p_phrase: string }; Returns: Json }
+      thank_cheer: { Args: { p_id: number }; Returns: undefined }
+      mark_cheers_seen: { Args: { p_ids: number[] }; Returns: undefined }
+      mark_thanks_seen: { Args: { p_ids: number[] }; Returns: undefined }
+      cheer_inbox: { Args: never; Returns: Json }
+      my_cheers: { Args: { p_course: string }; Returns: Json }
+      course_xp_values: { Args: { p_course: string }; Returns: Json }
       my_new_badges: {
         Args: never
         Returns: {

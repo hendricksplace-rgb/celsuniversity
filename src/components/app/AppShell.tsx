@@ -11,6 +11,7 @@ import { SignOutButton } from "@/components/SignOutButton";
 import { TabBar, TopNav, type NavItem } from "./AppNav";
 import { withDefaults } from "@/lib/prefs";
 import { BadgeWatcher } from "./BadgeWatcher";
+import { CheerWatcher } from "@/components/leaderboard/CheerWatcher";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const { lang, t } = await getDictionary();
@@ -114,6 +115,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       </header>
       <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">{children}</main>
       <BadgeWatcher title={t.progress.newMedal} cta={t.progress.seeMedals} />
+      <CheerWatcher t={t.lb} />
       {/* Phones also get "Cuenta" as a tab; on larger screens it's in the avatar menu. */}
       <TabBar items={[...items, { href: "/app/cuenta", label: t.cuenta.title, icon: "account" }]} />
     </div>

@@ -41,6 +41,11 @@ export function BadgeWatcher({ title, cta }: { title: string; cta: string }) {
     return () => clearTimeout(h);
   }, [queue]);
 
+  // The cheers overlay (C-026) waits while a medal toast is up.
+  useEffect(() => {
+    document.documentElement.dataset.badgeToast = queue.length ? "1" : "";
+  }, [queue]);
+
   const m = queue[0];
   return (
     <>

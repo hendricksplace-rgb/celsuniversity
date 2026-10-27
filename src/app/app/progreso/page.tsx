@@ -3,6 +3,8 @@ import { getDictionary } from "@/lib/i18n/server";
 import { loadProgress } from "@/lib/progress-page";
 import { Progreso } from "@/components/progreso/Progreso";
 import { FreshOnReturn } from "@/components/progreso/FreshOnReturn";
+import Link from "next/link";
+import "@/components/leaderboard/tabla.css";
 
 // Always the latest numbers (never a cached render).
 export const dynamic = "force-dynamic";
@@ -23,6 +25,19 @@ export default async function ProgresoPage() {
     <>
       <FreshOnReturn renderedAt={Date.now()} />
       <Progreso t={t.progreso} d={d} lang={lang} />
+      {/* C-026: the leaderboard lives under Progreso. */}
+      <Link href="/app/progreso/tabla" className="lb-card mx-auto mt-8 max-w-xl">
+        <span className="tro" aria-hidden>
+          🏆
+        </span>
+        <span className="min-w-0 flex-1">
+          <b>{t.lb.title}</b>
+          <small>{t.lb.card.open}</small>
+        </span>
+        <span aria-hidden className="text-2xl">
+          ›
+        </span>
+      </Link>
     </>
   );
 }
