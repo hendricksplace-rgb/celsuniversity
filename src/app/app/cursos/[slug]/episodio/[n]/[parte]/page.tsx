@@ -54,6 +54,7 @@ function toCelsBook(data: Record<string, unknown>, episode: { title: string; art
 import { AudioPart, type Chapter, type Cue, type Track } from "@/components/part/AudioPart";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import { GrammarPart, type GrammarRule } from "@/components/part/GrammarPart";
+import { withoutPipeTable } from "@/lib/grammar-table";
 
 // Same list as the exercise renderers (components/lesson/activities/Grammar.tsx).
 const GRAMMAR_TYPES = new Set(["drag_drop_single", "choose_text_from_audio", "drag_drop_multiple", "funics", "listen_only", "listening_select_inverted"]);
@@ -72,7 +73,7 @@ function grammarRule(g: Record<string, unknown>, exercises: Record<string, unkno
         rule.es ??= typeof item.spanish === "string" ? sign(item.spanish) : null;
       }
     }
-    if (!rule.text.length && typeof c.description === "string") rule.text.push(c.description);
+    if (!rule.text.length && typeof c.description === "string") rule.text.push(withoutPipeTable(c.description));
     if (!rule.examples.length && Array.isArray(c.examples)) rule.examples.push(...(c.examples as unknown[]).filter((x): x is string => typeof x === "string"));
     if (rule.text.length) break;
   }

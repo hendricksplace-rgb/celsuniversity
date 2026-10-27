@@ -740,6 +740,9 @@ const es = {
     continue: "Continuar",
     gtypes: { drag_drop_single: "Escucha y ordena", drag_drop_multiple: "Completa", choose_text_from_audio: "Elige lo que escuchas", listening_select_inverted: "¿Cuál es?", funics: "Funics", listen_only: "Escucha y lee" },
     grammarKicker: "Grammar · Episodio {n}",
+    tableTap: "Toca una fila para escuchar",
+    listenQuestion: "Escuchar la pregunta",
+    tableRetry: "Inténtalo otra vez. Mira la tabla.",
   },
   us: {
     kicker: "Episodio {n}",
@@ -2469,6 +2472,9 @@ const en: Dictionary = {
     continue: "Continue",
     gtypes: { drag_drop_single: "Listen and order", drag_drop_multiple: "Complete", choose_text_from_audio: "Choose what you hear", listening_select_inverted: "Which one is it?", funics: "Funics", listen_only: "Listen and read" },
     grammarKicker: "Grammar · Episode {n}",
+    tableTap: "Tap a row to listen",
+    listenQuestion: "Listen to the question",
+    tableRetry: "Try again. Look at the table.",
   },
   us: {
     kicker: "Episode {n}",

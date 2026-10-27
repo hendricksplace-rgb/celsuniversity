@@ -10,6 +10,7 @@ import { T as ActivityT, Urls } from "@/components/lesson/activities/shared";
 import { fill } from "@/components/course/kit";
 import { usePartShell } from "./PartShell";
 import { sfx } from "./fx";
+import { GrammarTable, isTableExercise } from "./GrammarTable";
 
 export type GrammarRule = { title: string; text: string[]; examples: string[]; en: string | null; es: string | null };
 type GType = keyof Dictionary["part"]["gtypes"];
@@ -37,6 +38,7 @@ export function GrammarPart({
   const { t, episodeN, setProgress, setCounter, finish } = usePartShell();
   const [step, setStep] = useState(-1); // -1 rule
   const [review, setReview] = useState(false); // the "Cómo vas" update after a section
+  const [solved, setSolved] = useState(-1); // a table section (C-007) unlocks "Continuar" once answered right
   const n = exercises.length;
 
   useEffect(() => {
@@ -145,25 +147,31 @@ export function GrammarPart({
     );
   }
 
+  const table = isTableExercise(exercises[step]);
   return (
     <div className="flex flex-1 flex-col gap-4 pt-3">
       <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#C9B8FF]">
         {fill(t.section, { n: step + 1, total: n })} · {label(step)}
       </p>
       <div data-theme="celstv" className="rounded-3xl bg-white/[.05] p-4" style={{ ["--t-surface" as string]: "rgba(255,255,255,.06)" }}>
-        <ActivityT.Provider value={activityT}>
-          <Urls.Provider value={urls}>
-            <Exercise key={step} ex={exercises[step]} seed={`${seed}:${step}`} />
-          </Urls.Provider>
-        </ActivityT.Provider>
+        {table ? (
+          <GrammarTable key={step} ex={exercises[step]} urls={urls} t={t} onSolved={() => setSolved(step)} />
+        ) : (
+          <ActivityT.Provider value={activityT}>
+            <Urls.Provider value={urls}>
+              <Exercise key={step} ex={exercises[step]} seed={`${seed}:${step}`} />
+            </Urls.Provider>
+          </ActivityT.Provider>
+        )}
       </div>
       <button
         type="button"
+        disabled={table && solved !== step}
         onClick={() => {
           sfx.correct();
           setReview(true);
         }}
-        className="kit-focus-light mt-auto rounded-2xl py-3.5 font-extrabold"
+        className="kit-focus-light mt-auto rounded-2xl py-3.5 font-extrabold disabled:opacity-45"
         style={{ background: "linear-gradient(180deg, #9C82FF, #6A4BE0)" }}
       >
         {t.continue}
