@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { Block, EbookLink, Spoken } from "@/lib/ebook-format";
+import { ebookLinkHref, type Block, type EbookLink, type Spoken } from "@/lib/ebook-format";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { useSignedRef } from "./media";
 
@@ -209,7 +209,7 @@ export function ReaderBlock({ block, value, onChange, t }: Props) {
                   {it.link && (
                     <>
                       {" "}
-                      <Link href={`/app/libros/${it.link.ebook}`} className="t-link text-sm">
+                      <Link href={ebookLinkHref(it.link)} className="t-link text-sm">
                         {it.link.label} →
                       </Link>
                     </>
@@ -318,7 +318,7 @@ function Section({ title, privateNote, children }: { title?: string; privateNote
 
 function EbookLinkButton({ link }: { link: EbookLink }) {
   return (
-    <Link href={`/app/libros/${link.ebook}`} className="t-btn-ghost mt-3 text-xs">
+    <Link href={ebookLinkHref(link)} className="t-btn-ghost mt-3 text-xs">
       📘 {link.label} →
     </Link>
   );

@@ -4,7 +4,7 @@
 // kept in ebook_answers.answers under "<screen id>:<block index>" (see CelsBookReader).
 import { createContext, Fragment, useContext, useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
-import type { Block, Spoken } from "@/lib/ebook-format";
+import { ebookLinkHref, type Block, type EbookLink, type Spoken } from "@/lib/ebook-format";
 import { useSignedRef } from "@/components/reader/media";
 import { useRecorder } from "@/components/ai/useRecorder";
 import {
@@ -30,6 +30,8 @@ type Ctx = {
   setLocal: (k: keyof Local, v: string) => void;
   /** Jump to the first page of a section (intro map). */
   goSection: (k: SectionKey) => void;
+  /** The course's final exam, for checklist links to it. */
+  finalExamHref?: string | null;
 };
 export const BookCtx = createContext<Ctx>({ local: { civics_senator: "", civics_representative: "" }, setLocal: () => {}, goSection: () => {} });
 
@@ -44,6 +46,11 @@ type Props = {
 };
 
 const bools = (v: unknown, n: number) => Array.from({ length: n }, (_, i) => (Array.isArray(v) ? v[i] === true : false));
+
+function BookLink({ link }: { link: EbookLink }) {
+  const { finalExamHref } = useContext(BookCtx);
+  return <Link href={ebookLinkHref(link, finalExamHref)}>{link.label} →</Link>;
+}
 
 /** Plain text with its web links clickable (tips carry official URLs). */
 function Linkify({ text }: { text: string }) {
@@ -112,7 +119,7 @@ export function BookBlock(p: Props) {
             {block.link && (
               <>
                 {" "}
-                <Link href={`/app/libros/${block.link.ebook}`}>{block.link.label} →</Link>
+                <BookLink link={block.link} />
               </>
             )}
           </div>
@@ -582,7 +589,7 @@ function Checklist({ block, value, onChange }: { block: Extract<Block, { type: "
               {it.link && (
                 <>
                   {" "}
-                  <Link href={`/app/libros/${it.link.ebook}`}>{it.link.label} →</Link>
+                  <BookLink link={it.link} />
                 </>
               )}
             </span>

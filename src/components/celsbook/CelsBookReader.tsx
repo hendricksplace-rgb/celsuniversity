@@ -42,6 +42,8 @@ type Props = {
   readerT: Dictionary["reader"];
   /** The completion screen shown after the last page ("Terminar ✓"). */
   completionHref: string;
+  /** The CelsUS final exam (checklist links to it). */
+  finalExamHref?: string | null;
 };
 
 const SECT_TITLE: Record<SectionKey, React.ReactNode> = {
@@ -210,6 +212,7 @@ export function CelsBookReader(props: Props) {
         const i = keys.indexOf(k);
         if (i >= 0) go(i);
       },
+      finalExamHref: props.finalExamHref,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- go reads the latest state through the render
     [local, keys, answers, cur, completedAt],

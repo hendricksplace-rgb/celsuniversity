@@ -3,7 +3,11 @@ import type { Json } from "@/lib/supabase/types";
 // Interactive e-book format (public.ebooks, format_version 1).
 // Written from the content Cowork loaded on 18 Oct 2026. Keep in step with claude/celsu-ebook-reader-format.md.
 
-export type EbookLink = { ebook: string; label: string }; // ebook = another e-book's slug
+/** Another e-book (its slug), or the course's final exam (CelsUS "Examen final"). */
+export type EbookLink = { label: string } & ({ ebook: string; final_exam?: undefined } | { final_exam: true; ebook?: undefined });
+/** Where a link goes; the final exam falls back to the course list when the page doesn't know it. */
+export const ebookLinkHref = (link: EbookLink, finalExamHref?: string | null) =>
+  link.final_exam ? (finalExamHref ?? "/app/cursos") : `/app/libros/${link.ebook}`;
 /** English term/phrase; audio + wt are added by scripts/narration (ElevenLabs). */
 export type Spoken = { en: string; es: string; audio?: string | null; wt?: number[] };
 
