@@ -55,14 +55,17 @@ export default async function EpisodeFinished({ params }: Props) {
   const medal = earned ? (catalog?.find((b) => b.code === earned[0])?.name ?? null) : null;
 
   const first = (viewer.displayName ?? "").trim().split(/\s+/)[0] ?? "";
+  const { t, lang } = await getDictionary();
+  // The episode topic comes from the Spanish subtitle: English mode leaves it out.
+  const topic = (subtitle: string | null | undefined) => (lang === "en" ? "" : topicOf(subtitle));
   const props: CompletionProps = {
     state: status.complete ? "B" : "A",
     userId: viewer.user.id,
     n,
     firstName: first && !first.includes("@") ? first : null,
-    topic: topicOf(book?.subtitle),
+    topic: topic(book?.subtitle),
     pages: { read: pages || screens, total: screens },
-    parts: status.parts.map((p, i) => ({ icon: ROLE_LABEL[p.role].icon, name: ROLE_LABEL[p.role].name, done: p.done, now: status.next?.index === i })),
+    parts: status.parts.map((p, i) => ({ icon: ROLE_LABEL[p.role].icon, name: t.fin.roles[p.role], done: p.done, now: status.next?.index === i })),
     done: status.done,
     total: status.total,
     bookXp: bookPart?.xpEarned ?? 0,
@@ -71,11 +74,12 @@ export default async function EpisodeFinished({ params }: Props) {
     quiz: quiz?.quiz_max_score ? { right: quiz.quiz_score ?? 0, total: quiz.quiz_max_score } : null,
     medal,
     episodeHref: status.episodeHref,
-    next: status.next ? { label: ROLE_LABEL[status.next.role].long(n), href: status.next.href, index: status.next.index + 1 } : null,
-    nextEpisode: status.nextEpisode ? { n: status.nextEpisode.n, href: status.nextEpisode.href, topic: topicOf(nextBook?.subtitle) } : null,
+    next: status.next ? { label: t.fin.rolesLong[status.next.role].replace("{n}", String(n)), href: status.next.href, index: status.next.index + 1 } : null,
+    nextEpisode: status.nextEpisode ? { n: status.nextEpisode.n, href: status.nextEpisode.href, topic: topic(nextBook?.subtitle) } : null,
     finalExamHref: status.finalExamHref,
     readAgainHref: `/app/libros/${bookSlug}?p=1`,
-    back: { t: (await getDictionary()).t.usBack, course: { href: `/app/cursos/${status.courseSlug}`, name: course.title } },
+    back: { t: t.usBack, course: { href: `/app/cursos/${status.courseSlug}`, name: course.title } },
+    t: t.fin,
   };
   return <Completion {...props} />;
 }

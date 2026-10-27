@@ -23,6 +23,9 @@ import {
   type SectionKey,
 } from "@/lib/celsbook";
 import { saveLocalCivics } from "@/app/app/libros/[slug]/actions";
+import { dictionaries, type Dictionary } from "@/lib/i18n/dictionaries";
+
+const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
 export type Local = { civics_senator: string; civics_representative: string };
 type Ctx = {
@@ -32,8 +35,21 @@ type Ctx = {
   goSection: (k: SectionKey) => void;
   /** The course's final exam, for checklist links to it. */
   finalExamHref?: string | null;
+  /**
+   * English mode (C-003): the student already speaks English. No Spanish on screen, no per-item audio,
+   * no recording or "said it" pronunciation practice.
+   */
+  en: boolean;
+  t: Dictionary["cb"];
 };
-export const BookCtx = createContext<Ctx>({ local: { civics_senator: "", civics_representative: "" }, setLocal: () => {}, goSection: () => {} });
+export const BookCtx = createContext<Ctx>({
+  local: { civics_senator: "", civics_representative: "" },
+  setLocal: () => {},
+  goSection: () => {},
+  en: false,
+  t: dictionaries.es.cb,
+});
+const useBook = () => useContext(BookCtx);
 
 type Props = {
   block: Block;
@@ -48,7 +64,7 @@ type Props = {
 const bools = (v: unknown, n: number) => Array.from({ length: n }, (_, i) => (Array.isArray(v) ? v[i] === true : false));
 
 function BookLink({ link }: { link: EbookLink }) {
-  const { finalExamHref } = useContext(BookCtx);
+  const { finalExamHref } = useBook();
   return <Link href={ebookLinkHref(link, finalExamHref)}>{link.label} →</Link>;
 }
 
@@ -87,7 +103,9 @@ function useSpeak(audioRef?: string | null) {
   };
 }
 
-export function BookBlock(p: Props) {
+export function BookBlock(props: Props) {
+  const { en, t } = useBook();
+  const p = { ...props, en, t };
   const { block, section } = p;
   switch (block.type) {
     case "para":
@@ -103,7 +121,7 @@ export function BookBlock(p: Props) {
         <aside className="tip">
           <i aria-hidden>💡</i>
           <div>
-            <b>{block.title || "Consejo del instructor"}</b>
+            <b>{block.title || p.t.tip}</b>
             <p>
               <Linkify text={block.text} />
             </p>
@@ -128,7 +146,7 @@ export function BookBlock(p: Props) {
     case "list":
     case "expand":
       if (isEpisodeMap(block)) return <EpisodeMap block={block} />;
-      if (block.type === "list" && section === "fun") return <Funics words={block.items.map((en) => ({ en, es: "" }))} title={block.title} {...p} />;
+      if (block.type === "list" && section === "fun") return <Funics words={block.items.map((w) => ({ en: w, es: "" }))} title={block.title} {...props} />;
       if (block.type === "list")
         return (
           <section>
@@ -151,8 +169,17 @@ export function BookBlock(p: Props) {
     case "glossary":
       return <Words groups={block.groups} section={section} />;
     case "phrases":
-      if (section === "ptf") return <Chat lines={block.items.map((it, i) => ({ side: chatSide(block.title, i), en: it.en, es: it.es }))} />;
-      if (section === "fun") return <Funics words={block.items} title={block.title} {...p} />;
+      if (section === "ptf")
+        return (
+          <Chat
+            lines={block.items.map((it, i) => ({
+              side: chatSide(block.title, i),
+              en: it.en,
+              es: en ? "" : (it.es ?? ""),
+            }))}
+          />
+        );
+      if (section === "fun") return <Funics words={block.items} title={block.title} {...props} />;
       return <Words groups={[{ name: "", items: block.items }]} section={section} />;
     case "keys":
       if (section === "ptf")
@@ -160,7 +187,11 @@ export function BookBlock(p: Props) {
           <Chat
             lines={block.items.flatMap((it) => [
               { side: "off" as const, en: it.title, es: "" },
-              { side: "you" as const, en: it.body.replace(/^\s*A\s*:\s*/, ""), es: "" },
+              {
+                side: "you" as const,
+                en: it.body.replace(/^\s*A\s*:\s*/, ""),
+                es: "",
+              },
             ])}
           />
         );
@@ -169,6 +200,7 @@ export function BookBlock(p: Props) {
       return <Myth block={block} value={p.value} onChange={p.onChange} />;
     case "practice":
       if (section === "rep") return <Review block={block} said={p.said} onSaid={p.onSaid} />;
+      if (en) return <QuestionList block={block} />;
       return <Practice block={block} />;
     case "checklist":
       return <Checklist block={block} value={p.value} onChange={p.onChange} />;
@@ -183,7 +215,7 @@ export function BookBlock(p: Props) {
 
 /* ---------- intro: "En este episodio" as tappable section tiles ---------- */
 function EpisodeMap({ block }: { block: Extract<Block, { type: "list" | "expand" }> }) {
-  const { goSection } = useContext(BookCtx);
+  const { goSection, t } = useBook();
   const tiles =
     block.type === "list"
       ? block.items.map((it) => {
@@ -193,12 +225,12 @@ function EpisodeMap({ block }: { block: Extract<Block, { type: "list" | "expand"
       : block.items.map((it) => mapTile(it.title, it.body));
   return (
     <section>
-      <h2 className="sub">En este episodio · toca para ir</h2>
+      <h2 className="sub">{t.mapTitle}</h2>
       <div className="map">
-        {tiles.map((t) => (
-          <button key={t.key} type="button" style={{ ["--c" as string]: SECTIONS[t.key].c }} onClick={() => goSection(t.key)}>
-            <b>{SECTIONS[t.key].name}</b>
-            <span>{t.desc}</span>
+        {tiles.map((tile) => (
+          <button key={tile.key} type="button" style={{ ["--c" as string]: SECTIONS[tile.key].c }} onClick={() => goSection(tile.key)}>
+            <b>{t.sections[tile.key].name}</b>
+            <span>{tile.desc}</span>
           </button>
         ))}
       </div>
@@ -208,23 +240,28 @@ function EpisodeMap({ block }: { block: Extract<Block, { type: "list" | "expand"
 
 /* ---------- Words / Verbs: tiles, "Ver todo" / "Pon a prueba tu memoria", quick quiz ---------- */
 function Words({ groups, section }: { groups: { name: string; items: Spoken[] }[]; section: SectionKey }) {
+  const { en, t } = useBook();
   const [test, setTest] = useState(false);
   const [shown, setShown] = useState<Set<string>>(new Set());
   const all = groups.flatMap((g) => g.items);
+  // English-mode verb lists have no second field: nothing to hide or reveal, so no modes.
+  const hasMeaning = all.some((it) => it.es?.trim());
   return (
     <section>
-      <div className="modes" role="group" aria-label="Modo">
-        <button type="button" aria-pressed={!test} onClick={() => (setTest(false), setShown(new Set()))}>
-          <span aria-hidden>👀</span> Ver todo
-        </button>
-        <button type="button" aria-pressed={test} onClick={() => (setTest(true), setShown(new Set()))}>
-          <span aria-hidden>🙈</span> Pon a prueba tu memoria
-        </button>
-      </div>
+      {hasMeaning && (
+        <div className="modes" role="group" aria-label={t.mode}>
+          <button type="button" aria-pressed={!test} onClick={() => (setTest(false), setShown(new Set()))}>
+            <span aria-hidden>👀</span> {t.seeAll}
+          </button>
+          <button type="button" aria-pressed={test} onClick={() => (setTest(true), setShown(new Set()))}>
+            <span aria-hidden>🙈</span> {t.testMe}
+          </button>
+        </div>
+      )}
       {groups.map((g, gi) => (
         <Fragment key={gi}>
           {groups.length > 1 && g.name && <h2 className="grp">{g.name}</h2>}
-          <div className="words">
+          <div className={`words${en ? " wide" : ""}`}>
             {g.items.map((it, i) => (
               <WordTile
                 key={i}
@@ -243,27 +280,45 @@ function Words({ groups, section }: { groups: { name: string; items: Spoken[] }[
 }
 
 function WordTile({ it, hidden, open, onTap }: { it: Spoken; hidden: boolean; open: boolean; onTap: () => void }) {
+  const { en, t } = useBook();
   const speak = useSpeak(it.audio);
+  // English mode, a word with no meaning to reveal: plain text, nothing to tap.
+  if (en && !it.es?.trim())
+    return (
+      <span className="wt mean">
+        <span className="en it">{it.en}</span>
+      </span>
+    );
   return (
     <button
       type="button"
-      className={`wt${open ? " show" : ""}`}
+      className={`wt${open ? " show" : ""}${en ? " mean" : ""}`}
       onClick={() => {
-        speak(it.en);
+        if (!en) speak(it.en);
         onTap();
       }}
     >
-      <span className="ear" aria-hidden>
-        🔊
-      </span>
+      {!en && (
+        <span className="ear" aria-hidden>
+          🔊
+        </span>
+      )}
       <span className="en it">{it.en}</span>
-      {hidden ? <span className="es hid" aria-hidden /> : <span className="es">{it.es}</span>}
-      <span className="sr">{hidden ? " (toca para ver en español)" : " (escuchar)"}</span>
+      {/* English mode: the second field holds a short English meaning (C-003), never read aloud. */}
+      {hidden ? (
+        <span className="es hid" aria-hidden />
+      ) : (
+        <span className="es" lang={en ? "en" : "es"}>
+          {it.es}
+        </span>
+      )}
+      <span className="sr">{hidden ? t.tapToSee : t.listenSr}</span>
     </button>
   );
 }
 
 function QuickQuiz({ items, section }: { items: { en: string; es: string }[]; section: SectionKey }) {
+  const { en, t } = useBook();
   const qs = quickQuiz(items);
   const [n, setN] = useState(0);
   const [pick, setPick] = useState<string | null>(null);
@@ -272,10 +327,8 @@ function QuickQuiz({ items, section }: { items: { en: string; es: string }[]; se
   const ok = pick === q.es;
   return (
     <div className="quiz" aria-live="polite">
-      <div className="qh">
-        PRUEBA RÁPIDA · {n + 1} DE {qs.length}
-      </div>
-      <p className="qq it">¿Qué significa “{q.en}”?</p>
+      <div className="qh">{fill(t.quizHead, { n: n + 1, m: qs.length })}</div>
+      <p className="qq it">{fill(t.quizQ, { w: q.en })}</p>
       <div className="ops">
         {q.options.map((o) => (
           <button
@@ -283,6 +336,7 @@ function QuickQuiz({ items, section }: { items: { en: string; es: string }[]; se
             type="button"
             disabled={pick !== null}
             className={pick === null ? "" : o === q.es ? "ok" : o === pick ? "bad" : ""}
+            lang={en ? "en" : "es"}
             onClick={() => setPick(o)}
           >
             {o}
@@ -292,23 +346,23 @@ function QuickQuiz({ items, section }: { items: { en: string; es: string }[]; se
       <div className="fb">
         {pick !== null && (
           <>
-            {ok ? "✓ ¡Muy bien!" : `Casi. “${q.en}” significa “${q.es}”.`}{" "}
+            {ok ? t.right : fill(t.almost, { w: q.en, m: q.es })}{" "}
             {n < qs.length - 1 ? (
               <button type="button" className="nx" onClick={() => (setN(n + 1), setPick(null))}>
-                Siguiente pregunta →
+                {t.nextQ}
               </button>
             ) : (
               <>
-                <b>¡Terminaste la prueba!</b>{" "}
+                <b>{t.quizDone}</b>{" "}
                 <button type="button" className="nx" onClick={() => (setN(0), setPick(null))}>
-                  ↺ Otra vez
+                  {t.again}
                 </button>
               </>
             )}
           </>
         )}
       </div>
-      <span className="sr">{section === "vtv" ? "Verbos" : "Palabras"}</span>
+      <span className="sr">{section === "vtv" ? t.verbs : t.words}</span>
     </div>
   );
 }
@@ -316,6 +370,7 @@ function QuickQuiz({ items, section }: { items: { en: string; es: string }[]; se
 /* ---------- Phrases that Fit: the interview chat ---------- */
 type Line = { side: "off" | "you"; en: string; es: string };
 function Chat({ lines }: { lines: Line[] }) {
+  const { t } = useBook();
   const [count, setCount] = useState(Math.min(2, lines.length));
   const [tr, setTr] = useState<Set<number>>(new Set());
   const hasEs = lines.some((l) => l.es);
@@ -323,7 +378,11 @@ function Chat({ lines }: { lines: Line[] }) {
   return (
     <section>
       <p className="hint">
-        {both && "Así empieza tu entrevista. "}Toca <b>“Siguiente frase”</b> para avanzar.{hasEs && " Toca cualquier frase para verla en español."}
+        {both && t.chatStart}
+        {t.tapA}
+        <b>{t.nextLineQ}</b>
+        {t.tapB}
+        {hasEs && t.chatEs}
       </p>
       <div className="chat" aria-live="polite" style={{ marginTop: 12 }}>
         {lines.slice(0, count).map((l, i) => (
@@ -342,7 +401,7 @@ function Chat({ lines }: { lines: Line[] }) {
               })
             }
           >
-            <small>{l.side === "off" ? "👮 EL OFICIAL DICE" : "🙋 TÚ RESPONDES"}</small>
+            <small>{l.side === "off" ? t.officer : t.you}</small>
             {l.en}
             {l.es && tr.has(i) && (
               <span className="tr" lang="es">
@@ -355,10 +414,10 @@ function Chat({ lines }: { lines: Line[] }) {
       {count < lines.length && (
         <div className="chatact">
           <button type="button" className="btn b-pri" onClick={() => setCount((c) => c + 1)}>
-            Siguiente frase ↓
+            {t.nextLine}
           </button>
           <button type="button" className="btn b-sec" onClick={() => setCount(lines.length)}>
-            Ver toda la conversación
+            {t.wholeChat}
           </button>
         </div>
       )}
@@ -368,10 +427,11 @@ function Chat({ lines }: { lines: Line[] }) {
 
 /* ---------- practice: "🎤 Grabarme" (recorded and played back in the browser only; never uploaded or scored) ---------- */
 function Practice({ block }: { block: Extract<Block, { type: "practice" }> }) {
+  const { t } = useBook();
   return (
     <section className="practice">
       <h2>
-        <span aria-hidden>🎤</span> {block.title || "Practica en voz alta"}
+        <span aria-hidden>🎤</span> {block.title || t.practice}
       </h2>
       {block.hint && <p>{block.hint}</p>}
       {block.items.map((q, i) => (
@@ -381,7 +441,28 @@ function Practice({ block }: { block: Extract<Block, { type: "practice" }> }) {
   );
 }
 
+/** English mode: the practice questions to answer, with no recording control (C-003). */
+function QuestionList({ block }: { block: Extract<Block, { type: "practice" }> }) {
+  const { t } = useBook();
+  const hint = noRecording(block.hint ?? "");
+  return (
+    <section className="practice">
+      <h2>{block.title || t.practice}</h2>
+      {hint && <p>{hint}</p>}
+      <ol className="plist">
+        {block.items.map((q, i) => (
+          <li key={i}>{q}</li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+/** A practice hint without its "record yourself" sentence (Spanish or English). */
+const noRecording = (hint: string) => hint.replace(/\s*(Gr[aá]bate|Record yourself)[^.]*\./i, "").trim();
+
 function RecordRow({ q }: { q: string }) {
+  const { t } = useBook();
   const [url, setUrl] = useState<string | null>(null);
   const { state, seconds, start, stop } = useRecorder((blob) => {
     setUrl((old) => {
@@ -396,40 +477,64 @@ function RecordRow({ q }: { q: string }) {
       <div className="row">
         <span>{q}</span>
         <button type="button" className={recording ? "rec" : ""} onClick={() => (recording ? stop() : void start())}>
-          {recording ? `■ Detener · ${clock(seconds)}` : url ? "🎤 Otra vez" : "🎤 Grabarme"}
+          {recording ? fill(t.stop, { t: clock(seconds) }) : url ? t.recordAgain : t.record}
         </button>
       </div>
-      {url && !recording && <audio controls src={url} aria-label={`Tu grabación: ${q}`} />}
-      {state === "denied" && <p className="note">Permite el micrófono en tu navegador para grabarte.</p>}
-      {state === "unsupported" && <p className="note">Tu navegador no puede grabar aquí. Abre CelsU en Chrome o Safari.</p>}
+      {url && !recording && <audio controls src={url} aria-label={fill(t.recording, { q })} />}
+      {state === "denied" && <p className="note">{t.micDenied}</p>}
+      {state === "unsupported" && <p className="note">{t.micUnsupported}</p>}
     </div>
   );
 }
 
 /* ---------- Funics: the ending, word tiles that play and turn pink once said ---------- */
-function Funics({ words, title, said, onSaid }: Props & { words: { en: string; es: string; audio?: string | null }[]; title?: string }) {
+function Funics({
+  words,
+  title,
+  said,
+  onSaid,
+}: Props & {
+  words: { en: string; es?: string; audio?: string | null }[];
+  title?: string;
+}) {
+  const { en, t } = useBook();
   const end = familyEnding(title);
   const marks = bools(said, words.length);
   return (
     <section>
       {end && (
         <div className="fam">
-          <span className="lab">FAMILIA</span>
+          <span className="lab">{t.family}</span>
           <span className="end">-{end}</span>
         </div>
       )}
       <div className="fwords">
-        {words.map((w, i) => (
-          <FunicsTile key={i} w={w} end={end} said={marks[i]} onSay={() => !marks[i] && onSaid(marks.map((m, j) => m || j === i))} />
-        ))}
+        {words.map((w, i) =>
+          // English mode: the family as plain words, no listen-and-say tiles.
+          en ? (
+            <span key={i} className="fw plain">
+              {splitEnding(w.en, end)[0]}
+              <b>{splitEnding(w.en, end)[1]}</b>
+              {w.es && <small>{w.es}</small>}
+            </span>
+          ) : (
+            <FunicsTile key={i} w={w} end={end} said={marks[i]} onSay={() => !marks[i] && onSaid(marks.map((m, j) => m || j === i))} />
+          ),
+        )}
       </div>
     </section>
   );
 }
 
-function FunicsTile({ w, end, said, onSay }: { w: { en: string; es: string; audio?: string | null }; end: string; said: boolean; onSay: () => void }) {
+const splitEnding = (word: string, end: string) => {
+  const cut = end && word.toLowerCase().endsWith(end) ? word.length - end.length : word.length;
+  return [word.slice(0, cut), word.slice(cut)];
+};
+
+function FunicsTile({ w, end, said, onSay }: { w: { en: string; es?: string; audio?: string | null }; end: string; said: boolean; onSay: () => void }) {
+  const { t } = useBook();
   const speak = useSpeak(w.audio);
-  const cut = end && w.en.toLowerCase().endsWith(end) ? w.en.length - end.length : w.en.length;
+  const [head, tail] = splitEnding(w.en, end);
   return (
     <button
       type="button"
@@ -440,26 +545,27 @@ function FunicsTile({ w, end, said, onSay }: { w: { en: string; es: string; audi
         onSay();
       }}
     >
-      {w.en.slice(0, cut)}
-      <b>{w.en.slice(cut)}</b>
+      {head}
+      <b>{tail}</b>
       {w.es && <small>{w.es}</small>}
-      <span className="sr"> (escuchar y marcar como dicha)</span>
+      <span className="sr">{t.funicsSr}</span>
     </button>
   );
 }
 
 /* ---------- Focus: the questions as an accordion ---------- */
 function Keys({ block }: { block: Extract<Block, { type: "keys" }> }) {
-  const { local } = useContext(BookCtx);
+  const { local, t } = useBook();
   const anyStar = block.items.some((it) => isStarred(it));
   return (
     <section>
       <p className="hint">
-        Toca cada pregunta para ver las respuestas aceptadas.
+        {t.keysHint}
         {anyStar && (
           <>
             {" "}
-            <span className="star65">★ 65/20</span> = también está en las 20 preguntas.
+            <span className="star65">★ 65/20</span>
+            {t.starNote}
           </>
         )}
       </p>
@@ -467,7 +573,7 @@ function Keys({ block }: { block: Extract<Block, { type: "keys" }> }) {
         {block.items.map((it, i) => {
           const mine = localAnswerFor(it.title);
           const value = mine === "senator" ? local.civics_senator : mine === "representative" ? local.civics_representative : "";
-          return <Accordion key={i} n={i + 1} q={it.title} star={isStarred(it)} answers={acceptedAnswers(it.body)} mine={value} label="RESPUESTAS ACEPTADAS · DI UNA" />;
+          return <Accordion key={i} n={i + 1} q={it.title} star={isStarred(it)} answers={acceptedAnswers(it.body)} mine={value} label={t.accepted} />;
         })}
       </div>
     </section>
@@ -475,6 +581,7 @@ function Keys({ block }: { block: Extract<Block, { type: "keys" }> }) {
 }
 
 function Accordion({ n, q, star, answers, mine, label }: { n: number; q: string; star?: boolean; answers: string[]; mine?: string; label: string }) {
+  const { t } = useBook();
   const [open, setOpen] = useState(false);
   const id = useId();
   return (
@@ -486,19 +593,19 @@ function Accordion({ n, q, star, answers, mine, label }: { n: number; q: string;
         <span className="q">
           {q}
           {star && (
-            <span className="star65" aria-label="También está en las 20 preguntas (65/20)">
+            <span className="star65" aria-label={t.starAria}>
               ★ 65/20
             </span>
           )}
         </span>
         <span className="chev" aria-hidden>
-          {open ? "Ocultar ▴" : "Ver respuesta ▾"}
+          {open ? t.hide : t.show}
         </span>
       </button>
       <div className="ans" id={id} hidden={!open}>
         {label && <small>{label}</small>}
         <ul className="chips">
-          {mine && <li className="mine">Tu respuesta: {mine}</li>}
+          {mine && <li className="mine">{fill(t.yours, { a: mine })}</li>}
           {answers.map((a, i) => (
             <li key={i}>{a}</li>
           ))}
@@ -510,6 +617,7 @@ function Accordion({ n, q, star, answers, mine, label }: { n: number; q: string;
 
 /* ---------- ¿Mito o realidad? one statement at a time ---------- */
 function Myth({ block, value, onChange }: { block: Extract<Block, { type: "myth" }>; value: unknown; onChange: (v: unknown) => void }) {
+  const { t } = useBook();
   const picks = Array.from({ length: block.items.length }, (_, i) => (Array.isArray(value) && typeof value[i] === "boolean" ? (value[i] as boolean) : null));
   const firstOpen = picks.findIndex((x) => x === null);
   const [k, setK] = useState(firstOpen >= 0 ? firstOpen : 0);
@@ -517,57 +625,58 @@ function Myth({ block, value, onChange }: { block: Extract<Block, { type: "myth"
   const pick = picks[k];
   return (
     <section className="myth" aria-live="polite">
-      <h2>¿Mito o realidad?</h2>
+      <h2>{t.myth}</h2>
       <p className="st">{m.q}</p>
       <div className="ops">
         <button type="button" className="m-r" aria-pressed={pick === true} onClick={() => onChange(picks.map((p, j) => (j === k ? true : p)))}>
-          ✓ Realidad
+          {t.factBtn}
         </button>
         <button type="button" className="m-m" aria-pressed={pick === false} onClick={() => onChange(picks.map((p, j) => (j === k ? false : p)))}>
-          ✗ Mito
+          {t.mythBtn}
         </button>
       </div>
       {pick !== null && (
         <div className="fb">
-          {pick === m.real ? "✓ ¡Correcto! " : "✗ No exactamente. "}
-          <b>{m.real ? "Realidad" : "Mito"}.</b> {mythExplanation(m.a)}
+          {pick === m.real ? t.correct : t.notQuite}
+          <b>{m.real ? t.fact : t.mythWord}.</b> {mythExplanation(m.a)}
           <div>
             {k < block.items.length - 1 ? (
               <button type="button" className="btn b-sec" onClick={() => setK(k + 1)}>
-                Siguiente →
+                {t.nextBtn}
               </button>
             ) : (
               block.items.length > 1 && (
                 <button type="button" className="btn b-sec" onClick={() => setK(0)}>
-                  ↺ Volver a empezar
+                  {t.restart}
                 </button>
               )
             )}
           </div>
         </div>
       )}
-      <p className="cnt">
-        {k + 1} de {block.items.length}
-      </p>
+      <p className="cnt">{fill(t.of, { n: k + 1, m: block.items.length })}</p>
     </section>
   );
 }
 
 /* ---------- Repaso final: "🗣️ Ya la dije" ---------- */
 function Review({ block, said, onSaid }: { block: Extract<Block, { type: "practice" }>; said: unknown; onSaid: (v: unknown) => void }) {
+  const { t } = useBook();
   const marks = bools(said, block.items.length);
-  const hint = (block.hint ?? "Responde en inglés con una de las respuestas aceptadas.").replace(/\s*Gr[aá]bate[^.]*\./i, "").trim();
+  const hint = noRecording(block.hint ?? t.reviewHint);
   return (
     <section>
       <p className="hint">
-        {hint} Toca <b>“Ya la dije”</b> cuando la practiques en voz alta.
+        {hint} {t.tapA}
+        <b>{t.saidQ}</b>
+        {t.saidB}
       </p>
       <ul className="rv" style={{ marginTop: 12 }}>
         {block.items.map((q, i) => (
           <li key={i} className={`rq${marks[i] ? " ok" : ""}`}>
             <span>{q}</span>
             <button type="button" aria-pressed={marks[i]} onClick={() => onSaid(marks.map((m, j) => (j === i ? !m : m)))}>
-              <span aria-hidden>🗣️</span> Ya la dije
+              <span aria-hidden>🗣️</span> {t.said}
             </button>
           </li>
         ))}
@@ -577,6 +686,7 @@ function Review({ block, said, onSaid }: { block: Extract<Block, { type: "practi
 }
 
 function Checklist({ block, value, onChange }: { block: Extract<Block, { type: "checklist" }>; value: unknown; onChange: (v: unknown) => void }) {
+  const { t } = useBook();
   const marks = bools(value, block.items.length);
   return (
     <section>
@@ -594,7 +704,7 @@ function Checklist({ block, value, onChange }: { block: Extract<Block, { type: "
               )}
             </span>
             <button type="button" aria-pressed={marks[i]} onClick={() => onChange(marks.map((m, j) => (j === i ? !m : m)))}>
-              {marks[i] ? "✓ Hecho" : "Marcar ✓"}
+              {marks[i] ? t.done : t.mark}
             </button>
           </li>
         ))}
@@ -610,9 +720,9 @@ function Checklist({ block, value, onChange }: { block: Extract<Block, { type: "
 
 /* ---------- 📝 fields: the senator / representative go to the student's profile; the rest to the book's answers ---------- */
 function Fields({ block, value, onChange }: { block: Extract<Block, { type: "fields" }>; value: unknown; onChange: (v: unknown) => void }) {
-  const { local, setLocal } = useContext(BookCtx);
+  const { local, setLocal, t } = useBook();
   const texts = Array.from({ length: block.fields.length }, (_, i) => (Array.isArray(value) && typeof value[i] === "string" ? (value[i] as string) : ""));
-  const onProfile = /respuestas locales/i.test(block.title ?? "") && block.fields.some((f) => profileField(f.label));
+  const onProfile = /respuestas locales|local answers/i.test(block.title ?? "") && block.fields.some((f) => profileField(f.label));
   const [state, setState] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pending = useRef<Partial<Local>>({});
@@ -632,7 +742,7 @@ function Fields({ block, value, onChange }: { block: Extract<Block, { type: "fie
   return (
     <section className="fields">
       <h2>
-        <span aria-hidden>📝</span> {block.title || "Mis respuestas"}
+        <span aria-hidden>📝</span> {block.title || t.fields}
       </h2>
       {block.fields.map((f, i) => {
         const col = onProfile ? profileField(f.label) : null;
@@ -643,7 +753,7 @@ function Fields({ block, value, onChange }: { block: Extract<Block, { type: "fie
             <input
               type={input}
               maxLength={col ? 120 : 200}
-              placeholder={input === "text" ? "Escribe aquí" : undefined}
+              placeholder={input === "text" ? t.writeHere : undefined}
               value={col ? local[col] : texts[i]}
               autoComplete="off"
               onChange={(e) => (col ? saveProfile(col, e.target.value) : onChange(texts.map((x, j) => (j === i ? e.target.value : x))))}
@@ -652,31 +762,37 @@ function Fields({ block, value, onChange }: { block: Extract<Block, { type: "fie
         );
       })}
       <p className="saved" aria-live="polite">
-        {state === "saving" ? "Guardando…" : state === "saved" ? "✓ Guardado en tu perfil" : state === "error" ? "No se pudo guardar. Revisa tu conexión." : onProfile ? "Se guarda en tu perfil." : "✓ Se guarda solo."}
+        {state === "saving" ? t.saving : state === "saved" ? t.savedProfile : state === "error" ? t.saveError : onProfile ? t.onProfile : t.autosaved}
       </p>
     </section>
   );
 }
 
 function Notes({ block, value, onChange }: { block: Extract<Block, { type: "notes" }>; value: unknown; onChange: (v: unknown) => void }) {
+  const { t } = useBook();
   const max = block.max ?? 5;
   const lines = Array.isArray(value) && value.length ? (value as string[]) : Array(block.min ?? 1).fill("");
   return (
     <section className="fields">
       <h2>
-        <span aria-hidden>✍️</span> {block.title || "Mis notas"}
+        <span aria-hidden>✍️</span> {block.title || t.notes}
       </h2>
       {lines.map((l, i) => (
         <label key={i}>
           <span className="sr">
-            {block.title || "Nota"} {i + 1}
+            {block.title || t.note} {i + 1}
           </span>
-          <input value={l} maxLength={200} placeholder={i === 0 ? block.placeholder : undefined} onChange={(e) => onChange(lines.map((x, j) => (j === i ? e.target.value : x)))} />
+          <input
+            value={l}
+            maxLength={200}
+            placeholder={i === 0 ? block.placeholder : undefined}
+            onChange={(e) => onChange(lines.map((x, j) => (j === i ? e.target.value : x)))}
+          />
         </label>
       ))}
       {lines.length < max && (
         <button type="button" className="add" onClick={() => onChange([...lines, ""])}>
-          + Otra línea
+          {t.addLine}
         </button>
       )}
     </section>

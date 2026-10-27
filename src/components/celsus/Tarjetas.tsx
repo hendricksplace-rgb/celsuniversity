@@ -15,6 +15,7 @@ import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { afterPartFinished } from "@/app/app/cursos/[slug]/episodio/[n]/terminado/actions";
 import { setCivicsTrack } from "@/app/app/cursos/[slug]/episodio/[n]/tarjetas/actions";
+import { setLanguage } from "@/lib/actions";
 import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
 import { fill } from "@/components/course/kit";
 import { Immersive } from "@/components/celsbook/Immersive";
@@ -328,6 +329,17 @@ export function Tarjetas(p: TarjetasProps) {
     go(i + 1);
   };
 
+  // C-002: the app language, chosen next to the exam (saved to the cookie and profiles.preferred_language).
+  const [appLang, setAppLang] = useState<Lang>(p.langChoice ?? "es");
+  const pickLang = async (l: Lang) => {
+    if (l === appLang) return;
+    setAppLang(l);
+    const fd = new FormData();
+    fd.set("lang", l);
+    await setLanguage(fd).catch(() => null);
+    router.refresh();
+  };
+
   const pick = async (tr: Track) => {
     setTrack(tr);
     setChoosing(false);
@@ -435,6 +447,14 @@ export function Tarjetas(p: TarjetasProps) {
           <section className="choose" aria-labelledby="tj-choose">
             <h2 id="tj-choose">{t.chooseTitle}</h2>
             <p>{t.chooseLead}</p>
+            <div className="applang" role="group" aria-label={t.appLang}>
+              <span>{t.appLang}</span>
+              {(["es", "en"] as Lang[]).map((l) => (
+                <button key={l} type="button" lang={l} aria-pressed={appLang === l} onClick={() => void pickLang(l)}>
+                  {l === "es" ? "Español" : "English"}
+                </button>
+              ))}
+            </div>
             {(["A", "B", "C"] as Track[]).map((g) => (
               <button key={g} type="button" className={`opt t${g}${rec === g ? " rec" : ""}`} onClick={() => void pick(g)}>
                 <span className="tl" aria-hidden>

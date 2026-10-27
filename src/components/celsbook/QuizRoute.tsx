@@ -6,6 +6,9 @@ import type { UsBack } from "@/components/celsus/BackButtons";
 import type { createClient } from "@/lib/supabase/server";
 import type { Episode } from "@/lib/course-page";
 import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
+import { getDictionary } from "@/lib/i18n/server";
+import { viewScreen } from "@/lib/celsbook";
+import type { Screen } from "@/lib/ebook-format";
 import { Repaso, type RepasoItem, type Track } from "./Repaso";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
@@ -34,7 +37,9 @@ export async function CelsusQuizRoute({
   const items = (Array.isArray(ebook?.quiz) ? ebook.quiz : []) as unknown as RepasoItem[];
   if (!ebook || !items.length) notFound();
   const signed = await signStorageRefs(supabase, collectStorageRefs(items.map((q) => [q.audio_en, q.audio_es])), { courseId, viewer });
-  const screens = (Array.isArray(ebook.screens) ? ebook.screens : []) as { id: string; title: string }[];
+  const { t, lang } = await getDictionary();
+  // "Repasar en la página …" names the page in the student's language.
+  const screens = (Array.isArray(ebook.screens) ? ebook.screens : []) as unknown as Screen[];
   const role = (r: string) => episode.parts.find((p) => p.role === r);
   const track = (["A", "B", "C"] as const).find((t) => t === me?.civics_track) ?? null;
   return (
@@ -43,7 +48,7 @@ export async function CelsusQuizRoute({
         items={items}
         episodeN={episode.n}
         track={track as Track}
-        screens={screens.map((s) => ({ id: s.id, title: s.title }))}
+        screens={screens.map((s) => ({ id: s.id, title: viewScreen(s, lang).title }))}
         bookHref={`/app/libros/${ebook.slug}`}
         episodeHref={`/app/cursos/${courseSlug}/episodio/${episode.n}`}
         courseSlug={courseSlug}
@@ -54,6 +59,8 @@ export async function CelsusQuizRoute({
         userId={viewer.user.id}
         sound={prefs?.sound_effects ?? true}
         back={back}
+        ui={lang}
+        t={t.rp}
       />
   );
 }

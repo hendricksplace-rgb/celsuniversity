@@ -19,7 +19,7 @@ const CELSUS_BOOK = /^celsus-celsbook-episode-(\d+)$/;
 export default async function EbookPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const { screen, p } = await searchParams;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=/app/libros/${slug}`);
@@ -100,6 +100,8 @@ export default async function EbookPage({ params, searchParams }: Props) {
         completionHref={completionPath(courseSlug, usN)}
         back={{ t: t.usBack, course: { href: `/app/cursos/${courseSlug}`, name: course.title } }}
         finalExamHref={coursePage?.extras.find((x) => x.kind === "evaluation")?.href ?? null}
+        lang={lang}
+        t={t.cb}
       />
     );
   }

@@ -631,6 +631,38 @@
   margin: 6px 0 18px;
   font-weight: 600;
 }
+/* C-002: app language next to the exam choice */
+.tj .applang {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: -6px 0 18px;
+}
+.tj .applang span {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--navy);
+  margin-right: 4px;
+}
+.tj .applang button {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 2px solid var(--navy);
+  background: #fff;
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 15px;
+}
+.tj .applang button[aria-pressed="true"] {
+  background: var(--navy);
+  color: #fff;
+}
+.tj .applang button:focus-visible {
+  outline: 3px solid #35c3f0;
+  outline-offset: 2px;
+}
 .tj .opt {
   display: grid;
   grid-template-columns: 64px minmax(0, 1fr) auto;

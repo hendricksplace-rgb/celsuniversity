@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { LANG_COOKIE, isLang } from "@/lib/i18n/dictionaries";
 import { safeNextPath } from "@/lib/safe-next";
 import { SITE_URL } from "@/lib/site";
+import { restoreLang } from "@/lib/i18n/restore";
 
 const safeNext = (value: FormDataEntryValue | null) => safeNextPath(value);
 
@@ -31,11 +32,12 @@ export async function setLanguage(formData: FormData) {
 export async function signIn(formData: FormData) {
   const next = safeNext(formData.get("next"));
   const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: String(formData.get("email") ?? ""),
     password: String(formData.get("password") ?? ""),
   });
   if (error) redirect(`/entrar?error=invalid&next=${encodeURIComponent(next)}`);
+  await restoreLang(supabase, data.user.id).catch(() => {});
   redirect(next);
 }
 

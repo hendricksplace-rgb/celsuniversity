@@ -15,6 +15,9 @@ import { isStarred } from "@/lib/celsbook";
 import { SignedUrls, useSignedRef } from "@/components/reader/media";
 import { jakartaItalic } from "./fonts";
 import { Immersive } from "./Immersive";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
 /** A quiz item with the optional fields Cowork adds (Spanish, audio, starred). */
 export type RepasoItem = QuizItem & {
@@ -51,6 +54,9 @@ type Props = {
   sound: boolean;
   /** storage:// → signed URL for the question audio */
   signed: Record<string, string>;
+  /** The app language (labels), C-002. The questions keep their own English/Spanish switch. */
+  ui: Lang;
+  t: Dictionary["rp"];
 };
 
 const LET = "ABCDEFG";
@@ -118,10 +124,10 @@ export function Repaso(p: Props) {
 }
 
 function RepasoInner(p: Props) {
-  const { items } = p;
+  const { items, t } = p;
   // English and Spanish only when every question has its Spanish text and options; otherwise English.
   const bilingual = items.length > 0 && items.every((q) => q.q_es && Array.isArray(q.options_es) && q.options_es.length === q.options.length);
-  const [lang, setLang] = useState<Lang>(bilingual && p.track === "B" ? "es" : "en");
+  const [lang, setLang] = useState<Lang>(bilingual && p.track === "B" && p.ui === "es" ? "es" : "en");
   const [sound, setSound] = useState(p.sound);
   const [order, setOrder] = useState<number[][] | null>(null);
   const [pool, setPool] = useState<number[]>(() => items.map((_, i) => i));
@@ -219,22 +225,21 @@ function RepasoInner(p: Props) {
               <BackButtons t={p.back.t} course={p.back.course} episode={{ href: p.episodeHref, n: p.episodeN }} dark />
             ) : (
               <Link href={p.episodeHref} className="back">
-                <i aria-hidden>‹</i>Episodio {p.episodeN}
+                <i aria-hidden>‹</i>
+                {fill(t.back, { n: p.episodeN })}
               </Link>
             )}
             <button type="button" className="snd" aria-pressed={sound} onClick={() => void toggleSound()}>
-              🔔 Sonidos: {sound ? "sí" : "no"}
+              {fill(t.sounds, { v: sound ? t.yes : t.no })}
             </button>
           </div>
           <div className="title">
             <h1 className="sect">
-              Repaso
-              <small>
-                Quiz del episodio {p.episodeN} · {total} preguntas del examen cívico
-              </small>
+              {t.title}
+              <small>{fill(t.sub, { n: p.episodeN, m: total })}</small>
             </h1>
             {bilingual && p.track !== "C" && (
-              <div className="lang" role="group" aria-label="Idioma">
+              <div className="lang" role="group" aria-label={t.langAria}>
                 {(["en", "es"] as Lang[]).map((l) => (
                   <button key={l} type="button" aria-pressed={lang === l} onClick={() => setLang(l)} lang={l}>
                     {l === "en" ? "🇺🇸 English" : "🇲🇽 Español"}
@@ -252,46 +257,46 @@ function RepasoInner(p: Props) {
             <div className="ic" aria-hidden>
               ⭐
             </div>
-            <h2>Este repaso no es para tu examen</h2>
+            <h2>{t.cTitle}</h2>
             <p>
-              Tu examen (regla 65/20) solo tiene <b>20 preguntas en español</b>. No necesitas este repaso: concéntrate en tus 20 preguntas y en los videos.
+              {t.cTextA}
+              <b>{t.cTextB}</b>
+              {t.cTextC}
             </p>
             <div className="btns">
               <Link className="redb" href={p.starredHref ?? p.episodeHref}>
-                Practicar mis 20 preguntas →
+                {t.cPractice}
               </Link>
               <Link className="ghost" href={p.videoHref ?? p.episodeHref}>
-                Ver el video del episodio
+                {t.cVideo}
               </Link>
             </div>
           </section>
         ) : end ? (
           <section className="end" aria-live="polite">
-            <div className="stars" aria-label={`${right} de ${total} estrellas`}>
+            <div className="stars" aria-label={fill(t.stars, { n: right, m: total })}>
               {"★".repeat(right)}
               <span style={{ opacity: 0.25 }}>{"★".repeat(missed)}</span>
             </div>
             <div className="coin">
               <b>{right}</b>
-              <span>DE {total}</span>
+              <span>{fill(t.of, { m: total })}</span>
             </div>
-            <h2>{right === total ? "¡Perfecto! Te las sabes todas" : right / total >= 0.6 ? "¡Muy bien!" : "¡Buen intento!"}</h2>
+            <h2>{right === total ? t.perfect : right / total >= 0.6 ? t.good : t.tryHard}</h2>
             <p>
-              {missed
-                ? `Repasa ${missed === 1 ? "la pregunta" : `las ${missed} preguntas`} que fallaste y vuelve a intentarlo.`
-                : `Terminaste el repaso del episodio ${p.episodeN}. ¡Sigue así!`}
+              {missed ? (missed === 1 ? t.missedOne : fill(t.missedMany, { n: missed })) : fill(t.allRight, { n: p.episodeN })}
             </p>
             <div className="btns">
               {missed > 0 && (
                 <button type="button" className="next" onClick={() => restart(true)}>
-                  {missed === 1 ? "Repetir la que fallé" : `Repetir las ${missed} que fallé`}
+                  {missed === 1 ? t.retryOne : fill(t.retryMany, { n: missed })}
                 </button>
               )}
               <Link className={missed ? "ghost" : "next"} href={endHref}>
-                Terminar el episodio →
+                {t.finishEpisode}
               </Link>
               <button type="button" className="ghost" onClick={() => restart(false)}>
-                Hacer el repaso otra vez
+                {t.again}
               </button>
             </div>
           </section>
@@ -314,7 +319,7 @@ function RepasoInner(p: Props) {
                   {en ? "QUESTION" : "PREGUNTA"} {i + 1}
                 </span>
                 {isStarred({ title: q.q, starred: q.starred, uscis_2025_no: q.uscis_2025_no }) && (
-                  <span className="star" aria-label="También está en las 20 preguntas (65/20)">
+                  <span className="star" aria-label={t.starAria}>
                     ★ 65/20
                   </span>
                 )}
@@ -322,7 +327,7 @@ function RepasoInner(p: Props) {
               <h2 ref={qRef} tabIndex={-1} lang={lang}>
                 {qText(q)}
               </h2>
-              <ListenQ src={en ? q.audio_en : q.audio_es} />
+              <ListenQ src={en ? q.audio_en : q.audio_es} label={t.listen} />
             </div>
             <div ref={opsRef} className={`ops${answered ? " locked" : ""}`} lang={lang}>
               {(order?.[i] ?? q.options.map((_, k) => k)).map((k, n) => {
@@ -340,8 +345,8 @@ function RepasoInner(p: Props) {
                       {LET[n]}
                     </span>
                     <span>{opts(q)[k]}</span>
-                    {state === "right" && <span className="sr"> (correcta)</span>}
-                    {state === "wrong" && <span className="sr"> (incorrecta)</span>}
+                    {state === "right" && <span className="sr">{t.right}</span>}
+                    {state === "wrong" && <span className="sr">{t.wrong}</span>}
                     <span className="m" aria-hidden>
                       {k === q.answer ? "✓" : "✗"}
                     </span>
@@ -353,27 +358,27 @@ function RepasoInner(p: Props) {
               <div className={`fb ${pick === q.answer ? "good" : "bad"}`} role="status">
                 {pick === q.answer ? (
                   <>
-                    <h3>🎉 ¡Correcto!</h3>
+                    <h3>{t.correct}</h3>
                     {why && <p>{why}</p>}
                   </>
                 ) : (
                   <>
-                    <h3>💪 Casi. La respuesta es:</h3>
+                    <h3>{t.almost}</h3>
                     <p>
-                      <b>{opts(q)[q.answer]}</b>. {whyEs}
+                      <b>{opts(q)[q.answer]}</b>. {en ? why : whyEs}
                     </p>
                   </>
                 )}
                 {screen && (
                   <Link className="see" href={`${p.bookHref}?screen=${encodeURIComponent(screen.id)}`}>
-                    Repasar en la página “{screen.title}” ↗
+                    {fill(t.seePage, { t: screen.title })}
                   </Link>
                 )}
               </div>
             )}
             {answered && (
               <button type="button" className="next" onClick={next}>
-                {pos < pool.length - 1 ? "Siguiente pregunta →" : "Ver mi resultado →"}
+                {pos < pool.length - 1 ? t.nextQ : t.result}
               </button>
             )}
           </section>
@@ -384,7 +389,7 @@ function RepasoInner(p: Props) {
 }
 
 /** "🔊 Escuchar la pregunta": only when the question has a recording in this language. */
-function ListenQ({ src: ref }: { src?: string | null }) {
+function ListenQ({ src: ref, label }: { src?: string | null; label: string }) {
   const src = useSignedRef(ref);
   const [playing, setPlaying] = useState(false);
   const a = useRef<HTMLAudioElement | null>(null);
@@ -400,7 +405,7 @@ function ListenQ({ src: ref }: { src?: string | null }) {
         void a.current.play().then(() => setPlaying(true)).catch(() => {});
       }}
     >
-      <span aria-hidden>🔊</span> Escuchar la pregunta
+      <span aria-hidden>🔊</span> {label}
     </button>
   );
 }

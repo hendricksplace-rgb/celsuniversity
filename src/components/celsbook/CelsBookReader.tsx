@@ -12,18 +12,19 @@ import { createClient } from "@/lib/supabase/client";
 import type { Answers, Ebook, Screen } from "@/lib/ebook-format";
 import type { Json } from "@/lib/supabase/types";
 import { answerKey } from "@/lib/ebook-format";
-import { SECTIONS, clock, leadOf, sectionOf, two, type SectionKey } from "@/lib/celsbook";
+import { SECTIONS, clock, leadOf, sectionOf, two, viewScreen, type SectionKey } from "@/lib/celsbook";
 import { clearLocal, finishLesson, keepLocal, readLocal } from "@/lib/offline";
 import { SignedUrls, useSignedRef } from "@/components/reader/media";
 import { reportError } from "@/lib/report-error";
 import { ReaderBlock } from "@/components/reader/ReaderBlocks";
-import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
 import { BookBlock, BookCtx, type Local } from "./Blocks";
 import { jakartaItalic } from "./fonts";
 import { Immersive } from "./Immersive";
 
 
 const SEEN = "_seen";
+const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
 type Props = {
   ebook: Ebook;
@@ -47,55 +48,71 @@ type Props = {
   back?: UsBack;
   /** The CelsUS final exam (checklist links to it). */
   finalExamHref?: string | null;
+  /** The student's app language (C-002): English mode reads screens[i].en and the English labels. */
+  lang: Lang;
+  t: Dictionary["cb"];
 };
 
-const SECT_TITLE: Record<SectionKey, React.ReactNode> = {
-  intro: (
-    <>
-      <span className="w">Bien</span>venido
-    </>
-  ),
-  wtw: (
-    <>
-      Words
-      <br />
-      that Work
-    </>
-  ),
-  vtv: (
-    <>
-      Verbs
-      <br />
-      that Vibe
-    </>
-  ),
-  ptf: (
-    <>
-      Phrases
-      <br />
-      that Fit
-    </>
-  ),
-  fun: <>funics</>,
-  fof: (
-    <>
-      Foc<span className="us">US</span>
-      <small>on your Future</small>
-    </>
-  ),
-  rep: (
-    <>
-      Repaso
-      <br />
-      final
-    </>
-  ),
-};
+type CbT = Dictionary["cb"];
+
+function sectTitle(k: SectionKey, t: CbT): React.ReactNode {
+  switch (k) {
+    case "intro":
+      return (
+        <>
+          <span className="w">{t.welcomeA}</span>
+          {t.welcomeB}
+        </>
+      );
+    case "wtw":
+      return (
+        <>
+          Words
+          <br />
+          that Work
+        </>
+      );
+    case "vtv":
+      return (
+        <>
+          Verbs
+          <br />
+          that Vibe
+        </>
+      );
+    case "ptf":
+      return (
+        <>
+          Phrases
+          <br />
+          that Fit
+        </>
+      );
+    case "fun":
+      return <>funics</>;
+    case "fof":
+      return (
+        <>
+          Foc<span className="us">US</span>
+          <small>on your Future</small>
+        </>
+      );
+    case "rep":
+      return (
+        <>
+          {t.reviewA}
+          <br />
+          {t.reviewB}
+        </>
+      );
+  }
+}
 
 export function CelsBookReader(props: Props) {
-  const { ebook, episodeN, userId, initial, signed, episodeHref, nextPart, bookLessonId, readerT } = props;
+  const { ebook, episodeN, userId, initial, signed, episodeHref, nextPart, bookLessonId, readerT, lang, t } = props;
   const router = useRouter();
   const screens = ebook.screens;
+  const en = lang === "en";
   const last = screens.length - 1;
   const keys = useMemo(() => screens.map((s) => sectionOf(s.kicker)), [screens]);
   const repeat = useMemo(() => {
@@ -216,6 +233,8 @@ export function CelsBookReader(props: Props) {
         if (i >= 0) go(i);
       },
       finalExamHref: props.finalExamHref,
+      en,
+      t,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- go reads the latest state through the render
     [local, keys, answers, cur, completedAt],
@@ -235,11 +254,12 @@ export function CelsBookReader(props: Props) {
     router.push(props.completionHref);
   };
 
-  const screen = screens[cur];
+  // Sections come from the Spanish kicker (stable); the page itself is the student's language.
+  const screen = viewScreen(screens[cur], lang);
   const key = keys[cur];
   const sec = SECTIONS[key];
   const seen = new Set(seenList(answers));
-  const tocLabel = (s: Screen, i: number) => (repeat.get(keys[i])! > 1 ? `${SECTIONS[keys[i]].short} · ${s.title}` : SECTIONS[keys[i]].name);
+  const tocLabel = (s: Screen, i: number) => (repeat.get(keys[i])! > 1 ? `${t.sections[keys[i]].short} · ${viewScreen(s, lang).title}` : t.sections[keys[i]].name);
 
   return (
     <SignedUrls.Provider value={signed}>
@@ -255,28 +275,29 @@ export function CelsBookReader(props: Props) {
           <header className="tb">
             {!props.back && (
               <Link href={episodeHref} className="back">
-                <i aria-hidden>‹</i>Episodio {episodeN}
+                <i aria-hidden>‹</i>
+                {fill(t.back, { n: episodeN })}
               </Link>
             )}
             <div className="ttl">
-              <b>CelsBook · Episodio {episodeN}</b>
-              {subtitleOf(ebook.subtitle)}
+              <b>{fill(t.title, { n: episodeN })}</b>
+              {en ? null : subtitleOf(ebook.subtitle)}
             </div>
             <button type="button" className="tocbtn" aria-expanded={tocOpen} aria-controls="cb-toc" onClick={() => setTocOpen(!tocOpen)}>
-              ☰ Contenido
+              {t.toc}
             </button>
             <div className="logo" aria-label="CelsUS">
               cels<span>US</span>
             </div>
           </header>
-          <div className="pbar" role="progressbar" aria-label="Avance del libro" aria-valuemin={1} aria-valuemax={screens.length} aria-valuenow={cur + 1}>
+          <div className="pbar" role="progressbar" aria-label={t.progress} aria-valuemin={1} aria-valuemax={screens.length} aria-valuenow={cur + 1}>
             <i style={{ width: `${((cur + 1) / screens.length) * 100}%` }} />
           </div>
 
           <div className="lay">
             <div className={`scrim${tocOpen ? " open" : ""}`} onClick={() => setTocOpen(false)} aria-hidden />
-            <nav className={`toc${tocOpen ? " open" : ""}`} id="cb-toc" aria-label="Contenido">
-              <h2>CONTENIDO</h2>
+            <nav className={`toc${tocOpen ? " open" : ""}`} id="cb-toc" aria-label={t.tocName}>
+              <h2>{t.tocH}</h2>
               <ol>
                 {screens.map((s, i) => {
                   const done = seen.has(s.id) && i !== cur;
@@ -285,13 +306,13 @@ export function CelsBookReader(props: Props) {
                       <button type="button" className={i === cur ? "on" : ""} aria-current={i === cur ? "page" : undefined} style={{ ["--c" as string]: SECTIONS[keys[i]].c }} onClick={() => go(i)}>
                         <i aria-hidden>{done ? "✓" : i + 1}</i>
                         <span className="l">{tocLabel(s, i)}</span>
-                        {done && <span className="sr"> (vista)</span>}
+                        {done && <span className="sr">{t.seen}</span>}
                       </button>
                     </li>
                   );
                 })}
               </ol>
-              <p className="note">✓ Tu avance se guarda solo</p>
+              <p className="note">{t.autosave}</p>
             </nav>
 
             <main>
@@ -306,20 +327,21 @@ export function CelsBookReader(props: Props) {
                   nextPart={nextPart}
                   episodeHref={episodeHref}
                   readerT={readerT}
+                  t={t}
                 />
               </article>
             </main>
           </div>
 
-          <nav className="navb" aria-label="Páginas">
+          <nav className="navb" aria-label={t.pages}>
             <button type="button" className="pv" disabled={cur === 0} onClick={() => go(cur - 1)}>
-              ← Anterior
+              {t.prev}
             </button>
             <span className="pg">
-              Página {cur + 1} de {screens.length}
+              {fill(t.page, { n: cur + 1, m: screens.length })}
             </span>
             <button type="button" className="nx2" disabled={leaving} onClick={() => (cur === last ? void end() : go(cur + 1))}>
-              {cur === last ? "Terminar ✓" : "Siguiente →"}
+              {cur === last ? t.finish : t.next}
             </button>
           </nav>
         </div>
@@ -345,7 +367,9 @@ function Page({
   nextPart,
   episodeHref,
   readerT,
+  t,
 }: {
+  t: CbT;
   screen: Screen;
   sk: SectionKey;
   n: number;
@@ -376,18 +400,18 @@ function Page({
         <span className="mini" aria-hidden>
           cels<span>US</span>
         </span>
-        <p className="sect">{SECT_TITLE[sk]}</p>
-        <p className="lead">{lead?.text ?? sec.lead}</p>
+        <p className="sect">{sectTitle(sk, t)}</p>
+        <p className="lead">{lead?.text ?? t.sections[sk].lead}</p>
       </div>
       <div className="ph">
         <h1>{screen.title}</h1>
         <span className="meta">
-          {sec.meta}
+          {t.sections[sk].meta}
           {screen.minutes ? ` · ${screen.minutes} min` : ""}
         </span>
       </div>
       <div className="body">
-        <Listen refPath={screen.narration?.audio ?? null} onTime={karaoke ? setTime : undefined} />
+        <Listen refPath={screen.narration?.audio ?? null} onTime={karaoke ? setTime : undefined} t={t} />
         {screen.blocks.map((b, i) => {
           if (i === lead?.index || i === endIdx) return null;
           // The intro reads its narration as karaoke in place of the English paragraphs.
@@ -422,10 +446,10 @@ function Page({
         })}
         {sk === "rep" && (
           <section className="done">
-            <h2>¡Terminaste el CelsBook del episodio {episodeN}!</h2>
-            <p>{endIdx >= 0 ? (screen.blocks[endIdx] as { text: string }).text : "Repasa tus Cels cards y escucha el Cels audio una vez más."}</p>
+            <h2>{fill(t.doneTitle, { n: episodeN })}</h2>
+            <p>{endIdx >= 0 ? (screen.blocks[endIdx] as { text: string }).text : t.doneText}</p>
             <Link href={nextPart?.href ?? episodeHref} className="btn b-gold">
-              {nextPart ? `Seguir con ${nextPart.label} →` : "Volver al episodio →"}
+              {nextPart ? fill(t.continueWith, { part: nextPart.label }) : t.backToEpisode}
             </Link>
 
           </section>
@@ -444,7 +468,7 @@ const isOwn = (t: string) => OWN.has(t);
 
 const SPEEDS = [1, 0.8, 1.2];
 /** "▶ Escuchar esta página": narration.audio with a 52 px play button and a speed toggle. */
-function Listen({ refPath, onTime }: { refPath: string | null; onTime?: (t: number) => void }) {
+function Listen({ refPath, onTime, t }: { refPath: string | null; onTime?: (t: number) => void; t: CbT }) {
   const src = useSignedRef(refPath);
   const audio = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -473,7 +497,7 @@ function Listen({ refPath, onTime }: { refPath: string | null; onTime?: (t: numb
       <button
         type="button"
         className="play"
-        aria-label={playing ? "Pausar" : "Escuchar esta página"}
+        aria-label={playing ? t.pause : t.listen}
         onClick={() => {
           const a = audio.current;
           if (!a) return;
@@ -486,13 +510,16 @@ function Listen({ refPath, onTime }: { refPath: string | null; onTime?: (t: numb
         <span aria-hidden>{playing ? "❚❚" : "▶"}</span>
       </button>
       <div>
-        <b>Escuchar esta página</b>
-        <span>Con la voz de Amy{dur ? ` · ${clock(dur)}` : ""}</span>
+        <b>{t.listen}</b>
+        <span>
+          {t.voice}
+          {dur ? ` · ${clock(dur)}` : ""}
+        </span>
       </div>
       <button
         type="button"
         className="sp"
-        aria-label={`Velocidad ${SPEEDS[speed]}x. Cambiar`}
+        aria-label={fill(t.speed, { s: SPEEDS[speed] })}
         onClick={() => {
           const s = (speed + 1) % SPEEDS.length;
           setSpeed(s);

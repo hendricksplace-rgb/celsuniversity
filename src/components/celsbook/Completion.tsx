@@ -10,6 +10,9 @@ import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { jakartaItalic } from "./fonts";
 import { Immersive } from "./Immersive";
 import { createClient } from "@/lib/supabase/client";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+
+const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
 export type CompletionProps = {
   state: "A" | "B";
@@ -35,12 +38,14 @@ export type CompletionProps = {
   nextEpisode: { n: number; href: string; topic: string } | null;
   finalExamHref: string | null;
   readAgainHref: string;
+  t: Dictionary["fin"];
 };
 
 const COLORS = ["#E8333A", "#ffffff", "#1E4E8C", "#F2C230", "#FFE27A"];
 
 export function Completion(p: CompletionProps) {
   const B = p.state === "B";
+  const { t } = p;
   const [pieces, setPieces] = useState<{ left: number; x: number; r: number; dur: number; delay: number; c: string }[]>([]);
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -77,23 +82,21 @@ export function Completion(p: CompletionProps) {
   }, [B, p.medal, p.userId]);
 
   const left = p.total - p.done;
-  const kick = p.firstName ? `¡FELICIDADES, ${p.firstName.toUpperCase()}!` : "¡FELICIDADES!";
+  const kick = p.firstName ? fill(t.congratsName, { name: p.firstName.toUpperCase() }) : t.congrats;
   const stats: [string, string][] = B
     ? [
-        [`${p.done} de ${p.total}`, "partes completas"],
-        [`+${p.episodeXp}`, "XP en este episodio"],
-        [p.quiz ? `${p.quiz.right} de ${p.quiz.total}` : "—", "en el quiz"],
+        [fill(t.statOf, { n: p.done, m: p.total }), t.partsDone],
+        [`+${p.episodeXp}`, t.epXp],
+        [p.quiz ? fill(t.statOf, { n: p.quiz.right, m: p.quiz.total }) : "—", t.inQuiz],
       ]
     : [
-        [String(p.pages.read), "páginas leídas"],
-        [`+${p.bookXp}`, "XP ganados"],
-        [`🔥 ${p.streak}`, p.streak === 1 ? "día de racha" : "días de racha"],
+        [String(p.pages.read), t.pagesRead],
+        [`+${p.bookXp}`, t.xp],
+        [`🔥 ${p.streak}`, p.streak === 1 ? t.dayStreak : t.daysStreak],
       ];
   const msg = B
-    ? `${medal ? `Ganaste la medalla «${medal}». ¡Así se hace!` : "¡Así se hace! Cada episodio te acerca a tu ciudadanía."} ${
-        p.nextEpisode ? "El siguiente episodio ya está abierto para ti." : "Ya puedes hacer el examen final."
-      }`
-    : `¡Vas muy bien! Ya completaste ${p.done} de las ${p.total} partes del episodio ${p.n}.${left > 0 ? ` Te faltan solo ${left}.` : ""}`;
+    ? `${medal ? fill(t.medal, { m: medal }) : t.wayToGo} ${p.nextEpisode ? t.nextOpen : t.examOpen}`
+    : `${fill(t.goingWell, { n: p.done, m: p.total, e: p.n })}${left > 0 ? fill(t.left, { n: left }) : ""}`;
 
   return (
     <div className={`cb fin ${jakartaItalic.variable}`}>
@@ -105,7 +108,8 @@ export function Completion(p: CompletionProps) {
             <BackButtons t={p.back.t} course={p.back.course} episode={{ href: p.episodeHref, n: p.n }} dark />
           ) : (
             <Link href={p.episodeHref} className="back">
-              <i aria-hidden>‹</i>Episodio {p.n}
+              <i aria-hidden>‹</i>
+              {fill(t.back, { n: p.n })}
             </Link>
           )}
           <div className="logo" aria-label="CelsUS">
@@ -115,23 +119,19 @@ export function Completion(p: CompletionProps) {
         <div className="medal" aria-hidden>
           <span className="rib" />
           <div className="c">
-            <span>{B ? "COMPLETO" : "CELSBOOK"}</span>
+            <span>{B ? t.medalDone : t.medalBook}</span>
             <b>{p.n}</b>
-            <span>EPISODIO</span>
+            <span>{t.medalEp}</span>
           </div>
         </div>
         <p className="kick">{kick}</p>
-        <h1>{B ? `¡Terminaste el episodio ${p.n}!` : `¡Terminaste el CelsBook del episodio ${p.n}!`}</h1>
-        <p className="sub">
-          {B
-            ? `${p.topic ? `${p.topic}. ` : ""}Ya estás un paso más cerca de tu ciudadanía.`
-            : `Leíste las ${p.pages.total} páginas. Cada página te acerca a tu entrevista de ciudadanía.`}
-        </p>
+        <h1>{fill(B ? t.titleB : t.titleA, { n: p.n })}</h1>
+        <p className="sub">{B ? `${p.topic ? `${p.topic}. ` : ""}${t.subB}` : fill(t.subA, { m: p.pages.total })}</p>
       </header>
 
       <main className="fmain">
         <section className="card">
-          <h2>TU EPISODIO {p.n}</h2>
+          <h2>{fill(t.yourEp, { n: p.n })}</h2>
           <ol className="parts">
             {p.parts.map((pt, k) => (
               <li key={k} className={`pt${pt.done ? " ok" : pt.now ? " now" : ""}`}>
@@ -139,7 +139,7 @@ export function Completion(p: CompletionProps) {
                   {pt.done ? "✓" : pt.icon}
                 </i>
                 <b>{pt.name}</b>
-                <small>{pt.done ? "Hecho" : pt.now ? "Sigue" : "Pendiente"}</small>
+                <small>{pt.done ? t.ptDone : pt.now ? t.ptNow : t.ptLater}</small>
               </li>
             ))}
           </ol>
@@ -160,13 +160,15 @@ export function Completion(p: CompletionProps) {
               p.nextEpisode ? (
                 <Link className="big b1" href={p.nextEpisode.href}>
                   <span className="tx">
-                    Empezar el episodio {p.nextEpisode.n} →{p.nextEpisode.topic && <small>{p.nextEpisode.topic}</small>}
+                    {fill(t.startEp, { n: p.nextEpisode.n })}
+                    {p.nextEpisode.topic && <small>{p.nextEpisode.topic}</small>}
                   </span>
                 </Link>
               ) : (
                 <Link className="big b1" href={p.finalExamHref ?? "/app/cursos"}>
                   <span className="tx">
-                    Hacer el examen final →<small>Evaluación de CelsUS</small>
+                    {t.exam}
+                    <small>{t.examSub}</small>
                   </span>
                 </Link>
               )
@@ -174,10 +176,8 @@ export function Completion(p: CompletionProps) {
               p.next && (
                 <Link className="big b1" href={p.next.href}>
                   <span className="tx">
-                    Seguir: {p.next.label} →
-                    <small>
-                      Parte {p.next.index} de {p.total} del episodio {p.n}
-                    </small>
+                    {fill(t.nextPart, { p: p.next.label })}
+                    <small>{fill(t.partOf, { i: p.next.index, m: p.total, n: p.n })}</small>
                   </span>
                 </Link>
               )
@@ -186,19 +186,19 @@ export function Completion(p: CompletionProps) {
               {B ? (
                 <>
                   <Link className="big b2" href="/app/cursos">
-                    ← Volver a Mis cursos
+                    {t.myCourses}
                   </Link>
                   <Link className="big b2" href="/app/progreso">
-                    🏅 Ver mis medallas
+                    {t.medals}
                   </Link>
                 </>
               ) : (
                 <>
                   <Link className="big b2" href={p.episodeHref}>
-                    ← Volver al episodio
+                    {t.backEp}
                   </Link>
                   <Link className="big b2" href={p.readAgainHref}>
-                    Leer otra vez
+                    {t.readAgain}
                   </Link>
                 </>
               )}

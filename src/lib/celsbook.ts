@@ -53,7 +53,7 @@ export function mapTile(name: string, desc: string) {
 }
 
 export const isEpisodeMap = (b: Block) =>
-  (b.type === "list" && /en este episodio/i.test(b.title ?? "")) ||
+  (b.type === "list" && /en este episodio|in this episode/i.test(b.title ?? "")) ||
   (b.type === "expand" && b.items.length > 1 && b.items.every((it) => ["wtw", "vtv", "ptf", "fun", "fof"].includes(sectionOf(it.title))));
 
 /** "Word Families · Family Name: -eet" → "eet". */
@@ -61,17 +61,17 @@ export function familyEnding(title: string | undefined) {
   return title?.match(/-\s*([a-z]+)/i)?.[1]?.toLowerCase() ?? "";
 }
 
-/** A `keys` body: "Respuestas aceptadas: A · B · C" → ["A", "B", "C"]. Model answers ("A: …") keep their text. */
+/** A `keys` body: "Respuestas aceptadas: A · B · C" (or "Accepted answers: …") → ["A", "B", "C"]. Model answers ("A: …") keep their text. */
 export function acceptedAnswers(body: string) {
   return body
-    .replace(/^\s*respuestas?\s+aceptadas?\s*:\s*/i, "")
+    .replace(/^\s*(respuestas?\s+aceptadas?|accepted\s+answers?)\s*:\s*/i, "")
     .split(/\s+·\s+/)
     .map((s) => s.trim())
     .filter(Boolean);
 }
 
-/** A `myth` explanation without the "Realidad." / "Mito." the feedback already says. */
-export const mythExplanation = (a: string) => a.replace(/^\s*(realidad|mito)\s*[.:]\s*/i, "");
+/** A `myth` explanation without the "Realidad." / "Mito." ("Fact." / "Myth.") the feedback already says. */
+export const mythExplanation = (a: string) => a.replace(/^\s*(realidad|mito|fact|myth)\s*[.:]\s*/i, "");
 
 /** Lowercase, no accents, punctuation or articles; "U.S." → "us". For matching question texts. */
 export function normQ(text: string) {
@@ -144,8 +144,8 @@ export function profileField(label: string): "civics_senator" | "civics_represen
  */
 export function chatSide(title: string | undefined, i: number): "off" | "you" {
   const t = (title ?? "").toLowerCase();
-  if (/puedes escuchar/.test(t)) return "off";
-  if (/repite/.test(t)) return "you";
+  if (/puedes escuchar|you may hear/.test(t)) return "off";
+  if (/repite|closing your interview/.test(t)) return "you";
   return i % 2 === 0 ? "off" : "you";
 }
 
@@ -174,3 +174,18 @@ export function leadOf(screen: Screen) {
 
 export const two = (n: number) => String(n).padStart(2, "0");
 export const clock = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
+/** English for a screen (screens[i].en, C-002/C-003). */
+export type ScreenEn = { title?: string; kicker?: string; blocks?: Block[]; narration?: Screen["narration"] };
+
+/**
+ * The screen a student reads. English mode uses screens[i].en when the screen has it, else the Spanish screen.
+ * English mode never plays the Spanish narration: without English audio the page has no player.
+ */
+export function viewScreen(screen: Screen, lang: "es" | "en"): Screen {
+  if (lang === "es") return screen;
+  const en = (screen as Screen & { en?: ScreenEn }).en;
+  const narration = en?.narration?.audio ? en.narration : null;
+  if (!en) return { ...screen, narration };
+  return { ...screen, title: en.title || screen.title, kicker: en.kicker || screen.kicker, blocks: en.blocks?.length ? en.blocks : screen.blocks, narration };
+}
