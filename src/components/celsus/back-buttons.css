@@ -1,0 +1,93 @@
+/* CelsUS back buttons (C-013, celsus-breadcrumb-botones-mockup.html). Scoped under .usb. */
+.usb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.usb .b {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 4px 18px 4px 8px;
+  border-radius: 999px;
+  font-family: var(--font-jakarta), "Plus Jakarta Sans", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+}
+.usb .b:hover {
+  transform: translateY(-1px);
+}
+.usb .b:focus-visible {
+  outline: 3px solid #35c3f0;
+  outline-offset: 2px;
+}
+.usb .i {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  line-height: 1;
+}
+.usb .course {
+  background: #fff;
+  color: #0e2547;
+  border: 2px solid #0e2547;
+  box-shadow: 0 3px 0 #0e2547;
+}
+.usb .course .i {
+  background: #0e2547;
+  color: #f2c230;
+}
+.usb .ep {
+  background: #0e2547;
+  color: #fff;
+  border: 2px solid #0e2547;
+  box-shadow: 0 3px 0 #061430;
+}
+.usb .ep .i {
+  background: #f2c230;
+  color: #0e2547;
+}
+.usb .t {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  text-align: left;
+}
+.usb small {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  line-height: 1.1;
+}
+/* On a navy header the navy button needs an edge. */
+.usb.dark .ep {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+@media (max-width: 480px) {
+  .usb {
+    gap: 8px;
+  }
+  .usb .b {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .usb .b {
+    transition: none;
+  }
+  .usb .b:hover {
+    transform: none;
+  }
+}

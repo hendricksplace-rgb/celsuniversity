@@ -98,6 +98,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
         startScreen={asked}
         readerT={t.reader}
         completionHref={completionPath(courseSlug, usN)}
+        back={{ t: t.usBack, course: { href: `/app/cursos/${courseSlug}`, name: course.title } }}
         finalExamHref={coursePage?.extras.find((x) => x.kind === "evaluation")?.href ?? null}
       />
     );

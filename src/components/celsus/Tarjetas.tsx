@@ -18,6 +18,7 @@ import { setCivicsTrack } from "@/app/app/cursos/[slug]/episodio/[n]/tarjetas/ac
 import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
 import { fill } from "@/components/course/kit";
 import { Immersive } from "@/components/celsbook/Immersive";
+import { BackButtons } from "./BackButtons";
 
 type T = Dictionary["usCards"];
 export type Track = "A" | "B" | "C";
@@ -69,6 +70,9 @@ export type TarjetasProps = {
   backHref: string;
   /** "Volver al episodio N"; without it, "Volver al curso". */
   backEpisode?: number;
+  /** The CelsUS course (C-013 back buttons), with their labels in both languages. */
+  course: { href: string; name: string };
+  backTexts: Record<Lang, Dictionary["usBack"]>;
   signed: Record<string, string>;
   refreshAudio: () => Promise<Record<string, string>>;
   mode: EpisodeMode | TwentyMode;
@@ -354,10 +358,7 @@ export function Tarjetas(p: TarjetasProps) {
       </span>
       <div className="wrap">
         <div className="bar">
-          <Link className="back" href={p.backHref}>
-            <i aria-hidden>‹</i>
-            {backLabel}
-          </Link>
+          <BackButtons t={p.backTexts[uiLang]} course={p.course} episode={p.backEpisode ? { href: p.backHref, n: p.backEpisode } : null} dark />
           {!choosing && !end && deck.length > 1 && (
             <button type="button" className="shuf" onClick={() => startDeck(track, shuffled(deck), false)}>
               🔀 {t.shuffle}

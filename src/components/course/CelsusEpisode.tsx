@@ -5,6 +5,7 @@
 // (this week's questions, extra material, next episode). Big type and buttons: most students are 45 to 65.
 import "./celsus-episode.css";
 import Link from "next/link";
+import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Episode, Part, UsRole } from "@/lib/course-page";
@@ -56,6 +57,7 @@ export function CelsusEpisode({
   title,
   sub,
   courseHref,
+  back,
   next,
   examHref,
   completionHref,
@@ -76,6 +78,8 @@ export function CelsusEpisode({
   title: string;
   sub: string;
   courseHref: string;
+  /** C-013 back button (the course). */
+  back?: UsBack;
   next: { n: number; href: string; title: string } | null;
   examHref: string;
   completionHref: string;
@@ -147,10 +151,14 @@ export function CelsusEpisode({
         </span>
         <div className="wrap">
           <div className="htop">
-            <Link className="back" href={courseHref}>
-              <i aria-hidden>‹</i>
-              {t.backCourses}
-            </Link>
+            {back ? (
+              <BackButtons t={back.t} course={back.course} dark />
+            ) : (
+              <Link className="back" href={courseHref}>
+                <i aria-hidden>‹</i>
+                {t.backCourses}
+              </Link>
+            )}
             {/* eslint-disable-next-line @next/next/no-img-element -- small static logo */}
             <img className="logo" src="/brand/celsus.jpg" alt="CelsUS" width={100} height={40} />
           </div>

@@ -36,6 +36,8 @@ export default async function TwentyQuestions({ params, searchParams }: Props) {
     <Tarjetas
       texts={{ es: dictionaries.es.usCards, en: dictionaries.en.usCards }}
       langChoice={await getLangChoice()}
+      backTexts={{ es: dictionaries.es.usBack, en: dictionaries.en.usBack }}
+      course={{ href: `/app/cursos/${courseSlug}`, name: loaded.course.title }}
       userId={viewer.user.id}
       track="C"
       backHref={backEpisode ? episodePath(courseSlug, backEpisode) : `/app/cursos/${courseSlug}`}

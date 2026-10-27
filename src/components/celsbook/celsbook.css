@@ -48,6 +48,15 @@
 }
 
 /* top bar */
+.cb .tbnav {
+  background: var(--navy);
+  padding: 12px 24px 4px;
+}
+@media (max-width: 760px) {
+  .cb .tbnav {
+    padding: 10px 16px 4px;
+  }
+}
 .cb .tb {
   position: sticky;
   top: 0;

@@ -6,6 +6,7 @@
 import "./celsbook.css";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { jakartaItalic } from "./fonts";
 import { Immersive } from "./Immersive";
 import { createClient } from "@/lib/supabase/client";
@@ -28,6 +29,8 @@ export type CompletionProps = {
   /** Name of a medal earned in the last half hour */
   medal: string | null;
   episodeHref: string;
+  /** C-013 back buttons (course + episode). */
+  back?: UsBack;
   next: { label: string; href: string; index: number } | null;
   nextEpisode: { n: number; href: string; topic: string } | null;
   finalExamHref: string | null;
@@ -98,9 +101,13 @@ export function Completion(p: CompletionProps) {
       <header className="hero">
         <span className="rays" aria-hidden />
         <div className="bar">
-          <Link href={p.episodeHref} className="back">
-            <i aria-hidden>‹</i>Episodio {p.n}
-          </Link>
+          {p.back ? (
+            <BackButtons t={p.back.t} course={p.back.course} episode={{ href: p.episodeHref, n: p.n }} dark />
+          ) : (
+            <Link href={p.episodeHref} className="back">
+              <i aria-hidden>‹</i>Episodio {p.n}
+            </Link>
+          )}
           <div className="logo" aria-label="CelsUS">
             cels<span>US</span>
           </div>

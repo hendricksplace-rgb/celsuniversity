@@ -167,6 +167,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
         title={us.topic || fill(t.us.kicker, { n: episode.n })}
         sub={t.us.sub}
         courseHref={courseHref}
+        back={{ t: t.usBack, course: { href: courseHref, name: page.course.title } }}
         next={nextEpisode ? { n: nextEpisode.n, href: nextEpisode.href, title: us.nextTopic || fill(t.us.kicker, { n: nextEpisode.n }) } : null}
         examHref="/app/examen-civico"
         completionHref={completionPath(page.course.slug, episode.n)}

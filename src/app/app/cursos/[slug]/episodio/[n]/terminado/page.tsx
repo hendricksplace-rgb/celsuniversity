@@ -1,3 +1,4 @@
+import { getDictionary } from "@/lib/i18n/server";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { canAccessCourse, getViewer } from "@/lib/access";
@@ -24,7 +25,7 @@ export default async function EpisodeFinished({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=${episodePath(slug, n)}/terminado`);
   const status = await episodeStatus(supabase, viewer.user.id, slug, n, viewer.isStaff);
   if (!status) notFound();
-  const { data: course } = await supabase.from("courses").select("id").eq("slug", status.courseSlug).maybeSingle();
+  const { data: course } = await supabase.from("courses").select("id, title").eq("slug", status.courseSlug).maybeSingle();
   if (!course || !(await canAccessCourse(supabase, viewer, course.id))) redirect(`/app/cursos/${status.courseSlug}`);
 
   const bookSlug = `celsus-celsbook-episode-${n}`;
@@ -74,6 +75,7 @@ export default async function EpisodeFinished({ params }: Props) {
     nextEpisode: status.nextEpisode ? { n: status.nextEpisode.n, href: status.nextEpisode.href, topic: topicOf(nextBook?.subtitle) } : null,
     finalExamHref: status.finalExamHref,
     readAgainHref: `/app/libros/${bookSlug}?p=1`,
+    back: { t: (await getDictionary()).t.usBack, course: { href: `/app/cursos/${status.courseSlug}`, name: course.title } },
   };
   return <Completion {...props} />;
 }

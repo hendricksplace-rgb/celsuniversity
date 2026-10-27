@@ -2,6 +2,7 @@
 // ebooks.quiz in the Repaso design. Done-state: the episode's quiz lesson in progress (status 'completed',
 // quiz_score / quiz_max_score), recorded by record_lesson_progress like every part.
 import { notFound } from "next/navigation";
+import type { UsBack } from "@/components/celsus/BackButtons";
 import type { createClient } from "@/lib/supabase/server";
 import type { Episode } from "@/lib/course-page";
 import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
@@ -15,12 +16,14 @@ export async function CelsusQuizRoute({
   courseId,
   courseSlug,
   episode,
+  back,
 }: {
   supabase: Client;
   viewer: { user: { id: string }; isStaff: boolean };
   courseId: string;
   courseSlug: string;
   episode: Episode;
+  back?: UsBack;
 }) {
   const [{ data: ebook }, { data: me }, { data: prefs }] = await Promise.all([
     // RLS: published books in courses the student can open.
@@ -50,6 +53,7 @@ export async function CelsusQuizRoute({
         starredHref={`/app/cursos/${courseSlug}/mis-20-preguntas?ep=${episode.n}`}
         userId={viewer.user.id}
         sound={prefs?.sound_effects ?? true}
+        back={back}
       />
   );
 }

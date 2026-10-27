@@ -909,6 +909,7 @@ const es = {
     cats: { People: "Personas", Civics: "Civismo", Places: "Lugares", Holidays: "Días festivos", "Question Words": "Palabras para preguntar", Verbs: "Verbos", "Other (Function)": "Otras (función)", "Other (Content)": "Otras (contenido)", Months: "Meses" } as Record<string, string>,
     topics: { presidentes: "presidentes", gobierno: "gobierno", derechos: "derechos", historia: "historia", "geografía": "geografía", "símbolos": "símbolos", "días festivos": "días festivos" } as Record<string, string>,
   },
+  usBack: { aria: "Regresar", course: "Curso", back: "Regresar al", episode: "Episodio {n}" },
   usCards: {
     title: "Tarjetas del examen",
     sub: "Lee la pregunta, piensa tu respuesta y voltea la tarjeta.",
@@ -2640,6 +2641,7 @@ const en: Dictionary = {
     cats: { People: "People", Civics: "Civics", Places: "Places", Holidays: "Holidays", "Question Words": "Question words", Verbs: "Verbs", "Other (Function)": "Other (function)", "Other (Content)": "Other (content)", Months: "Months" } as Record<string, string>,
     topics: { presidentes: "presidents", gobierno: "government", derechos: "rights", historia: "history", "geografía": "geography", "símbolos": "symbols", "días festivos": "holidays" } as Record<string, string>,
   },
+  usBack: { aria: "Go back", course: "Course", back: "Back to", episode: "Episode {n}" },
   usCards: {
     title: "Test flashcards",
     sub: "Read the question, think of your answer and flip the card.",

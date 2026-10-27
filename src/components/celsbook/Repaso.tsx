@@ -6,6 +6,7 @@
 import "./celsbook.css";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { createClient } from "@/lib/supabase/client";
 import { finishLesson } from "@/lib/offline";
 import { afterPartFinished } from "@/app/app/cursos/[slug]/episodio/[n]/terminado/actions";
@@ -38,6 +39,8 @@ type Props = {
   /** The CelsBook (/app/libros/<slug>) */
   bookHref: string;
   episodeHref: string;
+  /** C-013 back buttons (course + episode). */
+  back?: UsBack;
   courseSlug: string;
   /** The episode's Part 6 lesson: finishing records it (progress + XP, as the CelsTV quiz) with the score. */
   lessonId: string | null;
@@ -212,9 +215,13 @@ function RepasoInner(p: Props) {
         <span className="wm" aria-hidden data-wm="review" />
         <div className="wrap">
           <div className="bar">
-            <Link href={p.episodeHref} className="back">
-              <i aria-hidden>‹</i>Episodio {p.episodeN}
-            </Link>
+            {p.back ? (
+              <BackButtons t={p.back.t} course={p.back.course} episode={{ href: p.episodeHref, n: p.episodeN }} dark />
+            ) : (
+              <Link href={p.episodeHref} className="back">
+                <i aria-hidden>‹</i>Episodio {p.episodeN}
+              </Link>
+            )}
             <button type="button" className="snd" aria-pressed={sound} onClick={() => void toggleSound()}>
               🔔 Sonidos: {sound ? "sí" : "no"}
             </button>

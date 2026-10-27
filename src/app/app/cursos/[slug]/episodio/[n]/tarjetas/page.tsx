@@ -56,6 +56,8 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
     <Tarjetas
       texts={{ es: dictionaries.es.usCards, en: dictionaries.en.usCards }}
       langChoice={await getLangChoice()}
+      backTexts={{ es: dictionaries.es.usBack, en: dictionaries.en.usBack }}
+      course={{ href: `/app/cursos/${page.course.slug}`, name: page.course.title }}
       userId={viewer.user.id}
       track={examen === "1" ? null : track}
       backHref={episodeHref}

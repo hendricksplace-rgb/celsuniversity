@@ -21,6 +21,7 @@ import { GUIDE_LAYOUT, guidePlaceOfLesson } from "@/lib/teacher-guide-server";
 import { LockedCard } from "@/components/celsus/TeacherGuide";
 import { loadFeedback } from "@/lib/feedback-server";
 import { CelsCast } from "@/components/celsus/CelsCast";
+import { BackButtons } from "@/components/celsus/BackButtons";
 import { ReadingWriting, type RwData, type RwState } from "@/components/celsus/ReadingWriting";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import type { Cue, Track } from "@/components/part/AudioPart";
@@ -227,9 +228,13 @@ export default async function LessonPage({ params, searchParams }: Props) {
   return (
     <div data-theme={theme} className="t-panel space-y-6">
       <header className="space-y-2">
-        <Link href={backHref} className="t-muted text-sm hover:underline">
-          ← {course.title} · {lessonModule.title}
-        </Link>
+        {theme === "celsus" && course.slug ? (
+          <BackButtons t={t.usBack} course={{ href: `/app/cursos/${course.slug}`, name: course.title }} episode={usEpisode(backHref)} />
+        ) : (
+          <Link href={backHref} className="t-muted text-sm hover:underline">
+            ← {course.title} · {lessonModule.title}
+          </Link>
+        )}
         {!rw && <h1 className="t-heading text-3xl">{lesson.title}</h1>}
       </header>
 
@@ -377,4 +382,10 @@ async function oldLessonTarget(
   if (kind === "activity" || /actividad|activity/.test(title)) return `${page}#build`;
   if (kind === "video" || kind === "youtube") return `${page}#vid`;
   return page;
+}
+
+/** CelsUS: the episode a lesson belongs to, from its module link (/app/cursos/<slug>/episodio/N). */
+function usEpisode(href: string) {
+  const m = /\/episodio\/(\d+)$/.exec(href);
+  return m ? { href, n: Number(m[1]) } : null;
 }

@@ -120,7 +120,16 @@ export default async function PartPage({ params, searchParams }: Props) {
   // CelsUS Part 6, "Quiz del episodio N": the CelsBook's quiz (components/celsbook/QuizRoute.tsx).
   if (key === "quiz" && page?.layout === "citizenship" && episode) {
     if (!(await canAccessCourse(supabase, viewer, page.course.id))) redirect(`/app/cursos/${page.course.slug}`);
-    return <CelsusQuizRoute supabase={supabase} viewer={viewer} courseId={page.course.id} courseSlug={page.course.slug} episode={episode} />;
+    return (
+      <CelsusQuizRoute
+        supabase={supabase}
+        viewer={viewer}
+        courseId={page.course.id}
+        courseSlug={page.course.slug}
+        episode={episode}
+        back={{ t: t.usBack, course: { href: `/app/cursos/${page.course.slug}`, name: page.course.title } }}
+      />
+    );
   }
   const part = episode?.parts.find((p) => p.key === key);
   if (!page || page.layout !== "episodes" || !episode || !part) notFound();

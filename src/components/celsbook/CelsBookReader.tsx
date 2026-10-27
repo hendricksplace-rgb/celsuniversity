@@ -6,6 +6,7 @@
 import "./celsbook.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Answers, Ebook, Screen } from "@/lib/ebook-format";
@@ -42,6 +43,8 @@ type Props = {
   readerT: Dictionary["reader"];
   /** The completion screen shown after the last page ("Terminar ✓"). */
   completionHref: string;
+  /** C-013 back buttons (course + episode). */
+  back?: UsBack;
   /** The CelsUS final exam (checklist links to it). */
   finalExamHref?: string | null;
 };
@@ -243,10 +246,18 @@ export function CelsBookReader(props: Props) {
       <BookCtx.Provider value={ctx}>
         <div className={`cb ${jakartaItalic.variable}`} style={{ ["--sc" as string]: sec.c, ["--si" as string]: sec.ink }}>
       <Immersive />
+          {props.back && (
+            // C-013: the back buttons scroll away with the page; the sticky bar below stays slim while reading.
+            <div className="tbnav">
+              <BackButtons t={props.back.t} course={props.back.course} episode={{ href: episodeHref, n: episodeN }} dark />
+            </div>
+          )}
           <header className="tb">
-            <Link href={episodeHref} className="back">
-              <i aria-hidden>‹</i>Episodio {episodeN}
-            </Link>
+            {!props.back && (
+              <Link href={episodeHref} className="back">
+                <i aria-hidden>‹</i>Episodio {episodeN}
+              </Link>
+            )}
             <div className="ttl">
               <b>CelsBook · Episodio {episodeN}</b>
               {subtitleOf(ebook.subtitle)}
