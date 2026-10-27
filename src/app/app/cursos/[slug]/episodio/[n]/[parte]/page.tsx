@@ -136,7 +136,9 @@ function toCards(blocks: Block[], sign: (ref: string) => string | null): Card[] 
       back: c.back,
       cat: (CATS.has(c.category ?? "") ? c.category : "words") as Card["cat"],
       audio: c.back_audio ? sign(c.back_audio) : null,
+      audioRef: c.back_audio ?? null,
       image: c.image ? sign(c.image) : null,
+      imageRef: c.image ?? null,
     }));
 }
 

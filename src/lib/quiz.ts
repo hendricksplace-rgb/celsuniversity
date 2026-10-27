@@ -3,11 +3,11 @@
 // of the episode's CelsCards become "match the pairs". Same order for everyone on the same episode.
 
 /** Amy's recording of the question, with the start time (s) of each word for the highlight. */
-export type Voice = { url: string; wt: number[] } | null;
+export type Voice = { url: string; ref?: string; wt: number[] } | null;
 
 export type QuizQ =
-  | { kind: "picture"; prompt: string; voice?: Voice; options: { img: string | null; alt: string }[]; answer: number }
-  | { kind: "listen"; prompt: string; voice?: Voice; audio: string | null; options: string[]; answer: number }
+  | { kind: "picture"; prompt: string; voice?: Voice; options: { img: string | null; ref: string | null; alt: string }[]; answer: number }
+  | { kind: "listen"; prompt: string; voice?: Voice; audio: string | null; audioRef?: string; options: string[]; answer: number }
   | { kind: "choose"; prompt: string; voice?: Voice; options: string[]; answer: number }
   | { kind: "build"; prompt: string; voice?: Voice; tiles: string[]; answer: string[] }
   | { kind: "extra"; prompt: string; tiles: string[]; extra: number }
@@ -43,14 +43,14 @@ export function buildQuiz(settings: unknown, cards: { front: string; back: strin
     const answer = Number(q.correctAnswer ?? 0);
     const options = arr(q.options).map(str);
     const url = q.question_audio ? resolve(q.question_audio) : null;
-    const voice: Voice = url ? { url, wt: arr(q.question_wt).map(Number) } : null;
+    const voice: Voice = url ? { url, ref: str(q.question_audio) || undefined, wt: arr(q.question_wt).map(Number) } : null;
     if (q.type === "select-image") {
       const imgs = arr(q.images) as Raw[];
-      if (imgs.length) out.push({ kind: "picture", prompt, voice, options: imgs.map((m) => ({ img: resolve(m.url), alt: str(m.alt) })), answer });
+      if (imgs.length) out.push({ kind: "picture", prompt, voice, options: imgs.map((m) => ({ img: resolve(m.url), ref: str(m.url) || null, alt: str(m.alt) })), answer });
       return;
     }
     if (q.type === "listen-and-select") {
-      out.push({ kind: "listen", prompt: prompt || "What did you hear?", voice: prompt ? voice : null, audio: resolve(q.audioUrl), options, answer });
+      out.push({ kind: "listen", prompt: prompt || "What did you hear?", voice: prompt ? voice : null, audio: resolve(q.audioUrl), audioRef: str(q.audioUrl) || undefined, options, answer });
       return;
     }
     if (q.type !== "select-text" || !options.length) return;

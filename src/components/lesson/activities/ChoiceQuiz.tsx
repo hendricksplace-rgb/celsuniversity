@@ -1,5 +1,6 @@
 "use client";
 
+import { FreshImg } from "@/components/reader/media";
 import { useEffect, useState } from "react";
 import { usePartDone } from "../progress";
 import { arr, AudioButton, Feedback, obj, Option, str, useResolve, useScrollIntoView, useT } from "./shared";
@@ -124,12 +125,13 @@ export function ChoiceQuiz({ questions, heading }: { questions: Question[]; head
               <Option state={state} disabled={answered} onClick={() => choose(i)}>
                 {o.image !== undefined ? (
                   <span className="block space-y-2">
-                    {img ? (
-                      // eslint-disable-next-line @next/next/no-img-element -- short-lived signed URL
-                      <img src={img} alt={o.alt ?? ""} className="aspect-[4/3] w-full rounded object-cover" />
-                    ) : (
-                      <span className="t-muted block text-xs">{t.unavailable}</span>
-                    )}
+                    <FreshImg
+                      storageRef={typeof o.image === "string" ? o.image : null}
+                      signedUrl={img}
+                      alt={o.alt ?? ""}
+                      className="aspect-[4/3] w-full rounded object-cover"
+                      fallback={<span className="t-muted block text-xs">{t.unavailable}</span>}
+                    />
                     {o.alt && <span className="block text-sm">{o.alt}</span>}
                   </span>
                 ) : (
