@@ -24,10 +24,11 @@ import { CelsCast } from "@/components/celsus/CelsCast";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import type { Cue, Track } from "@/components/part/AudioPart";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ original?: string }> };
 
-export default async function LessonPage({ params }: Props) {
+export default async function LessonPage({ params, searchParams }: Props) {
   const { id } = await params;
+  const { original } = await searchParams;
   const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
@@ -48,10 +49,11 @@ export default async function LessonPage({ params }: Props) {
     if (guide) redirect(guide);
   }
 
-  // Guided courses (CelsGLOBAL step template): the module's old lessons open its step page for students.
-  if (!viewer.isStaff && course.slug) {
+  // Guided courses (CelsGLOBAL step template): an old lesson never renders (C-012); it opens the new place for
+  // its content, for everyone. Staff see the old page only from the course builder (?original=1).
+  if (course.slug && !(viewer.isStaff && original === "1")) {
     const step = (await guidedModules(supabase, [lessonModule.id])).get(lessonModule.id);
-    if (step) redirect(stepPath(course.slug, step.step));
+    if (step) redirect(await oldLessonTarget(supabase, { id: course.id, slug: course.slug }, lesson, step.step));
   }
 
   const theme = themeForCourse(course);
@@ -331,4 +333,37 @@ async function moduleHref(supabase: Awaited<ReturnType<typeof createClient>>, co
   const i = (weeks ?? []).findIndex((m) => m.id === moduleId);
   if (i < 0) return courseHref;
   return themeForCourse(course) === "celsbsns" ? `${courseHref}/semana/${i + 1}` : `${courseHref}/episodio/${i + 1}`;
+}
+
+/** CV to Resume "Downloads" lessons → the matching screen of the interactive downloads reader. */
+const CV_DOWNLOADS: { book: string; screen: Record<number, string> } = { book: "cv-to-resume-descargas", screen: { 2: "s3", 3: "s2", 4: "s4", 5: "s5", 6: "s6" } };
+
+/**
+ * Where an old guided-course lesson goes: E-Book → the course's interactive e-book at that module's screen (m<step>);
+ * Downloads → the interactive downloads reader when the course has one; Activity → the step's "Construye";
+ * Video / YouTube → "Mira el video"; anything else → the step page.
+ */
+async function oldLessonTarget(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  course: { id: string; slug: string },
+  lesson: { lesson_type: string | null; title: string },
+  step: number,
+) {
+  const page = stepPath(course.slug, step);
+  const kind = lesson.lesson_type ?? "";
+  const title = lesson.title.toLowerCase();
+  if (kind === "reading" || title.startsWith("e-book")) {
+    const { data: books } = await supabase.from("ebooks").select("slug, screens").eq("course_id", course.id).eq("status", "published");
+    const book = (books ?? []).find((b) => Array.isArray(b.screens) && (b.screens as { id?: string }[]).some((s) => s?.id === `m${step}`));
+    if (book) return `/app/libros/${book.slug}?screen=m${step}`;
+    return page;
+  }
+  if (kind === "download" || title.startsWith("download") || title.startsWith("descarga")) {
+    const { data: dl } = await supabase.from("ebooks").select("slug").eq("course_id", course.id).eq("slug", CV_DOWNLOADS.book).eq("status", "published").maybeSingle();
+    if (dl) return `/app/libros/${dl.slug}?screen=${CV_DOWNLOADS.screen[step] ?? "s1"}`;
+    return page;
+  }
+  if (kind === "activity" || /actividad|activity/.test(title)) return `${page}#build`;
+  if (kind === "video" || kind === "youtube") return `${page}#vid`;
+  return page;
 }

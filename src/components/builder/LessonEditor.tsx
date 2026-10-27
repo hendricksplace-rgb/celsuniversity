@@ -240,7 +240,7 @@ export function LessonEditor({
           <div className="mb-2 flex items-center justify-between gap-2">
             <h2 className="text-sm font-extrabold uppercase tracking-wider text-[#5E5A73]">Vista previa del estudiante</h2>
             {lesson.status === "published" && (
-              <Link href={`/app/lecciones/${lesson.id}`} className="text-sm font-bold text-[#D6006A] hover:underline">
+              <Link href={`/app/lecciones/${lesson.id}?original=1`} className="text-sm font-bold text-[#D6006A] hover:underline">
                 Abrir en la app →
               </Link>
             )}

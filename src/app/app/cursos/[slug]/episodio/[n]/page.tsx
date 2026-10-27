@@ -144,7 +144,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
   const theme = themeForCourse({ slug });
   const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
   // Guided courses (CelsGLOBAL step template): an old module link opens that step's page for students.
-  if (page && !viewer.isStaff && theme === "celsglobal" && (await isGuidedCourse(supabase, page.course.id))) redirect(stepPath(page.course.slug, Number(n) || 1));
+  if (page && theme === "celsglobal" && (await isGuidedCourse(supabase, page.course.id))) redirect(stepPath(page.course.slug, Number(n) || 1));
   const episode = page?.episodes.find((e) => e.n === Number(n));
   if (!page || !episode) notFound();
   const courseHref = `/app/cursos/${page.course.slug}`;
