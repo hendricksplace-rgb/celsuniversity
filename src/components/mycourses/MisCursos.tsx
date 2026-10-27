@@ -53,24 +53,58 @@ function Icon({ name }: { name: keyof typeof ICONS }) {
   );
 }
 
-function Cover({ src, children }: { src: string | null; children?: React.ReactNode }) {
+function Cover({ src, children, framed }: { src: string | null; children?: React.ReactNode; framed?: boolean }) {
   return (
     <div className={s.cov}>
-      {src && <Image src={src} alt="" fill sizes={COVER_SIZES} loading="lazy" />}
+      {src &&
+        (framed ? (
+          // C-015: the whole artwork in a frame (never cropped); the glass panel sits beside it.
+          <span className={s.frame}>
+            <Image src={src} alt="" fill sizes={COVER_SIZES} loading="lazy" />
+          </span>
+        ) : (
+          <Image src={src} alt="" fill sizes={COVER_SIZES} loading="lazy" />
+        ))}
       {children}
     </div>
   );
 }
 
 /** A course card: cover, label, title, state line, unit progress, button. */
-function CourseCard({ t, u, c, kit, label, badge, blurb, icon }: { t: T; u: U; c: CourseStats; kit: string; label: string; badge: React.ReactNode; blurb: boolean; icon?: keyof typeof ICONS }) {
+function CourseCard({
+  t,
+  u,
+  c,
+  kit,
+  label,
+  badge,
+  blurb,
+  icon,
+  glass,
+}: {
+  t: T;
+  u: U;
+  c: CourseStats;
+  kit: string;
+  label: string;
+  badge: React.ReactNode;
+  blurb: boolean;
+  icon?: keyof typeof ICONS;
+  /** "Tus programas" (C-015): the logo whole on the left, a glass info panel on the right. */
+  glass?: boolean;
+}) {
   const state = stateOf(c);
   const pct = pctOf(c);
   const extra = blurb ? fill(t.blurb[c.brand], { n: c.units }) : "";
   const line = state === "done" ? t.completed : state === "progress" ? `${t.inProgress} · ${unitLine(u, c)}` : extra ? `${t.notStarted} · ${extra}` : t.notStarted;
   return (
-    <li className={`${s.cc} ${kit}`} data-state={state}>
-      <Cover src={c.cover}>
+    <li className={`${s.cc} ${kit}${glass ? ` ${s.glassCard}` : ""}`} data-state={state}>
+      {glass && c.cover && (
+        <span className={s.bgArt} aria-hidden>
+          <Image src={c.cover} alt="" fill sizes="200px" loading="lazy" />
+        </span>
+      )}
+      <Cover src={c.cover} framed={glass}>
         {badge}
         {icon && <Icon name={icon} />}
       </Cover>
@@ -220,7 +254,7 @@ export function MisCursos({ t, u, data, initial }: { t: T; u: U; data: MyCourses
               </div>
               <ul className={`${s.cgrid} ${s.two}`}>
                 {standalone.map((c) => (
-                  <CourseCard key={c.id} t={t} u={u} c={c} kit={KIT[c.brand]} label={NAME[c.brand].toUpperCase()} badge={stateBadge(t, c)} blurb />
+                  <CourseCard key={c.id} t={t} u={u} c={c} kit={KIT[c.brand]} label={NAME[c.brand].toUpperCase()} badge={stateBadge(t, c)} blurb glass />
                 ))}
               </ul>
             </div>
