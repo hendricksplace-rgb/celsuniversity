@@ -21,6 +21,7 @@ import { GUIDE_LAYOUT, guidePlaceOfLesson } from "@/lib/teacher-guide-server";
 import { LockedCard } from "@/components/celsus/TeacherGuide";
 import { loadFeedback } from "@/lib/feedback-server";
 import { CelsCast } from "@/components/celsus/CelsCast";
+import { ReadingWriting, type RwData, type RwState } from "@/components/celsus/ReadingWriting";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import type { Cue, Track } from "@/components/part/AudioPart";
 
@@ -207,7 +208,17 @@ export default async function LessonPage({ params, searchParams }: Props) {
     const tracks = [celscastTrack(cast.data, (r) => signed.get(r) ?? null, lang === "en" ? "en" : "es"), original];
     castPlayer = <CelsCast tracks={tracks} title={usPart!.episodeTitle} t={t.part} />;
   }
-  const shown = cast ? visible.filter((b) => b.block_type !== "celscast" && b.block_type !== "audio") : visible;
+  // CelsUS "Reading and Writing" (C-006): the interactive lesson, with this student's saved progress.
+  const rw = visible.find((b) => b.block_type === "uscis_reading_writing");
+  let rwPlayer: React.ReactNode = null;
+  if (rw) {
+    const { data: row } = await supabase.from("progress").select("flashcard_state").eq("user_id", viewer.user.id).eq("lesson_id", lesson.id).maybeSingle();
+    const saved = ((row?.flashcard_state ?? {}) as { rw?: Partial<RwState> }).rw ?? null;
+    rwPlayer = <ReadingWriting data={rw.data as unknown as RwData} t={t.rw} lang={lang === "en" ? "en" : "es"} userId={viewer.user.id} lessonId={lesson.id} saved={saved} />;
+  }
+  const special = cast ?? rw;
+  const specialNode = castPlayer ?? rwPlayer;
+  const shown = visible.filter((b) => b !== rw && !(cast && (b.block_type === "celscast" || b.block_type === "audio")));
 
   const index = (siblings ?? []).findIndex((s) => s.id === lesson.id);
   const prev = index > 0 ? siblings![index - 1] : null;
@@ -219,7 +230,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
         <Link href={backHref} className="t-muted text-sm hover:underline">
           ← {course.title} · {lessonModule.title}
         </Link>
-        <h1 className="t-heading text-3xl">{lesson.title}</h1>
+        {!rw && <h1 className="t-heading text-3xl">{lesson.title}</h1>}
       </header>
 
       {!access ? (
@@ -232,7 +243,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
               {!visible.some((b) => b.block_type === "video") && <p className="t-muted text-sm">{t.lesson.videoSoon}</p>}
             </div>
           )}
-          {castPlayer}
+          {specialNode}
           {shown.map((block) => (
             <div key={block.id}>
               <LessonBlock
@@ -253,19 +264,19 @@ export default async function LessonPage({ params, searchParams }: Props) {
       ) : (
         <LessonProgress
           lessonId={lesson.id}
-          partIds={cast ? [cast.id, ...partIds.filter((id) => shown.some((b) => b.id === id))] : partIds}
+          partIds={special ? [special.id, ...partIds.filter((id) => shown.some((b) => b.id === id))] : partIds}
           initialParts={(progress?.parts ?? {}) as Record<string, unknown>}
           initialStatus={progress?.status ?? null}
           t={{ parts: t.lesson.partsDone, finish: t.lesson.markDone, finished: t.lesson.finished, xp: t.lesson.xpEarned }}
           celsus={celsus ? { ...celsus, t: t.lesson.celsus } : null}
         >
-          {shown.length === 0 && !castPlayer ? (
+          {shown.length === 0 && !specialNode ? (
             <p className="t-card t-muted">{t.lesson.empty}</p>
           ) : (
             <div className="space-y-5">
-              {cast && (
-                <Part id={cast.id} kind="activity">
-                  {castPlayer}
+              {special && (
+                <Part id={special.id} kind="activity">
+                  {specialNode}
                 </Part>
               )}
               {shown.map((block) => {
@@ -292,7 +303,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
                   </Part>
                 );
               })}
-              {signed.size > 0 && !cast && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
+              {signed.size > 0 && !special && <p className="t-muted text-xs">{t.lesson.linkExpires}</p>}
             </div>
           )}
         </LessonProgress>
