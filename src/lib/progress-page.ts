@@ -2,14 +2,15 @@
 // the student is enrolled in, XP per day this week, the English level (with per-skill levels and history),
 // the CelsUS practice-exam panel and the medals.
 import type { Client } from "@/lib/supabase/types";
-import { accessibleCourses, courseStats, todayIndex, weekIndex, type CourseStats } from "@/lib/learning";
+import { accessibleCourses, courseStats, nextLesson, todayIndex, weekIndex, type CourseStats } from "@/lib/learning";
+import { lessonHrefs } from "@/lib/lesson-href";
 import { liveStreak, liveWeeklyXp, nextMedalOf, weeklyGoalOf } from "@/lib/home";
 import { ROUTE_CARDS, hrefOf } from "@/lib/my-courses";
 import { ROUTE_PROGRAM } from "@/lib/route";
 import { activeWeekOf } from "@/lib/bsns";
 
 const LEVELS = ["A1", "A2", "B1", "B2", "C1", "C2"];
-const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
+const pick = <T>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 const frac = (done: number, total: number) => (total ? done / total : 0);
 
 /** Civics topics: the 3 sections of the test, plus the starred (65/20) questions. */
@@ -67,6 +68,11 @@ export type ProgramView =
       best: { score: number; total: number } | null;
       topics: (number | null)[];
       weakest: number | null;
+      /** The last 3 practice-exam scores on the 0–20 scale, oldest first, and when the last one was. */
+      hist: number[];
+      lastAt: string | null;
+      /** The English interview exam (Practicar → 🎙️ Entrevista), when there is one. */
+      interviewHref: string | null;
     }
   | {
       brand: "celstv";
@@ -79,6 +85,10 @@ export type ProgramView =
       units: { done: number; total: number; from: number; to: number }[];
       /** Index of the unit being worked on (the first one not finished). */
       currentUnit: number;
+      /** Each episode finished, in order. */
+      epDone: boolean[];
+      /** Any lesson of the series opened. */
+      started: boolean;
     }
   | {
       brand: "celsbsns";
@@ -89,6 +99,12 @@ export type ProgramView =
       weekTitle: string | null;
       groups: { from: number; to: number; pct: number }[];
       currentGroup: number;
+      /** Weeks 1–10: every lesson finished. */
+      weeksDone: boolean[];
+      lessonsDone: number;
+      /** XP earned in this course since Monday (xp_events). */
+      xpWeek: number;
+      started: boolean;
     }
   | {
       brand: "celsglobal";
@@ -99,6 +115,10 @@ export type ProgramView =
       route: { title: string; done: number; total: number }[];
       currentRoute: number;
       included: string[];
+      /** The "También incluidos" chips: ✓ once started. */
+      extras: { label: string; started: boolean }[];
+      /** % of the route courses' lessons done. */
+      routePct: number;
     };
 
 /** Lesson-weighted share of each module done: one unit per module. */
@@ -108,7 +128,12 @@ const numberIn = (title: string, re: RegExp) => {
   return m ? Number(m[1]) : null;
 };
 
-function celsusView(c: CourseStats, exams: { score: number; total: number }[], civics: { topics: (number | null)[]; weakest: number | null }): ProgramView {
+function celsusView(
+  c: CourseStats,
+  exams: { score: number; total: number; at: string }[],
+  civics: { topics: (number | null)[]; weakest: number | null },
+  interviewId: string | null,
+): ProgramView {
   const episodes = c.modules.filter((m) => {
     const n = numberIn(m.title, /episod[eio]+\s*(\d+)/i);
     return n !== null && n >= 1 && n <= 5;
@@ -123,6 +148,12 @@ function celsusView(c: CourseStats, exams: { score: number; total: number }[], c
     last: exams[0] ?? null,
     best,
     ...civics,
+    hist: exams
+      .slice(0, 3)
+      .map((a) => Math.round((a.score / a.total) * 20))
+      .reverse(),
+    lastAt: exams[0]?.at ?? null,
+    interviewHref: interviewId ? `/app/examen-civico/${interviewId}` : null,
   };
 }
 
@@ -139,7 +170,10 @@ function celstvView(c: CourseStats): ProgramView {
     return { done: list.filter((m) => m.complete).length, total: list.length, from, to: (u + 1) * 8 };
   });
   const firstOpen = eps.findIndex((m) => !m.complete);
-  const currentUnit = Math.max(0, units.findIndex((u) => u.done < u.total));
+  const currentUnit = Math.max(
+    0,
+    units.findIndex((u) => u.done < u.total),
+  );
   // Inicio, then the end of units 1–4 (episodes 8 / 16 / 24 / 32); the goal is the whole series.
   return {
     brand: "celstv",
@@ -150,10 +184,12 @@ function celstvView(c: CourseStats): ProgramView {
     current: firstOpen === -1 ? E : firstOpen + 1,
     units,
     currentUnit: units.every((u) => u.done >= u.total) ? 3 : currentUnit,
+    epDone: eps.map((m) => m.complete),
+    started: c.started,
   };
 }
 
-function bsnsView(c: CourseStats): ProgramView {
+function bsnsView(c: CourseStats, xpWeek: number): ProgramView {
   const weeks = c.modules
     .map((m) => ({ m, n: numberIn(m.title, /(?:week|module|semana)\s*(\d+)/i) }))
     .filter((x): x is { m: CourseStats["modules"][number]; n: number } => x.n !== null && x.n >= 1 && x.n <= BSNS_WEEKS);
@@ -167,7 +203,10 @@ function bsnsView(c: CourseStats): ProgramView {
     const done = list.reduce((n, w) => n + worked(w.m), 0);
     return { from, to, pct: Math.round(frac(done, lessons) * 100) };
   });
-  const currentGroup = Math.max(0, BSNS_GROUPS.findIndex(([from, to]) => week >= from && week <= to));
+  const currentGroup = Math.max(
+    0,
+    BSNS_GROUPS.findIndex(([from, to]) => week >= from && week <= to),
+  );
   const cur = weeks.find((w) => w.n === week)?.m ?? null;
   const allDone = weeks.length > 0 && weeks.every((w) => w.m.complete);
   const lessons = weeks.reduce((n, w) => n + w.m.lessons, 0);
@@ -182,7 +221,12 @@ function bsnsView(c: CourseStats): ProgramView {
       total,
       at: [0, 2, 4, 6, 8, 10].map((n) => Math.min(n, weeks.length)),
       pin,
-      pct: Math.round(frac(weeks.reduce((n, w) => n + worked(w.m), 0), lessons) * 100),
+      pct: Math.round(
+        frac(
+          weeks.reduce((n, w) => n + worked(w.m), 0),
+          lessons,
+        ) * 100,
+      ),
       // A student who skips ahead doesn't get ✓ on weeks never done: a stop is done when every week up to it is.
       done: [0, 2, 4, 6, 8, 10].map((n, i, a) => (i === 0 ? true : i === a.length - 1 ? allDone : weeks.filter((w) => w.n <= n).every((w) => w.m.complete))),
     },
@@ -193,10 +237,14 @@ function bsnsView(c: CourseStats): ProgramView {
     weekTitle: cur ? cur.title.replace(/^(?:week|module|semana)\s*\d+\s*[:–—-]\s*/i, "") : null,
     groups,
     currentGroup,
+    weeksDone: Array.from({ length: BSNS_WEEKS }, (_, i) => !!weeks.find((w) => w.n === i + 1)?.m.complete),
+    lessonsDone: weeks.reduce((n, w) => n + w.m.done, 0),
+    xpWeek,
+    started: c.started,
   };
 }
 
-function globalView(route: CourseStats[], month: number, included: string[]): ProgramView {
+function globalView(route: CourseStats[], month: number, included: string[], extras: { label: string; started: boolean }[]): ProgramView {
   const n = route.length;
   // The course of this month of the plan (months 2–4: resume, interview, finances), if the student has it.
   const monthSlug = month >= 2 && month <= 4 ? ROUTE_CARDS[month - 1] : null;
@@ -214,36 +262,87 @@ function globalView(route: CourseStats[], month: number, included: string[]): Pr
     route: route.map((c) => ({ title: c.title, done: c.modulesDone, total: c.modules.length })),
     currentRoute: Math.max(currentIdx, 0),
     included,
+    extras,
+    routePct: Math.round(
+      frac(
+        route.reduce((s, c) => s + c.done, 0),
+        route.reduce((s, c) => s + c.lessons, 0),
+      ) * 100,
+    ),
   };
 }
 
+/** Monday 00:00 in Mexico City, as an ISO timestamp (the leaderboard's week). */
+function mondayStart() {
+  const ymd = new Date().toLocaleDateString("en-CA", { timeZone: "America/Mexico_City" });
+  const d = new Date(`${ymd}T00:00:00-06:00`);
+  return new Date(d.getTime() - ((d.getUTCDay() + 6) % 7) * 864e5).toISOString();
+}
+
+/** "Valeria Martínez" → "Valeria"; nothing for an email-like name. */
+const firstNameOf = (name: string | null | undefined) => {
+  const w = (name ?? "").trim().split(/\s+/)[0];
+  return w && !w.includes("@") ? w : null;
+};
+
+async function toolsUsed(supabase: Client, userId: string) {
+  const [{ count: r }, { count: i }] = await Promise.all([
+    supabase.from("resume_reviews").select("id", { count: "exact", head: true }).eq("user_id", userId),
+    supabase.from("interview_sessions").select("id", { count: "exact", head: true }).eq("user_id", userId),
+  ]);
+  return { resume: !!r, interview: !!i };
+}
+
 export async function loadProgress(supabase: Client, userId: string) {
-  const [{ data: profile }, { data: game }, { data: week }, { data: history }, access, { data: attempts }, { data: settings }, { data: enrollments }, { data: ipd }, { data: catalog }, { data: tools }] =
-    await Promise.all([
-      supabase.from("profiles").select("evaluation_level, evaluation_date, evaluation_skills").eq("id", userId).maybeSingle(),
-      supabase.from("gamification").select("current_streak, longest_streak, last_activity_date, total_xp, weekly_xp, weekly_reset_date, badges").eq("user_id", userId).maybeSingle(),
-      supabase.from("progress").select("xp_earned, last_activity").eq("user_id", userId).gte("last_activity", new Date(Date.now() - 8 * 864e5).toISOString()),
-      supabase.rpc("my_evaluation_history"),
-      accessibleCourses(supabase, userId),
-      supabase
-        .from("evaluation_attempts")
-        .select("score, total, answers, evaluation_id, created_at, evaluation:evaluations(test_version, large_text)")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(30),
-      supabase.from("settings").select("key, value").eq("key", "weekly_xp_goal"),
-      supabase.from("enrollments").select("course_id, starts_at, created_at, expires_at, program:programs(slug)").eq("user_id", userId).eq("status", "active"),
-      // The CelsGLOBAL package: its courses come from program_courses.
-      supabase.from("programs").select("program_courses(course:courses(id, slug))").eq("slug", ROUTE_PROGRAM).maybeSingle(),
-      // Medals: the catalog (public.badges); what the student earned is gamification.badges (awarded by
-      // private.award_badges; the shell's BadgeWatcher celebrates new ones).
-      supabase.from("badges").select("code, name, requirement, rule").eq("active", true).order("sort_order"),
-      supabase.rpc("can_use_ai_tools"),
-    ]);
-  const [stats, { data: prefs }] = await Promise.all([
+  const [
+    { data: profile },
+    { data: game },
+    { data: week },
+    { data: history },
+    access,
+    { data: attempts },
+    { data: settings },
+    { data: enrollments },
+    { data: ipd },
+    { data: catalog },
+    { data: tools },
+  ] = await Promise.all([
+    supabase.from("profiles").select("display_name, evaluation_level, evaluation_date, evaluation_skills").eq("id", userId).maybeSingle(),
+    supabase
+      .from("gamification")
+      .select("current_streak, longest_streak, last_activity_date, total_xp, weekly_xp, weekly_reset_date, badges")
+      .eq("user_id", userId)
+      .maybeSingle(),
+    supabase
+      .from("progress")
+      .select("xp_earned, last_activity")
+      .eq("user_id", userId)
+      .gte("last_activity", new Date(Date.now() - 8 * 864e5).toISOString()),
+    supabase.rpc("my_evaluation_history"),
+    accessibleCourses(supabase, userId),
+    supabase
+      .from("evaluation_attempts")
+      .select("score, total, answers, evaluation_id, created_at, evaluation:evaluations(test_version, large_text)")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(30),
+    supabase.from("settings").select("key, value").eq("key", "weekly_xp_goal"),
+    supabase.from("enrollments").select("course_id, starts_at, created_at, expires_at, program:programs(slug)").eq("user_id", userId).eq("status", "active"),
+    // The CelsGLOBAL package: its courses come from program_courses.
+    supabase.from("programs").select("program_courses(course:courses(id, slug))").eq("slug", ROUTE_PROGRAM).maybeSingle(),
+    // Medals: the catalog (public.badges); what the student earned is gamification.badges (awarded by
+    // private.award_badges; the shell's BadgeWatcher celebrates new ones).
+    supabase.from("badges").select("code, name, requirement, rule").eq("active", true).order("sort_order"),
+    supabase.rpc("can_use_ai_tools"),
+  ]);
+  const [stats, { data: prefs }, { data: xpEvents }, { data: interview }] = await Promise.all([
     courseStats(supabase, userId, access.ids),
     supabase.from("user_preferences").select("daily_goal_xp").eq("user_id", userId).maybeSingle(),
+    // This week's XP per course (Monday 00:00 Mexico City), for the CelsBSNS card.
+    supabase.from("xp_events").select("course_id, amount").eq("user_id", userId).gte("created_at", mondayStart()),
+    supabase.from("evaluations").select("id").eq("test_version", "2025").eq("language", "en").limit(1).maybeSingle(),
   ]);
+  const xpIn = (courseId: string) => (xpEvents ?? []).filter((e) => e.course_id === courseId).reduce((n, e) => n + e.amount, 0);
   const all = [...stats.values()].sort((a, b) => a.sort - b.sort);
   const bySlug = new Map(all.map((c) => [c.slug, c]));
 
@@ -266,7 +365,9 @@ export async function loadProgress(supabase: Client, userId: string) {
     // Per topic: share of right answers over the last 10 attempts, by question number → section.
     const recent = exams.slice(0, 10);
     const evalIds = [...new Set(recent.map((a) => a.evaluation_id))];
-    const { data: qs } = evalIds.length ? await supabase.from("evaluation_questions").select("evaluation_id, is_asterisked, data").in("evaluation_id", evalIds) : { data: [] };
+    const { data: qs } = evalIds.length
+      ? await supabase.from("evaluation_questions").select("evaluation_id, is_asterisked, data").in("evaluation_id", evalIds)
+      : { data: [] };
     const meta = new Map(
       (qs ?? []).map((q) => {
         const d = (q.data ?? {}) as { n?: number; section?: string; star?: boolean };
@@ -303,11 +404,24 @@ export async function loadProgress(supabase: Client, userId: string) {
     return c && (direct.has(c.id) || !pkgIds.has(c.id)) ? c : null;
   };
   const programs: ProgramView[] = [];
-  if (celsusCourse) programs.push(celsusView(celsusCourse, exams.map((a) => ({ score: a.score, total: a.total })), civics));
+  if (celsusCourse)
+    programs.push(
+      celsusView(
+        celsusCourse,
+        exams.map((a) => ({ score: a.score, total: a.total, at: a.created_at })),
+        civics,
+        interview?.id ?? null,
+      ),
+    );
   const tv = own("celstv-english-for-our-generation");
-  if (tv) programs.push(celstvView(tv));
+  if (tv) {
+    // "Continuar Episodio N" opens the part screen itself (C-021), not the old lesson page.
+    const n = nextLesson(tv);
+    if (n) tv.nextHref = (await lessonHrefs(supabase, { userId, isStaff: false }, [n.id])).get(n.id);
+    programs.push(celstvView(tv));
+  }
   const bs = own("english-for-business");
-  if (bs) programs.push(bsnsView(bs));
+  if (bs) programs.push(bsnsView(bs, xpIn(bs.id)));
   const globalCourses = all.filter((c) => c.brand === "celsglobal" && c.slug !== HIDDEN_ROUTE);
   if (hasIpd || globalCourses.length) {
     // Route courses: the package's own (program_courses), in route order, without the TN visa course;
@@ -319,10 +433,34 @@ export async function loadProgress(supabase: Client, userId: string) {
     });
     // Month of the 6-month plan, from the first access to it (program or course enrollment), as on Mis cursos.
     const gIds = new Set(globalCourses.map((c) => c.id));
-    const starts = live.filter((e) => pick(e.program)?.slug === ROUTE_PROGRAM || (e.course_id && gIds.has(e.course_id))).map((e) => new Date(e.starts_at ?? e.created_at).getTime());
+    const starts = live
+      .filter((e) => pick(e.program)?.slug === ROUTE_PROGRAM || (e.course_id && gIds.has(e.course_id)))
+      .map((e) => new Date(e.starts_at ?? e.created_at).getTime());
     const month = starts.length ? Math.min(6, Math.max(1, Math.floor((Date.now() - Math.min(...starts)) / (30.44 * 864e5)) + 1)) : 1;
-    const included = hasIpd ? [...(tools ? GLOBAL_TOOLS : []), ...Object.keys(GLOBAL_INCLUDED).filter((slug) => pkgCourses.some((c) => c.slug === slug)).map((slug) => GLOBAL_INCLUDED[slug])] : [];
-    if (route.length) programs.push(globalView(route, month, included));
+    const included = hasIpd
+      ? [
+          ...(tools ? GLOBAL_TOOLS : []),
+          ...Object.keys(GLOBAL_INCLUDED)
+            .filter((slug) => pkgCourses.some((c) => c.slug === slug))
+            .map((slug) => GLOBAL_INCLUDED[slug]),
+        ]
+      : [];
+    // "También incluidos": the package courses (✓ once a lesson is opened) and the AI tools (✓ once used).
+    const used = hasIpd && tools ? await toolsUsed(supabase, userId) : { resume: false, interview: false };
+    const extras = hasIpd
+      ? [
+          ...Object.keys(GLOBAL_INCLUDED)
+            .filter((slug) => pkgCourses.some((c) => c.slug === slug))
+            .map((slug) => ({ label: GLOBAL_INCLUDED[slug], started: !!bySlug.get(slug)?.started })),
+          ...(tools
+            ? [
+                { label: GLOBAL_TOOLS[0], started: used.resume },
+                { label: GLOBAL_TOOLS[1], started: used.interview },
+              ]
+            : []),
+        ]
+      : [];
+    if (route.length) programs.push(globalView(route, month, included, extras));
   }
 
   // Medals.
@@ -339,11 +477,15 @@ export async function loadProgress(supabase: Client, userId: string) {
     at: owned[b.code]?.at ?? null,
   }));
 
-  const skills = profile?.evaluation_skills && typeof profile.evaluation_skills === "object" && !Array.isArray(profile.evaluation_skills) ? (profile.evaluation_skills as Record<string, string>) : null;
+  const skills =
+    profile?.evaluation_skills && typeof profile.evaluation_skills === "object" && !Array.isArray(profile.evaluation_skills)
+      ? (profile.evaluation_skills as Record<string, string>)
+      : null;
   const evaluatedAt = profile?.evaluation_date ? new Date(profile.evaluation_date).getTime() : null;
   const retakeAt = evaluatedAt ? evaluatedAt + 30 * 864e5 : null;
   const goalSetting = settings?.find((s) => s.key === "weekly_xp_goal")?.value;
   return {
+    firstName: firstNameOf(profile?.display_name),
     streak,
     // gamification.longest_streak is kept by record_lesson_progress; the current streak can't be higher.
     record: Math.max(game?.longest_streak ?? 0, streak),

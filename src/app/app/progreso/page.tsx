@@ -24,7 +24,7 @@ export default async function ProgresoPage() {
   return (
     <>
       <FreshOnReturn renderedAt={Date.now()} />
-      <Progreso t={t.progreso} d={d} lang={lang} />
+      <Progreso t={t.progreso} tpc={t.pc} d={d} lang={lang} />
       {/* C-026: the leaderboard lives under Progreso. */}
       <Link href="/app/progreso/tabla" className="lb-card mx-auto mt-8 max-w-xl">
         <span className="tro" aria-hidden>
