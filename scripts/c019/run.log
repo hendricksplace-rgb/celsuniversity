@@ -169,3 +169,29 @@
 2026-10-28T15:49:44.573Z START base44 English For Business | Week 4 | Video 03 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-03.mp4
 2026-10-28T15:50:24.941Z DONE  base44 212.3 MB 90s remux 1 row(s) rewritten
 2026-10-28T15:50:25.700Z END batch: 10 source URL(s) still to do
+2026-10-28T15:50:42.681Z RUN only=base44 batch=10: 26 source URLs, 10 to do
+2026-10-28T15:50:42.682Z START base44 English For Business | Week 4 | Video 05 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-05.mp4
+2026-10-28T15:51:16.601Z DONE  base44 174.5 MB 75s remux 1 row(s) rewritten
+2026-10-28T15:51:16.705Z START base44 English For Business | Week 5 | Video 01 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-01.mp4
+2026-10-28T15:51:37.775Z DONE  base44 101.8 MB 72s remux 1 row(s) rewritten
+2026-10-28T15:51:37.794Z START base44 English For Business | Week 5 | Video 07 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-07.mp4
+2026-10-28T15:52:10.236Z DONE  base44 181.8 MB 78s remux 1 row(s) rewritten
+2026-10-28T15:52:10.270Z START base44 English For Business | Week 6 - Video 01 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-01.mp4
+2026-10-28T15:52:47.915Z DONE  base44 212.7 MB 90s remux 1 row(s) rewritten
+2026-10-28T15:52:48.076Z START base44 English For Business | Week 6 - Video 02 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-02.mp4
+2026-10-28T15:53:08.915Z DONE  base44 108.9 MB 77s remux 1 row(s) rewritten
+2026-10-28T15:53:08.936Z START base44 English For Business | Week 6 - Video 03 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-03.mp4
+2026-10-28T15:53:34.644Z DONE  base44 141.4 MB 99s remux 1 row(s) rewritten
+2026-10-28T15:53:34.739Z START base44 English For Business | Week 5 | Video 06 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-06.mp4
+2026-10-28T15:54:04.162Z DONE  base44 162.1 MB 69s remux 1 row(s) rewritten
+2026-10-28T15:54:04.265Z START base44 English For Business | Week 4 | Video 07 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-07.mp4
+2026-10-28T15:54:32.330Z DONE  base44 157.6 MB 132s remux 1 row(s) rewritten
+2026-10-28T15:54:32.359Z START base44 English For Business | Week 2: 01 | Opening & Week 2 Focus → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-01.mp4
+2026-10-28T15:58:11.521Z DONE  base44 40.3 MB 155s transcode hevc/aac 1 row(s) rewritten
+2026-10-28T15:58:11.723Z START base44 Tu Camino Con La Visa TN: Empieza Aquí | Video: Empezamos Aquí - ¡Felicidades! → 78e640f6-fc48-4659-8db0-8ce01381caba/videos/eae594c6a_C1_-_M1_-_Intro.mp4
+2026-10-28T16:08:28.745Z FAIL  base44 Tu Camino Con La Visa TN: Empieza Aquí | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/eae594c6a_C1_-_M1_-_Intro.mp4 - fetch failed
+2026-10-28T16:08:31.708Z END batch: 1 source URL(s) still to do
+2026-10-28T16:08:53.530Z RUN only=base44 batch=9999: 26 source URLs, 1 to do
+2026-10-28T16:08:53.531Z START base44 Tu Camino Con La Visa TN: Empieza Aquí | Video: Empezamos Aquí - ¡Felicidades! → 78e640f6-fc48-4659-8db0-8ce01381caba/videos/eae594c6a_C1_-_M1_-_Intro.mp4
+2026-10-28T16:21:05.594Z DONE  base44 98.3 MB 377s transcode (over 400 MB) 1 row(s) rewritten
+2026-10-28T16:21:07.201Z END batch: 0 source URL(s) still to do

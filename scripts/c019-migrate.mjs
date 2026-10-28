@@ -83,24 +83,37 @@ const X264 = (crf, scale) => [
 ];
 
 // ---------- storage: TUS (resumable) without extra dependencies ----------
+/** Retries a network call that failed outright (no HTTP answer), with growing pauses. */
+async function retry(fn, tries = 5) {
+  for (let i = 1; ; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i >= tries) throw e;
+      await new Promise((res) => setTimeout(res, 5000 * i));
+    }
+  }
+}
 const b64 = (s) => Buffer.from(s).toString("base64");
 async function tusUpload(objectPath, file, contentType) {
   const size = fs.statSync(file).size;
   const auth = { authorization: `Bearer ${KEY}`, apikey: KEY, "tus-resumable": "1.0.0" };
-  const create = await fetch(`${URL_}/storage/v1/upload/resumable`, {
-    method: "POST",
-    headers: {
-      ...auth,
-      "upload-length": String(size),
-      "x-upsert": "true",
-      "upload-metadata": [
-        `bucketName ${b64(BUCKET)}`,
-        `objectName ${b64(objectPath)}`,
-        `contentType ${b64(contentType)}`,
-        `cacheControl ${b64("31536000")}`,
-      ].join(","),
-    },
-  });
+  const create = await retry(() =>
+    fetch(`${URL_}/storage/v1/upload/resumable`, {
+      method: "POST",
+      headers: {
+        ...auth,
+        "upload-length": String(size),
+        "x-upsert": "true",
+        "upload-metadata": [
+          `bucketName ${b64(BUCKET)}`,
+          `objectName ${b64(objectPath)}`,
+          `contentType ${b64(contentType)}`,
+          `cacheControl ${b64("31536000")}`,
+        ].join(","),
+      },
+    }),
+  );
   if (create.status !== 201) throw new Error(`upload create ${create.status}: ${(await create.text()).slice(0, 200)}`);
   let loc = create.headers.get("location");
   if (!loc) throw new Error("upload create: no location");
@@ -139,7 +152,9 @@ async function tusUpload(objectPath, file, contentType) {
   return size;
 }
 async function remoteSize(objectPath) {
-  const { data, error } = await db.storage.from(BUCKET).list(path.posix.dirname(objectPath), { search: path.posix.basename(objectPath), limit: 10 });
+  const { data, error } = await retry(() =>
+    db.storage.from(BUCKET).list(path.posix.dirname(objectPath), { search: path.posix.basename(objectPath), limit: 10 }),
+  );
   if (error) throw new Error("verify: " + error.message);
   const o = (data ?? []).find((x) => x.name === path.posix.basename(objectPath));
   return o ? Number(o.metadata?.size ?? -1) : null;
