@@ -125,12 +125,12 @@ export function splitCelsus(parts: Part[]) {
 
 export const episodePath = (slug: string, n: number) => `/app/cursos/${slug}/episodio/${n}`;
 
-// CelsBSNS: a week's tasks open the task screen; its videos stay on the lesson page.
+// CelsBSNS: a week's tasks open the task screen; its videos the CelsBSNS video page (C-029).
 const bsnsWeek = (slug: string, n: number) => `/app/cursos/${slug}/semana/${n}`;
 
 function partHref(slug: string, n: number, layout: Layout, l: { id: string; lesson_type: string | null }, key: PartKey | null, bsns: boolean) {
   if (bsns && isDictionaryLesson(l.id)) return dictionaryPath(slug);
-  if (bsns && n > 0 && l.lesson_type !== "video") return `${bsnsWeek(slug, n)}/tarea/${l.id}`;
+  if (bsns && n > 0) return `${bsnsWeek(slug, n)}/${l.lesson_type === "video" ? "video" : "tarea"}/${l.id}`;
   return layout === "episodes" && key ? `${episodePath(slug, n)}/${key}` : `/app/lecciones/${l.id}`;
 }
 

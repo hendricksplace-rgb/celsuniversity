@@ -1302,6 +1302,48 @@ export type Database = {
         }
         Relationships: []
       }
+      lesson_notes: {
+        Row: {
+          body: string
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body?: string
+          lesson_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      video_ready_requests: {
+        Row: {
+          created_at: string
+          lesson_id: string
+          notified_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          lesson_id: string
+          notified_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          lesson_id?: string
+          notified_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       tn_plans: {
         Row: {
           data: Json
@@ -3333,6 +3375,8 @@ export type Database = {
       cheer_inbox: { Args: never; Returns: Json }
       my_cheers: { Args: { p_course: string }; Returns: Json }
       course_xp_values: { Args: { p_course: string }; Returns: Json }
+      take_ready_videos: { Args: never; Returns: Json }
+      set_video_duration: { Args: { p_block: string; p_seconds: number }; Returns: undefined }
       my_new_badges: {
         Args: never
         Returns: {
