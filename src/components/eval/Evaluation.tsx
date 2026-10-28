@@ -1,7 +1,11 @@
 "use client";
 
+// C-031: the free English evaluation in the CelsU look (celsu-evaluacion-mockup_1.html): its own light canvas with
+// the logo's ribbons, the real U, prism glass and the depth button. The bank, the adaptive engine, the AI grading
+// and the recommendation are unchanged.
+import "./eval.css";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   SECTIONS,
   answer as engineAnswer,
@@ -17,29 +21,86 @@ import {
   type Item,
 } from "@/lib/eval-engine";
 import { callEvaluation } from "./api";
-import { BigButton, C, FreeResponse, StickyBar, Pill, QuestionView, Speaking, fill, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
-import { Locked, Results, type FinalResult, type LockedInfo, type OfferProducts } from "./Results";
+import type { Clips } from "./audio";
+import { FreeResponse, QuestionView, SEC_HEX, SEC_ICON, Speaking, fill, type EvT, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
+import { Locked, Results, confetti, type FinalResult, type LockedInfo, type OfferProducts } from "./Results";
 import type { ProgramKey } from "@/lib/purchase-programs";
 import type { EnrollT } from "@/lib/i18n/enroll-copy";
 import { evalHref } from "@/lib/enroll";
+import { setLanguage } from "@/lib/actions";
 
-const TOTAL = SECTIONS.reduce((a, s) => a + s.count, 0) + 2; // + writing + speaking
+type Screen =
+  | "welcome"
+  | "goal"
+  | "sectionIntro"
+  | "question"
+  | "freeResponse"
+  | "speaking"
+  | "sectionComplete"
+  | "emailGate"
+  | "results"
+  | "locked"
+  | "rateLimited";
 
-type Screen = "welcome" | "goal" | "sectionIntro" | "question" | "freeResponse" | "speaking" | "sectionComplete" | "emailGate" | "results" | "locked" | "rateLimited";
+const GOALS = [
+  {
+    k: "work",
+    c: "#5B8DEF",
+    ic: (
+      <>
+        <rect x="3" y="7" width="18" height="13" rx="3" />
+        <path d="M9 7V5h6v2" />
+      </>
+    ),
+  },
+  { k: "travel", c: "#1FA9D6", ic: <path d="M3 13l18-8-5 16-4-6z" /> },
+  {
+    k: "school",
+    c: "#4FAE4A",
+    ic: (
+      <>
+        <path d="M3 9l9-5 9 5-9 5z" />
+        <path d="M7 11v5c3 2 7 2 10 0v-5" />
+      </>
+    ),
+  },
+  {
+    k: "daily",
+    c: "#E0A100",
+    ic: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" />
+      </>
+    ),
+  },
+] as const;
+
+/** Minutes per section, for the section list (about 30 s per question). */
+const minutes = (n: number) => Math.max(2, Math.round(n * 0.5));
 
 /**
  * The public English assessment, ported from Base44 (same items, adaptive engine and rules).
  * programa (from /inscribirme): the result offers that program's recommended plan; null = as before.
  * plan (an active product code the person clicked, &plan=): shown as "Elegiste" next to the recommendation.
+ * clips: the recorded audio (eval_v2) with signed URLs; rate: USD→MXN for the price reference.
  */
 export function Evaluation({
-  t,
+  t: et,
+  ev: t,
+  lang,
+  clips,
+  rate,
   programa = null,
   plan = null,
   products,
   enrollT,
 }: {
   t: EvalT;
+  ev: EvT;
+  lang: "es" | "en";
+  clips: Clips;
+  rate: number | null;
   programa?: ProgramKey | null;
   plan?: string | null;
   products: OfferProducts;
@@ -47,19 +108,15 @@ export function Evaluation({
 }) {
   const [screen, setScreen] = useState<Screen>("welcome");
   const [name, setName] = useState("");
-  const [goal, setGoal] = useState<Goal>("general");
+  const [goalKey, setGoalKey] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [student, setStudent] = useState(false);
   const [eng, setEng] = useState<EngineState>(initialEngine);
   const [item, setItem] = useState<Item | null>(null);
   const [log, setLog] = useState<AnswerLog>([]);
-  const [answered, setAnswered] = useState(0);
   const [frDone, setFrDone] = useState(false);
   const [spDone, setSpDone] = useState(false);
-  const [writing, setWriting] = useState<{
-    r: WritingResult | null;
-    text: string;
-  }>({ r: null, text: "" });
+  const [writing, setWriting] = useState<{ r: WritingResult | null; text: string }>({ r: null, text: "" });
   const [spoken, setSpoken] = useState<SpeakingResult | null>(null);
   const [result, setResult] = useState<FinalResult | null>(null);
   const [locked, setLocked] = useState<LockedInfo | null>(null);
@@ -67,36 +124,37 @@ export function Evaluation({
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const goal: Goal = goalKey === "work" ? "work" : "general";
 
-  const afterSection = (secIdx: number, fr = frDone, sp = spDone): Screen => (secIdx === 3 && !fr ? "freeResponse" : secIdx === 1 && !sp ? "speaking" : "sectionComplete");
+  const afterSection = (secIdx: number, fr = frDone, sp = spDone): Screen =>
+    secIdx === 3 && !fr ? "freeResponse" : secIdx === 1 && !sp ? "speaking" : "sectionComplete";
+  const go = (s: Screen) => {
+    setScreen(s);
+    window.scrollTo({ top: 0 });
+  };
 
   const start = async (n: string) => {
     setBusy(true);
     setError("");
-    const res = await callEvaluation<{
-      token?: string;
-      student?: boolean;
-      rate_limited?: boolean;
-      locked?: LockedInfo;
-    }>({ action: "start" }).catch(() => null);
+    const res = await callEvaluation<{ token?: string; student?: boolean; rate_limited?: boolean; locked?: LockedInfo }>({ action: "start" }).catch(() => null);
     setBusy(false);
     setName(n);
-    if (res?.data.rate_limited) return setScreen("rateLimited");
+    if (res?.data.rate_limited) return go("rateLimited");
     if (res?.data.locked) {
       setLocked(res.data.locked);
-      return setScreen("locked");
+      return go("locked");
     }
-    if (!res?.ok || !res.data.token) return setError(t.errGeneric);
+    if (!res?.ok || !res.data.token) return setError(et.errGeneric);
     setToken(res.data.token);
     setStudent(!!res.data.student);
-    setScreen("goal");
+    go("goal");
   };
 
   const enter = () => {
     const r = enterSection(eng);
     setEng(r.state);
     setItem(r.item);
-    setScreen("question");
+    go("question");
   };
 
   const onAnswer = (a: Answer) => {
@@ -104,12 +162,11 @@ export function Evaluation({
     const correct = isCorrect(item, a);
     const r = engineAnswer(eng, item, correct);
     setLog((l) => [...l, { id: item.id, answer: a }]);
-    setAnswered((n) => n + 1);
     setEng(r.state);
     setItem(r.next);
-    if (!r.next) setScreen(afterSection(r.state.secIdx));
-    const msg = t.cheers[Math.floor(Math.random() * t.cheers.length)];
-    setToast(msg);
+    if (!r.next) go(afterSection(r.state.secIdx));
+    else window.scrollTo({ top: 0 });
+    setToast(et.cheers[Math.floor(Math.random() * et.cheers.length)]);
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(""), 1100);
   };
@@ -117,11 +174,7 @@ export function Evaluation({
   const finish = async (email?: string) => {
     setBusy(true);
     setError("");
-    const res = await callEvaluation<{
-      result?: FinalResult;
-      locked?: LockedInfo;
-      error?: string;
-    }>({
+    const res = await callEvaluation<{ result?: FinalResult; locked?: LockedInfo; error?: string }>({
       action: "finish",
       token,
       name,
@@ -132,229 +185,368 @@ export function Evaluation({
     setBusy(false);
     if (res?.data.locked) {
       setLocked({ ...res.data.locked, lead: !student });
-      return setScreen("locked");
+      return go("locked");
     }
     if (!res?.ok || !res.data.result) {
       const e = res?.data.error;
-      return setError(e === "email" ? t.errEmail : e === "disposable" ? t.errDisposable : t.errGeneric);
+      return setError(e === "email" ? et.errEmail : e === "disposable" ? et.errDisposable : et.errGeneric);
     }
     setResult({ ...res.data.result, speaking: spoken });
-    setScreen("results");
-    window.scrollTo({ top: 0 });
+    go("results");
   };
 
   const sec = SECTIONS[eng.secIdx];
-  const secName = t.sections[sec.key];
-  const inTest = ["question", "freeResponse", "speaking", "sectionComplete", "emailGate"].includes(screen);
-  const pct = Math.min(100, Math.round((answered / TOTAL) * 100));
+  // The speaking part comes after Escucha, in Hablar's own color; the header counts it within section 2.
+  const key = screen === "speaking" ? "P" : sec.key;
+  const color = SEC_HEX[key];
+  const inTest = screen === "question" || screen === "freeResponse" || screen === "speaking";
+  const qn = sec.count + (sec.key === "W" || sec.key === "L" ? 1 : 0);
+  const qi = screen === "question" ? eng.asked + 1 : qn;
 
   return (
-    <div className="mx-auto w-full max-w-md">
-      {inTest && (
-        <div className="mb-5">
-          <div className="mb-1.5 flex justify-between text-lg">
-            {SECTIONS.map((s, i) => (
-              <span key={s.key} title={t.sections[s.key]} className={`transition ${i <= eng.secIdx ? "scale-110 opacity-100" : "opacity-30"}`}>
-                {s.icon}
+    <div className="ev" style={{ ["--c" as string]: inTest || screen === "sectionComplete" ? color : "#5B8DEF" }}>
+      <div className="ev-ribbons" aria-hidden>
+        <i className="r1" />
+        <i className="r2" />
+        <i className="r3" />
+        <i className="r4" />
+      </div>
+      <header className="ev-top">
+        <Link href="/" className="ev-brand" aria-label="CelsU">
+          {/* eslint-disable-next-line @next/next/no-img-element -- the real U, a small local PNG */}
+          <img src="/brand/celsu-u.png" alt="" width={38} height={27} />
+          <b>
+            Cels<span>U</span>
+          </b>
+        </Link>
+        {screen === "welcome" && (
+          <form action={setLanguage}>
+            <input type="hidden" name="lang" value={lang === "es" ? "en" : "es"} />
+            <button type="submit" className="ev-lang ev-pg" aria-label={t.switchLangLabel}>
+              {t.switchLang}
+            </button>
+          </form>
+        )}
+      </header>
+
+      <main className="ev-screen" key={screen === "question" ? `q-${item?.id}` : screen}>
+        {inTest && (
+          <>
+            <div className="ev-qh">
+              <span className="ev-kick">
+                <i />
+                {fill(t.sectionHead, { n: eng.secIdx + 1, name: t.secNames[key].toUpperCase() })}
               </span>
-            ))}
+              <span>
+                {qi}/{qn}
+              </span>
+            </div>
+            <div className="ev-track" role="progressbar" aria-label={t.secNames[key]} aria-valuenow={eng.secIdx + 1} aria-valuemin={1} aria-valuemax={5}>
+              {SECTIONS.map((s, i) => (
+                <span
+                  key={s.key}
+                  className={i < eng.secIdx ? "done" : i === eng.secIdx ? "now" : ""}
+                  style={{ ["--sc" as string]: SEC_HEX[s.key], ["--p" as string]: `${(Math.min(qi, qn) / qn) * 100}%` }}
+                >
+                  <i />
+                </span>
+              ))}
+            </div>
+          </>
+        )}
+
+        {screen === "welcome" && <Welcome t={t} et={et} programa={programa} plan={plan} busy={busy} error={error} onStart={(n) => void start(n)} />}
+
+        {screen === "goal" && (
+          <div>
+            <span className="ev-kick">
+              <i />
+              {t.kickBefore}
+            </span>
+            <h1 className="ev-h">{fill(t.goalTitle, { name })}</h1>
+            <p className="ev-lead">{t.goalSub}</p>
+            <div className="ev-goals" role="radiogroup" aria-label={t.goalTitle}>
+              {GOALS.map((g, i) => (
+                <button
+                  key={g.k}
+                  type="button"
+                  role="radio"
+                  aria-checked={goalKey === g.k}
+                  className={`ev-goal ${goalKey === g.k ? "sel" : ""}`}
+                  style={{ ["--sc" as string]: g.c, ["--d" as string]: `${0.2 + i * 0.08}s` }}
+                  onClick={() => setGoalKey(g.k)}
+                  data-testid="ev-goal"
+                >
+                  <span className="gi">
+                    <svg viewBox="0 0 24 24" aria-hidden>
+                      {g.ic}
+                    </svg>
+                  </span>
+                  <b>{t.goals[g.k][0]}</b>
+                  <small>{t.goals[g.k][1]}</small>
+                </button>
+              ))}
+            </div>
+            <button type="button" className="ev-btn" disabled={!goalKey} onClick={() => go("sectionIntro")} data-testid="ev-continue">
+              {t.continue} →
+            </button>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-white/10" role="progressbar" aria-label={secName} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{
-                width: `${pct}%`,
-                background: `linear-gradient(90deg, ${C.pink}, ${C.cyan})`,
-              }}
-            />
+        )}
+
+        {screen === "sectionIntro" && (
+          <div style={{ ["--c" as string]: SEC_HEX[sec.key] }}>
+            <span className="ev-kick">
+              <i />
+              {fill(t.sectionKick, { n: eng.secIdx + 1 })}
+            </span>
+            <h1 className="ev-h">{t.secNames[sec.key]}</h1>
+            <p className="ev-lead">{t.secIntro[sec.key]}</p>
+            <div className="ev-steps">
+              {SECTIONS.map((s, i) => {
+                const n = s.count + (s.key === "W" || s.key === "L" ? 1 : 0);
+                const st = i < eng.secIdx ? "done" : i === eng.secIdx ? "now" : "";
+                return (
+                  <div key={s.key} className={`ev-st ${st}`} style={{ ["--sc" as string]: SEC_HEX[s.key], ["--d" as string]: `${0.15 + i * 0.08}s` }}>
+                    <span className="ic">
+                      <svg viewBox="0 0 24 24" aria-hidden>
+                        {SEC_ICON[s.key]}
+                      </svg>
+                    </span>
+                    <div>
+                      <b>{t.secNames[s.key]}</b>
+                      <small>{fill(t.secMeta, { n, m: minutes(n) })}</small>
+                    </div>
+                    {st && <span className="tag">{st === "done" ? t.secReady : t.secNow}</span>}
+                  </div>
+                );
+              })}
+            </div>
+            <button type="button" className="ev-btn" onClick={enter} autoFocus data-testid="ev-start-section">
+              {t.startSection} →
+            </button>
           </div>
-          <p className="mt-1 text-right text-xs font-extrabold text-[#A9A4C0]">{pct}%</p>
-        </div>
-      )}
+        )}
 
-      {screen === "welcome" && <Welcome t={t} programa={programa} plan={plan} busy={busy} error={error} onStart={(n) => void start(n)} />}
+        {screen === "question" && item && <QuestionView key={item.id} item={item} sec={sec.key} t={t} clips={clips} onAnswer={onAnswer} />}
 
-      {screen === "goal" && (
-        <div>
-          <h2 className="text-2xl font-extrabold text-white">{fill(t.hello, { name })}</h2>
-          <p className="mt-1 text-sm text-[#A9A4C0]">{t.goalQ}</p>
-          <div className="mt-4">
-            {(
-              [
-                ["work", "💼"],
-                ["conv", "🗣️"],
-                ["zero", "🌱"],
-                ["usa", "🇺🇸"],
-              ] as const
-            ).map(([k, em]) => (
-              <button
-                key={k}
-                type="button"
-                onClick={() => {
-                  setGoal(k === "work" ? "work" : "general");
-                  setScreen("sectionIntro");
-                }}
-                className="mt-2.5 flex w-full items-center gap-3 rounded-2xl border-2 border-transparent bg-white/5 px-4 py-3.5 text-left text-base font-bold text-white transition hover:border-[#F5178C]/60 hover:bg-white/10"
-              >
-                <span className="text-xl">{em}</span> {t.goals[k]}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+        {screen === "freeResponse" && (
+          <FreeResponse
+            level={frLevelFor(eng.lvl)}
+            token={token}
+            t={t}
+            et={et}
+            onDone={(r, text) => {
+              setWriting({ r, text });
+              setFrDone(true);
+              go(afterSection(eng.secIdx, true, spDone));
+            }}
+          />
+        )}
 
-      {screen === "sectionIntro" && (
-        <div className="pt-6 text-center">
-          <div className="text-6xl">{sec.icon}</div>
-          <div className="mt-3">
-            <Pill>{fill(t.sectionOf, { n: eng.secIdx + 1 })}</Pill>
-          </div>
-          <h2 className="mt-3 text-3xl font-extrabold" style={{ color: sec.hex }}>
-            {secName}
-          </h2>
-          <p className="mx-auto mt-2 max-w-xs text-sm text-[#A9A4C0]">{sec.key === "L" ? t.introListening : sec.key === "W" ? t.introWriting : t.introDefault}</p>
-          <StickyBar>
-            <BigButton color={sec.hex} onClick={enter}>
-              {t.startSection}
-            </BigButton>
-          </StickyBar>
-        </div>
-      )}
+        {screen === "speaking" && (
+          <Speaking
+            prompt={pickSpeakingPrompt(eng.lvl)}
+            token={token}
+            t={t}
+            clips={clips}
+            onDone={(r) => {
+              setSpoken(r);
+              setSpDone(true);
+              go(afterSection(eng.secIdx, frDone, true));
+            }}
+          />
+        )}
 
-      {screen === "question" && item && <QuestionView key={item.id} item={item} t={t} onAnswer={onAnswer} />}
-
-      {screen === "freeResponse" && (
-        <FreeResponse
-          level={frLevelFor(eng.lvl)}
-          token={token}
-          t={t}
-          onDone={(r, text) => {
-            setWriting({ r, text });
-            setFrDone(true);
-            setAnswered((n) => n + 1);
-            setScreen(afterSection(eng.secIdx, true, spDone));
-          }}
-        />
-      )}
-
-      {screen === "speaking" && (
-        <Speaking
-          prompt={pickSpeakingPrompt(eng.lvl)}
-          token={token}
-          t={t}
-          onDone={(r) => {
-            setSpoken(r);
-            setSpDone(true);
-            setAnswered((n) => n + 1);
-            setScreen(afterSection(eng.secIdx, frDone, true));
-          }}
-        />
-      )}
-
-      {screen === "sectionComplete" && (
-        <div className="pt-10 text-center">
-          <div className="text-6xl">{sec.icon}</div>
-          <h2 className="mt-3 text-2xl font-extrabold" style={{ color: sec.hex }}>
-            {fill(t.sectionDone, { name: secName })}
-          </h2>
-          <StickyBar>
-            <BigButton
-              color={sec.hex}
+        {screen === "sectionComplete" && (
+          <div style={{ textAlign: "center", paddingTop: 24 }}>
+            <div className="ev-orb mini">
+              <div className="in" style={{ ["--sc" as string]: color }}>
+                <svg
+                  viewBox="0 0 24 24"
+                  width="40"
+                  height="40"
+                  fill="none"
+                  stroke={color}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden
+                >
+                  {SEC_ICON[sec.key]}
+                </svg>
+              </div>
+            </div>
+            <h1 className="ev-h">{fill(t.doneSec, { name: t.secNames[sec.key] })}</h1>
+            <p className="ev-lead">{t.doneSecSub}</p>
+            <button
+              type="button"
+              className="ev-btn"
+              autoFocus
+              data-testid="ev-continue"
               onClick={() => {
-                if (eng.secIdx >= SECTIONS.length - 1) return setScreen("emailGate");
+                if (eng.secIdx >= SECTIONS.length - 1) return go("emailGate");
                 setEng({ ...eng, secIdx: eng.secIdx + 1 });
-                setScreen("sectionIntro");
+                go("sectionIntro");
               }}
             >
-              {t.continue}
-            </BigButton>
-          </StickyBar>
-        </div>
-      )}
+              {t.continue} →
+            </button>
+          </div>
+        )}
 
-      {screen === "emailGate" && <EmailGate t={t} name={name} student={student} busy={busy} error={error} onSubmit={(e) => void finish(e)} />}
+        {screen === "emailGate" && <EmailGate t={t} et={et} name={name} student={student} busy={busy} error={error} onSubmit={(e) => void finish(e)} />}
 
-      {screen === "results" && result && (
-        <Results t={t} name={name} goal={goal} result={result} writingText={writing.text} student={student} programa={programa} plan={plan} products={products} enrollT={enrollT} />
-      )}
+        {screen === "results" && result && (
+          <Results
+            t={t}
+            et={et}
+            name={name}
+            goal={goal}
+            result={result}
+            writingText={writing.text}
+            student={student}
+            programa={programa}
+            plan={plan}
+            products={products}
+            rate={rate}
+            enrollT={enrollT}
+          />
+        )}
 
-      {screen === "locked" && locked && <Locked t={t} info={locked} programa={programa} plan={plan} products={products} enrollT={enrollT} />}
+        {screen === "locked" && locked && (
+          <Locked t={t} et={et} info={locked} programa={programa} plan={plan} products={products} rate={rate} enrollT={enrollT} />
+        )}
 
-      {screen === "rateLimited" && (
-        <div className="pt-16 text-center">
-          <div className="text-5xl">⏳</div>
-          <h2 className="mt-3 text-xl font-extrabold text-white">{t.rateTitle}</h2>
-          <p className="mx-auto mt-2 max-w-xs text-sm text-[#A9A4C0]">{t.rateSub}</p>
-        </div>
-      )}
+        {screen === "rateLimited" && (
+          <div style={{ textAlign: "center", paddingTop: 40 }}>
+            <div className="ev-orb mini">
+              <div className="in">⏳</div>
+            </div>
+            <h1 className="ev-h">{et.rateTitle}</h1>
+            <p className="ev-lead">{et.rateSub}</p>
+          </div>
+        )}
 
-      <div
-        aria-live="polite"
-        className={`pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 rounded-full px-5 py-2.5 text-sm font-extrabold text-[#0d2210] transition-all duration-300 ${toast ? "opacity-100" : "translate-y-5 opacity-0"}`}
-        style={{ background: C.green }}
-      >
+        {(screen === "question" || screen === "goal") && <p className="ev-keys">{t.keys}</p>}
+      </main>
+
+      <div aria-live="polite" className={`ev-toast ${toast ? "on" : ""}`}>
         {toast}
       </div>
     </div>
   );
 }
 
-function Welcome({ t, programa, plan, busy, error, onStart }: { t: EvalT; programa: ProgramKey | null; plan: string | null; busy: boolean; error: string; onStart: (name: string) => void }) {
+function Welcome({
+  t,
+  et,
+  programa,
+  plan,
+  busy,
+  error,
+  onStart,
+}: {
+  t: EvT;
+  et: EvalT;
+  programa: ProgramKey | null;
+  plan: string | null;
+  busy: boolean;
+  error: string;
+  onStart: (name: string) => void;
+}) {
   const [name, setName] = useState("");
   const ok = name.trim().length > 0;
   return (
     <div>
-      <div className="mt-4 text-center">
-        <div className="text-6xl">🎯</div>
-        <h1 className="mt-2 text-3xl font-extrabold text-white">{t.title}</h1>
-        <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[#A9A4C0]">{t.sub}</p>
+      <div style={{ textAlign: "center" }}>
+        <div className="ev-hero-u">
+          {/* eslint-disable-next-line @next/next/no-img-element -- the real U, a small local PNG */}
+          <img src="/brand/celsu-u.png" alt="" width={150} height={106} />
+        </div>
+        <span className="ev-kick" style={{ justifyContent: "center" }}>
+          <i />
+          {t.kickFree}
+        </span>
+        <h1 className="ev-h">{t.title}</h1>
+        <p className="ev-lead">{t.sub}</p>
+        <div className="ev-skills">
+          {Object.keys(SEC_HEX).map((k) => (
+            <span key={k}>
+              <i style={{ background: SEC_HEX[k] }} />
+              {t.secNames[k]}
+            </span>
+          ))}
+        </div>
       </div>
       <form
-        className="card mt-6 space-y-3"
+        className="ev-pg"
+        style={{ padding: 20 }}
         onSubmit={(e) => {
           e.preventDefault();
           if (ok) onStart(name.trim());
         }}
       >
-        <label className="block text-[11px] font-extrabold uppercase tracking-wider text-[#A9A4C0]" htmlFor="eval-name">
-          {t.nameLabel}
+        <label className="ev-lab" htmlFor="eval-name">
+          {t.nameLab}
         </label>
         <input
           id="eval-name"
+          className="ev-inp"
           value={name}
           onChange={(e) => setName(e.target.value)}
           maxLength={80}
           autoComplete="given-name"
-          placeholder={t.namePlaceholder}
-          className="field !rounded-2xl !py-3.5 text-base font-bold"
+          placeholder={et.namePlaceholder}
         />
-        <BigButton type="submit" disabled={busy || !ok}>
-          {busy ? t.starting : t.start}
-        </BigButton>
-        {error && <p className="text-center text-sm text-[#FFC531]">{error}</p>}
-        <p className="text-center text-xs text-[#A9A4C0]/80">{t.free}</p>
+        <button type="submit" className="ev-btn" disabled={busy || !ok}>
+          {busy ? et.starting : et.start}
+        </button>
+        {error && (
+          <p className="ev-err" role="alert">
+            {error}
+          </p>
+        )}
+        <p className="ev-note">{t.note}</p>
       </form>
-      <p className="mt-4 text-center text-xs">
-        <Link href={`/entrar?next=${encodeURIComponent(programa ? evalHref(programa, plan) : "/evaluacion")}`} className="font-semibold text-[#A9A4C0] hover:text-white">
-          {t.haveAccount}
-        </Link>
-      </p>
+      <Link href={`/entrar?next=${encodeURIComponent(programa ? evalHref(programa, plan) : "/evaluacion")}`} className="ev-link">
+        {et.haveAccount}
+      </Link>
     </div>
   );
 }
 
-function EmailGate({ t, name, student, busy, error, onSubmit }: { t: EvalT; name: string; student: boolean; busy: boolean; error: string; onSubmit: (email?: string) => void }) {
+function EmailGate({
+  t,
+  et,
+  name,
+  student,
+  busy,
+  error,
+  onSubmit,
+}: {
+  t: EvT;
+  et: EvalT;
+  name: string;
+  student: boolean;
+  busy: boolean;
+  error: string;
+  onSubmit: (email?: string) => void;
+}) {
   const [email, setEmail] = useState("");
   const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  useEffect(() => confetti(), []);
   return (
-    <div className="pt-4">
-      <div className="text-center">
-        <div className="text-6xl">🏆</div>
-        <h2 className="mt-2 text-2xl font-extrabold text-white">{fill(t.ready, { name })}</h2>
-        <p className="mx-auto mt-2 max-w-xs text-sm text-[#A9A4C0]">{student ? t.studentWhy : t.emailWhy}</p>
+    <div style={{ ["--c" as string]: "#F6AC00" }}>
+      <div style={{ textAlign: "center", paddingTop: 12 }}>
+        <div className="ev-orb mini">
+          <div className="in">🎉</div>
+        </div>
+        <h1 className="ev-h">{fill(et.ready, { name })}</h1>
+        <p className="ev-lead">{student ? et.studentWhy : et.emailWhy}</p>
       </div>
       <form
-        className="card mt-6 space-y-3"
+        className="ev-pg"
+        style={{ padding: 20 }}
         onSubmit={(e) => {
           e.preventDefault();
           if (student) onSubmit();
@@ -362,24 +554,35 @@ function EmailGate({ t, name, student, busy, error, onSubmit }: { t: EvalT; name
         }}
       >
         {!student && (
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder={t.emailPlaceholder}
-            autoComplete="email"
-            aria-label={t.emailPlaceholder}
-            className="field !rounded-2xl !py-3.5 text-base font-bold"
-          />
+          <>
+            <label className="ev-lab" htmlFor="eval-email">
+              {t.emailLab}
+            </label>
+            <input
+              id="eval-email"
+              type="email"
+              className="ev-inp"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={et.emailPlaceholder}
+              autoComplete="email"
+            />
+          </>
         )}
-        <BigButton type="submit" disabled={busy || (!student && !valid)}>
-          {busy ? t.saving : t.seeResults}
-        </BigButton>
-        {error && <p className="text-center text-sm text-[#FFC531]">{error}</p>}
+        <button type="submit" className="ev-btn" disabled={busy || (!student && !valid)}>
+          {busy ? et.saving : et.seeResults}
+        </button>
+        {error && (
+          <p className="ev-err" role="alert">
+            {error}
+          </p>
+        )}
         {!student && (
           <>
-            <p className="text-center text-xs text-[#A9A4C0]/80">{t.noSpam}</p>
-            <p className="text-center text-[11px] leading-snug text-[#A9A4C0]/70">{t.privacy}</p>
+            <p className="ev-note">{et.noSpam}</p>
+            <p className="ev-note" style={{ fontSize: 11.5, marginTop: 4 }}>
+              {et.privacy}
+            </p>
           </>
         )}
       </form>

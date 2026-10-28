@@ -5,13 +5,20 @@ import { isEnrollProgram } from "@/lib/enroll";
 import { publicClient } from "@/lib/supabase/public";
 import { Evaluation } from "@/components/eval/Evaluation";
 import type { OfferProducts } from "@/components/eval/Results";
+import type { Clips } from "@/components/eval/audio";
+import { mxnRate } from "@/components/sales/Sales";
 
 // Title and description: celsu-website-copy.md §2.
 export const metadata = {
   title: "Evaluación de inglés gratis · CelsU",
   description: "Descubre tu nivel de inglés (A1 a C2) en unos 15 minutos, con resultados por habilidad y un plan recomendado. Gratis.",
   alternates: { canonical: "/evaluacion" },
-  openGraph: { title: "Evaluación de inglés gratis · CelsU", description: "Descubre tu nivel de inglés (A1 a C2) en unos 15 minutos, con resultados por habilidad y un plan recomendado. Gratis.", locale: "es_MX", type: "website" },
+  openGraph: {
+    title: "Evaluación de inglés gratis · CelsU",
+    description: "Descubre tu nivel de inglés (A1 a C2) en unos 15 minutos, con resultados por habilidad y un plan recomendado. Gratis.",
+    locale: "es_MX",
+    type: "website",
+  },
 };
 
 /** Names and prices for the result's offer: always from public.products (cached for an hour). */
@@ -19,11 +26,35 @@ const offerProducts = unstable_cache(
   async (): Promise<OfferProducts> => {
     const { data } = await publicClient().from("products").select("code, name, price_usd_cents, installments").eq("active", true);
     return Object.fromEntries(
-      (data ?? []).map((p) => [p.code, { name: p.name, cents: p.price_usd_cents, installments: Array.isArray(p.installments) ? (p.installments as number[]) : null }]),
+      (data ?? []).map((p) => [
+        p.code,
+        { name: p.name, cents: p.price_usd_cents, installments: Array.isArray(p.installments) ? (p.installments as number[]) : null },
+      ]),
     );
   },
   ["eval-offer-products"],
   { revalidate: 3600, tags: ["products"] },
+);
+
+/**
+ * The recorded clips (Amy / Brian, audio_jobs kind eval_v2) with signed URLs valid for 4 hours; the list is cached
+ * for 3, so a visitor always gets a URL with at least an hour left. Clips recorded later appear on their own.
+ */
+const evalClips = unstable_cache(
+  async (): Promise<Clips> => {
+    const db = publicClient();
+    const { data } = await db.rpc("eval_audio_manifest");
+    const rows = (Array.isArray(data) ? data : []) as { id: string; text: string; path: string; wt: number[]; duration: number | null }[];
+    if (!rows.length) return [];
+    const { data: signed } = await db.storage.from("course-media").createSignedUrls(
+      rows.map((r) => r.path),
+      4 * 3600,
+    );
+    const url = new Map((signed ?? []).map((s) => [s.path, s.signedUrl]));
+    return rows.flatMap((r) => (url.get(r.path) ? [{ id: r.id, text: r.text, url: url.get(r.path)!, wt: r.wt ?? [], duration: r.duration }] : []));
+  },
+  ["eval-clips"],
+  { revalidate: 3 * 3600 },
 );
 
 type Props = { searchParams: Promise<{ programa?: string; plan?: string }> };
@@ -38,8 +69,10 @@ type Props = { searchParams: Promise<{ programa?: string; plan?: string }> };
 export default async function EvaluacionPage({ searchParams }: Props) {
   const { lang, t } = await getDictionary();
   const { programa, plan } = await searchParams;
-  const products = await offerProducts();
+  const [products, clips, rate] = await Promise.all([offerProducts(), evalClips().catch(() => []), mxnRate()]);
   const prog = isEnrollProgram(programa) ? programa : null;
   const chosen = prog && plan && Object.hasOwn(products, plan) ? plan : null;
-  return <Evaluation t={t.evaluation} programa={prog} plan={chosen} products={products} enrollT={enrollCopy(lang)} />;
+  return (
+    <Evaluation t={t.evaluation} ev={t.ev} lang={lang} clips={clips} rate={rate} programa={prog} plan={chosen} products={products} enrollT={enrollCopy(lang)} />
+  );
 }

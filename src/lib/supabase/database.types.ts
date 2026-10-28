@@ -3377,6 +3377,7 @@ export type Database = {
       course_xp_values: { Args: { p_course: string }; Returns: Json }
       take_ready_videos: { Args: never; Returns: Json }
       set_video_duration: { Args: { p_block: string; p_seconds: number }; Returns: undefined }
+      eval_audio_manifest: { Args: never; Returns: Json }
       my_new_badges: {
         Args: never
         Returns: {

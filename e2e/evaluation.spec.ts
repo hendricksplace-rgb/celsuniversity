@@ -1,7 +1,7 @@
 // The free English evaluation, start to results. The questions, the AI-graded writing and the
 // session are real. The last call ("finish") emails the results to the address typed in, so it is
 // answered in the browser with a fixture unless E2E_ALLOW_EMAIL=1. Speaking is skipped (the
-// "Omitir" button), as a visitor without a microphone would.
+// "Omitir esta parte" link), as a visitor without a microphone would.
 import { expect, test } from "./fixtures";
 import { ALLOW_EMAIL } from "./env";
 
@@ -34,66 +34,77 @@ test("evaluation: welcome → questions → writing → results", async ({ page 
       }
       if (action !== "finish") return route.continue();
       finishCalls++;
-      await route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: JSON.stringify({ result: RESULT }) });
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "access-control-allow-origin": "*" },
+        body: JSON.stringify({ result: RESULT }),
+      });
     });
   }
 
   await page.goto("/evaluacion");
   await page.fill("#eval-name", "Ana Prueba");
   await page.getByRole("button", { name: /Comenzar mi evaluación/ }).click();
-  const goal = page.getByRole("button", { name: /Para mi trabajo/ });
+  const goal = page.getByTestId("ev-goal").first();
   const limited = page.getByText("Vuelve a intentarlo en un rato");
   await expect(goal.or(limited)).toBeVisible();
   test.skip(await limited.isVisible(), "This IP already started 3 evaluations in the last hour (rate limit)");
   await goal.click();
+  await page.getByTestId("ev-continue").click();
 
   // Every screen of the test is one of these; wait for one before deciding (the AI grade takes a moment).
+  const by = (id: string) => page.getByTestId(id);
   const anyStep = page
-    .locator('input[type="email"], textarea, button[aria-pressed], div.leading-loose > button')
-    .or(page.getByRole("button", { name: /Empezar sección|^Continuar|Omitir \(sin/ }))
-    .or(page.getByText("Toca las palabras en orden"));
+    .locator('input[type="email"], textarea:not([disabled])')
+    .or(by("ev-start-section"))
+    .or(by("ev-continue"))
+    .or(by("ev-speak-skip"))
+    .or(by("ev-opt"))
+    .or(by("ev-tile"))
+    .or(by("ev-word"));
   let answered = 0;
   for (let guard = 0; guard < 90; guard++) {
     await expect(anyStep.first()).toBeVisible({ timeout: 60_000 });
     if (await page.locator('input[type="email"]').count()) break;
-    if (await page.getByRole("button", { name: /Empezar sección/ }).count()) {
-      await page.getByRole("button", { name: /Empezar sección/ }).click();
+    if (await by("ev-start-section").count()) {
+      await by("ev-start-section").click();
       continue;
     }
-    if (await page.getByRole("button", { name: /^Continuar/ }).count()) {
-      await page.getByRole("button", { name: /^Continuar/ }).click();
+    if (await by("ev-continue").count()) {
+      await by("ev-continue").click();
       continue;
     }
     if (await page.locator("textarea").count()) {
       await page.fill("textarea", "Last summer I visited Oaxaca with my family. We ate mole and walked around the city. I want to go back next year.");
-      await page.getByRole("button", { name: /Enviar a la IA/ }).click();
+      await by("ev-write-send").click();
       await expect(page.locator("textarea")).toHaveCount(0, { timeout: 60_000 });
       continue;
     }
-    if (await page.getByRole("button", { name: /Omitir \(sin/ }).count()) {
-      await page.getByRole("button", { name: /Omitir \(sin/ }).click();
+    if (await by("ev-speak-skip").count()) {
+      await by("ev-speak-skip").click();
       continue;
     }
-    // The pool of words still to place (the dashed row above holds the placed ones).
-    const tiles = page.locator("div.mt-3.flex.flex-wrap.gap-2:not(.border-dashed) > button");
-    if (await page.getByText("Toca las palabras en orden").count()) {
-      while (await tiles.count()) await tiles.first().click();
-    } else if (await page.getByText("Toca la palabra incorrecta").count()) {
-      await page.locator("div.leading-loose > button").nth(1).click();
+    if (await by("ev-tile").count()) {
+      // Unscramble: place every word of the pool (the dashed row holds the placed ones).
+      while (await by("ev-tile").count()) await by("ev-tile").first().click();
+    } else if (await by("ev-word").count()) {
+      await by("ev-word").nth(1).click();
     } else {
-      await page.locator("button[aria-pressed]").first().click();
+      await by("ev-opt").first().click();
     }
-    await page.getByRole("button", { name: "Confirmar" }).click();
+    await by("ev-next").click();
     answered++;
   }
   expect(answered, "questions answered").toBeGreaterThan(10);
 
   await page.fill('input[type="email"]', `e2e-eval-${Date.now()}@example.com`);
   await page.getByRole("button", { name: /Ver mis resultados/ }).click();
-  await expect(page.locator("div.text-6xl.font-extrabold").first()).toHaveText(/^(A1|A2|B1|B2|C1|C2)$/);
+  const level = page.locator('[data-testid="ev-level"] b');
+  await expect(level).toHaveText(/^(A1|A2|B1|B2|C1|C2)$/);
   if (!ALLOW_EMAIL) {
     expect(finishCalls).toBe(1);
-    await expect(page.locator("div.text-6xl.font-extrabold").first()).toHaveText("B1");
+    await expect(level).toHaveText("B1");
   }
   await expect(page.getByText(/CelsTV|CelsBSNS|CelsUS|CelsGLOBAL/).first()).toBeVisible();
 });

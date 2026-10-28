@@ -1,10 +1,13 @@
 "use client";
 
+// C-031: results in the CelsU look: a prism orb with the level, the A1–C2 scale, per-skill bars that fill one by
+// one, strength and area to grow, and the recommendation in gold glass (USD + MXN reference), with confetti and a
+// short chord. The recommendation rule and the program offer (/inscribirme) are unchanged.
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { LEVELS, SECTIONS, type Goal, type Product } from "@/lib/eval-engine";
 import { InstallLink } from "@/components/install/InstallApp";
-import { BigButton, C, Pill, fill, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
+import { SEC_HEX, fill, tick, type EvT, type EvalT, type SpeakingResult, type WritingResult } from "./Questions";
 import { SITE_URL } from "@/lib/site";
 import { planHref, plansHref, recommendedPlan } from "@/lib/enroll";
 import type { EnrollT } from "@/lib/i18n/enroll-copy";
@@ -26,6 +29,58 @@ export type OfferProducts = Record<string, { name: string; cents: number; instal
 /** Without a program, the engine's recommendation shows its entry plan's price. */
 const ENTRY_PLAN: Record<Product, string> = { celstv: "celstv_standard", celsbsns: "celsbsns_standard", bundle: "bundle_tv_bsns" };
 const usd = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: cents % 100 ? 2 : 0 })}`;
+const lvlIdx = (l: string | null | undefined) => LEVELS.indexOf(l as (typeof LEVELS)[number]);
+
+function Mxn({ cents, rate, t }: { cents: number; rate: number | null; t: EvT }) {
+  return (
+    <small>
+      {rate ? `${fill(t.mxn, { n: Math.round((cents / 100) * rate).toLocaleString("es-MX") })} · ` : ""}
+      {t.chargedUsd}
+    </small>
+  );
+}
+
+/** Light confetti in the logo colors (none with reduced motion). */
+export function confetti() {
+  if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const cv = document.createElement("canvas");
+  cv.className = "ev-conf";
+  cv.setAttribute("aria-hidden", "true");
+  document.querySelector(".ev")?.appendChild(cv);
+  const w = (cv.width = window.innerWidth);
+  const h = (cv.height = window.innerHeight);
+  const x = cv.getContext("2d");
+  if (!x) return cv.remove();
+  const cols = ["#43D6FE", "#5B8DEF", "#B3EC79", "#FFC531", "#F20174"];
+  const P = Array.from({ length: 90 }, () => ({
+    x: w / 2 + (Math.random() - 0.5) * 80,
+    y: h * 0.25,
+    vx: (Math.random() - 0.5) * 9,
+    vy: -Math.random() * 9 - 3,
+    s: 5 + Math.random() * 5,
+    a: Math.random() * 6,
+    c: cols[Math.floor(Math.random() * 5)],
+  }));
+  let n = 0;
+  const f = () => {
+    x.clearRect(0, 0, w, h);
+    for (const p of P) {
+      p.vy += 0.2;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.a += 0.1;
+      x.save();
+      x.translate(p.x, p.y);
+      x.rotate(p.a);
+      x.fillStyle = p.c;
+      x.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6);
+      x.restore();
+    }
+    if (++n < 180) requestAnimationFrame(f);
+    else cv.remove();
+  };
+  requestAnimationFrame(f);
+}
 
 /**
  * The offer after an evaluation started from /inscribirme?programa=…: that program's recommended plan.
@@ -34,17 +89,21 @@ const usd = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minim
  */
 function ProgramOffer({
   t,
+  et,
   enrollT,
   programa,
   products,
+  rate,
   g,
   band,
   plan = null,
 }: {
-  t: EvalT;
+  t: EvT;
+  et: EvalT;
   enrollT: EnrollT;
   programa: ProgramKey;
   products: OfferProducts;
+  rate: number | null;
   g: number | null;
   band: string | null;
   plan?: string | null;
@@ -53,10 +112,12 @@ function ProgramOffer({
   const code = recommendedPlan(programa, g ?? 2);
   const chosen = plan && products[plan] ? plan : null;
   const w = enrollT.offerWhy;
-  const why = band ? fill(programa === "celsbsns" ? (code === "bundle_tv_bsns" ? w.celsbsnsBundle : w.celsbsnsReady) : w[programa], { band }) : enrollT.promise[programa];
+  const why = band
+    ? fill(programa === "celsbsns" ? (code === "bundle_tv_bsns" ? w.celsbsnsBundle : w.celsbsnsReady) : w[programa], { band })
+    : enrollT.promise[programa];
   const cards = chosen && chosen !== code ? [chosen, code] : [code];
   return (
-    <div className="space-y-3" data-testid="program-offer" data-plan={code} data-chosen={chosen ?? undefined}>
+    <div data-testid="program-offer" data-plan={code} data-chosen={chosen ?? undefined}>
       {cards.map((c, i) => {
         const p = products[c];
         const isRec = c === code;
@@ -69,125 +130,113 @@ function ProgramOffer({
             data-testid="offer-card"
             data-plan={c}
             data-selected={primary ? "true" : undefined}
-            className="rounded-2xl border-2 p-5"
-            style={primary ? { borderColor: C.yellow, background: "rgba(255,197,49,0.10)" } : { borderColor: "rgba(255,255,255,0.18)", background: "rgba(255,255,255,0.04)" }}
+            className={`ev-pg ${primary ? "ev-reco" : "ev-card"}`}
           >
-            <div className="flex flex-wrap gap-1.5">
-              {isChosen && (
-                <span className="inline-block rounded-full bg-white px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#1B1830]" data-testid="offer-chosen">
-                  ✓ {enrollT.chosen}
-                </span>
-              )}
-              {isRec && (
-                <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }} data-testid="offer-recommended">
-                  {t.recommended}
-                </span>
-              )}
+            <div className="rk">
+              {isChosen && <span data-testid="offer-chosen">✓ {enrollT.chosen.toUpperCase()}</span>}
+              {isChosen && isRec && " · "}
+              {isRec && <span data-testid="offer-recommended">{t.recoKick}</span>}
             </div>
-            <p className="mt-2.5 text-xs font-extrabold uppercase tracking-wider" style={{ color: meta.color }}>
+            <p className="ev-lab" style={{ marginTop: 8, color: meta.color }}>
               {fill(enrollT.offerFor, { program: meta.title })}
             </p>
-            <h2 className="mt-1 text-xl font-extrabold text-white">{p?.name ?? meta.title}</h2>
-            {isRec && <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{why}</p>}
+            <h3>{p?.name ?? meta.title}</h3>
+            {isRec && <p>{why}</p>}
             {p && (
-              <div className="mt-2 text-2xl font-extrabold text-white">
-                {usd(p.cents)} <span className="text-sm font-bold text-[#A9A4C0]">{enrollT.oneTime}</span>
+              <div className="ev-price">
+                <b>{usd(p.cents)} USD</b>
+                <Mxn cents={p.cents} rate={rate} t={t} />
                 {installments?.length ? (
-                  <p className="text-xs font-bold text-[#A9A4C0]">
-                    {fill(enrollT.monthly, { count: installments.length, first: usd(installments[0]) })}
-                  </p>
+                  <small style={{ flexBasis: "100%" }}>{fill(enrollT.monthly, { count: installments.length, first: usd(installments[0]) })}</small>
                 ) : null}
               </div>
             )}
             <Link
               href={planHref(c)}
               data-testid={primary ? "offer-start" : "offer-start-alt"}
-              className={`mt-4 block w-full rounded-2xl text-center font-extrabold transition hover:brightness-110 ${primary ? "py-4 text-base text-white" : "border-2 border-white/25 py-3 text-sm text-white"}`}
-              style={primary ? { background: C.pink } : undefined}
+              className={primary ? "ev-btn gold" : "ev-ghost"}
+              style={primary ? undefined : { marginTop: 12 }}
             >
-              {t.startToday}
+              {et.startToday}
             </Link>
           </div>
         );
       })}
-      <Link href={plansHref(programa, chosen)} className="block pt-1 text-center text-sm font-bold text-[#A9A4C0] underline underline-offset-4 hover:text-white">
+      <Link href={plansHref(programa, chosen)} className="ev-link">
         {fill(enrollT.seeAllPlans, { program: meta.title })}
       </Link>
     </div>
   );
 }
 
-function Gauge({ g }: { g: number }) {
-  const arc = useRef<SVGPathElement>(null);
-  const needle = useRef<SVGGElement>(null);
-  const angle = -90 + (g / 5) * 180;
+/** Per-skill bars in section colors that fill one by one; Hablar when the speaking answer has a level. */
+function SkillBars({ t, levels, speaking }: { t: EvT; levels: Record<string, string>; speaking?: string | null }) {
+  const rows: [string, string][] = SECTIONS.map((s): [string, string] => [s.key, levels[s.key]]);
+  if (speaking && lvlIdx(speaking) >= 0) rows.push(["P", speaking]);
+  const [on, setOn] = useState(false);
   useEffect(() => {
-    const id = setTimeout(() => {
-      if (arc.current) arc.current.style.strokeDashoffset = String(330 - 330 * (g / 5 || 0.04));
-      needle.current?.setAttribute("transform", `rotate(${angle} 130 135)`);
-    }, 150);
+    const id = setTimeout(() => setOn(true), 300);
     return () => clearTimeout(id);
-  }, [g, angle]);
+  }, []);
+  const idx = rows.map(([, l]) => lvlIdx(l));
+  const hi = Math.max(...idx);
+  const lo = Math.min(...idx);
+  const names = (v: number) =>
+    rows
+      .filter((_, i) => idx[i] === v)
+      .map(([k]) => t.secNames[k].toLowerCase())
+      .join(", ");
   return (
-    <svg width="260" height="150" viewBox="0 0 260 150" className="mx-auto block" aria-hidden>
-      <defs>
-        <linearGradient id="eval-gauge" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor={C.pink} />
-          <stop offset="35%" stopColor={C.blue} />
-          <stop offset="70%" stopColor={C.cyan} />
-          <stop offset="100%" stopColor={C.green} />
-        </linearGradient>
-      </defs>
-      <path d="M 25 135 A 105 105 0 0 1 235 135" fill="none" stroke="rgba(255,255,255,.12)" strokeWidth="16" strokeLinecap="round" />
-      <path
-        ref={arc}
-        d="M 25 135 A 105 105 0 0 1 235 135"
-        fill="none"
-        stroke="url(#eval-gauge)"
-        strokeWidth="16"
-        strokeLinecap="round"
-        strokeDasharray="330"
-        strokeDashoffset="330"
-        style={{ transition: "stroke-dashoffset 1.4s ease" }}
-      />
-      <g ref={needle} transform="rotate(-90 130 135)" style={{ transition: "transform 1.4s ease" }}>
-        <line x1="130" y1="135" x2="130" y2="48" stroke="#fff" strokeWidth="4" strokeLinecap="round" />
-        <circle cx="130" cy="135" r="9" fill="#fff" />
-      </g>
-      {LEVELS.map((L, i) => {
-        const a = ((-90 + (i / 5) * 180) * Math.PI) / 180;
-        return (
-          <text key={L} x={130 + 122 * Math.sin(a)} y={135 - 122 * Math.cos(a)} fill="rgba(245,242,250,.55)" fontSize="11" fontWeight="800" textAnchor="middle">
-            {L}
-          </text>
-        );
-      })}
-    </svg>
+    <div className="ev-pg ev-card">
+      <div className="ev-lab" style={{ marginBottom: 10 }}>
+        {t.bySkill}
+      </div>
+      <div className="ev-sk">
+        {rows.map(([k, l], i) => (
+          <div className="r" key={k}>
+            <span>{t.secNames[k]}</span>
+            <div className="bar">
+              <i style={{ background: SEC_HEX[k], width: on ? `${((lvlIdx(l) + 1) / 6) * 100}%` : 0, transitionDelay: `${i * 0.12}s` }} />
+            </div>
+            <b>{l ?? "—"}</b>
+          </div>
+        ))}
+      </div>
+      {hi >= 0 && (
+        <p>
+          <b style={{ color: "var(--ink)" }}>{t.strength}</b> {names(hi)}.{" "}
+          {lo < hi && (
+            <>
+              <b style={{ color: "var(--ink)" }}>{t.grow}</b> {names(lo)}.
+            </>
+          )}
+        </p>
+      )}
+    </div>
   );
 }
 
-export function SkillBars({ t, levels }: { t: EvalT; levels: Record<string, string> }) {
+function LevelOrb({ band, t, et }: { band: string; t: EvT; et: EvalT }) {
+  const g = lvlIdx(band);
   return (
-    <div className="card">
-      <h3 className="text-base font-extrabold text-white">{t.skills}</h3>
-      <div className="mt-3 flex flex-col gap-3">
-        {SECTIONS.map((sec) => {
-          const lvl = levels[sec.key] ?? "—";
-          const w = ((LEVELS.indexOf(lvl as (typeof LEVELS)[number]) + 1) / 6) * 100;
-          return (
-            <div key={sec.key}>
-              <div className="mb-1 flex justify-between text-sm font-extrabold">
-                <span className="text-white">
-                  {sec.icon} {t.sections[sec.key]}
-                </span>
-                <span style={{ color: sec.hex }}>{lvl}</span>
-              </div>
-              <div className="h-3 overflow-hidden rounded-full bg-white/10">
-                <div className="h-full rounded-full transition-all duration-1000" style={{ width: `${w}%`, background: sec.hex }} />
-              </div>
-            </div>
-          );
-        })}
+    <div style={{ textAlign: "center" }}>
+      <div className="ev-orb" data-testid="ev-level">
+        <div className="in">
+          <div>
+            <b>{band}</b>
+            <small>{t.levelNames[band]}</small>
+          </div>
+        </div>
+      </div>
+      <p className="ev-lead" style={{ margin: "6px 0 0" }}>
+        {et.levels[band]} <b style={{ color: "var(--ink)" }}>{g >= 5 ? t.top : fill(t.nextGoal, { band: LEVELS[g + 1] })}</b>
+      </p>
+      <div className="ev-scale" aria-hidden>
+        {LEVELS.map((l) => (
+          <span key={l} className={l === band ? "on" : ""}>
+            {l}
+          </span>
+        ))}
       </div>
     </div>
   );
@@ -195,6 +244,7 @@ export function SkillBars({ t, levels }: { t: EvalT; levels: Record<string, stri
 
 export function Results({
   t,
+  et,
   name,
   goal,
   result,
@@ -203,9 +253,11 @@ export function Results({
   programa = null,
   plan = null,
   products,
+  rate,
   enrollT,
 }: {
-  t: EvalT;
+  t: EvT;
+  et: EvalT;
   name: string;
   goal: Goal;
   result: FinalResult;
@@ -214,6 +266,7 @@ export function Results({
   programa?: ProgramKey | null;
   plan?: string | null;
   products: OfferProducts;
+  rate: number | null;
   enrollT: EnrollT;
 }) {
   const rec = result.recommendation;
@@ -222,8 +275,14 @@ export function Results({
   const page = rec.product === "celstv" ? "/celstv" : "/celsbsns";
   const q = new URLSearchParams({ name, level: result.band, goal });
 
+  useEffect(() => {
+    confetti();
+    const ids = [523, 659, 784, 1047].map((f, i) => setTimeout(() => tick(f, 0.4, 0.07), 300 + i * 110));
+    return () => ids.forEach(clearTimeout);
+  }, []);
+
   const share = async () => {
-    const text = `${fill(t.shareTitle, { band: result.band })} · ${SITE_URL}/evaluacion`;
+    const text = `${fill(et.shareTitle, { band: result.band })} · ${SITE_URL}/evaluacion`;
     try {
       if (navigator.share) return await navigator.share({ text });
     } catch {
@@ -235,40 +294,33 @@ export function Results({
   };
 
   return (
-    <div className="space-y-4 pb-10">
-      <div className="text-center">
-        <Pill>{fill(t.resultsOf, { name })}</Pill>
-        <Gauge g={result.g} />
-        <div className="text-6xl font-extrabold leading-none" style={{ color: C.yellow }}>
-          {result.band}
-        </div>
-        <p className="mx-auto mt-1.5 max-w-sm text-sm text-[#A9A4C0]">{t.levels[result.band]}</p>
+    <div>
+      <div style={{ textAlign: "center" }}>
+        <span className="ev-kick" style={{ justifyContent: "center" }}>
+          <i />
+          {t.resKick} · {name.toUpperCase()}
+        </span>
       </div>
+      <LevelOrb band={result.band} t={t} et={et} />
 
-      <SkillBars t={t} levels={result.skillLevels} />
+      <SkillBars t={t} levels={result.skillLevels} speaking={result.speaking?.band} />
 
       {result.writing && (
-        <div className="card">
-          <h3 className="text-base font-extrabold text-white">{t.writingReview}</h3>
-          {writingText && <p className="mt-1 text-sm italic text-[#A9A4C0]">“{writingText}”</p>}
-          <p className="mt-2 text-sm font-bold" style={{ color: C.green }}>
-            {result.writing.feedback}
-          </p>
-          {result.writing.corrections.length === 0 ? (
-            <p className="mt-2 text-sm font-extrabold" style={{ color: C.green }}>
-              {t.noErrors}
+        <div className="ev-pg ev-card" style={{ ["--c" as string]: SEC_HEX.W }}>
+          <h3>{et.writingReview}</h3>
+          {writingText && (
+            <p style={{ fontStyle: "italic" }} lang="en">
+              “{writingText}”
             </p>
+          )}
+          <p style={{ fontWeight: 700 }}>{result.writing.feedback}</p>
+          {result.writing.corrections.length === 0 ? (
+            <p style={{ fontWeight: 800, color: "#2f6e25" }}>{et.noErrors}</p>
           ) : (
             result.writing.corrections.map((c, i) => (
-              <div key={i} className="mt-2.5 rounded-xl bg-white/5 p-3 text-sm leading-relaxed">
-                <span className="line-through" style={{ color: C.pink }}>
-                  {c.original}
-                </span>{" "}
-                →{" "}
-                <span className="font-extrabold" style={{ color: C.green }}>
-                  {c.corrected}
-                </span>
-                <div className="mt-0.5 text-xs text-[#A9A4C0]">{c.note}</div>
+              <div key={i} className="ev-fix">
+                <s lang="en">{c.original}</s> → <b lang="en">{c.corrected}</b>
+                <div style={{ fontSize: 12.5, color: "var(--mut)" }}>{c.note}</div>
               </div>
             ))
           )}
@@ -276,111 +328,123 @@ export function Results({
       )}
 
       {result.speaking && (
-        <div className="card">
-          <h3 className="text-base font-extrabold text-white">{t.speakingReview}</h3>
-          {result.speaking.transcript && <p className="mt-1 text-sm italic text-[#A9A4C0]">“{result.speaking.transcript}”</p>}
-          <p className="mt-2 text-sm font-bold" style={{ color: C.green }}>
-            {result.speaking.feedback}
-          </p>
+        <div className="ev-pg ev-card" style={{ ["--c" as string]: SEC_HEX.P }}>
+          <h3>{et.speakingReview}</h3>
+          {result.speaking.transcript && (
+            <p style={{ fontStyle: "italic" }} lang="en">
+              “{result.speaking.transcript}”
+            </p>
+          )}
+          <p style={{ fontWeight: 700 }}>{result.speaking.feedback}</p>
         </div>
       )}
 
-      <InstallLink className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-white/15 bg-white/5 py-3.5 text-sm font-extrabold text-white transition hover:bg-white/10">
-        ⬇ {t.getApp}
-      </InstallLink>
-
-      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={result.g} band={result.band} plan={plan} />}
+      {programa && (
+        <ProgramOffer t={t} et={et} enrollT={enrollT} programa={programa} products={products} rate={rate} g={result.g} band={result.band} plan={plan} />
+      )}
 
       {student ? (
-        <Link href="/app" className="btn-primary w-full !rounded-2xl !py-4 text-base font-extrabold">
-          {t.keepLearning}
+        <Link href="/app" className="ev-btn" style={{ marginTop: 18 }}>
+          {et.keepLearning}
         </Link>
       ) : (
         <>
           {!programa && (
-            <div
-              className="rounded-2xl border-2 p-5"
-              style={{ borderColor: C.yellow, background: "rgba(255,197,49,0.10)" }}
-            >
-              <span className="inline-block rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-[#3a2a00]" style={{ background: C.yellow }}>
-                {t.recommended}
-              </span>
-              <h2 className="mt-2.5 text-xl font-extrabold text-white">
+            <div className="ev-pg ev-reco" data-testid="ev-reco">
+              <div className="rk">{t.recoKick}</div>
+              <h3>
                 {rec.emoji} {rec.name}
-              </h2>
-              <p className="mt-1.5 text-sm font-semibold leading-relaxed text-white/90">{rec.why}</p>
-              {rec.path && (
-                <p className="mt-2 text-xs font-extrabold" style={{ color: C.yellow }}>
-                  {rec.path}
-                </p>
-              )}
+              </h3>
+              <p>{rec.why}</p>
+              {rec.path && <p style={{ fontWeight: 800, color: "#8a5c00" }}>{rec.path}</p>}
               {entry && (
-                <div className="mt-2 text-2xl font-extrabold text-white">
-                  {usd(entry.cents)} <span className="text-sm font-bold text-[#A9A4C0]">USD</span>
+                <div className="ev-price">
+                  <b>{usd(entry.cents)} USD</b>
+                  <Mxn cents={entry.cents} rate={rate} t={t} />
                 </div>
               )}
-              <Link href={`${page}?${q}`} className="mt-4 block w-full rounded-2xl py-4 text-center text-base font-extrabold text-white transition hover:brightness-110" style={{ background: C.pink }}>
-                {t.startToday}
+              <Link href={`${page}?${q}`} className="ev-btn gold">
+                {et.startToday}
               </Link>
             </div>
           )}
-          <div className="rounded-2xl border-2 border-white/15 p-5 text-center" style={{ background: "linear-gradient(140deg,#3A1B57,#182042)" }}>
-            <div className="text-lg font-extrabold" style={{ color: C.pink }}>
-              Cels<span style={{ color: C.cyan }}>U</span>
+          <div className="ev-pg ev-card" style={{ textAlign: "center" }}>
+            <h3>{fill(et.shareTitle, { band: result.band })}</h3>
+            <p style={{ marginTop: 0 }}>{et.shareSub}</p>
+            <div className="ev-row">
+              <button type="button" className="ev-ghost" onClick={() => void share()}>
+                {copied ? et.copied : et.share}
+              </button>
             </div>
-            <div className="my-1.5 text-3xl font-extrabold" style={{ color: C.cyan }}>
-              {fill(t.shareTitle, { band: result.band })}
-            </div>
-            <p className="text-xs text-[#A9A4C0]">{t.shareSub}</p>
-            <BigButton className="mt-3 !bg-white/10 !py-3 text-sm" onClick={() => void share()}>
-              {copied ? t.copied : t.share}
-            </BigButton>
           </div>
         </>
       )}
+
+      <div style={{ marginTop: 16 }}>
+        <InstallLink className="ev-ghost">⬇ {et.getApp}</InstallLink>
+      </div>
+      <p className="ev-note">{t.retake}</p>
     </div>
   );
 }
 
 export function Locked({
   t,
+  et,
   info,
   programa = null,
   plan = null,
   products,
+  rate,
   enrollT,
 }: {
-  t: EvalT;
+  t: EvT;
+  et: EvalT;
   info: LockedInfo;
   programa?: ProgramKey | null;
   plan?: string | null;
   products: OfferProducts;
+  rate: number | null;
   enrollT: EnrollT;
 }) {
-  const g = info.cefr_level ? LEVELS.indexOf(info.cefr_level as (typeof LEVELS)[number]) : -1;
+  const g = lvlIdx(info.cefr_level);
   const date = new Date(info.retake_on).toLocaleDateString("es-MX", { year: "numeric", month: "long", day: "numeric" });
   return (
-    <div className="space-y-4 pb-10 pt-6">
-      <div className="text-center">
-        <div className="text-5xl">🔒</div>
-        <h2 className="mt-2 text-xl font-extrabold text-white">{t.lockedTitle}</h2>
-        <p className="mx-auto mt-2 max-w-xs text-sm text-[#A9A4C0]">{fill(t.lockedSub, { date })}</p>
+    <div>
+      <div style={{ textAlign: "center" }}>
+        <span className="ev-kick" style={{ justifyContent: "center" }}>
+          <i />
+          {t.resKick}
+        </span>
+        <h1 className="ev-h">{et.lockedTitle}</h1>
+        <p className="ev-lead">{fill(et.lockedSub, { date })}</p>
       </div>
-      {info.cefr_level ? (
+      {g >= 0 ? (
         <>
-          <div className="card text-center">
-            <div className="text-5xl font-extrabold" style={{ color: C.yellow }}>
-              {info.cefr_level}
-            </div>
-            <p className="mt-1.5 text-sm text-[#A9A4C0]">{t.levels[info.cefr_level]}</p>
-          </div>
+          <LevelOrb band={info.cefr_level!} t={t} et={et} />
           {info.skill_levels && <SkillBars t={t} levels={info.skill_levels} />}
         </>
       ) : (
-        info.lead && <p className="card text-center text-sm text-white/90">{t.lockedLead}</p>
+        info.lead && (
+          <div className="ev-pg ev-card" style={{ textAlign: "center" }}>
+            <p style={{ margin: 0 }}>{et.lockedLead}</p>
+          </div>
+        )
       )}
-      {programa && <ProgramOffer t={t} enrollT={enrollT} programa={programa} products={products} g={g >= 0 ? g : null} band={g >= 0 ? info.cefr_level! : null} plan={plan} />}
-      <p className="text-center text-xs text-[#A9A4C0]">{t.lockedBack}</p>
+      {programa && (
+        <ProgramOffer
+          t={t}
+          et={et}
+          enrollT={enrollT}
+          programa={programa}
+          products={products}
+          rate={rate}
+          g={g >= 0 ? g : null}
+          band={g >= 0 ? info.cefr_level! : null}
+          plan={plan}
+        />
+      )}
+      <p className="ev-note">{et.lockedBack}</p>
     </div>
   );
 }
