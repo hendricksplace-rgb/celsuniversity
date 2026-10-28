@@ -14,6 +14,7 @@ import { completionPath } from "@/lib/episode-status";
 import { loadEpisodeDecks, tracksFromDecks, type RawCard } from "@/lib/celsus-cards";
 import { signStorageRefs } from "@/lib/storage";
 import { fileHref } from "@/lib/file-href";
+import { bookProgress, coverUrl } from "@/lib/celsbook-progress";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Episode, UsRole } from "@/lib/course-page";
 
@@ -48,7 +49,7 @@ async function celsusDetails(
       ? supabase.from("content_blocks").select("lesson_id, block_type, title, body").in("lesson_id", lessonIds).eq("block_type", "text").eq("teacher_only", false)
       : Promise.resolve({ data: [] as { lesson_id: string; block_type: string; title: string | null; body: string | null }[] }),
     // RLS: students only see published e-books.
-    supabase.from("ebooks").select("slug, subtitle, est_minutes, quiz").in("slug", slugs),
+    supabase.from("ebooks").select("id, slug, subtitle, est_minutes, quiz, cover_path").in("slug", slugs),
     supabase.from("profiles").select("civics_track").eq("id", viewer.user.id).maybeSingle(),
     current?.started && current.role !== "cards"
       ? supabase.from("content_blocks").select("id").eq("lesson_id", current.id).eq("teacher_only", false)
@@ -120,7 +121,13 @@ async function celsusDetails(
   if (en && signed.get(en)) extras.push({ href: fileHref(en), label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
   if (es && signed.get(es)) extras.push({ href: fileHref(es), label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
 
+  // C-030: the episode's CelsBook with its real cover and how far the student is.
+  const cover = coverUrl(ebook?.cover_path);
+  const prog = cover && ebook ? (await bookProgress(supabase, viewer.user.id, [ebook.id])).get(ebook.id) : undefined;
+  const book = cover && prog ? { cover, pct: prog.pct, started: prog.started, done: prog.done } : null;
+
   return {
+    book,
     topic,
     subs,
     extras,
@@ -180,6 +187,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
         track={us.track}
         trackHref={`${tarjetas}?examen=1`}
         resumeMeta={us.resumeMeta}
+        book={us.book ? { ...us.book, alt: fill(t.cv.coverOf, { n: episode.n }), keep: t.cv.keep } : null}
         xp={episode.parts.reduce((s, p) => s + p.xpEarned, 0)}
         teacherGuide={
           guides?.has(episode.id)

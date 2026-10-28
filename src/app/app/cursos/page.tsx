@@ -21,5 +21,5 @@ export default async function MisCursosPage({ searchParams }: Props) {
     data: { user },
   } = await supabase.auth.getUser();
   const data = await loadMyCourses(supabase, user!.id); // the /app shell already sent signed-out visitors to /entrar
-  return <MisCursos t={t.misCursos} u={t.mycourses} data={data} initial={initial} />;
+  return <MisCursos t={t.misCursos} u={t.mycourses} cv={t.cv} data={data} initial={initial} />;
 }

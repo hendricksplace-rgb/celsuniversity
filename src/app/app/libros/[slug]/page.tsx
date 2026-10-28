@@ -7,6 +7,8 @@ import { collectStorageRefs, signStorageRefs } from "@/lib/storage";
 import type { Answers, Ebook } from "@/lib/ebook-format";
 import { EbookReader } from "@/components/reader/EbookReader";
 import { CelsBookReader } from "@/components/celsbook/CelsBookReader";
+import { CoverGate } from "@/components/celsbook/CoverGate";
+import { coverUrl } from "@/lib/celsbook-progress";
 import { episodePath, loadCoursePage } from "@/lib/course-page";
 import { themeForCourse } from "@/lib/themes";
 import { completionPath } from "@/lib/episode-status";
@@ -83,7 +85,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
     const screens = (ebook.screens ?? []) as unknown as Ebook["screens"];
     // ?p=3 (as in the mockup) or ?screen=s3 opens that page.
     const asked = screen ?? (p && screens[Number(p) - 1]?.id) ?? null;
-    return (
+    const reader = (
       <CelsBookReader
         ebook={ebook as unknown as Ebook}
         episodeN={usN}
@@ -103,6 +105,24 @@ export default async function EbookPage({ params, searchParams }: Props) {
         lang={lang}
         t={t.cb}
       />
+    );
+    // C-030: the real cover first (the first time), opening like a book onto the episode's welcome page.
+    const cover = coverUrl(ebook.cover_path);
+    if (!cover) return reader;
+    const at = saved?.last_screen ? screens.findIndex((x) => x.id === saved.last_screen) : -1;
+    return (
+      <CoverGate
+        t={t.cv}
+        cover={cover}
+        n={usN}
+        topic={(ebook.subtitle ?? "").split(" · ").pop() || ebook.title}
+        pages={screens.length}
+        minutes={ebook.est_minutes}
+        firstTime={!asked && at < 0 && !saved?.completed_at}
+        resumePage={at + 1}
+      >
+        {reader}
+      </CoverGate>
     );
   }
 

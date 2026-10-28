@@ -22,7 +22,7 @@ export default async function StudentHomePage() {
   const course = program && (program.courses.find((c) => c.title === cl?.courseTitle) ?? program.courses[0]);
   const card = course ? await leaderCard(supabase, { id: course.id, slug: course.slug, label: courseLabel(program.brand, course.title) }) : null;
   return data.programs.length ? (
-    <StudentHome t={t.dash} data={data} leader={card && <LeaderCard t={t.lb} d={card} />} />
+    <StudentHome t={t.dash} cv={t.cv} data={data} leader={card && <LeaderCard t={t.lb} d={card} />} />
   ) : (
     <GuestHome t={t.dash} levelLabel={t.app.level} data={data} locale={lang === "en" ? "en-US" : "es-MX"} />
   );

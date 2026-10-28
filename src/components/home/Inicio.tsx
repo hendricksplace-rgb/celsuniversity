@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
-import type { BandItem, ContinueLesson, HomeData, HomeProgram } from "@/lib/home";
+import type { BandItem, ContinueBook, ContinueLesson, HomeData, HomeProgram } from "@/lib/home";
+import { CoverBook } from "@/components/celsbook/CoverBook";
 import type { ThemeKey } from "@/lib/themes";
 import { Gauge, MEDAL_ICON } from "./Gauge";
 import s from "./inicio.module.css";
@@ -66,17 +67,40 @@ const MARK: Record<ThemeKey, { src: string; w: number; h: number }> = {
   celsglobal: { src: "/site/celsglobal-mark.png", w: 1024, h: 992 },
 };
 
-export function StudentHero({ t, data }: { t: T; data: HomeData }) {
+export function StudentHero({ t, cv, data }: { t: T; cv: Dictionary["cv"]; data: HomeData }) {
   return (
     <Hero t={t} name={data.name}>
       <div className={s.hgrid}>
         <div>
           <Greeting t={t} name={data.name} />
-          {data.continueLesson && <ContinueCard t={t} lesson={data.continueLesson} />}
+          {data.continueBook ? (
+            <ContinueBookCard cv={cv} book={data.continueBook} />
+          ) : (
+            data.continueLesson && <ContinueCard t={t} lesson={data.continueLesson} />
+          )}
         </div>
         <WeekCard t={t} data={data} />
       </div>
     </Hero>
+  );
+}
+
+/** C-030: the CelsBook being read, its cover floating, and a big gold button. */
+function ContinueBookCard({ cv, book }: { cv: Dictionary["cv"]; book: ContinueBook }) {
+  return (
+    <div className="cbc">
+      <span className="mini">
+        <CoverBook src={book.cover} alt={fill(cv.coverOf, { n: book.n })} />
+      </span>
+      <div className="tx">
+        <small>{cv.contKick}</small>
+        <h2>{fill(cv.bookOf, { n: book.n })}</h2>
+        <p>{fill(cv.contMeta, { p: book.page, m: book.pages, x: book.minutesLeft })}</p>
+        <Link href={book.href} className="cbk-gold">
+          {cv.keep} <span aria-hidden>→</span>
+        </Link>
+      </div>
+    </div>
   );
 }
 

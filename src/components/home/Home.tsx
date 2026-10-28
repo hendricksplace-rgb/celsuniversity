@@ -102,10 +102,10 @@ function ProgramCard({ t, brand, compact }: { t: T; brand: ThemeKey; compact?: b
   );
 }
 
-export function StudentHome({ t, data, leader }: { t: T; data: HomeData; leader?: React.ReactNode }) {
+export function StudentHome({ t, cv, data, leader }: { t: T; cv: Dictionary["cv"]; data: HomeData; leader?: React.ReactNode }) {
   return (
     <Page>
-      <StudentHero t={t} data={data} />
+      <StudentHero t={t} cv={cv} data={data} />
       <Band t={t} items={data.band} />
       <Programs
         t={t}

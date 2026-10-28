@@ -206,7 +206,7 @@ function Resume({ t, u, r }: { t: T; u: U; r: NonNullable<MyCoursesData["resume"
   );
 }
 
-export function MisCursos({ t, u, data, initial }: { t: T; u: U; data: MyCoursesData; initial: Filter }) {
+export function MisCursos({ t, u, cv, data, initial }: { t: T; u: U; cv: Dictionary["cv"]; data: MyCoursesData; initial: Filter }) {
   const { counts, resume, standalone, global } = data;
   const g = global;
   const pkgCards = g ? (g.tools ? 2 : 0) + g.included.length : 0;
@@ -331,7 +331,7 @@ export function MisCursos({ t, u, data, initial }: { t: T; u: U; data: MyCourses
         browse={t.browse}
       />
 
-      {data.books.length > 0 && <Books t={t} books={data.books} names={NAME} />}
+      {data.books.length > 0 && <Books t={t} cv={cv} books={data.books} names={NAME} />}
     </FilterRoot>
   );
 }

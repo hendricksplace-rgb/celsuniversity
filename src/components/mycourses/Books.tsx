@@ -6,6 +6,7 @@ import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { Glyph, ShelfBook } from "@/lib/my-courses";
 import { useFilter } from "./Filters";
+import { CoverBook } from "@/components/celsbook/CoverBook";
 import s from "./mis-cursos.module.css";
 
 type T = Dictionary["misCursos"];
@@ -60,7 +61,11 @@ function Book({ t, b, name }: { t: T; b: ShelfBook; name: string }) {
         <div className={`${s.bk} ${TONE[b.tone]}`}>
           {b.state === "progress" && <span className={s.rib} aria-hidden />}
           <div className={s.tagp}>{t.kind[b.kind]}</div>
-          {b.number && <div className={s.bn} aria-hidden>{b.number}</div>}
+          {b.number && (
+            <div className={s.bn} aria-hidden>
+              {b.number}
+            </div>
+          )}
           {b.glyph && (
             <svg className={s.glyph} viewBox="0 0 100 100" fill="none" stroke="#fff" strokeWidth="3" aria-hidden>
               {GLYPHS[b.glyph]}
@@ -81,11 +86,45 @@ function Book({ t, b, name }: { t: T; b: ShelfBook; name: string }) {
   );
 }
 
-export function Books({ t, books, names }: { t: T; books: ShelfBook[]; names: Record<string, string> }) {
+function CoverShelf({ cv, books }: { cv: Dictionary["cv"]; books: ShelfBook[] }) {
+  return (
+    <div className="cbs">
+      <ul>
+        {books.map((b, i) => {
+          const n = Number(b.number ?? 0);
+          const pct = b.state === "done" ? 100 : (b.pct ?? 0);
+          return (
+            <li key={b.id} style={{ ["--d" as string]: `${0.1 + i * 0.1}s` }}>
+              <Link href={`/app/libros/${b.slug}`} aria-label={`${fill(cv.episode, { n })}: ${b.topic}`}>
+                <CoverBook src={b.cover!} alt={fill(cv.coverOf, { n })} ribbon={b.state === "done"} />
+                <div className="meta">
+                  <b>{fill(cv.episode, { n })}</b>
+                  <small>{b.topic}</small>
+                  <div className="pb" aria-hidden>
+                    <i style={{ width: `${pct}%` }} />
+                  </div>
+                  <div className="st">
+                    {b.state === "done" ? <span className="ok">{cv.read}</span> : pct > 0 ? <span>{fill(cv.at, { n: pct })}</span> : <span>{cv.unread}</span>}
+                    {b.screens > 0 && <span>{fill(cv.pages, { n: b.screens })}</span>}
+                  </div>
+                </div>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+export function Books({ t, cv, books, names }: { t: T; cv: Dictionary["cv"]; books: ShelfBook[]; names: Record<string, string> }) {
   const page = useFilter();
   const [pick, setPick] = useState<string>("all");
   const [open, setOpen] = useState<Record<string, boolean>>({});
-  const programs = [...SHELVES.filter((p) => books.some((b) => b.program === p)), ...[...new Set(books.map((b) => b.program))].filter((p) => !SHELVES.includes(p))];
+  const programs = [
+    ...SHELVES.filter((p) => books.some((b) => b.program === p)),
+    ...[...new Set(books.map((b) => b.program))].filter((p) => !SHELVES.includes(p)),
+  ];
   const pills: [string, string][] = [
     ["all", fill(t.allBooks, { n: books.length })],
     ...programs.map((p): [string, string] => [p, `${names[p] ?? p} · ${books.filter((b) => b.program === p).length}`]),
@@ -126,13 +165,18 @@ export function Books({ t, books, names }: { t: T; books: ShelfBook[]; names: Re
                 <h3 className={s.shelfTitle}>
                   {name} <small>{fill(t.shelfSub[p] ?? t.shelfBooks, { n: all.length })}</small>
                 </h3>
-                {rows.map((r, i) => (
-                  <ul key={i} className={s.row}>
-                    {r.map((b) => (
-                      <Book key={b.id} t={t} b={b} name={name} />
-                    ))}
-                  </ul>
-                ))}
+                {/* CelsUS CelsBooks with their real covers (C-030): a shelf of real books. */}
+                {shown.every((b) => b.cover) ? (
+                  <CoverShelf cv={cv} books={shown} />
+                ) : (
+                  rows.map((r, i) => (
+                    <ul key={i} className={s.row}>
+                      {r.map((b) => (
+                        <Book key={b.id} t={t} b={b} name={name} />
+                      ))}
+                    </ul>
+                  ))
+                )}
                 {list.length > PER_ROW && page === "all" && pick === "all" && (
                   <div className={s.more}>
                     <button type="button" aria-expanded={!!open[p]} onClick={() => setOpen((o) => ({ ...o, [p]: !o[p] }))}>

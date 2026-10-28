@@ -3,6 +3,7 @@
 import type { Client } from "@/lib/supabase/types";
 import type { ThemeKey } from "@/lib/themes";
 import { lessonHrefs, lessonPagePath } from "@/lib/lesson-href";
+import { bookProgress, coverUrl } from "@/lib/celsbook-progress";
 import { accessibleCourses, courseStats, myAssignments, nextLesson, todayIndex, weekIndex, weekStart, type CourseStats } from "@/lib/learning";
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { guidedModules } from "@/lib/guided-modules";
@@ -54,6 +55,8 @@ export type ContinueLesson = {
   /** The episode's picture, when it has one (CelsTV); else the program mark shows. */
   art: string | null;
 };
+/** C-030: the CelsUS CelsBook to pick up, when it was read after the last lesson. */
+export type ContinueBook = { href: string; n: number; cover: string; page: number; pages: number; minutesLeft: number };
 export type OpenAssignment = {
   id: string;
   courseSlug: string;
@@ -297,6 +300,34 @@ export async function loadHome(supabase: Client, userId: string) {
   for (const p of programs) if (p.next) p.next.href = hrefs.get(p.next.lessonId) ?? p.next.href;
   for (const a of open) if (a.lessonId) a.href = hrefs.get(a.lessonId) ?? a.href;
 
+  // C-030: a CelsUS CelsBook read more recently than any lesson: "Continúa" shows the book with its cover.
+  const lastLessonAt = Math.max(0, ...all.map((c) => (c.last ? Date.parse(c.last.at) : 0)));
+  const { data: openBook } = await supabase
+    .from("ebook_answers")
+    .select("ebook_id, updated_at, ebook:ebooks!inner(slug, est_minutes, cover_path, program)")
+    .eq("user_id", userId)
+    .is("completed_at", null)
+    .not("last_screen", "is", null)
+    .eq("ebook.program", "celsus")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  let continueBook: ContinueBook | null = null;
+  const ob = openBook ? pick(openBook.ebook) : null;
+  const obN = ob ? Number(/^celsus-celsbook-episode-(\d+)$/.exec(ob.slug)?.[1] ?? 0) : 0;
+  if (openBook && ob && obN && coverUrl(ob.cover_path) && Date.parse(openBook.updated_at) > lastLessonAt) {
+    const pr = (await bookProgress(supabase, userId, [openBook.ebook_id])).get(openBook.ebook_id);
+    if (pr && pr.pages)
+      continueBook = {
+        href: `/app/libros/${ob.slug}`,
+        n: obN,
+        cover: coverUrl(ob.cover_path)!,
+        page: Math.max(1, pr.page),
+        pages: pr.pages,
+        minutesLeft: Math.max(1, Math.round((ob.est_minutes ?? 0) * (1 - pr.page / pr.pages))),
+      };
+  }
+
   const civics = setting("civics_pretest_url");
   const url = typeof civics === "string" && /^(https:\/\/|\/)/.test(civics) ? civics : null;
 
@@ -313,6 +344,7 @@ export async function loadHome(supabase: Client, userId: string) {
     doneToday,
     programs,
     continueLesson,
+    continueBook,
     assignments: open,
     civicsUrl: url,
     medals: {

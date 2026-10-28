@@ -5,6 +5,7 @@
 // (this week's questions, extra material, next episode). Big type and buttons: most students are 45 to 65.
 import "./celsus-episode.css";
 import Link from "next/link";
+import { CoverBook } from "@/components/celsbook/CoverBook";
 import { BackButtons, type UsBack } from "@/components/celsus/BackButtons";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -72,6 +73,7 @@ export function CelsusEpisode({
   resumeMeta,
   xp,
   teacherGuide = null,
+  book = null,
 }: {
   t: T;
   episode: Episode;
@@ -95,6 +97,8 @@ export function CelsusEpisode({
   xp: number;
   /** Teachers and admins only: the "Guía del profesor" card above "Continúa donde te quedaste". */
   teacherGuide?: { t: Dictionary["guide"]; href: string; evalHref: string | null } | null;
+  /** C-030: the CelsBook part shows its real cover, a progress bar and "Seguir leyendo". */
+  book?: { cover: string; pct: number; started: boolean; done: boolean; alt: string; keep: string } | null;
 }) {
   const parts = episode.parts;
   /** Track C doesn't need the quiz: it never blocks them, and shows as "not needed" until it is recorded. */
@@ -310,25 +314,38 @@ export function CelsusEpisode({
                     {p.done ? "✓" : i + 1}
                   </span>
                   <div className="pi">
-                    <span className="tile" aria-hidden style={{ ["--tb" as string]: PART_TILE[role(p)] }}>
-                      {PART_ICON[role(p)]({})}
-                    </span>
+                    {book && role(p) === "book" ? (
+                      <span className="cbk-mini">
+                        <CoverBook src={book.cover} alt={book.alt} />
+                      </span>
+                    ) : (
+                      <span className="tile" aria-hidden style={{ ["--tb" as string]: PART_TILE[role(p)] }}>
+                        {PART_ICON[role(p)]({})}
+                      </span>
+                    )}
                     <div className="pt">
                       <p className="n">{fill(t.partKicker, { n: i + 1, type: t.types[role(p)] })}</p>
                       <h3>{roleName(p)}</h3>
                       <p>{skip ? t.quizNotForC : subs[role(p)]}</p>
+                      {book && role(p) === "book" && (book.pct > 0 || p.done) && (
+                        <div className="cbk-bar" aria-hidden>
+                          <i style={{ width: `${p.done ? 100 : book.pct}%` }} />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <Link
                     href={p.href}
-                    className={`st ${p.done ? "ok" : isNow ? "go" : skip ? "ok" : "todo"}`}
-                    aria-label={`${roleName(p)}: ${p.done ? t.done : isNow ? t.continueBtn : skip ? t.notNeeded : t.startBtn}`}
+                    className={`st ${p.done ? "ok" : isNow || (book && role(p) === "book" && book.started) ? "go" : skip ? "ok" : "todo"}`}
+                    aria-label={`${roleName(p)}: ${p.done ? t.done : book && role(p) === "book" && book.started ? book.keep : isNow ? t.continueBtn : skip ? t.notNeeded : t.startBtn}`}
                   >
                     {p.done ? (
                       <>
                         <em>✓ {t.done}</em>
                         {role(p) === "audio" ? t.againAudio : t.again}
                       </>
+                    ) : book && role(p) === "book" && book.started ? (
+                      book.keep
                     ) : isNow ? (
                       t.continueBtn
                     ) : skip ? (

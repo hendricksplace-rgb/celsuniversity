@@ -8,6 +8,7 @@ import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { ROUTE_PROGRAM } from "@/lib/route";
 import { BSNS_SLUG, bsnsHomeHref } from "@/lib/bsns";
 import { lessonHrefs, lessonPagePath } from "@/lib/lesson-href";
+import { SCREEN_PROBE, coverUrl, progressOf, screenCount, screenIds } from "@/lib/celsbook-progress";
 
 const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
@@ -40,13 +41,6 @@ const partName = (title: string) => {
 /** Part chips on the "Donde te quedaste" card: up to six, always including the current one. */
 const MAX_PARTS = 6;
 
-/**
- * The screen count without downloading the screens (they hold the whole book): the id of each of the
- * first MAX_SCREENS slots, counted where present.
- */
-const MAX_SCREENS = 40;
-const SCREEN_PROBE = Array.from({ length: MAX_SCREENS }, (_, i) => `s${i}:screens->${i}->>id`).join(", ");
-const screenCount = (row: object) => Object.entries(row).filter(([k, v]) => /^s\d+$/.test(k) && v != null).length;
 
 export type Glyph = "globe" | "doc" | "chat" | "money" | "people" | "check";
 export type BookTone = "us" | "us2" | "gl" | "gold" | "teal" | "rose" | "violet";
@@ -65,6 +59,10 @@ export type ShelfBook = {
   minutes: number | null;
   screens: number;
   state: CardState;
+  /** CelsUS CelsBooks (C-030): the real cover, the topic and how far the student is (0–100). */
+  cover?: string | null;
+  topic?: string;
+  pct?: number;
 };
 
 const GLYPH_BY_COURSE: Record<string, Glyph> = {
@@ -89,7 +87,7 @@ export async function loadMyCourses(supabase: Client, userId: string) {
       .eq("user_id", userId)
       .eq("status", "active"),
     // RLS: published books in courses the student can open.
-    supabase.from("ebooks").select("id, slug, title, subtitle, program, est_minutes, created_at, course:courses(slug, sort_order)").eq("status", "published"),
+    supabase.from("ebooks").select("id, slug, title, subtitle, program, est_minutes, cover_path, created_at, course:courses(slug, sort_order)").eq("status", "published"),
     // Typed as just the id: the screen-slot columns are read untyped in screenCount().
     supabase.from("ebooks").select(`id, ${SCREEN_PROBE}` as "id").eq("status", "published"),
     supabase.from("ebook_answers").select("ebook_id, last_screen, completed_at").eq("user_id", userId),
@@ -169,6 +167,7 @@ export async function loadMyCourses(supabase: Client, userId: string) {
 
   // Bookshelf: one shelf per program, in course order; each course's main e-book first, then guides.
   const screensOf = new Map((probes ?? []).map((p) => [p.id, screenCount(p)]));
+  const idsOf = new Map((probes ?? []).map((p) => [p.id, screenIds(p)]));
   const read = new Map((answers ?? []).map((a) => [a.ebook_id, a]));
   const list = (books ?? []).map((b) => {
     const course = pick(b.course);
@@ -190,7 +189,23 @@ export async function loadMyCourses(supabase: Client, userId: string) {
       if (b.program === "celsus" || ep) {
         // "CelsUS · Episodio 3" with subtitle "<series> · Deberes, historia y derechos": the topic goes on the cover.
         const topic = (b.subtitle ?? "").split(" · ").pop() || b.title;
-        return { id: b.id, slug: b.slug, program: b.program, kind: "celsbook" as const, face: topic, caption: b.title, number: ep ? ep[1].padStart(2, "0") : null, glyph: null, tone: (ep && Number(ep[1]) % 2 === 0 ? "us2" : "us") as BookTone, minutes: b.est_minutes, screens, state };
+        return {
+          id: b.id,
+          slug: b.slug,
+          program: b.program,
+          kind: "celsbook" as const,
+          face: topic,
+          caption: b.title,
+          number: ep ? ep[1].padStart(2, "0") : null,
+          glyph: null,
+          tone: (ep && Number(ep[1]) % 2 === 0 ? "us2" : "us") as BookTone,
+          minutes: b.est_minutes,
+          screens,
+          state,
+          cover: coverUrl(b.cover_path),
+          topic,
+          pct: progressOf(idsOf.get(b.id) ?? [], a).pct,
+        };
       }
       const glyph = glyphOf(b.slug, b.courseSlug);
       return { id: b.id, slug: b.slug, program: b.program, kind: (b.slug.startsWith("guia-") ? "guide" : "ebook") as ShelfBook["kind"], face: b.title, caption: b.title, number: null, glyph, tone: TONE[glyph], minutes: b.est_minutes, screens, state };
