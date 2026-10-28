@@ -263,8 +263,10 @@ async function processOne(w, key) {
   else if (p.v === "h264" && (p.a === "aac" || p.a === null)) {
     action = "remux";
     ff(["-i", src, "-c", "copy", "-movflags", "+faststart", out]);
-  } else {
-    action = `transcode ${p.v}/${p.a}`;
+  }
+  if (!fs.existsSync(out) || (w.ext === "mp4" && fs.statSync(out).size > 400 * 1024 * 1024)) {
+    // Not H.264/AAC, or too heavy to stream on a phone (e.g. the 900 MB TN intro): re-encode.
+    action = fs.existsSync(out) ? "transcode (over 400 MB)" : `transcode ${p.v}/${p.a}`;
     ff(["-i", src, ...X264("22", "scale='min(1920,iw)':-2"), out]);
     if (fs.statSync(out).size > 400 * 1024 * 1024) {
       action += " (crf 24, 720p)";
@@ -307,6 +309,18 @@ async function processOne(w, key) {
 }
 
 // ---------- run ----------
+if (process.argv.includes("--selftest")) {
+  // Uploads a 13 MB throwaway file (3 chunks), checks its stored size, then removes it. Touches no lesson data.
+  const f = path.join(WORK, "selftest.bin");
+  fs.writeFileSync(f, Buffer.alloc(13 * 1024 * 1024, 7));
+  const dest = "zz-c019-selftest/selftest.bin";
+  const size = await tusUpload(dest, f, "application/octet-stream");
+  const remote = await remoteSize(dest);
+  await db.storage.from(BUCKET).remove([dest]);
+  fs.rmSync(f, { force: true });
+  log(`SELFTEST upload ${size} bytes, stored ${remote}: ${remote === size ? "OK" : "MISMATCH"}`);
+  process.exit(remote === size ? 0 : 1);
+}
 const list = (await workList()).filter((w) => ONLY === "all" || w.kind === ONLY);
 const pending = list.filter((w) => !state[w.url]?.ok);
 log(`RUN only=${ONLY} batch=${BATCH}${DRY ? " (dry)" : ""}: ${list.length} source URLs, ${pending.length} to do`);
