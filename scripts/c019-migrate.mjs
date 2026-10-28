@@ -29,6 +29,7 @@ const arg = (k, d) => (process.argv.find((a) => a.startsWith(`--${k}=`)) ?? `=${
 const ONLY = arg("only", "all");
 const BATCH = Number(arg("batch", "9999"));
 const DRY = process.argv.includes("--dry");
+const MATCH = arg("match", "");
 
 const clean = (s) => (s ?? "").replace(/[​-‍﻿]/g, "").trim();
 const URL_ = clean(process.env.NEXT_PUBLIC_SUPABASE_URL);
@@ -205,7 +206,8 @@ async function workList() {
     for (const u of w.uses) {
       if (w.dest[u.courseId]) continue;
       if (u.courseId === BSNS && u.video) {
-        const v = Number(/video\s*0?(\d+)/i.exec(u.title)?.[1] ?? 0);
+        // "Week 4 | Video 06", or Week 2's "Week 2: 02 | …" / "Week 02:06 | …"
+        const v = Number((/video\s*0?(\d+)/i.exec(u.title) ?? /week\s*0?\d+\s*:\s*0?(\d+)/i.exec(u.title))?.[1] ?? 0);
         if (!v) w.error = `no video number in "${u.title}"`;
         w.dest[u.courseId] = `${u.courseId}/celsbsns/week-${String(u.week).padStart(2, "0")}/video-${String(v).padStart(2, "0")}.mp4`;
       } else w.dest[u.courseId] = `${u.courseId}/videos/${name}.${ext}`;
@@ -322,7 +324,7 @@ if (process.argv.includes("--selftest")) {
   process.exit(remote === size ? 0 : 1);
 }
 const list = (await workList()).filter((w) => ONLY === "all" || w.kind === ONLY);
-const pending = list.filter((w) => !state[w.url]?.ok);
+const pending = list.filter((w) => !state[w.url]?.ok && (!MATCH || w.url.includes(MATCH)));
 log(`RUN only=${ONLY} batch=${BATCH}${DRY ? " (dry)" : ""}: ${list.length} source URLs, ${pending.length} to do`);
 if (DRY) {
   for (const w of pending) log("  ", w.kind, w.course, "|", w.uses.length, "use(s) →", Object.values(w.dest).join(", "), w.error ?? "");

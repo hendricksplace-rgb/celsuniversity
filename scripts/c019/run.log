@@ -104,3 +104,68 @@
 2026-10-28T14:43:12.050Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-00.mp4 no video number in "Week 2: 01 | Opening & Week 2 Focus"
 2026-10-28T14:43:12.050Z    base44 Tu Camino Con La Visa TN: Empieza Aquí | 1 use(s) → 78e640f6-fc48-4659-8db0-8ce01381caba/videos/eae594c6a_C1_-_M1_-_Intro.mp4 
 2026-10-28T14:45:32.772Z SELFTEST upload 13631488 bytes, stored 13631488: OK
+2026-10-28T15:00:10.467Z RUN only=all batch=1: 104 source URLs, 1 to do
+2026-10-28T15:00:10.476Z START base44 English For Business | Week 4 | Video 06 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-06.mp4
+2026-10-28T15:00:46.544Z DONE  base44 149.8 MB 65s remux 1 row(s) rewritten
+2026-10-28T15:00:47.320Z END batch: 103 source URL(s) still to do
+2026-10-28T15:38:14.834Z RUN only=base44 batch=9: 26 source URLs, 25 to do
+2026-10-28T15:38:14.846Z START base44 English For Business | Week 5 | Video 02 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-02.mp4
+2026-10-28T15:39:00.833Z DONE  base44 151.4 MB 107s remux 1 row(s) rewritten
+2026-10-28T15:39:00.965Z START base44 English For Business | Week 5 | Video 03 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-03.mp4
+2026-10-28T15:39:32.256Z DONE  base44 118.7 MB 84s remux 1 row(s) rewritten
+2026-10-28T15:39:32.275Z START base44 English For Business | Week 5 | Video 04 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-04.mp4
+2026-10-28T15:40:01.411Z DONE  base44 124.1 MB 87s remux 1 row(s) rewritten
+2026-10-28T15:40:01.446Z START base44 English For Business | Week 5 | Video 05 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-05.mp4
+2026-10-28T15:40:41.513Z DONE  base44 204.0 MB 87s remux 1 row(s) rewritten
+2026-10-28T15:40:41.630Z FAIL  base44 English For Business | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/8bcadaa48_E4B-EP02-M2KeyCulturalDifferences.mov - no video number in "Week 2: 02 | Key Cultural Differences"
+2026-10-28T15:40:41.631Z FAIL  base44 English For Business | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/e3531fcec_E4B-EP02-M3RespectEtiquetteinAction.mov - no video number in "Week 2: 03 | Respect & Etiquette in Action"
+2026-10-28T15:40:41.631Z FAIL  base44 English For Business | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/f9163508f_E4B-EP02-M4DifficultConversations.mov - no video number in "Week 2: 04 | Difficult Conversations"
+2026-10-28T15:40:41.632Z FAIL  base44 English For Business | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/dd6ec96ee_E4B-EP02-M5.mov - no video number in "Week 2: 05 | Difficult Conversations"
+2026-10-28T15:40:41.633Z FAIL  base44 English For Business | https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/b8bff9bd8_E4B-EP02-M6ClosingActionPlan.mov - no video number in "Week 02:06 | Closing & Action Plan"
+2026-10-28T15:40:42.195Z END batch: 21 source URL(s) still to do
+2026-10-28T15:40:52.216Z RUN only=base44 batch=9999 (dry): 26 source URLs, 21 to do
+2026-10-28T15:40:52.216Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-02.mp4 
+2026-10-28T15:40:52.216Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-03.mp4 
+2026-10-28T15:40:52.216Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-04.mp4 
+2026-10-28T15:40:52.216Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-05.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-06.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-01.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-02.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-03.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-06.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-01.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-03.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-05.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-01.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-07.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-01.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-02.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-06/video-03.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-05/video-06.mp4 
+2026-10-28T15:40:52.217Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-07.mp4 
+2026-10-28T15:40:52.218Z    base44 English For Business | 1 use(s) → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-01.mp4 
+2026-10-28T15:40:52.218Z    base44 Tu Camino Con La Visa TN: Empieza Aquí | 1 use(s) → 78e640f6-fc48-4659-8db0-8ce01381caba/videos/eae594c6a_C1_-_M1_-_Intro.mp4 
+2026-10-28T15:41:02.638Z RUN only=base44 batch=11: 26 source URLs, 21 to do
+2026-10-28T15:41:02.640Z START base44 English For Business | Week 2: 02 | Key Cultural Differences → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-02.mp4
+2026-10-28T15:43:31.560Z DONE  base44 24.8 MB 101s transcode hevc/aac 1 row(s) rewritten
+2026-10-28T15:43:31.702Z START base44 English For Business | Week 2: 03 | Respect & Etiquette in Action → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-03.mp4
+2026-10-28T15:46:29.111Z DONE  base44 21.7 MB 88s transcode prores/aac 1 row(s) rewritten
+2026-10-28T15:46:30.391Z START base44 English For Business | Week 2: 04 | Difficult Conversations → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-04.mp4
+2026-10-28T15:46:52.141Z DONE  base44 106.2 MB 76s remux 1 row(s) rewritten
+2026-10-28T15:46:52.160Z START base44 English For Business | Week 2: 05 | Difficult Conversations → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-05.mp4
+2026-10-28T15:47:06.824Z DONE  base44 74.3 MB 54s remux 1 row(s) rewritten
+2026-10-28T15:47:06.844Z START base44 English For Business | Week 02:06 | Closing & Action Plan → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-02/video-06.mp4
+2026-10-28T15:47:27.666Z DONE  base44 82.9 MB 60s remux 1 row(s) rewritten
+2026-10-28T15:47:27.690Z START base44 English For Business | Week 3 Video 1 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-01.mp4
+2026-10-28T15:47:48.378Z DONE  base44 106.6 MB 76s remux 1 row(s) rewritten
+2026-10-28T15:47:48.403Z START base44 English For Business | Week 3 Video 2 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-02.mp4
+2026-10-28T15:48:14.068Z DONE  base44 123.9 MB 88s remux 1 row(s) rewritten
+2026-10-28T15:48:14.090Z START base44 English For Business | Week 3 Video 3 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-03.mp4
+2026-10-28T15:48:47.650Z DONE  base44 191.6 MB 83s remux 1 row(s) rewritten
+2026-10-28T15:48:47.751Z START base44 English For Business | Week 3 Video 6 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-03/video-06.mp4
+2026-10-28T15:49:16.911Z DONE  base44 144.7 MB 102s remux 1 row(s) rewritten
+2026-10-28T15:49:16.938Z START base44 English For Business | Week 4 | Video 01 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-01.mp4
+2026-10-28T15:49:44.547Z DONE  base44 144.5 MB 102s remux 1 row(s) rewritten
+2026-10-28T15:49:44.573Z START base44 English For Business | Week 4 | Video 03 → 2bde8b07-a6a2-4709-989e-a32467ee26a7/celsbsns/week-04/video-03.mp4
+2026-10-28T15:50:24.941Z DONE  base44 212.3 MB 90s remux 1 row(s) rewritten
+2026-10-28T15:50:25.700Z END batch: 10 source URL(s) still to do
