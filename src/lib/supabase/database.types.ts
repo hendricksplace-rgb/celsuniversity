@@ -187,6 +187,15 @@ export type Database = {
       }
       badges: {
         Row: {
+          category: string | null
+          emblem_url: string | null
+          icon: string | null
+          is_new: boolean | null
+          phrase_audio: string | null
+          phrase_en: string | null
+          phrase_es: string | null
+          phrase_wt: Json | null
+          tier: string | null
           active: boolean
           code: string
           color: string
@@ -196,6 +205,15 @@ export type Database = {
           sort_order: number
         }
         Insert: {
+          category?: string | null
+          emblem_url?: string | null
+          icon?: string | null
+          is_new?: boolean | null
+          phrase_audio?: string | null
+          phrase_en?: string | null
+          phrase_es?: string | null
+          phrase_wt?: Json | null
+          tier?: string | null
           active?: boolean
           code: string
           color: string
@@ -205,6 +223,15 @@ export type Database = {
           sort_order?: number
         }
         Update: {
+          category?: string | null
+          emblem_url?: string | null
+          icon?: string | null
+          is_new?: boolean | null
+          phrase_audio?: string | null
+          phrase_en?: string | null
+          phrase_es?: string | null
+          phrase_wt?: Json | null
+          tier?: string | null
           active?: boolean
           code?: string
           color?: string
@@ -3303,6 +3330,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      ack_badges: { Args: { codes: string[] }; Returns: undefined }
       add_speaking_rep: {
         Args: { p_exercise: number; p_lesson: string }
         Returns: number[]
@@ -3381,9 +3409,19 @@ export type Database = {
       my_new_badges: {
         Args: never
         Returns: {
+          category: string | null
           code: string
           color: string
+          earned_at: string
+          emblem_url: string | null
+          icon: string | null
           name: string
+          phrase_audio: string | null
+          phrase_en: string | null
+          phrase_es: string | null
+          phrase_wt: Json | null
+          requirement: string
+          tier: string | null
         }[]
       }
       mark_invite_activated: { Args: never; Returns: undefined }
