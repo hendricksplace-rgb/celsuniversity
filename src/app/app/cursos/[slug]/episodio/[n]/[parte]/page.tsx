@@ -10,6 +10,7 @@ import { PartShell, Empty, FinishButton } from "@/components/part/PartShell";
 import { VideoPart } from "@/components/part/VideoPart";
 import { fill } from "@/components/course/kit";
 import { CardsPart, type Card } from "@/components/part/CardsPart";
+import { CardsV2 } from "@/components/part/CardsV2";
 import { QuizPart } from "@/components/part/QuizPart";
 import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
@@ -105,6 +106,8 @@ function toCards(blocks: Block[], sign: (ref: string) => string | null): Card[] 
     }));
 }
 
+const CELSTV_SLUG = "celstv-english-for-our-generation";
+
 type Props = { params: Promise<{ slug: string; n: string; parte: string }>; searchParams: Promise<{ original?: string }> };
 
 export default async function PartPage({ params, searchParams }: Props) {
@@ -149,7 +152,12 @@ export default async function PartPage({ params, searchParams }: Props) {
     const raw = b ? (b.block_type === "video" ? (b.data.media_url as string | null) : ((settingsOf(b).src as string | undefined) ?? b.body)) : null;
     body = <VideoPart src={videoEmbed(raw ?? null)} file={directMedia(raw ?? null, content.signed)} title={`${part.name} · ${episode.title}`} finishLabel={finishLabel} />;
   } else if (key === "celscards" && blocks.some((b) => b.block_type === "flashcard")) {
-    body = <CardsPart cards={toCards(blocks, (r) => content.signed.get(r) ?? null)} />;
+    const cards = toCards(blocks, (r) => content.signed.get(r) ?? null);
+    if (page.course.slug === CELSTV_SLUG && episode.n <= 8) {
+      // C-035: the new CelsTV cards (episodes 1–8 for now); the "tap to flip" guide shows once per student.
+      const { data: pref } = await supabase.from("user_preferences").select("celstv_cards_coach_done").eq("user_id", viewer.user.id).maybeSingle();
+      body = <CardsV2 cards={cards} coachDone={!!pref?.celstv_cards_coach_done} />;
+    } else body = <CardsPart cards={cards} />;
   } else if (key === "quiz" && blocks.some(isEpisodeQuiz)) {
     // celstv_quiz, or a plain quiz block carrying the same questions (the episode 8 review).
     const quiz = blocks.find(isEpisodeQuiz)!;

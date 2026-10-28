@@ -14,15 +14,15 @@ import { reducedMotion, sfx } from "./fx";
 
 /** `imageRef`: the storage:// file behind `image`, signed again on request (C-009). */
 export type Card = { id: string; front: string; back: string; cat: Cat; audio: string | null; audioRef?: string | null; image: string | null; imageRef?: string | null };
-type Cat = "words" | "verbs" | "phrases";
-const CATS: Cat[] = ["words", "verbs", "phrases"];
+export type Cat = "words" | "verbs" | "phrases";
+export const CATS: Cat[] = ["words", "verbs", "phrases"];
 const CAT_BG: Record<Cat, string> = {
   words: "linear-gradient(165deg, #12A6DD 0%, #0A72A8 100%)",
   verbs: "linear-gradient(165deg, #E0127A 0%, #A8105A 100%)",
   phrases: "linear-gradient(165deg, #16A36B 0%, #0B7A5E 100%)",
 };
-const CAT_TAB: Record<Cat, string> = { words: "#43D6FE", verbs: "#FF5FA2", phrases: "#7BE07A" };
-const XP_PER_WORD = 5;
+export const CAT_TAB: Record<Cat, string> = { words: "#43D6FE", verbs: "#FF5FA2", phrases: "#7BE07A" };
+export const XP_PER_WORD = 5;
 
 // ---------- pronunciation ----------
 const words = (s: string) =>
@@ -48,7 +48,7 @@ export function scoreSpeech(target: string, heard: string) {
   return { score, words: per.map((p) => ({ w: p.w, ok: p.ok >= 0.8 })) };
 }
 
-type SR = {
+export type SR = {
   lang: string;
   maxAlternatives: number;
   interimResults: boolean;
@@ -59,7 +59,7 @@ type SR = {
   onend: (() => void) | null;
 };
 type SRWindow = { SpeechRecognition?: new () => SR; webkitSpeechRecognition?: new () => SR };
-function recognizer(): SR | null {
+export function recognizer(): SR | null {
   if (typeof window === "undefined") return null;
   const w = window as unknown as SRWindow;
   const C = w.SpeechRecognition ?? w.webkitSpeechRecognition;
@@ -67,7 +67,7 @@ function recognizer(): SR | null {
 }
 
 /** The card's recording; a card without one stays silent (never a browser voice, C-010). */
-function say(card: Card) {
+export function say(card: Card) {
   if (!card.audio) return;
   void new Audio(card.audioRef ? fileRoute(card.audioRef) : card.audio).play().catch(() => undefined);
 }

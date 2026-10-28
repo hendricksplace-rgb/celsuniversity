@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { SITE_INDEXABLE, SITE_URL } from "@/lib/site";
-import { Inter, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
+import { Inter, Nunito, Plus_Jakarta_Sans, Poppins, Source_Serif_4 } from "next/font/google";
 import { OfflineSync } from "@/components/OfflineSync";
 import { ErrorReporter } from "@/components/errors/ErrorReporter";
 import { InstallProvider, captureInstallPrompt } from "@/components/install/InstallApp";
@@ -17,6 +17,8 @@ const poppins = Poppins({
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
+// CelsTV CelsCards and CelsBook (C-035, C-036): titles and words.
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"], weight: ["700", "800", "900"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();
@@ -40,7 +42,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   const { lang, t } = await getDictionary();
   return (
     <html lang={lang}>
-      <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} antialiased`}>
+      <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} ${nunito.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
         <InstallProvider t={t.install}>
           <OfflineSync />

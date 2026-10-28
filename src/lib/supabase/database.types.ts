@@ -3126,6 +3126,8 @@ export type Database = {
       }
       user_preferences: {
         Row: {
+          celsbook_opened: Json
+          celstv_cards_coach_done: boolean
           autoplay_audio: boolean
           daily_goal_xp: number
           email_followups: boolean
@@ -3138,6 +3140,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          celsbook_opened?: Json
+          celstv_cards_coach_done?: boolean
           autoplay_audio?: boolean
           daily_goal_xp?: number
           email_followups?: boolean
@@ -3150,6 +3154,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+          celsbook_opened?: Json
+          celstv_cards_coach_done?: boolean
           autoplay_audio?: boolean
           daily_goal_xp?: number
           email_followups?: boolean
