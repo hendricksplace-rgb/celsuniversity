@@ -37,7 +37,7 @@ export function TopNav({ items }: { items: NavItem[] }) {
 export function TabBar({ items }: { items: NavItem[] }) {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[#EFE6F2] bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+    <nav data-app-tabbar className="fixed inset-x-0 bottom-0 z-30 border-t border-[#EFE6F2] bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
       <ul className="mx-auto flex max-w-md">
         {items.map((it) => {
           const on = active(pathname, it.href);

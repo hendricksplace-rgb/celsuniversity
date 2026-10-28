@@ -52,7 +52,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       data-autoplay={prefs.autoplay_audio ? "on" : "off"}
       data-text={prefs.text_size}
     >
-      <header className="sticky top-0 z-30 border-b border-[#EFE6F2] bg-white/90 backdrop-blur">
+      <header data-app-header className="sticky top-0 z-30 border-b border-[#EFE6F2] bg-white/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5">
           <Link href="/app" className="flex items-center gap-1.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F5178C]">
             <Image src="/brand/celsu-u.png" alt="" width={30} height={20} />
@@ -114,7 +114,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
       </header>
-      <main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">{children}</main>
+      <main data-app-main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">{children}</main>
       <BadgeWatcher title={t.progress.newMedal} cta={t.progress.seeMedals} />
       <CheerWatcher t={t.lb} />
       <VideoReadyWatcher label={t.bv.ready} go={t.bv.readyGo} />

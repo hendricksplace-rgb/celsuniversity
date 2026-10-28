@@ -11,6 +11,7 @@ import { VideoPart } from "@/components/part/VideoPart";
 import { fill } from "@/components/course/kit";
 import { CardsPart, type Card } from "@/components/part/CardsPart";
 import { CardsV2 } from "@/components/part/CardsV2";
+import { CelsBookV2, type CelsBookV2Data } from "@/components/part/CelsBookV2";
 import { QuizPart } from "@/components/part/QuizPart";
 import { buildQuiz } from "@/lib/quiz";
 import { BookPart } from "@/components/part/BookPart";
@@ -147,6 +148,7 @@ export default async function PartPage({ params, searchParams }: Props) {
   const finishLabel = fill(t.part.finish, { part: part.name });
 
   let body: React.ReactNode;
+  let bare = false;
   if (key === "celsvideo") {
     const b = blocks.find((x) => x.block_type === "video" || x.block_type === "embed");
     const raw = b ? (b.block_type === "video" ? (b.data.media_url as string | null) : ((settingsOf(b).src as string | undefined) ?? b.body)) : null;
@@ -167,6 +169,49 @@ export default async function PartPage({ params, searchParams }: Props) {
       : { data: [] as { data: unknown }[] };
     const cards = (cardBlocks ?? []).flatMap((b) => rawCards((b.data as Record<string, unknown>)?.settings));
     body = <QuizPart questions={buildQuiz(settingsOf(quiz), cards, (r) => (typeof r === "string" ? (content.signed.get(r) ?? null) : null), part.id)} />;
+  } else if (
+    key === "celsbook" &&
+    original !== "1" &&
+    page.course.slug === CELSTV_SLUG &&
+    episode.n <= 8 &&
+    blocks.some((b) => b.block_type === "celsbook" && Number(b.data.version) === 2)
+  ) {
+    // C-036: the CelsBook as a real book (CelsTV episodes 1–8, data version 2).
+    const data = blocks.find((b) => b.block_type === "celsbook" && Number(b.data.version) === 2)!.data;
+    const v1 = toCelsBook(data, episode, (r) => content.signed.get(r) ?? null, "");
+    const arr = <X,>(v: unknown) => (Array.isArray(v) ? (v as X[]) : []);
+    const book: CelsBookV2Data = {
+      ep: episode.n,
+      title: v1.title,
+      subEs: v1.subEs,
+      image: episode.artwork,
+      sections: v1.sections,
+      groups: arr<Record<string, unknown>>(data.groups).map((g) => ({
+        key: String(g.key ?? ""),
+        nameEs: String(g.name_es ?? ""),
+        nameEn: String(g.name_en ?? ""),
+        color: String(g.color ?? "#35C3F0"),
+        items: arr<unknown>(g.items).filter((i): i is number => typeof i === "number"),
+      })),
+      review: arr<Record<string, unknown>>(data.review)
+        .map((q) => ({ q: String(q.q_es ?? ""), options: arr<unknown>(q.options).map(String), answer: Number(q.answer), xp: Number(q.xp) || 10 }))
+        .filter((q) => q.q && q.options.length >= 2 && q.answer >= 0 && q.answer < q.options.length),
+    };
+    const { data: pref } = await supabase.from("user_preferences").select("celsbook_opened").eq("user_id", viewer.user.id).maybeSingle();
+    const opened = pref?.celsbook_opened && typeof pref.celsbook_opened === "object" && !Array.isArray(pref.celsbook_opened) ? (pref.celsbook_opened as Record<string, { page?: string }>) : {};
+    const hasOriginal = blocks.some((b) => b.block_type === "flipbook" && Array.isArray(settingsOf(b).pages));
+    const audioPart = episode.parts.find((x) => x.key === "celsaudio");
+    bare = true;
+    body = (
+      <CelsBookV2
+        t={t.part.cb2}
+        book={book}
+        opened={opened}
+        episodeHref={episodePath(page.course.slug, episode.n)}
+        audioHref={audioPart ? `${episodePath(page.course.slug, episode.n)}/celsaudio` : null}
+        originalHref={hasOriginal ? `${episodePath(page.course.slug, episode.n)}/celsbook?original=1` : null}
+      />
+    );
   } else if (key === "celsbook" && original !== "1" && blocks.some((b) => b.block_type === "celsbook")) {
     const partHref = `${episodePath(page.course.slug, episode.n)}/celsbook`;
     const hasOriginal = blocks.some((b) => b.block_type === "flipbook" && Array.isArray(settingsOf(b).pages));
@@ -273,6 +318,7 @@ export default async function PartPage({ params, searchParams }: Props) {
       userId={viewer.user.id}
       alreadyDone={part.done}
       nextEpisode={next ? { href: next.href, n: next.n } : null}
+      bare={bare}
     >
       {body}
     </PartShell>

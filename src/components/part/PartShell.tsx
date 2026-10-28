@@ -64,6 +64,7 @@ export function PartShell({
   userId,
   alreadyDone,
   nextEpisode,
+  bare = false,
   children,
 }: {
   t: T;
@@ -75,6 +76,8 @@ export function PartShell({
   userId: string;
   alreadyDone: boolean;
   nextEpisode: { href: string; n: number } | null;
+  /** The screen draws its own top bar on a white panel (CelsTV CelsBook v2, C-036); the finish flow stays. */
+  bare?: boolean;
   children: React.ReactNode;
 }) {
   const router = useRouter();
@@ -132,45 +135,57 @@ export function PartShell({
     <PartCtx.Provider value={value}>
       <div
         className={`relative -mx-4 -mt-6 flex min-h-[calc(100dvh-7.5rem)] flex-col overflow-hidden pb-6 sm:mx-auto sm:mt-0 sm:max-w-[560px] sm:rounded-[32px] md:-mt-2 ${ink}`}
-        style={{ background: PART_BG[partKey].bg }}
+        style={{ background: bare ? "var(--cb2-panel, #fff)" : PART_BG[partKey].bg }}
       >
-        <header className="flex items-center gap-2.5 px-4 pb-2 pt-4">
-          <Link
-            href={episodeHref}
-            aria-label={t.back}
-            className={`kit-focus-light grid size-9 shrink-0 place-items-center rounded-full ${light ? "bg-black/[.07]" : "bg-white/10"}`}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </Link>
-          <PartIcon k={partKey} size={34} />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-extrabold">{fill(t.of, { part: partName, n: episodeN })}</p>
-            <div
-              className={`mt-1.5 h-1.5 overflow-hidden rounded-full ${light ? "bg-black/10" : "bg-white/15"}`}
-              role="progressbar"
-              aria-label={fill(t.of, { part: partName, n: episodeN })}
-              aria-valuenow={Math.round(progress * 100)}
-              aria-valuemin={0}
-              aria-valuemax={100}
+        {!bare && (
+          <header className="flex items-center gap-2.5 px-4 pb-2 pt-4">
+            <Link
+              href={episodeHref}
+              aria-label={t.back}
+              className={`kit-focus-light grid size-9 shrink-0 place-items-center rounded-full ${light ? "bg-black/[.07]" : "bg-white/10"}`}
             >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden
+              >
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+            </Link>
+            <PartIcon k={partKey} size={34} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-extrabold">{fill(t.of, { part: partName, n: episodeN })}</p>
               <div
-                className="h-full rounded-full bg-[#FFEF05] transition-[width] duration-300"
-                style={{ width: `${progress * 100}%`, background: light ? "#E08A00" : undefined }}
-              />
+                className={`mt-1.5 h-1.5 overflow-hidden rounded-full ${light ? "bg-black/10" : "bg-white/15"}`}
+                role="progressbar"
+                aria-label={fill(t.of, { part: partName, n: episodeN })}
+                aria-valuenow={Math.round(progress * 100)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div
+                  className="h-full rounded-full bg-[#FFEF05] transition-[width] duration-300"
+                  style={{ width: `${progress * 100}%`, background: light ? "#E08A00" : undefined }}
+                />
+              </div>
             </div>
-          </div>
-          <span
-            className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-extrabold ${light ? "bg-black/[.07]" : "bg-white/10"}`}
-            aria-live="polite"
-            style={{ color: counter ? undefined : light ? "#8F5300" : "#FFEF05" }}
-          >
-            {counter ?? <>● {fill(t.xp, { n: xp })}</>}
-          </span>
-        </header>
+            <span
+              className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-extrabold ${light ? "bg-black/[.07]" : "bg-white/10"}`}
+              aria-live="polite"
+              style={{ color: counter ? undefined : light ? "#8F5300" : "#FFEF05" }}
+            >
+              {counter ?? <>● {fill(t.xp, { n: xp })}</>}
+            </span>
+          </header>
+        )}
 
-        <div className="flex flex-1 flex-col px-4">{children}</div>
+        <div className={`flex flex-1 flex-col ${bare ? "" : "px-4"}`}>{children}</div>
 
         {ending && (
           <div role="status" className="absolute inset-0 z-40 grid place-items-center bg-black/55 p-6 backdrop-blur-sm">
