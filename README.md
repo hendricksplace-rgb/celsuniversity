@@ -28,26 +28,28 @@ npx tsc --noEmit && npm run lint && npm run build
 
 ## Environment variables
 
-| Name | Where | Notes |
-| --- | --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | Vercel + `.env.local` | `https://pbpnhsgygwqxnkklhyuz.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Vercel + `.env.local` | Browser-safe `sb_publishable_…` key; RLS protects the data |
-| `NEXT_PUBLIC_SITE_URL` | optional | Base URL for auth email links. If unset, it comes from the request host |
-| `SUPABASE_SECRET_KEY` | **local only**, migration script | Bypasses RLS. Never add it to the app or to `NEXT_PUBLIC_*` |
-| `BASE44_APP_ID`, `BASE44_API_KEY` | **local only**, migration script | Read access to the old Base44 app |
+| Name                                   | Where                            | Notes                                                                                                                        |
+| -------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Vercel + `.env.local`            | `https://pbpnhsgygwqxnkklhyuz.supabase.co`                                                                                   |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Vercel + `.env.local`            | Browser-safe `sb_publishable_…` key; RLS protects the data                                                                   |
+| `NEXT_PUBLIC_SITE_URL`                 | optional                         | Base URL for auth email links. If unset, it comes from the request host                                                      |
+| `NEXT_PUBLIC_GOOGLE_AUTH`              | optional                         | `1` shows "Continuar con Google" on /entrar and /registro. Leave unset until the Google provider is enabled in Supabase Auth |
+| `NEXT_PUBLIC_OTP_LENGTH`               | optional                         | Digits in the sign-in email code (default 6). Must match Supabase Auth → Email OTP length                                    |
+| `SUPABASE_SECRET_KEY`                  | **local only**, migration script | Bypasses RLS. Never add it to the app or to `NEXT_PUBLIC_*`                                                                  |
+| `BASE44_APP_ID`, `BASE44_API_KEY`      | **local only**, migration script | Read access to the old Base44 app                                                                                            |
 
 Edge function secrets (Supabase → Edge Functions → Secrets, never in the repo):
 
-| Name | Used by | Notes |
-| --- | --- | --- |
-| `ANTHROPIC_API_KEY` | `evaluation` | Claude grades the writing and speaking answers |
-| `OPENAI_API_KEY` | `evaluation` | `gpt-4o-mini-transcribe` turns the spoken answer into text |
-| `RESEND_API_KEY` | `evaluation`, `send-email` | Without it emails are only logged (`email_outbox.status = 'stubbed'`) |
-| `SITE_URL` | optional | Links in emails. Default `https://celsuniversity.vercel.app` |
-| `EMAIL_REPLY_TO` | optional | Reply-to on app emails (the receipt says "Responde a este correo") |
-| `EVAL_IP_SALT` | optional | Salt for the hashed IPs in the evaluation rate limit |
-| `STRIPE_SECRET_KEY` | `checkout`, `stripe-webhook` | Without it the pay button says payments aren't active yet |
-| `STRIPE_WEBHOOK_SECRET` | `stripe-webhook` | Signing secret of the webhook endpoint; unsigned requests get 400 |
+| Name                    | Used by                      | Notes                                                                 |
+| ----------------------- | ---------------------------- | --------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`     | `evaluation`                 | Claude grades the writing and speaking answers                        |
+| `OPENAI_API_KEY`        | `evaluation`                 | `gpt-4o-mini-transcribe` turns the spoken answer into text            |
+| `RESEND_API_KEY`        | `evaluation`, `send-email`   | Without it emails are only logged (`email_outbox.status = 'stubbed'`) |
+| `SITE_URL`              | optional                     | Links in emails. Default `https://celsuniversity.vercel.app`          |
+| `EMAIL_REPLY_TO`        | optional                     | Reply-to on app emails (the receipt says "Responde a este correo")    |
+| `EVAL_IP_SALT`          | optional                     | Salt for the hashed IPs in the evaluation rate limit                  |
+| `STRIPE_SECRET_KEY`     | `checkout`, `stripe-webhook` | Without it the pay button says payments aren't active yet             |
+| `STRIPE_WEBHOOK_SECRET` | `stripe-webhook`             | Signing secret of the webhook endpoint; unsigned requests get 400     |
 
 ## Project layout
 
@@ -57,7 +59,8 @@ src/
     (site)/                public pages, with the dark site header and footer:
       page.tsx             marketing home (/)
       cursos/              public course catalog (/cursos)
-      (auth)/entrar        sign in (/entrar); (auth)/registro: sign up
+    (auth)/                sign-in screens, own light canvas (C-032): entrar (email code or password),
+                           registro, recuperar, nueva-contrasena, activar; components/auth/
     auth/callback          email-confirmation + OAuth code exchange
     app/                   student area (/app), needs a signed-in user; light shell (components/app/AppShell)
     app/cursos             Mis cursos (filters, course cards, Mis libros)
@@ -110,24 +113,24 @@ Google sign-in also needs the Google provider turned on under Authentication →
 
 `supabase/migrations/` matches what is applied to `celsu-lam` (checked against `supabase_migrations.schema_migrations`):
 
-| Version | Name | What it does |
-| --- | --- | --- |
-| 20261017194309 | core_schema | 26 tables, enums, indexes, `updated_at` triggers, `renew_offline_downloads` |
-| 20261017194328 | security | RLS + policies on every table, storage buckets and storage policies |
-| 20261017194346 | move_helpers_to_private_schema | moves `is_admin`, `is_staff`, `has_course_access`, … to the `private` schema |
-| 20261017225042 | course_layouts | allows the `ipd_sections` and `citizenship_modules` layouts that Base44 courses use |
-| 20261017230234 | staging_teacher_guides | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML (now copied into `content_blocks`; the table can be dropped) |
-| 20261017235047 | enable_pg_net | `pg_net` extension |
-| 20261017235906 | staging_ebook_text | `public.ebook_source_text`: temporary extracted text of the designrr PDFs for the CelsBook redesign |
-| 20261018001216 | ebooks_reader_content | `public.ebooks`: interactive e-book content (from Cowork) |
-| 20261018003317 | ebook_answers | `public.ebook_answers`: each student's own answers in an e-book. **Owner-only**: no staff or admin read |
-| 20261018020242 | evaluations_archive_and_version | `evaluations.archived` + `test_version`; archives the three 2008-bank exams (Cowork) |
-| 20261018021938 | audio_jobs_queue | `audio_jobs` queue and `job_tokens`, service role only (Cowork) |
-| 20261018022042 | apply_audio_jobs_fn | `private.apply_audio_jobs()`: writes generated audio into exam questions and e-book narration (Cowork) |
-| 20261018022948 | kick_audio_fn | `private.kick_audio()`: calls the `generate-audio` edge function (Cowork). **Differs from live in one value:** the anon key is replaced by a placeholder |
-| 20261018025745 | tighten_eval_read | `private.evaluation_course()`; evaluations and their questions readable only by staff or students with course access; archived evaluations hidden from students (Cowork) |
+| Version        | Name                            | What it does                                                                                                                                                                                             |
+| -------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 20261017194309 | core_schema                     | 26 tables, enums, indexes, `updated_at` triggers, `renew_offline_downloads`                                                                                                                              |
+| 20261017194328 | security                        | RLS + policies on every table, storage buckets and storage policies                                                                                                                                      |
+| 20261017194346 | move_helpers_to_private_schema  | moves `is_admin`, `is_staff`, `has_course_access`, … to the `private` schema                                                                                                                             |
+| 20261017225042 | course_layouts                  | allows the `ipd_sections` and `citizenship_modules` layouts that Base44 courses use                                                                                                                      |
+| 20261017230234 | staging_teacher_guides          | `private.teacher_guides_staging`: the 38 Gamma teacher guides converted to HTML (now copied into `content_blocks`; the table can be dropped)                                                             |
+| 20261017235047 | enable_pg_net                   | `pg_net` extension                                                                                                                                                                                       |
+| 20261017235906 | staging_ebook_text              | `public.ebook_source_text`: temporary extracted text of the designrr PDFs for the CelsBook redesign                                                                                                      |
+| 20261018001216 | ebooks_reader_content           | `public.ebooks`: interactive e-book content (from Cowork)                                                                                                                                                |
+| 20261018003317 | ebook_answers                   | `public.ebook_answers`: each student's own answers in an e-book. **Owner-only**: no staff or admin read                                                                                                  |
+| 20261018020242 | evaluations_archive_and_version | `evaluations.archived` + `test_version`; archives the three 2008-bank exams (Cowork)                                                                                                                     |
+| 20261018021938 | audio_jobs_queue                | `audio_jobs` queue and `job_tokens`, service role only (Cowork)                                                                                                                                          |
+| 20261018022042 | apply_audio_jobs_fn             | `private.apply_audio_jobs()`: writes generated audio into exam questions and e-book narration (Cowork)                                                                                                   |
+| 20261018022948 | kick_audio_fn                   | `private.kick_audio()`: calls the `generate-audio` edge function (Cowork). **Differs from live in one value:** the anon key is replaced by a placeholder                                                 |
+| 20261018025745 | tighten_eval_read               | `private.evaluation_course()`; evaluations and their questions readable only by staff or students with course access; archived evaluations hidden from students (Cowork)                                 |
 | 20261018025752 | guard_profile_evaluation_fields | `guard_profile_update`: only staff change `evaluation_level` / `evaluation_skills` / `evaluation_date`; role and organization checks apply to signed-in users only, so server-side changes work (Cowork) |
-| 20261018025809 | kick_audio_from_vault | `private.kick_audio()` reads the anon key from Vault secret `supabase_anon_key` (Cowork) |
+| 20261018025809 | kick_audio_from_vault           | `private.kick_audio()` reads the anon key from Vault secret `supabase_anon_key` (Cowork)                                                                                                                 |
 
 Make schema changes as **new** migration files. Don't edit the ones already applied.
 
@@ -135,11 +138,11 @@ Access model in short: anyone can read published programs, courses and modules. 
 
 ### Storage
 
-| Bucket | Public | Path convention |
-| --- | --- | --- |
-| `course-media` | no | `<course_id>/…`. Access is checked from the first path segment |
-| `public-assets` | yes | marketing images, course covers |
-| `user-uploads` | no | `<user_id>/…`. Each user can access only their own folder |
+| Bucket          | Public | Path convention                                                |
+| --------------- | ------ | -------------------------------------------------------------- |
+| `course-media`  | no     | `<course_id>/…`. Access is checked from the first path segment |
+| `public-assets` | yes    | marketing images, course covers                                |
+| `user-uploads`  | no     | `<user_id>/…`. Each user can access only their own folder      |
 
 ### Offline downloads
 
@@ -233,7 +236,7 @@ The approved designs are in `emails/` (see `emails/README.md`). The 11 in `email
 
 ### Lesson completion
 
-Each visible content block is a *part* of its lesson (`partKind` in `LessonBlock.tsx`, tracker in `src/components/lesson/progress.tsx`):
+Each visible content block is a _part_ of its lesson (`partKind` in `LessonBlock.tsx`, tracker in `src/components/lesson/progress.tsx`):
 
 - **Seen:** text, images, audio, files and e-books are done after about 2 seconds on screen.
 - **Video:** YouTube is done at 90 % watched or at the end (the embed has `enablejsapi=1`).
@@ -276,12 +279,12 @@ Guests can buy, so the pages live outside `/app`: `/comprar/[programa]` (step 1,
 
 Course and lesson pages wrap their content in `data-theme="…"`. Components use only the tokens defined in `globals.css` (`--t-bg`, `--t-surface`, `--t-text`, `--t-muted`, `--t-accent`, `--t-link`, `--t-border`, `--t-radius`, `--t-card-top`, `--t-font`, `--t-heading`, `--t-heading-weight`). Adding a brand means adding one token block.
 
-| Theme | Courses | Look |
-| --- | --- | --- |
-| `celstv` | CelsTV | playful: dark, rainbow accent bar, Poppins, round corners |
-| `celsbsns` | English For Business | professional navy on white, Inter, tight corners |
-| `celsus` | CelsUS Para Ciudadanía | formal, low tones: parchment, serif headings, burgundy rule |
-| `celsglobal` | CV, interviews, finances, Visa TN | muted sage and warm gray, for adult professionals |
+| Theme        | Courses                           | Look                                                        |
+| ------------ | --------------------------------- | ----------------------------------------------------------- |
+| `celstv`     | CelsTV                            | playful: dark, rainbow accent bar, Poppins, round corners   |
+| `celsbsns`   | English For Business              | professional navy on white, Inter, tight corners            |
+| `celsus`     | CelsUS Para Ciudadanía            | formal, low tones: parchment, serif headings, burgundy rule |
+| `celsglobal` | CV, interviews, finances, Visa TN | muted sage and warm gray, for adult professionals           |
 
 The same themes are used on the course catalog (`/cursos`), the student dashboard (`/app`), course and lesson pages, the e-book reader (`ebooks.program`) and the review page.
 

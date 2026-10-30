@@ -7,6 +7,10 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "CelsU",
     short_name: "CelsU",
     lang: "es",
+    // Relative on purpose: they resolve against the manifest's own host, the canonical SITE_URL (the old
+    // celsuniversity.vercel.app 308s there, src/lib/supabase/middleware.ts), so the home-screen app shares the
+    // browser's sign-in cookies (C-037).
+    id: "/app",
     start_url: "/app",
     scope: "/",
     display: "standalone",

@@ -7,7 +7,6 @@ import { createClient } from "@/lib/supabase/server";
 import { LANG_COOKIE, isLang } from "@/lib/i18n/dictionaries";
 import { safeNextPath } from "@/lib/safe-next";
 import { SITE_URL } from "@/lib/site";
-import { restoreLang } from "@/lib/i18n/restore";
 
 const safeNext = (value: FormDataEntryValue | null) => safeNextPath(value);
 
@@ -29,46 +28,11 @@ export async function setLanguage(formData: FormData) {
   revalidatePath("/", "layout");
 }
 
-export async function signIn(formData: FormData) {
-  const next = safeNext(formData.get("next"));
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: String(formData.get("email") ?? ""),
-    password: String(formData.get("password") ?? ""),
-  });
-  if (error) redirect(`/entrar?error=invalid&next=${encodeURIComponent(next)}`);
-  await restoreLang(supabase, data.user.id).catch(() => {});
-  redirect(next);
-}
-
 /** A product code from /registro?plan=… (checked against public.products by handle_new_user / reservePlan). */
 const planCode = (value: FormDataEntryValue | null) => {
   const v = String(value ?? "").trim();
   return /^[a-z0-9_]{1,60}$/.test(v) ? v : "";
 };
-
-export async function signUp(formData: FormData) {
-  const password = String(formData.get("password") ?? "");
-  // While purchases are closed, the plan the person picked (Matt, 2026-10-20): saved in the sign-up metadata;
-  // the handle_new_user trigger copies it to profiles.requested_plan for staff.
-  const plan = planCode(formData.get("plan"));
-  const keep = plan ? `&plan=${plan}` : "";
-  if (password.length < 8) redirect(`/registro?error=weakPassword${keep}`);
-
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email: String(formData.get("email") ?? ""),
-    password,
-    options: {
-      data: { display_name: String(formData.get("name") ?? "") || undefined, requested_plan: plan || undefined },
-      emailRedirectTo: `${await siteUrl()}/auth/callback?next=/app`,
-    },
-  });
-  if (error) redirect(`/registro?error=generic${keep}`);
-  // With email confirmation on, there is no session yet.
-  if (!data.session) redirect(`/registro?sent=1${keep}`);
-  redirect(plan ? `/registro?reservado=1${keep}` : "/app");
-}
 
 /**
  * Saves `plan` (an active product code) as the signed-in person's requested plan: profiles.requested_plan +
@@ -119,21 +83,12 @@ export async function signInWithGoogle(formData: FormData) {
 }
 
 /**
- * "¿Olvidaste tu contraseña?": always the same answer, so it never reveals whether the email has an
- * account. Called from the server so the PKCE verifier cookie lands in this browser; the link
- * returns to /nueva-contrasena with a code.
+ * "Cerrar sesión" / "Salir": this device only. (C-037: the default scope was "global", so signing out on one
+ * device or domain ended the session on every phone and computer; "Cerrar sesión en todos mis dispositivos" in
+ * Mi cuenta → Seguridad is the global one.)
  */
-export async function requestPasswordReset(formData: FormData) {
-  const email = String(formData.get("email") ?? "").trim();
-  if (email) {
-    const supabase = await createClient();
-    await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${await siteUrl()}/nueva-contrasena` });
-  }
-  redirect("/recuperar?enviado=1");
-}
-
 export async function signOut() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  await supabase.auth.signOut({ scope: "local" });
   redirect("/");
 }

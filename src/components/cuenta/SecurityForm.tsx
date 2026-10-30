@@ -4,7 +4,8 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
+import { authError } from "@/lib/auth-errors";
 import { card, input, primary } from "./ui";
 
 type T = Dictionary["cuenta"];
@@ -35,7 +36,15 @@ export function PasswordFields({ t, onSubmit, label, busy }: { t: T; onSubmit: (
         <label htmlFor="pw" className="mb-1 block text-sm font-extrabold">
           {t.newPassword}
         </label>
-        <input id="pw" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} className={input} aria-describedby="pw-hint" />
+        <input
+          id="pw"
+          type="password"
+          autoComplete="new-password"
+          value={pw}
+          onChange={(e) => setPw(e.target.value)}
+          className={input}
+          aria-describedby="pw-hint"
+        />
         <div id="pw-hint" className="mt-1.5 flex items-center gap-2 text-xs text-[#6B6680]">
           <span className="flex h-1.5 w-24 gap-1" aria-hidden>
             {[0, 1, 2].map((i) => (
@@ -63,7 +72,7 @@ export function PasswordFields({ t, onSubmit, label, busy }: { t: T; onSubmit: (
   );
 }
 
-export function SecurityForm({ t, google, hasPassword }: { t: T; google: boolean; hasPassword: boolean }) {
+export function SecurityForm({ t, lang, google, hasPassword, byCode }: { t: T; lang: Lang; google: boolean; hasPassword: boolean; byCode: boolean }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -73,7 +82,8 @@ export function SecurityForm({ t, google, hasPassword }: { t: T; google: boolean
     setBusy(true);
     const { error } = await createClient().auth.updateUser({ password });
     setBusy(false);
-    setMsg({ ok: !error, text: error ? t.pwError : t.pwSaved });
+    // C-038: the real reason (weak or leaked, same as before…), never a generic error.
+    setMsg({ ok: !error, text: error ? authError(error, lang, "password").text : t.pwSaved });
     if (!error) setForm((n) => n + 1);
   };
   const everywhere = async () => {
@@ -85,7 +95,8 @@ export function SecurityForm({ t, google, hasPassword }: { t: T; google: boolean
   return (
     <div className="space-y-4">
       <section className={`${card} space-y-3`}>
-        <h2 className="text-lg font-extrabold">{google && !hasPassword ? t.createPassword : t.changePassword}</h2>
+        <h2 className="text-lg font-extrabold">{byCode ? t.passwordOptional : google && !hasPassword ? t.createPassword : t.changePassword}</h2>
+        {byCode && <p className="text-sm text-[#6B6680]">{t.passwordOptionalHint}</p>}
         {google && (
           <p className="rounded-xl bg-[#F7F5FA] px-3 py-2 text-sm">
             <strong>{t.google}.</strong> {!hasPassword && t.googleHint}

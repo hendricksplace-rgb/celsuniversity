@@ -1714,6 +1714,8 @@ const es = {
     // Seguridad
     changePassword: "Cambiar contraseña",
     createPassword: "Crear una contraseña",
+    passwordOptional: "Crear una contraseña (opcional)",
+    passwordOptionalHint: "Puedes entrar siempre con un código que te mandamos por correo. Si prefieres, crea también una contraseña.",
     google: "Entras con Google",
     googleHint: "Si quieres, crea también una contraseña para entrar con tu correo.",
     newPassword: "Nueva contraseña",
@@ -4099,6 +4101,8 @@ const en: Dictionary = {
     analytics: "Use my usage data to improve the courses",
     changePassword: "Change password",
     createPassword: "Create a password",
+    passwordOptional: "Create a password (optional)",
+    passwordOptionalHint: "You can always sign in with a code we email you. If you prefer, also create a password.",
     google: "You sign in with Google",
     googleHint: "If you like, also create a password to sign in with your email.",
     newPassword: "New password",
