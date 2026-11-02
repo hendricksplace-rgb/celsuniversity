@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   e2e:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
       E2E_BASE_URL: ${{ inputs.base_url || 'https://nuevo.celstv.com' }}
@@ -28,8 +28,8 @@ jobs:
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
       E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -42,7 +42,7 @@ jobs:
           curl -fsS --retry 10 --retry-delay 30 --retry-all-errors "$E2E_BASE_URL/" -o /dev/null
       - run: npx playwright install --with-deps chromium
       - run: npx playwright test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: playwright-report
