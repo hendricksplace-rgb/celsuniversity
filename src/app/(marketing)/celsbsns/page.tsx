@@ -1,7 +1,7 @@
 import { sitePrices } from "@/components/site/prices-server";
 import { createClient } from "@/lib/supabase/server";
 import { weekTitle } from "@/lib/bsns";
-import CelsBSNSBoard from "@/components/site/celsbsns/CelsBSNSBoard";
+import CelsBSNSPage from "@/components/site/celsbsns/CelsBSNSPage";
 
 // Title and description: celsu-website-copy.md §2.
 export const metadata = {
@@ -27,6 +27,14 @@ async function weekTopics() {
   return (data ?? []).map((m) => weekTitle(m.title));
 }
 
-export default async function CelsBSNSPage() {
-  return <CelsBSNSBoard weeks={await weekTopics()} prices={await sitePrices()} />;
+/** How long each plan gives access ("6 meses"), from public.products.access_label. */
+async function accessLabels() {
+  const supabase = await createClient();
+  const { data } = await supabase.from("products").select("code, access_label").in("code", ["celsbsns_standard", "celsbsns_premium", "bundle_tv_bsns"]).eq("active", true);
+  return Object.fromEntries((data ?? []).filter((r) => r.access_label).map((r) => [r.code, r.access_label as string]));
+}
+
+export default async function CelsBSNS() {
+  const [weeks, prices, access] = await Promise.all([weekTopics(), sitePrices(), accessLabels()]);
+  return <CelsBSNSPage weeks={weeks} prices={prices} access={access} />;
 }

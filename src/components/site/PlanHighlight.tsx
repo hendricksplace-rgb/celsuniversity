@@ -13,6 +13,8 @@ const STYLE = `[data-chosen-plan]{outline:4px solid #FFC531;outline-offset:4px;b
 export function PlanHighlight({ label = "Elegiste" }: { label?: string }) {
   const pathname = usePathname();
   useEffect(() => {
+    // The CelsBSNS v3 page highlights its own card (?plan= and ?nivel=, CelsBSNSPage).
+    if (pathname === "/celsbsns") return;
     const code = planCode(new URLSearchParams(window.location.search).get("plan"));
     if (!code) return;
     const button = document.querySelector(`#planes a[href="${planHref(code)}"]`);

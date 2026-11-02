@@ -57,3 +57,19 @@ test("www and nuevo.celstv.com 308 to celstv.com", async ({ request }) => {
     expect(res.headers()["location"], host).toMatch(/^https:\/\/celstv\.com\/celstv\/?$/);
   }
 });
+
+test("CelsBSNS: ?nivel= from the results email shows the result and highlights the plan for that level", async ({ page }) => {
+  await page.goto("/celsbsns?nivel=B1#planes");
+  await expect(page.getByRole("status").filter({ hasText: "Tu resultado: B1 · Intermedio" })).toBeVisible();
+  const hot = page.locator("#planes article.hot");
+  await expect(hot).toHaveCount(1);
+  await expect(hot).toContainText("Paquete");
+  await expect(hot).toContainText("Recomendado para tu nivel");
+
+  await page.goto("/celsbsns?nivel=B2#planes");
+  await expect(page.locator("#planes article.hot")).toContainText("Premium");
+
+  // Plan buttons go straight to the checkout (which redirects while purchases are closed).
+  for (const code of ["celsbsns_standard", "celsbsns_premium", "bundle_tv_bsns"])
+    await expect(page.locator(`#planes a[href="/comprar/resumen?producto=${code}"]`)).toHaveCount(1);
+});

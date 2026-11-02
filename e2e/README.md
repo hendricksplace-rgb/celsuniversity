@@ -20,7 +20,7 @@ npx playwright test e2e/episode.spec.ts --project=phone
 | `episode.spec.ts` | CelsTV episode 1 and its 6 parts: CelsVideo, CelsCards, CelsBook, CelsCast (tap a line → audio moves), Grammar, Quiz with Amy's audio |
 | `student-tools.spec.ts` | Finanzas (guided course): an old E-Book lesson link opening the e-book at its step's screen; an old Activity link opening the step's Construye, whose answer saves; Cuenta → Preferencias toggles saving |
 | `purchase.spec.ts` | Stripe test-mode purchase of CelsTV Standard by a new account → access to the course |
-| `site.spec.ts` | The old celstv.com (Gamma) paths 308 to their pages; unknown paths 404; on celstv.com, the real robots.txt and sitemap.xml and www/nuevo 308 to celstv.com |
+| `site.spec.ts` | The old celstv.com (Gamma) paths 308 to their pages; `/celsbsns?nivel=B1` highlights the plan for that level; unknown paths 404; on celstv.com, the real robots.txt and sitemap.xml and www/nuevo 308 to celstv.com |
 
 ## Emails
 

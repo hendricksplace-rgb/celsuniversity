@@ -47,10 +47,15 @@ export function scaleHtml(level: Band) {
 
 const rec = (level: Band, goal: string | null) => recommendation(LEVELS.indexOf(level), (goal as Goal) ?? "general");
 
+/**
+ * Where a lead's email button goes. CelsBSNS (and the CelsTV + CelsBSNS bundle) land on the plans of the CelsBSNS
+ * page, which shows the result and highlights the plan for that level: /celsbsns?nivel=B1#planes.
+ */
 function landingUrl(name: string, level: Band, goal: string | null) {
   const r = rec(level, goal);
+  if (r.product !== "celstv") return `${siteUrl()}/celsbsns?${new URLSearchParams({ nivel: level })}#planes`;
   const q = new URLSearchParams({ name: firstName(name), level, goal: goal ?? "general" });
-  return `${siteUrl()}/${r.product === "celstv" ? "celstv" : "celsbsns"}?${q}`;
+  return `${siteUrl()}/celstv?${q}`;
 }
 
 type Who = { email: string; name: string; goal: string | null; level: string | null; skills: Record<string, string> | null; evaluatedAt: string; leadId?: string; userId?: string };
