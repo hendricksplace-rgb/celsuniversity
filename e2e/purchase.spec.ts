@@ -33,10 +33,17 @@ for (const c of CASES) {
     const userId = await ensureUser(email, "Comprador E2E", password);
     await context.addCookies((await sessionState(email, password)).cookies);
 
+    // While purchases are closed (src/lib/enroll.ts PURCHASES_OPEN, Matt 2026-10-20), /comprar/* sends signed-in
+    // students to /app/planes ("Solicitar acceso"): nothing to buy.
+    const closed = () => /\/app\/planes\?/.test(page.url());
     if (c.page) {
       await page.goto(c.page);
+      test.skip(closed(), "Purchases are closed (PURCHASES_OPEN = false): /comprar redirects to /app/planes");
       await page.locator(`a[href="/comprar/resumen?producto=${c.code}"]`).first().click();
-    } else await page.goto(`/comprar/resumen?producto=${c.code}`);
+    } else {
+      await page.goto(`/comprar/resumen?producto=${c.code}`);
+      test.skip(closed(), "Purchases are closed (PURCHASES_OPEN = false): /comprar redirects to /app/planes");
+    }
     await expect(page).toHaveURL(new RegExp(`producto=${c.code}`));
     await page.getByRole("button", { name: /Pagar .* con tarjeta/ }).click();
 

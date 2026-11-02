@@ -100,7 +100,14 @@ function Player({ track, title, episodeKey, finishLabel }: { track: Track | null
   }
 
   const a = () => audio.current!;
-  const toggle = () => (a().paused ? void a().play() : a().pause());
+  // Switching tabs remounts the player: a play() still starting is aborted (AbortError), which is expected.
+  const play = () =>
+    void a()
+      .play()
+      .catch((e: unknown) => {
+        if ((e as { name?: string })?.name !== "AbortError") throw e;
+      });
+  const toggle = () => (a().paused ? play() : a().pause());
   const seek = (s: number) => {
     a().currentTime = Math.max(0, Math.min(dur || s, s));
     setTime(a().currentTime);
@@ -165,7 +172,7 @@ function Player({ track, title, episodeKey, finishLabel }: { track: Track | null
                   type="button"
                   onClick={() => {
                     seek(c.start);
-                    void a().play();
+                    play();
                   }}
                   className={`kit-focus-light w-full rounded-lg px-1 text-left text-[15px] font-bold transition-colors ${i === line ? (c.words?.length ? "text-white" : "text-[#FFEF05]") : i < line ? "text-white/70" : "text-white/45"}`}
                 >

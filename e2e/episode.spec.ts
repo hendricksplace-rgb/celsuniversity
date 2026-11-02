@@ -24,14 +24,28 @@ test("CelsVideo opens and can be finished", async ({ page }) => {
 test("CelsCards shows the deck", async ({ page }) => {
   await page.goto(`${EP}/celscards`);
   expect((await mainText(page)).length).toBeGreaterThan(40);
-  await expect(page.getByText(/Español|🇲🇽/).first()).toBeAttached();
+  // CelsCards v2 (C-035, episodes 1-8): the front asks "¿Cómo se dice en inglés?" and the card flips.
+  const card = page.getByTestId("cv2-card");
+  await expect(card).toBeVisible();
+  await expect(card.getByText("¿Cómo se dice en inglés?")).toBeAttached();
+  await card.click();
+  await expect(card).toHaveAttribute("aria-pressed", "true");
 });
 
 test("CelsBook is the interactive book and turns pages", async ({ page }) => {
   await page.goto(`${EP}/celsbook`);
-  await expect(page.getByRole("button", { name: /Página 1 de \d+/ })).toBeVisible();
+  // CelsBook v2 (C-036, episodes 1-8): a cover the first time, then the contents page and "Léeme esta página".
+  const open = page.getByTestId("cb2-open");
+  if (await open.isVisible().catch(() => false)) await open.click();
+  // The book reopens at the page reached last time (user_preferences.celsbook_opened): back to page 1 first.
+  const counter = page.getByText(/^Página \d+ de \d+$/);
+  await expect(counter).toBeVisible();
+  const prev = page.getByTestId("cb2-prev");
+  for (let k = 0; k < 40 && (await prev.isEnabled()); k++) await prev.click();
+  await expect(page.getByText(/^Página 1 de \d+$/)).toBeVisible();
   await page.getByRole("button", { name: "Página siguiente" }).click();
-  await expect(page.getByRole("button", { name: /Léeme todo/i })).toBeVisible();
+  await expect(page.getByText(/^Página 2 de \d+$/)).toBeVisible();
+  await expect(page.getByRole("button", { name: /Léeme esta página/ })).toBeVisible();
 });
 
 test("CelsCast: transcript tap moves the audio; the original recording has its transcript", async ({ page }) => {
@@ -55,7 +69,8 @@ test("Quiz reads the question with Amy's recording", async ({ page }) => {
   await page.goto(`${EP}/quiz`);
   const start = page.getByRole("button", { name: /Empezar|Comenzar/ });
   if (await start.count()) await start.first().click();
+  // Amy's recording is fetched through /app/archivo?ref=<encoded storage path> since C-009, hence the decode.
   await expect
-    .poll(() => page.evaluate(() => performance.getEntriesByType("resource").some((e) => /quiz\/ep-01\//.test(e.name))), { timeout: 15_000 })
+    .poll(() => page.evaluate(() => performance.getEntriesByType("resource").some((e) => /quiz\/ep-01\//.test(decodeURIComponent(e.name)))), { timeout: 15_000 })
     .toBe(true);
 });

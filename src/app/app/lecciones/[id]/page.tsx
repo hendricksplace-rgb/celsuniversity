@@ -56,7 +56,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
   // its content, for everyone. Staff see the old page only from the course builder (?original=1).
   if (course.slug && !(viewer.isStaff && original === "1")) {
     const step = (await guidedModules(supabase, [lessonModule.id])).get(lessonModule.id);
-    if (step) redirect(await oldLessonTarget(supabase, { id: course.id, slug: course.slug }, lesson, step.step));
+    if (step) redirect(await oldLessonTarget(supabase, { id: course.id, slug: course.slug }, lesson, lessonModule.id, step.step));
   }
 
   const theme = themeForCourse(course);
@@ -362,7 +362,9 @@ async function moduleHref(supabase: Awaited<ReturnType<typeof createClient>>, co
 const CV_DOWNLOADS: { book: string; screen: Record<number, string> } = { book: "cv-to-resume-descargas", screen: { 2: "s3", 3: "s2", 4: "s4", 5: "s5", 6: "s6" } };
 
 /**
- * Where an old guided-course lesson goes: E-Book → the course's interactive e-book at that module's screen (m<step>);
+ * Where an old guided-course lesson goes: E-Book → the course's interactive e-book at that step's first screen (the
+ * step's own essentials_from, e.g. Finanzas step 3 → m4: the book has one screen more than the course has steps;
+ * m<step> only when the step names none);
  * Downloads → the interactive downloads reader when the course has one; Activity → the step's "Construye";
  * Video / YouTube → "Mira el video"; anything else → the step page.
  */
@@ -370,14 +372,23 @@ async function oldLessonTarget(
   supabase: Awaited<ReturnType<typeof createClient>>,
   course: { id: string; slug: string },
   lesson: { lesson_type: string | null; title: string },
+  moduleId: string,
   step: number,
 ) {
   const page = stepPath(course.slug, step);
   const kind = lesson.lesson_type ?? "";
   const title = lesson.title.toLowerCase();
   if (kind === "reading" || title.startsWith("e-book")) {
-    const { data: books } = await supabase.from("ebooks").select("slug, screens").eq("course_id", course.id).eq("status", "published");
-    const book = (books ?? []).find((b) => Array.isArray(b.screens) && (b.screens as { id?: string }[]).some((s) => s?.id === `m${step}`));
+    const [{ data: books }, { data: row }] = await Promise.all([
+      supabase.from("ebooks").select("slug, screens").eq("course_id", course.id).eq("status", "published"),
+      supabase.from("guided_course_steps").select("from:data->essentials_from").eq("module_id", moduleId).maybeSingle(),
+    ]);
+    const from = row?.from as { ebook?: unknown; screens?: unknown } | null | undefined;
+    const named = typeof from?.ebook === "string" && Array.isArray(from.screens) && typeof from.screens[0] === "string" ? { slug: from.ebook, screen: from.screens[0] } : null;
+    const has = (b: { screens: unknown }, id: string) => Array.isArray(b.screens) && (b.screens as { id?: string }[]).some((s) => s?.id === id);
+    const own = named && (books ?? []).find((b) => b.slug === named.slug && has(b, named.screen));
+    if (own && named) return `/app/libros/${own.slug}?screen=${named.screen}`;
+    const book = (books ?? []).find((b) => has(b, `m${step}`));
     if (book) return `/app/libros/${book.slug}?screen=m${step}`;
     return page;
   }

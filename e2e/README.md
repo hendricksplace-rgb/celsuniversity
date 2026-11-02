@@ -18,7 +18,7 @@ npx playwright test e2e/episode.spec.ts --project=phone
 | `auth.spec.ts` | Sign-up form validation; sign in (wrong and right password); password reset up to the email step; expired link screen |
 | `evaluation.spec.ts` | The free evaluation from the welcome screen to the results (real questions and AI writing grade) |
 | `episode.spec.ts` | CelsTV episode 1 and its 6 parts: CelsVideo, CelsCards, CelsBook, CelsCast (tap a line → audio moves), Grammar, Quiz with Amy's audio |
-| `student-tools.spec.ts` | Finanzas e-book card opening at `ebook_screen`; the answer box saving; Cuenta → Preferencias toggles saving |
+| `student-tools.spec.ts` | Finanzas (guided course): an old E-Book lesson link opening the e-book at its step's screen; an old Activity link opening the step's Construye, whose answer saves; Cuenta → Preferencias toggles saving |
 | `purchase.spec.ts` | Stripe test-mode purchase of CelsTV Standard by a new account → access to the course |
 
 ## Emails
@@ -37,7 +37,7 @@ Set `E2E_ALLOW_EMAIL=1` to submit sign-up/reset for real and let the evaluation 
 
 ## Skips
 
-- `purchase.spec.ts` skips while Stripe keys aren't configured, and never pays when Checkout isn't in test mode.
+- `purchase.spec.ts` skips while purchases are closed (`NEXT_PUBLIC_PURCHASES_OPEN` isn't `true`: `/comprar` redirects to `/app/planes`) or Stripe keys aren't configured, and never pays when Checkout isn't in test mode.
 - `evaluation.spec.ts` skips if the runner's IP already started 3 evaluations in the last hour (the app's rate limit).
 
 ## CI (`.github/workflows/e2e.yml`)
