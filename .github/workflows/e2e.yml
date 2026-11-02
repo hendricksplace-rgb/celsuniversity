@@ -1,6 +1,6 @@
 name: E2E
 
-# Playwright against nuevo.celstv.com (e2e/README.md): after each push to main once Vercel serves it,
+# Playwright against celstv.com (e2e/README.md): after each push to main once Vercel serves it,
 # every day, and on demand.
 on:
   push:
@@ -11,7 +11,7 @@ on:
     inputs:
       base_url:
         description: "Site to test"
-        default: "https://nuevo.celstv.com"
+        default: "https://celstv.com"
 
 concurrency:
   group: e2e
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
-      E2E_BASE_URL: ${{ inputs.base_url || 'https://nuevo.celstv.com' }}
+      E2E_BASE_URL: ${{ inputs.base_url || 'https://celstv.com' }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}

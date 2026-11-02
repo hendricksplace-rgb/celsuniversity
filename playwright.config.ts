@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// End-to-end tests (e2e/README.md). Runs against nuevo.celstv.com unless E2E_BASE_URL says otherwise.
-const baseURL = process.env.E2E_BASE_URL ?? "https://nuevo.celstv.com";
+// End-to-end tests (e2e/README.md). Runs against celstv.com unless E2E_BASE_URL says otherwise.
+const baseURL = process.env.E2E_BASE_URL ?? "https://celstv.com";
 
 export default defineConfig({
   testDir: "e2e",

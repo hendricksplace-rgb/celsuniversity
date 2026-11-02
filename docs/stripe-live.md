@@ -25,7 +25,7 @@ Switch day, October 19, 2026. Matt (or Cowork) does every step here in the Strip
 |---|---|---|---|
 | Supabase → Edge Functions → Secrets | `STRIPE_SECRET_KEY` | `sk_test_…` | `sk_live_…` (Stripe → Developers → API keys, live mode). A restricted key also works if it can write Checkout Sessions, Subscriptions and Subscription Schedules, and read PaymentIntents, Charges and Invoices. |
 | Supabase → Edge Functions → Secrets | `STRIPE_WEBHOOK_SECRET` | `whsec_…` of the test endpoint | `whsec_…` of the **live** endpoint created in step 2. Each endpoint has its own secret. |
-| Supabase → Edge Functions → Secrets | `SITE_URL` | `https://nuevo.celstv.com` | `https://celstv.com` |
+| Supabase → Edge Functions → Secrets | `SITE_URL` | ~~`https://nuevo.celstv.com`~~ | `https://celstv.com` — **done 2026-11-02 (C-042)**: set by Cowork, along with Vercel `SITE_URL`, Supabase Auth Site URL and the celstv.com DNS. |
 | Vercel → Project → Environment Variables (Production) | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | optional | optional (not used) |
 
 - Supabase secrets apply to the Edge Functions right away. No redeploy is needed.

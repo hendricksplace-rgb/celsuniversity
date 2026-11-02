@@ -8,7 +8,7 @@ import type { SupabaseClient } from "npm:@supabase/supabase-js@2";
 type ManifestEntry = { id: string; file: string; subject: string; from_name: string; from_email: string; reply_to?: string; marketing: boolean; variables: string[] };
 type Template = ManifestEntry & { html: string };
 
-export const siteUrl = () => (Deno.env.get("SITE_URL") ?? "https://celsuniversity.vercel.app").replace(/\/$/, "");
+export const siteUrl = () => (Deno.env.get("SITE_URL") ?? "https://celstv.com").replace(/\/$/, "");
 const functionsUrl = () => `${Deno.env.get("SUPABASE_URL")!.replace(/\/$/, "")}/functions/v1`;
 
 export const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);

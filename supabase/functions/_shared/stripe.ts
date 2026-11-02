@@ -23,4 +23,4 @@ export type Product = {
 
 export const PRODUCT_COLUMNS = "id, code, name, price_usd_cents, program, tier, access_label, grants, installments";
 
-export const siteUrl = () => (Deno.env.get("SITE_URL") ?? "https://celsuniversity.vercel.app").replace(/\/$/, "");
+export const siteUrl = () => (Deno.env.get("SITE_URL") ?? "https://celstv.com").replace(/\/$/, "");

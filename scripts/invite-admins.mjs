@@ -1,7 +1,7 @@
 // Invites the CelsU administrators (celsu-admin-invites.md) and sets profiles.role = 'administrator'.
 // Server-side only: needs SUPABASE_SECRET_KEY in the environment (never in client code).
 // Before running: paste emails/supabase/invite.html into Supabase Auth → Email Templates → "Invite user",
-// and add https://celsuniversity.vercel.app/auth/aceptar to Auth → URL Configuration → Redirect URLs.
+// and add https://celstv.com/auth/aceptar to Auth → URL Configuration → Redirect URLs.
 //   node --env-file=.env.local scripts/invite-admins.mjs          (dry run: shows what it would do)
 //   node --env-file=.env.local scripts/invite-admins.mjs --send   (sends the invites)
 import { createClient } from "@supabase/supabase-js";
@@ -11,7 +11,7 @@ const ADMINS = [
   { email: "ludomartinezavir@gmail.com", name: "Ludo" },
   { email: "michael@hendrickspilaw.com", name: "Michael" },
 ];
-const REDIRECT = "https://celsuniversity.vercel.app/auth/aceptar";
+const REDIRECT = "https://celstv.com/auth/aceptar";
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.SUPABASE_SECRET_KEY?.replace(/[​-‍⁠﻿]/g, "").trim();

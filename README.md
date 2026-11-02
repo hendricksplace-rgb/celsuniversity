@@ -45,7 +45,7 @@ Edge function secrets (Supabase → Edge Functions → Secrets, never in the rep
 | `ANTHROPIC_API_KEY`     | `evaluation`                 | Claude grades the writing and speaking answers                        |
 | `OPENAI_API_KEY`        | `evaluation`                 | `gpt-4o-mini-transcribe` turns the spoken answer into text            |
 | `RESEND_API_KEY`        | `evaluation`, `send-email`   | Without it emails are only logged (`email_outbox.status = 'stubbed'`) |
-| `SITE_URL`              | optional                     | Links in emails. Default `https://celsuniversity.vercel.app`          |
+| `SITE_URL`              | optional                     | Links in emails. Default `https://celstv.com`                         |
 | `EMAIL_REPLY_TO`        | optional                     | Reply-to on app emails (the receipt says "Responde a este correo")    |
 | `EVAL_IP_SALT`          | optional                     | Salt for the hashed IPs in the evaluation rate limit                  |
 | `STRIPE_SECRET_KEY`     | `checkout`, `stripe-webhook` | Without it the pay button says payments aren't active yet             |

@@ -1,6 +1,6 @@
 # End-to-end tests (Playwright)
 
-Run against https://nuevo.celstv.com by default, on a phone (360 px) and a desktop (1440 px).
+Run against https://celstv.com by default, on a phone (360 px) and a desktop (1440 px).
 
 ```bash
 # all tests, both sizes (secrets from .env.local)
@@ -20,6 +20,7 @@ npx playwright test e2e/episode.spec.ts --project=phone
 | `episode.spec.ts` | CelsTV episode 1 and its 6 parts: CelsVideo, CelsCards, CelsBook, CelsCast (tap a line → audio moves), Grammar, Quiz with Amy's audio |
 | `student-tools.spec.ts` | Finanzas (guided course): an old E-Book lesson link opening the e-book at its step's screen; an old Activity link opening the step's Construye, whose answer saves; Cuenta → Preferencias toggles saving |
 | `purchase.spec.ts` | Stripe test-mode purchase of CelsTV Standard by a new account → access to the course |
+| `site.spec.ts` | The old celstv.com (Gamma) paths 308 to their pages; unknown paths 404; on celstv.com, the real robots.txt and sitemap.xml and www/nuevo 308 to celstv.com |
 
 ## Emails
 
@@ -37,7 +38,7 @@ Set `E2E_ALLOW_EMAIL=1` to submit sign-up/reset for real and let the evaluation 
 
 ## Skips
 
-- `purchase.spec.ts` skips while purchases are closed (`NEXT_PUBLIC_PURCHASES_OPEN` isn't `true`: `/comprar` redirects to `/app/planes`) or Stripe keys aren't configured, and never pays when Checkout isn't in test mode.
+- `purchase.spec.ts` never runs against production (celstv.com uses live Stripe; `E2E_PURCHASE_ON_PRODUCTION=1` overrides it only while production is on test keys): run it with `E2E_BASE_URL` set to a preview or local build. It also skips while purchases are closed (`NEXT_PUBLIC_PURCHASES_OPEN` isn't `true`: `/comprar` redirects to `/app/planes`) or Stripe keys aren't configured, and never pays when Checkout isn't in test mode.
 - `evaluation.spec.ts` skips if the runner's IP already started 3 evaluations in the last hour (the app's rate limit).
 
 ## CI (`.github/workflows/e2e.yml`)

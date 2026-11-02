@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 const OLD_SITE: [string, string][] = [
   ["/politica-de-privacidad", "/privacidad"],
   ["/programa-pro-tn", "/celsglobal"],
-  ["/app-download", "/"],
+  ["/app-download", "/app?instalar=1"], // the install sheet (signed out: /entrar first, then the sheet)
   ["/guia-de-progreso", "/evaluacion"],
 ];
 

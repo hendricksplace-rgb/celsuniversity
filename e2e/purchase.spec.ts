@@ -10,7 +10,7 @@
 // E2E_KEEP_BUYERS=1, refund the printed payment in the Stripe dashboard (test mode) and re-run the check with
 // `E2E_REFUND_CHECK=<order id>`.
 import { expect, test } from "./fixtures";
-import { admin } from "./env";
+import { BASE_URL, admin } from "./env";
 import { ensureUser, sessionState } from "./global-setup";
 
 const CASES = [
@@ -20,11 +20,16 @@ const CASES = [
 ] as const;
 
 const STRIPE_KEY = process.env.STRIPE_TEST_SECRET_KEY ?? "";
+// celstv.com is production, where Checkout runs on the live Stripe keys: clicking "Pagar" there would create a
+// live Checkout session (C-041/C-042). The purchases only run against another host (a preview or local build with
+// test keys), or with E2E_PURCHASE_ON_PRODUCTION=1 while production is still on Stripe test keys.
+const PRODUCTION = /^(www\.|nuevo\.)?celstv\.com$/.test(new URL(BASE_URL).hostname) && process.env.E2E_PURCHASE_ON_PRODUCTION !== "1";
 const monthsBetween = (a: Date, b: Date) => (b.getTime() - a.getTime()) / (30.44 * 864e5);
 
 for (const c of CASES) {
   test(`purchase ${c.code} in Stripe test mode`, async ({ page, context }, info) => {
     test.skip(info.project.name !== "desktop", "one purchase per product is enough (desktop only)");
+    test.skip(PRODUCTION, "Production (celstv.com) uses live Stripe: no Checkout session is ever started there");
     test.setTimeout(300_000);
     const db = admin();
     const stamp = Date.now();
@@ -59,7 +64,7 @@ for (const c of CASES) {
     const holder = page.locator("#billingName");
     if (await holder.count()) await holder.fill("Comprador E2E");
     await page.locator(".SubmitButton, button[type=submit]").first().click();
-    // Stripe returns to SITE_URL (nuevo.celstv.com); when the test runs against another host (a local build),
+    // Stripe returns to SITE_URL (celstv.com); when the test runs against another host (a local build),
     // that page may not load, so only the redirect itself is awaited.
     await page.waitForURL(/\/bienvenida\?session_id=cs_test_/, { timeout: 120_000, waitUntil: "commit" });
 

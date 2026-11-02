@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const clean = (v: string | undefined) => (v ?? "").replace(/[​-‍⁠﻿]/g, "").trim();
 
-export const BASE_URL = process.env.E2E_BASE_URL ?? "https://nuevo.celstv.com";
+export const BASE_URL = process.env.E2E_BASE_URL ?? "https://celstv.com";
 export const SUPABASE_URL = clean(process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL);
 export const PUBLISHABLE_KEY = clean(process.env.SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
 export const SECRET_KEY = clean(process.env.SUPABASE_SECRET_KEY);
