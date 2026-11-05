@@ -1221,6 +1221,27 @@ export type Database = {
         }
         Relationships: []
       }
+      interview_dates: {
+        Row: {
+          course_id: string
+          interview_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          interview_date: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          interview_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       cheer_phrases: {
         Row: {
           active: boolean

@@ -1,6 +1,5 @@
 // The course page in each program's look: CelsTV episodes (hero, ring, units), CelsBSNS and the
-// CelsGLOBAL courses as weeks/sections (navy, square number), CelsUS as citizenship episodes (navy and
-// gold, serif titles, practice exam and resources rows).
+// CelsGLOBAL courses as weeks/sections (navy, square number). CelsUS is the passport page (Passport.tsx, C-043).
 import Image from "next/image";
 import Link from "next/link";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -61,7 +60,9 @@ export function EpisodesView({ page, t, notice }: { page: CoursePage; t: T; noti
                 {t.episode} {ep.n}
                 {ep.title && ` · ${ep.title}`}
               </p>
-              <p className="text-xs font-semibold text-white/75">{fill(t.partOf, { n: ep.parts.filter((p) => !p.soon).indexOf(resume.part) + 1, total: ep.total, part: resume.part.name })}</p>
+              <p className="text-xs font-semibold text-white/75">
+                {fill(t.partOf, { n: ep.parts.filter((p) => !p.soon).indexOf(resume.part) + 1, total: ep.total, part: resume.part.name })}
+              </p>
               <div className="max-w-[240px] pt-1.5">
                 <Segments parts={ep.parts.filter((p) => !p.soon)} current={resume.part.id} />
               </div>
@@ -122,7 +123,10 @@ export function WeeksView({ page, t, theme, notice }: { page: CoursePage; t: T; 
   return (
     <div className="space-y-4">
       <Back t={t} />
-      <header className="flex flex-col items-start gap-3 rounded-xl px-5 py-4 sm:flex-row sm:items-center sm:gap-4" style={{ background: bg, color: brand.ink }}>
+      <header
+        className="flex flex-col items-start gap-3 rounded-xl px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
+        style={{ background: bg, color: brand.ink }}
+      >
         <div className="shrink-0">{brand.logo}</div>
         <div className="min-w-0 flex-1">
           <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] opacity-80">
@@ -173,70 +177,6 @@ export function WeeksView({ page, t, theme, notice }: { page: CoursePage; t: T; 
           .map((x) => (
             <li key={x.id}>
               <ResourcesRow extra={x} label={bsns ? t.resourcesMore : t.resources} />
-            </li>
-          ))}
-      </ol>
-    </div>
-  );
-}
-
-export function CitizenshipView({ page, t, best, notice }: { page: CoursePage; t: T; best: string | null; notice?: React.ReactNode }) {
-  const { course, episodes, extras, resume } = page;
-  return (
-    <div className="space-y-4">
-      <Back t={t} />
-      <header
-        className="flex flex-col items-start gap-3 rounded-xl px-5 py-4 sm:flex-row sm:items-center sm:gap-4 text-[#F4F1E8]"
-        style={{ background: "linear-gradient(120deg, #0E2A4F, #194876)" }}
-      >
-        <Image src="/brand/celsus.jpg" alt="CelsUS" width={64} height={26} className="shrink-0 rounded" />
-        <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-extrabold uppercase tracking-[0.14em] text-[#FFD24D]">CelsUS · {t.citizenship}</p>
-          <h1 className="font-serif text-xl font-semibold leading-tight sm:text-2xl">{course.title}</h1>
-        </div>
-        {resume && <p className="text-sm font-bold">{fill(t.episodeOf, { n: resume.episode.n, total: episodes.length })}</p>}
-      </header>
-      {notice}
-      <ol className="space-y-2.5">
-        {episodes.map((e) => {
-          const s = rowState(e, page);
-          return (
-            <li key={e.id}>
-              <Link
-                href={e.href}
-                className="kit-focus flex items-center gap-4 rounded-xl bg-white px-3 py-3 transition hover:bg-[#FBF8EE]"
-                style={{ boxShadow: s === "now" ? "0 0 0 2px #E8B931" : "0 0 0 1px #E3E0D4" }}
-              >
-                <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#0E2A4F] font-serif text-lg font-semibold text-white">{e.n}</span>
-                <span className="min-w-0 flex-1 font-serif font-semibold text-[#0E2A4F]">
-                  {t.episode} {e.n}
-                  {e.title && ` · ${e.title}`}
-                </span>
-                {s === "done" ? (
-                  <span className="shrink-0 text-xs font-bold text-[#7A5C00]">✓ {t.completedM}</span>
-                ) : s === "now" ? (
-                  <span className="shrink-0 rounded-lg bg-[#FFD24D] px-3.5 py-2 text-xs font-bold text-[#0E2A4F]">{t.continue}</span>
-                ) : (
-                  <span className="shrink-0 text-xs font-semibold text-[#5B6880]">{t.start}</span>
-                )}
-              </Link>
-            </li>
-          );
-        })}
-        {extras.some((x) => x.kind === "evaluation") && (
-          <li>
-            <Link href="/app/examen-civico" className="kit-focus flex items-center gap-3 rounded-xl bg-[#0E2A4F] px-4 py-3.5 font-bold text-white transition hover:bg-[#13345F]">
-              <span aria-hidden>★</span>
-              <span className="flex-1">{t.practiceExam}</span>
-              {best && <span className="text-sm text-[#FFD24D]">{fill(t.best, { score: best })}</span>}
-            </Link>
-          </li>
-        )}
-        {extras
-          .filter((x) => x.kind === "resources")
-          .map((x) => (
-            <li key={x.id}>
-              <ResourcesRow extra={x} label={t.resources} dark />
             </li>
           ))}
       </ol>

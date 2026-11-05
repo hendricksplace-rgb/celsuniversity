@@ -9,7 +9,10 @@ import type { ProgramKey } from "@/lib/purchase-programs";
 import { listExams } from "@/lib/civics-server";
 import { loadCoursePage } from "@/lib/course-page";
 import { activeWeekOf, weekPath } from "@/lib/bsns";
-import { CitizenshipView, EpisodesView, WeeksView } from "@/components/course/CourseViews";
+import { EpisodesView, WeeksView } from "@/components/course/CourseViews";
+import { Passport } from "@/components/course/Passport";
+import { coverUrl } from "@/lib/celsbook-progress";
+import type { CoursePage as CoursePageData } from "@/lib/course-page";
 import { loadGuided } from "@/lib/guided-server";
 import { courseCopy } from "@/lib/guided-copy";
 import { ROUTE_CARDS } from "@/lib/my-courses";
@@ -85,17 +88,60 @@ export default async function CoursePage({ params }: Props) {
   );
 
   if (page.layout === "episodes") return <EpisodesView page={page} t={t.course} notice={notice} />;
-  if (page.layout === "citizenship") return <CitizenshipView page={page} t={t.course} best={await bestCivicsScore(supabase, viewer)} notice={notice} />;
+  if (page.layout === "citizenship") {
+    const data = await passportData(supabase, viewer, page);
+    return <Passport lang={lang} notice={notice} lawHref="mailto:hola@celstv.com" {...data} />;
+  }
   return <WeeksView page={page} t={t.course} theme={theme} notice={notice} />;
 }
 
-/** Best practice-exam score ("14/20"), from the 20-question exam when there is one. */
-async function bestCivicsScore(supabase: Awaited<ReturnType<typeof createClient>>, viewer: NonNullable<Awaited<ReturnType<typeof getViewer>>>) {
+type Viewer = NonNullable<Awaited<ReturnType<typeof getViewer>>>;
+type Supa = Awaited<ReturnType<typeof createClient>>;
+
+/**
+ * C-043, the CelsUS passport page: the holder's name, the interview date (interview_dates), each episode's CelsBook
+ * cover and completion date, and the practice exam (question count, passed, best score, "14/20").
+ */
+async function passportData(supabase: Supa, viewer: Viewer, page: CoursePageData) {
+  const [{ data: dateRow }, { data: books }, exam] = await Promise.all([
+    supabase.from("interview_dates").select("interview_date").eq("user_id", viewer.user.id).eq("course_id", page.course.id).maybeSingle(),
+    supabase.from("ebooks").select("slug, cover_path").like("slug", "celsus-celsbook-episode-%"),
+    page.extras.some((x) => x.kind === "evaluation") ? civicsExam(supabase, viewer) : Promise.resolve(null),
+  ]);
+  const cover = new Map((books ?? []).map((b) => [b.slug, coverUrl(b.cover_path)]));
+  const latest = (xs: (string | null)[]) => xs.reduce<string | null>((a, x) => (x && (!a || x > a) ? x : a), null);
+  const resources = page.extras
+    .filter((x) => x.kind === "resources")
+    .flatMap((x) => x.parts.map((p) => ({ id: p.id, title: p.name, href: p.href, done: p.done })));
+  return {
+    userId: viewer.user.id,
+    courseId: page.course.id,
+    holder: viewer.displayName?.trim() || viewer.user.email?.split("@")[0] || "",
+    interviewDate: dateRow?.interview_date ?? null,
+    today: new Date().toISOString().slice(0, 10),
+    episodes: page.episodes.map((e) => ({
+      n: e.n,
+      title: e.title,
+      href: e.href,
+      state: e.state,
+      done: e.done,
+      total: e.total,
+      completedAt: e.state === "done" ? latest(e.parts.filter((p) => p.done).map((p) => p.lastActivity)) : null,
+      lastActivity: latest([...e.parts, ...e.extra].map((p) => p.lastActivity)),
+      cover: cover.get(`celsus-celsbook-episode-${e.n}`) ?? null,
+    })),
+    exam,
+    resources,
+  };
+}
+
+/** The practice exam: its question count (the 20-question exam), passed (any track), and the best score. */
+async function civicsExam(supabase: Supa, viewer: Viewer) {
   const exams = await listExams(supabase, viewer);
   if (!exams.length) return null;
   const { data } = await supabase
     .from("evaluation_attempts")
-    .select("score, total")
+    .select("score, total, passed")
     .eq("user_id", viewer.user.id)
     .in(
       "evaluation_id",
@@ -104,13 +150,28 @@ async function bestCivicsScore(supabase: Awaited<ReturnType<typeof createClient>
   const rows = data ?? [];
   const pool = rows.some((r) => r.total === 20) ? rows.filter((r) => r.total === 20) : rows;
   const top = pool.sort((a, b) => b.score / (b.total || 1) - a.score / (a.total || 1))[0];
-  return top ? `${top.score}/${top.total}` : null;
+  return {
+    href: "/app/examen-civico",
+    count: Math.max(...exams.map((e) => e.exam_question_count ?? 0)) || 20,
+    passed: rows.some((r) => r.passed),
+    best: top ? `${top.score}/${top.total}` : null,
+  };
 }
 
 // CelsGLOBAL stages 2 and 3 open their AI tool from the course page.
 const AI_TOOL_OF_SLUG: Record<string, { href: string; icon: string; title: "resumeTitle" | "interviewTitle"; text: "resumeText" | "interviewText" }> = {
-  "from-cv-to-u-s-resume-a-step-by-step-guide": { href: "/app/herramientas/resume", icon: "/ai/icon-resume-review.svg", title: "resumeTitle", text: "resumeText" },
-  "crack-the-u-s-interview-code": { href: "/app/herramientas/entrevista", icon: "/ai/icon-interview-practice.svg", title: "interviewTitle", text: "interviewText" },
+  "from-cv-to-u-s-resume-a-step-by-step-guide": {
+    href: "/app/herramientas/resume",
+    icon: "/ai/icon-resume-review.svg",
+    title: "resumeTitle",
+    text: "resumeText",
+  },
+  "crack-the-u-s-interview-code": {
+    href: "/app/herramientas/entrevista",
+    icon: "/ai/icon-interview-practice.svg",
+    title: "interviewTitle",
+    text: "interviewText",
+  },
 };
 
 function AiToolCard({ href, icon, kicker, title, text }: { href: string; icon: string; kicker: string; title: string; text: string }) {
@@ -145,7 +206,9 @@ async function AccessNotice({ userId, courseId, slug, fallback }: { userId: stri
     .eq("user_id", userId)
     .order("created_at", { ascending: false });
   const mine = (rows ?? []).filter(
-    (e) => e.course_id === courseId || (Array.isArray(e.program) ? e.program[0] : e.program)?.program_courses?.some((pc: { course_id: string }) => pc.course_id === courseId),
+    (e) =>
+      e.course_id === courseId ||
+      (Array.isArray(e.program) ? e.program[0] : e.program)?.program_courses?.some((pc: { course_id: string }) => pc.course_id === courseId),
   );
   // In-app plans: no evaluation, and no checkout while purchases are closed (src/lib/enroll.ts).
   const buy = appPlansHref(PROGRAM_OF_SLUG[slug] ?? "celsglobal");
@@ -155,8 +218,8 @@ async function AccessNotice({ userId, courseId, slug, fallback }: { userId: stri
       <div className="rounded-2xl bg-white p-5 text-[#1B1830] shadow-[0_0_0_1px_#ECE9F2]">
         <p className="font-bold">Tu acceso está en pausa.</p>
         <p className="mt-1 text-sm text-[#5E5A73]">
-          No pudimos cobrar tu pago mensual. Actualiza tu tarjeta con el enlace que te enviamos por correo y tu acceso vuelve en cuanto se complete el pago. Tu avance está
-          guardado.
+          No pudimos cobrar tu pago mensual. Actualiza tu tarjeta con el enlace que te enviamos por correo y tu acceso vuelve en cuanto se complete el pago. Tu
+          avance está guardado.
         </p>
       </div>
     );
