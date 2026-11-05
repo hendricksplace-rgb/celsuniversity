@@ -32,12 +32,15 @@ export default async function EpisodeFinished({ params }: Props) {
   const quizPart = status.parts.find((p) => p.role === "quiz");
   const bookPart = status.parts.find((p) => p.role === "book");
   const [{ data: books }, { data: game }, { data: quiz }, { data: catalog }] = await Promise.all([
-    supabase.from("ebooks").select("id, slug, subtitle, screens").in("slug", [bookSlug, `celsus-celsbook-episode-${n + 1}`]),
+    supabase
+      .from("ebooks")
+      .select("id, slug, subtitle, subtitle_en, screens")
+      .in("slug", [bookSlug, `celsus-celsbook-episode-${n + 1}`]),
     supabase.from("gamification").select("current_streak, badges").eq("user_id", viewer.user.id).maybeSingle(),
     quizPart
       ? supabase.from("progress").select("quiz_score, quiz_max_score").eq("user_id", viewer.user.id).eq("lesson_id", quizPart.id).maybeSingle()
       : Promise.resolve({ data: null }),
-    supabase.from("badges").select("code, name").eq("active", true),
+    supabase.from("badges").select("code, name, name_en").eq("active", true),
   ]);
   const book = books?.find((b) => b.slug === bookSlug);
   const nextBook = books?.find((b) => b.slug !== bookSlug);
@@ -52,18 +55,20 @@ export default async function EpisodeFinished({ params }: Props) {
   const earned = Object.entries((game?.badges ?? {}) as Record<string, { at?: string }>)
     .filter(([, v]) => v?.at && Date.now() - new Date(v.at).getTime() < 30 * 60 * 1000)
     .sort((a, b) => (b[1].at ?? "").localeCompare(a[1].at ?? ""))[0];
-  const medal = earned ? (catalog?.find((b) => b.code === earned[0])?.name ?? null) : null;
+  const earnedBadge = earned ? catalog?.find((b) => b.code === earned[0]) : undefined;
 
   const first = (viewer.displayName ?? "").trim().split(/\s+/)[0] ?? "";
   const { t, lang } = await getDictionary();
-  // The episode topic comes from the Spanish subtitle: English mode leaves it out.
-  const topic = (subtitle: string | null | undefined) => (lang === "en" ? "" : topicOf(subtitle));
+  const medal = earnedBadge ? (lang === "en" ? (earnedBadge.name_en ?? earnedBadge.name) : earnedBadge.name) : null;
+  // The episode topic from the CelsBook subtitle, in the student's language (C-045: subtitle_en).
+  const topic = (b: { subtitle: string | null; subtitle_en: string | null } | undefined) => topicOf(lang === "en" ? (b?.subtitle_en ?? "") : b?.subtitle);
   const props: CompletionProps = {
+    lang: lang === "en" ? "en" : "es",
     state: status.complete ? "B" : "A",
     userId: viewer.user.id,
     n,
     firstName: first && !first.includes("@") ? first : null,
-    topic: topic(book?.subtitle),
+    topic: topic(book),
     pages: { read: pages || screens, total: screens },
     parts: status.parts.map((p, i) => ({ icon: ROLE_LABEL[p.role].icon, name: t.fin.roles[p.role], done: p.done, now: status.next?.index === i })),
     done: status.done,
@@ -75,7 +80,7 @@ export default async function EpisodeFinished({ params }: Props) {
     medal,
     episodeHref: status.episodeHref,
     next: status.next ? { label: t.fin.rolesLong[status.next.role].replace("{n}", String(n)), href: status.next.href, index: status.next.index + 1 } : null,
-    nextEpisode: status.nextEpisode ? { n: status.nextEpisode.n, href: status.nextEpisode.href, topic: topic(nextBook?.subtitle) } : null,
+    nextEpisode: status.nextEpisode ? { n: status.nextEpisode.n, href: status.nextEpisode.href, topic: topic(nextBook) } : null,
     finalExamHref: status.finalExamHref,
     readAgainHref: `/app/libros/${bookSlug}?p=1`,
     back: { t: t.usBack, course: { href: `/app/cursos/${status.courseSlug}`, name: course.title } },

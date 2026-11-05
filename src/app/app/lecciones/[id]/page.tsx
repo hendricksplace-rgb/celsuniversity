@@ -12,7 +12,14 @@ import { themeForCourse } from "@/lib/themes";
 import { lessonHref, lessonPagePath } from "@/lib/lesson-href";
 import { LessonBlock } from "@/components/lesson/LessonBlock";
 import { LessonProgress, Part } from "@/components/lesson/progress";
-import { InteractiveFeedback, InteractiveReading, InteractiveResearch, InteractiveSpeaking, InteractiveVideo, InteractiveWriting } from "@/components/bsns/pages";
+import {
+  InteractiveFeedback,
+  InteractiveReading,
+  InteractiveResearch,
+  InteractiveSpeaking,
+  InteractiveVideo,
+  InteractiveWriting,
+} from "@/components/bsns/pages";
 import { loadReading } from "@/lib/reading-server";
 import { loadWriting } from "@/lib/writing-server";
 import { loadResearch } from "@/lib/research-server";
@@ -24,6 +31,7 @@ import { loadFeedback } from "@/lib/feedback-server";
 import { CelsCast } from "@/components/celsus/CelsCast";
 import { BackButtons } from "@/components/celsus/BackButtons";
 import { ReadingWriting, type RwData, type RwState } from "@/components/celsus/ReadingWriting";
+import { inLanguage, tr } from "@/lib/i18n/row";
 import { celscastTrack, transcriptCues } from "@/lib/audio-tracks";
 import type { Cue, Track } from "@/components/part/AudioPart";
 
@@ -38,7 +46,11 @@ export default async function LessonPage({ params, searchParams }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/lecciones/${id}`);
 
   // RLS: students only see published, non-teacher lessons.
-  const { data: lesson } = await supabase.from("lessons").select("id, title, module_id, lesson_type, status, teacher_only, module:modules(id, title, kind, course:courses(id, slug, title, layout))").eq("id", id).maybeSingle();
+  const { data: lesson } = await supabase
+    .from("lessons")
+    .select("id, title, title_en, module_id, lesson_type, status, teacher_only, module:modules(id, title, kind, course:courses(id, slug, title, layout))")
+    .eq("id", id)
+    .maybeSingle();
   const lessonModule = one(lesson?.module);
   const course = one(lessonModule?.course);
   // RLS hides teacher-only lessons (the Teacher's Guides) and drafts from students: a direct link says "no access".
@@ -78,7 +90,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
   let celsus: { courseSlug: string; n: number } | null = null;
   let usPart: { role: string | undefined; episodeTitle: string } | null = null;
   if (access && course.layout === "citizenship_modules" && lessonModule.kind === "lesson_week" && course.slug) {
-    const page = await loadCoursePage(supabase, viewer.user.id, course.slug, theme, viewer.isStaff);
+    const page = await loadCoursePage(supabase, viewer.user.id, course.slug, theme, viewer.isStaff, lang);
     const ep = page?.episodes.find((e) => e.id === lessonModule.id);
     const part = ep?.parts.find((p) => p.id === lesson.id);
     if (ep && part) {
@@ -108,11 +120,26 @@ export default async function LessonPage({ params, searchParams }: Props) {
     const at = list.findIndex((l) => l.id === lesson.id);
     const bsns = themeForCourse(course) === "celsbsns" && weekN > 0;
     const link = (l: (typeof list)[number] | undefined) =>
-      l ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` } : null;
-    const nav = { backHref, prev: at > 0 ? link(list[at - 1]) : null, next: at >= 0 ? link(list[at + 1]) : null, defaultLang: (lang === "en" ? "en" : "es") as "es" | "en", track };
+      l
+        ? { title: l.title, href: bsns && l.lesson_type !== "video" ? `/app/cursos/${course.slug}/semana/${weekN}/tarea/${l.id}` : `/app/lecciones/${l.id}` }
+        : null;
+    const nav = {
+      backHref,
+      prev: at > 0 ? link(list[at - 1]) : null,
+      next: at >= 0 ? link(list[at + 1]) : null,
+      defaultLang: (lang === "en" ? "en" : "es") as "es" | "en",
+      track,
+    };
     const feedback =
       ty === "feedback" && weekN > 0
-        ? await loadFeedback(supabase, viewer.user.id, lesson.id, course.id, weekN, list.map((l) => ({ id: l.id, type: l.lesson_type, title: l.title, href: link(l)!.href })))
+        ? await loadFeedback(
+            supabase,
+            viewer.user.id,
+            lesson.id,
+            course.id,
+            weekN,
+            list.map((l) => ({ id: l.id, type: l.lesson_type, title: l.title, href: link(l)!.href })),
+          )
         : null;
     if (feedback)
       return (
@@ -146,8 +173,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
           completedAt={speaking.completedAt}
         />
       );
-    if (video)
-      return <InteractiveVideo {...nav} data={video.data} lessonId={lesson.id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
+    if (video) return <InteractiveVideo {...nav} data={video.data} lessonId={lesson.id} userId={viewer.user.id} proof={video.proof} writing={video.writing} />;
     if (research)
       return (
         <InteractiveResearch
@@ -190,12 +216,22 @@ export default async function LessonPage({ params, searchParams }: Props) {
       );
   }
 
-  const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: allSiblings }] = await Promise.all([
-    loadLessonContent(supabase, viewer, lesson.id, course.id, access),
+  // C-045: CelsUS in English mode is all English (titles, bodies, no Spanish-track blocks or lessons).
+  const usEn = course.layout === "citizenship_modules" && lang === "en";
+  const [{ visible, signed, kinds, partIds, readers, books, answers, progress }, { data: rawSiblings }] = await Promise.all([
+    loadLessonContent(supabase, viewer, lesson.id, course.id, access, usEn ? "en" : undefined),
     // Prev / Next never lead to a teacher-only lesson (the Teacher's Guide), not even for staff.
-    supabase.from("lessons").select("id, title, has_content").eq("module_id", lessonModule.id).eq("teacher_only", false).order("sort_order"),
+    supabase
+      .from("lessons")
+      .select("id, title, title_en, language, has_content")
+      .eq("module_id", lessonModule.id)
+      .eq("teacher_only", false)
+      .order("sort_order"),
   ]);
-  const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings ?? []);
+  const allSiblings = (rawSiblings ?? [])
+    .filter((l) => !usEn || inLanguage(l, "en"))
+    .map((l) => ({ id: l.id, has_content: l.has_content, title: usEn ? (tr(l, "title", "en") ?? l.title) : l.title }));
+  const siblings = viewer.isStaff ? allSiblings : studentLessons(allSiblings);
   // A video lesson whose video isn't up yet: nothing to watch, so it is neither recorded nor finishable.
   const videoSoon = track && partIds.length === 0 && (lesson.lesson_type === "video" || visible.some((b) => b.block_type === "video"));
   const backHref = await moduleHref(supabase, course, lessonModule.id);
@@ -209,10 +245,23 @@ export default async function LessonPage({ params, searchParams }: Props) {
     const media = typeof orig?.data.media_url === "string" ? orig.data.media_url : null;
     let cues: Cue[] = [];
     if (media?.startsWith("storage://course-media/")) {
-      const { data: tr } = await supabase.from("audio_transcripts").select("words").eq("path", media.slice("storage://course-media/".length)).eq("status", "done").maybeSingle();
+      const { data: tr } = await supabase
+        .from("audio_transcripts")
+        .select("words")
+        .eq("path", media.slice("storage://course-media/".length))
+        .eq("status", "done")
+        .maybeSingle();
       cues = transcriptCues(tr?.words);
     }
-    const original: Track = { key: "original", label: t.part.originalAudio, src: media ? (signed.get(media) ?? null) : null, ref: media, cues, chapters: [], voice: null };
+    const original: Track = {
+      key: "original",
+      label: t.part.originalAudio,
+      src: media ? (signed.get(media) ?? null) : null,
+      ref: media,
+      cues,
+      chapters: [],
+      voice: null,
+    };
     const tracks = [celscastTrack(cast.data, (r) => signed.get(r) ?? null, lang === "en" ? "en" : "es"), original];
     castPlayer = <CelsCast tracks={tracks} title={usPart!.episodeTitle} t={t.part} />;
   }
@@ -222,7 +271,16 @@ export default async function LessonPage({ params, searchParams }: Props) {
   if (rw) {
     const { data: row } = await supabase.from("progress").select("flashcard_state").eq("user_id", viewer.user.id).eq("lesson_id", lesson.id).maybeSingle();
     const saved = ((row?.flashcard_state ?? {}) as { rw?: Partial<RwState> }).rw ?? null;
-    rwPlayer = <ReadingWriting data={rw.data as unknown as RwData} t={t.rw} lang={lang === "en" ? "en" : "es"} userId={viewer.user.id} lessonId={lesson.id} saved={saved} />;
+    rwPlayer = (
+      <ReadingWriting
+        data={rw.data as unknown as RwData}
+        t={t.rw}
+        lang={lang === "en" ? "en" : "es"}
+        userId={viewer.user.id}
+        lessonId={lesson.id}
+        saved={saved}
+      />
+    );
   }
   const special = cast ?? rw;
   const specialNode = castPlayer ?? rwPlayer;
@@ -242,7 +300,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
             ← {course.title} · {lessonModule.title}
           </Link>
         )}
-        {!rw && <h1 className="t-heading text-3xl">{lesson.title}</h1>}
+        {!rw && <h1 className="t-heading text-3xl">{usEn ? tr(lesson, "title", "en") : lesson.title}</h1>}
       </header>
 
       {!access ? (
@@ -359,7 +417,10 @@ async function moduleHref(supabase: Awaited<ReturnType<typeof createClient>>, co
 }
 
 /** CV to Resume "Downloads" lessons → the matching screen of the interactive downloads reader. */
-const CV_DOWNLOADS: { book: string; screen: Record<number, string> } = { book: "cv-to-resume-descargas", screen: { 2: "s3", 3: "s2", 4: "s4", 5: "s5", 6: "s6" } };
+const CV_DOWNLOADS: { book: string; screen: Record<number, string> } = {
+  book: "cv-to-resume-descargas",
+  screen: { 2: "s3", 3: "s2", 4: "s4", 5: "s5", 6: "s6" },
+};
 
 /**
  * Where an old guided-course lesson goes: E-Book → the course's interactive e-book at that step's first screen (the
@@ -384,7 +445,10 @@ async function oldLessonTarget(
       supabase.from("guided_course_steps").select("from:data->essentials_from").eq("module_id", moduleId).maybeSingle(),
     ]);
     const from = row?.from as { ebook?: unknown; screens?: unknown } | null | undefined;
-    const named = typeof from?.ebook === "string" && Array.isArray(from.screens) && typeof from.screens[0] === "string" ? { slug: from.ebook, screen: from.screens[0] } : null;
+    const named =
+      typeof from?.ebook === "string" && Array.isArray(from.screens) && typeof from.screens[0] === "string"
+        ? { slug: from.ebook, screen: from.screens[0] }
+        : null;
     const has = (b: { screens: unknown }, id: string) => Array.isArray(b.screens) && (b.screens as { id?: string }[]).some((s) => s?.id === id);
     const own = named && (books ?? []).find((b) => b.slug === named.slug && has(b, named.screen));
     if (own && named) return `/app/libros/${own.slug}?screen=${named.screen}`;
@@ -393,7 +457,13 @@ async function oldLessonTarget(
     return page;
   }
   if (kind === "download" || title.startsWith("download") || title.startsWith("descarga")) {
-    const { data: dl } = await supabase.from("ebooks").select("slug").eq("course_id", course.id).eq("slug", CV_DOWNLOADS.book).eq("status", "published").maybeSingle();
+    const { data: dl } = await supabase
+      .from("ebooks")
+      .select("slug")
+      .eq("course_id", course.id)
+      .eq("slug", CV_DOWNLOADS.book)
+      .eq("status", "published")
+      .maybeSingle();
     if (dl) return `/app/libros/${dl.slug}?screen=${CV_DOWNLOADS.screen[step] ?? "s1"}`;
     return page;
   }

@@ -5,6 +5,8 @@ import type { createClient } from "@/lib/supabase/server";
 import { HIDDEN_FROM_STUDENTS, dictionaryPath, isDictionaryLesson } from "@/lib/glossary";
 import type { ThemeKey } from "@/lib/themes";
 import { guidedModules } from "@/lib/guided-modules";
+import { inLanguage, tr } from "@/lib/i18n/row";
+import type { Lang } from "@/lib/i18n/dictionaries";
 
 type Client = Awaited<ReturnType<typeof createClient>>;
 
@@ -29,7 +31,10 @@ export function partKeyOf(l: { title: string; lesson_type: string | null }): Par
   if (t.includes("celsaudio")) return "celsaudio";
   if (t.includes("grammar")) return "grammar";
   if (t.includes("quiz")) return "quiz";
-  return ({ video: "celsvideo", flashcard: "celscards", audio: "celsaudio", grammar: "grammar", quiz: "quiz" } as Record<string, PartKey>)[l.lesson_type ?? ""] ?? null;
+  return (
+    ({ video: "celsvideo", flashcard: "celscards", audio: "celsaudio", grammar: "grammar", quiz: "quiz" } as Record<string, PartKey>)[l.lesson_type ?? ""] ??
+    null
+  );
 }
 
 /**
@@ -134,23 +139,41 @@ function partHref(slug: string, n: number, layout: Layout, l: { id: string; less
   return layout === "episodes" && key ? `${episodePath(slug, n)}/${key}` : `/app/lecciones/${l.id}`;
 }
 
-export async function loadCoursePage(supabase: Client, userId: string, slug: string, theme: ThemeKey, isStaff: boolean): Promise<CoursePage | null> {
+/** `language`: the student's language; CelsUS uses it for its English mode (C-045), the other programs ignore it. */
+export async function loadCoursePage(
+  supabase: Client,
+  userId: string,
+  slug: string,
+  theme: ThemeKey,
+  isStaff: boolean,
+  language: Lang = "es",
+): Promise<CoursePage | null> {
   const { data: course } = await supabase.from("courses").select("id, slug, title, description, layout").eq("slug", slug).maybeSingle();
   if (!course) return null;
   const layout = layoutOf(theme, course.layout);
   const { data: modules } = await supabase
     .from("modules")
-    .select("id, title, description, artwork_url, kind, sort_order, lessons(id, title, lesson_type, teacher_only, status, sort_order, xp_reward, has_content)")
+    .select(
+      "id, title, title_en, description, artwork_url, kind, sort_order, lessons(id, title, title_en, language, lesson_type, teacher_only, status, sort_order, xp_reward, has_content)",
+    )
     .eq("course_id", course.id)
     .order("sort_order")
     .order("sort_order", { referencedTable: "lessons" });
 
+  // C-045: CelsUS in English mode is all English: `_en` titles, and the Spanish track (language 'es') is hidden.
+  // The other programs keep their titles as they are.
+  const lang: Lang = layout === "citizenship" ? language : "es";
   // Guided modules (CelsGLOBAL step template): their old lessons are hidden from students; the step page replaces them.
-  const guided = await guidedModules(supabase, (modules ?? []).map((m) => m.id));
+  const guided = await guidedModules(
+    supabase,
+    (modules ?? []).map((m) => m.id),
+  );
   // Never the Teachersbook (or any teacher-only lesson) on these screens; drafts and empty lessons only for staff.
   const visible = (m: NonNullable<typeof modules>[number]) => {
     if (!isStaff && guided.has(m.id)) return [];
-    const ls = (m.lessons ?? []).filter((l) => !l.teacher_only && (l.status === "published" || isStaff) && (isStaff || !HIDDEN_FROM_STUDENTS.has(l.id)));
+    const ls = (m.lessons ?? []).filter(
+      (l) => !l.teacher_only && (l.status === "published" || isStaff) && (isStaff || !HIDDEN_FROM_STUDENTS.has(l.id)) && inLanguage(l, lang),
+    );
     return isStaff ? ls : studentLessons(ls);
   };
   const lessonIds = (modules ?? []).flatMap((m) => visible(m).map((l) => l.id));
@@ -166,7 +189,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
       return {
         id: l.id,
         key,
-        name: key ? PART_NAME[key] : l.title,
+        name: key ? PART_NAME[key] : (tr(l, "title", lang) ?? l.title),
         title: l.title,
         type: l.lesson_type,
         done: p?.status === "completed",
@@ -199,7 +222,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
     return {
       id: m.id,
       n,
-      title: cleanTitle(m.title),
+      title: cleanTitle(tr(m, "title", lang) ?? m.title),
       description: m.description,
       artwork: m.artwork_url,
       isReview: /^review/i.test(cleanTitle(m.title)),
@@ -218,7 +241,7 @@ export async function loadCoursePage(supabase: Client, userId: string, slug: str
     .filter((m) => m.kind === "resources" || m.kind === "evaluation")
     .map((m): Extra => {
       const parts = toParts(m, 0);
-      return { id: m.id, kind: m.kind as Extra["kind"], title: m.title, parts, href: parts[0]?.href ?? "#" };
+      return { id: m.id, kind: m.kind as Extra["kind"], title: tr(m, "title", lang) ?? m.title, parts, href: parts[0]?.href ?? "#" };
     })
     .filter((x) => isStaff || x.parts.length > 0);
 

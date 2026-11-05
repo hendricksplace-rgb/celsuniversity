@@ -114,8 +114,10 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
       </header>
-      <main data-app-main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">{children}</main>
-      <BadgeWatcher title={t.progress.newMedal} cta={t.progress.seeMedals} />
+      <main data-app-main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">
+        {children}
+      </main>
+      <BadgeWatcher title={t.progress.newMedal} cta={t.progress.seeMedals} lang={lang === "en" ? "en" : "es"} />
       <CheerWatcher t={t.lb} />
       <VideoReadyWatcher label={t.bv.ready} go={t.bv.readyGo} />
       {/* Phones also get "Cuenta" as a tab; on larger screens it's in the avatar menu. */}

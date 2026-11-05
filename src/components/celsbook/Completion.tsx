@@ -39,6 +39,8 @@ export type CompletionProps = {
   finalExamHref: string | null;
   readAgainHref: string;
   t: Dictionary["fin"];
+  /** C-045: the medal name in English (badges.name_en) when the app is in English. */
+  lang?: "es" | "en";
 };
 
 const COLORS = ["#E8333A", "#ffffff", "#1E4E8C", "#F2C230", "#FFE27A"];
@@ -75,11 +77,12 @@ export function Completion(p: CompletionProps) {
         .filter(([, v]) => v?.at && Date.now() - new Date(v.at).getTime() < 30 * 60 * 1000)
         .sort((a, b) => (b[1].at ?? "").localeCompare(a[1].at ?? ""))[0];
       if (!fresh) return;
-      const { data: badge } = await sb.from("badges").select("name").eq("code", fresh[0]).maybeSingle();
-      if (badge?.name) setMedal(badge.name);
+      const { data: badge } = await sb.from("badges").select("name, name_en").eq("code", fresh[0]).maybeSingle();
+      const name = p.lang === "en" ? (badge?.name_en ?? badge?.name) : badge?.name;
+      if (name) setMedal(name);
     }, 2500);
     return () => clearTimeout(h);
-  }, [B, p.medal, p.userId]);
+  }, [B, p.medal, p.userId, p.lang]);
 
   const left = p.total - p.done;
   const kick = p.firstName ? fill(t.congratsName, { name: p.firstName.toUpperCase() }) : t.congrats;
@@ -212,7 +215,14 @@ export function Completion(p: CompletionProps) {
             <i
               key={k}
               className="cf"
-              style={{ left: `${c.left}vw`, background: c.c, animationDuration: `${c.dur}s`, animationDelay: `${c.delay}s`, ["--x" as string]: `${c.x}px`, ["--r" as string]: `${c.r}deg` }}
+              style={{
+                left: `${c.left}vw`,
+                background: c.c,
+                animationDuration: `${c.dur}s`,
+                animationDelay: `${c.delay}s`,
+                ["--x" as string]: `${c.x}px`,
+                ["--r" as string]: `${c.r}deg`,
+              }}
             />
           ))}
         </div>

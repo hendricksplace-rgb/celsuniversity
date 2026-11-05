@@ -7,6 +7,8 @@ import { bookProgress, coverUrl } from "@/lib/celsbook-progress";
 import { accessibleCourses, courseStats, myAssignments, nextLesson, todayIndex, weekIndex, weekStart, type CourseStats } from "@/lib/learning";
 import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { guidedModules } from "@/lib/guided-modules";
+import { getLang } from "@/lib/i18n/server";
+import { inLanguage, tr } from "@/lib/i18n/row";
 
 export const BRANDS: ThemeKey[] = ["celstv", "celsbsns", "celsus", "celsglobal"];
 
@@ -91,7 +93,12 @@ const ruleOf = (r: unknown) => (r && typeof r === "object" ? (r as { type?: stri
  * The medal to chase next (shared by Inicio and Progreso): the first unearned one whose progress can be
  * measured (a streak or total XP), else the first unearned one.
  */
-export function nextMedalOf<B extends BadgeRow>(catalog: B[], owned: Record<string, unknown>, streak: number, totalXp: number): { badge: B; next: NextMedal } | null {
+export function nextMedalOf<B extends BadgeRow>(
+  catalog: B[],
+  owned: Record<string, unknown>,
+  streak: number,
+  totalXp: number,
+): { badge: B; next: NextMedal } | null {
   const unearned = catalog.filter((b) => !owned[b.code]);
   const nextB = unearned.find((b) => ["streak", "total_xp"].includes(ruleOf(b.rule).type ?? "")) ?? unearned[0] ?? null;
   if (!nextB) return null;
@@ -132,20 +139,29 @@ function focusOf(courses: CourseStats[]) {
 }
 
 export async function loadHome(supabase: Client, userId: string) {
-  const [{ data: profile }, { data: game }, { data: settings }, access, assignments, { data: recent }, { data: enrollments }, { data: catalog }] = await Promise.all([
-    supabase.from("profiles").select("display_name, evaluation_level, evaluation_date, starting_level").eq("id", userId).maybeSingle(),
-    supabase.from("gamification").select("current_streak, weekly_xp, weekly_reset_date, last_activity_date, total_xp, badges").eq("user_id", userId).maybeSingle(),
-    supabase.from("settings").select("key, value").in("key", ["civics_pretest_url", "weekly_xp_goal"]),
-    accessibleCourses(supabase, userId),
-    myAssignments(supabase, userId),
-    supabase
-      .from("progress")
-      .select("last_activity")
-      .eq("user_id", userId)
-      .gte("last_activity", new Date(Date.now() - 8 * 864e5).toISOString()),
-    supabase.from("enrollments").select("starts_at, created_at, course_id, program:programs(program_courses(course_id))").eq("user_id", userId).eq("status", "active"),
-    supabase.from("badges").select("code, name, requirement, rule").eq("active", true).order("sort_order"),
-  ]);
+  const [{ data: profile }, { data: game }, { data: settings }, access, assignments, { data: recent }, { data: enrollments }, { data: catalog }] =
+    await Promise.all([
+      supabase.from("profiles").select("display_name, evaluation_level, evaluation_date, starting_level").eq("id", userId).maybeSingle(),
+      supabase
+        .from("gamification")
+        .select("current_streak, weekly_xp, weekly_reset_date, last_activity_date, total_xp, badges")
+        .eq("user_id", userId)
+        .maybeSingle(),
+      supabase.from("settings").select("key, value").in("key", ["civics_pretest_url", "weekly_xp_goal"]),
+      accessibleCourses(supabase, userId),
+      myAssignments(supabase, userId),
+      supabase
+        .from("progress")
+        .select("last_activity")
+        .eq("user_id", userId)
+        .gte("last_activity", new Date(Date.now() - 8 * 864e5).toISOString()),
+      supabase
+        .from("enrollments")
+        .select("starts_at, created_at, course_id, program:programs(program_courses(course_id))")
+        .eq("user_id", userId)
+        .eq("status", "active"),
+      supabase.from("badges").select("code, name, name_en, requirement, requirement_en, rule").eq("active", true).order("sort_order"),
+    ]);
   const weekAgo = Date.now() - 7 * 864e5;
   const starts = (enrollments ?? []).map((e) => new Date(e.starts_at ?? e.created_at).getTime());
   const [stats, { data: fresh }] = await Promise.all([
@@ -153,7 +169,7 @@ export async function loadHome(supabase: Client, userId: string) {
     access.ids.length && starts.length
       ? supabase
           .from("lessons")
-          .select("title, created_at, module:modules!inner(id, title, course_id)")
+          .select("title, title_en, language, created_at, module:modules!inner(id, title, title_en, course_id)")
           .in("module.course_id", access.ids)
           .eq("status", "published")
           .eq("teacher_only", false)
@@ -169,7 +185,9 @@ export async function loadHome(supabase: Client, userId: string) {
 
   // CelsGLOBAL month: 1 in the first 30 days of access to its courses (program or course enrollment), up to 6.
   const globalIds = new Set(all.filter((c) => c.brand === "celsglobal").map((c) => c.id));
-  const global = (enrollments ?? []).filter((e) => (e.course_id && globalIds.has(e.course_id)) || (pick(e.program)?.program_courses ?? []).some((pc) => globalIds.has(pc.course_id))).map(since);
+  const global = (enrollments ?? [])
+    .filter((e) => (e.course_id && globalIds.has(e.course_id)) || (pick(e.program)?.program_courses ?? []).some((pc) => globalIds.has(pc.course_id)))
+    .map(since);
   const month = global.length ? Math.min(6, Math.max(1, Math.floor((Date.now() - Math.min(...global)) / (30.44 * 864e5)) + 1)) : null;
 
   // Tu Camino TN is in the CelsGLOBAL package (Mis cursos shows it as MES 1) but stays off Inicio for now (Matt, 2026-10-19).
@@ -251,7 +269,9 @@ export async function loadHome(supabase: Client, userId: string) {
 
   // Medals: the catalog (public.badges) and what the student has earned (gamification.badges).
   const owned = game?.badges && typeof game.badges === "object" && !Array.isArray(game.badges) ? (game.badges as Record<string, { at?: string }>) : {};
-  const medalsList = catalog ?? [];
+  // C-045: medal names and requirements in English (badges.name_en / requirement_en) in English mode.
+  const lang = await getLang();
+  const medalsList = (catalog ?? []).map((b) => ({ ...b, name: tr(b, "name", lang) ?? b.name, requirement: tr(b, "requirement", lang) ?? b.requirement }));
   const unearned = medalsList.filter((b) => !owned[b.code]);
   const nm = nextMedalOf(medalsList, owned, streak, game?.total_xp ?? 0);
   const nextB = nm?.badge ?? null;
@@ -288,14 +308,19 @@ export async function loadHome(supabase: Client, userId: string) {
   // Not the old lessons of a guided (CelsGLOBAL step) module: students never see those.
   const freshMods = [...new Set((fresh ?? []).map((x) => pick(x.module)?.id).filter((x): x is string => !!x))];
   const guided = await guidedModules(supabase, freshMods);
-  const l = (fresh ?? []).find((x) => !guided.has(pick(x.module)?.id ?? ""));
+  // C-045: only CelsUS rows carry English titles (title_en) and a Spanish track; English mode uses and hides them.
+  const l = (fresh ?? []).find((x) => !guided.has(pick(x.module)?.id ?? "") && inLanguage(x, lang));
   const mod = l ? pick(l.module) : null;
-  if (l && mod) band.push({ kind: "fresh", part: partName(l.title), episode: mod.title });
+  if (l && mod) band.push({ kind: "fresh", part: partName(tr(l, "title", lang) ?? l.title), episode: tr(mod, "title", lang) ?? mod.title });
   if (weeklyXp < goal) band.push({ kind: "goal", n: goal - weeklyXp });
   if (band.every((b) => b.kind === "app" || b.kind === "goal")) band.push({ kind: "keepGoing" });
 
   // Every "Continuar" goes to the lesson's current page (C-021).
-  const hrefs = await lessonHrefs(supabase, { userId, isStaff: false }, [continueLesson?.lessonId, ...programs.map((p) => p.next?.lessonId), ...open.map((a) => a.lessonId)]);
+  const hrefs = await lessonHrefs(supabase, { userId, isStaff: false }, [
+    continueLesson?.lessonId,
+    ...programs.map((p) => p.next?.lessonId),
+    ...open.map((a) => a.lessonId),
+  ]);
   if (continueLesson) continueLesson.href = hrefs.get(continueLesson.lessonId) ?? continueLesson.href;
   for (const p of programs) if (p.next) p.next.href = hrefs.get(p.next.lessonId) ?? p.next.href;
   for (const a of open) if (a.lessonId) a.href = hrefs.get(a.lessonId) ?? a.href;

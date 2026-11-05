@@ -1,6 +1,8 @@
 // Data for Progreso (/app/progreso): the stat tiles, the road map and the program card for each program
 // the student is enrolled in, XP per day this week, the English level (with per-skill levels and history),
 // the CelsUS practice-exam panel and the medals.
+import { getLang } from "@/lib/i18n/server";
+import { tr } from "@/lib/i18n/row";
 import type { Client } from "@/lib/supabase/types";
 import { accessibleCourses, courseStats, nextLesson, todayIndex, weekIndex, type CourseStats } from "@/lib/learning";
 import { lessonHrefs } from "@/lib/lesson-href";
@@ -332,7 +334,7 @@ export async function loadProgress(supabase: Client, userId: string) {
     supabase.from("programs").select("program_courses(course:courses(id, slug))").eq("slug", ROUTE_PROGRAM).maybeSingle(),
     // Medals: the catalog (public.badges); what the student earned is gamification.badges (awarded by
     // private.award_badges; the shell's BadgeWatcher celebrates new ones).
-    supabase.from("badges").select("code, name, requirement, rule").eq("active", true).order("sort_order"),
+    supabase.from("badges").select("code, name, name_en, requirement, requirement_en, rule").eq("active", true).order("sort_order"),
     supabase.rpc("can_use_ai_tools"),
   ]);
   const [stats, { data: prefs }, { data: xpEvents }, { data: interview }] = await Promise.all([
@@ -467,7 +469,9 @@ export async function loadProgress(supabase: Client, userId: string) {
   const owned = game?.badges && typeof game.badges === "object" && !Array.isArray(game.badges) ? (game.badges as Record<string, { at?: string }>) : {};
   const streak = liveStreak(game);
   const totalXp = game?.total_xp ?? 0;
-  const list = catalog ?? [];
+  // C-045: medal names and requirements in English (badges.name_en / requirement_en) in English mode.
+  const lang = await getLang();
+  const list = (catalog ?? []).map((b) => ({ ...b, name: tr(b, "name", lang) ?? b.name, requirement: tr(b, "requirement", lang) ?? b.requirement }));
   const nm = nextMedalOf(list, owned, streak, totalXp);
   const medals = list.map((b) => ({
     code: b.code,

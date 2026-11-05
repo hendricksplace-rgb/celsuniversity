@@ -43,7 +43,8 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
   const saved: Partial<Record<Track, Record<string, boolean>>> = {};
   for (const tr of TRACKS) {
     const v = state[tr];
-    if (v && typeof v === "object") saved[tr] = Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([, x]) => typeof x === "boolean")) as Record<string, boolean>;
+    if (v && typeof v === "object")
+      saved[tr] = Object.fromEntries(Object.entries(v as Record<string, unknown>).filter(([, x]) => typeof x === "boolean")) as Record<string, boolean>;
   }
 
   // "Seguir con …": the next part still to do after this one (track C doesn't need the quiz).
@@ -56,6 +57,7 @@ export default async function TarjetasPage({ params, searchParams }: Props) {
     <Tarjetas
       texts={{ es: dictionaries.es.usCards, en: dictionaries.en.usCards }}
       langChoice={await getLangChoice()}
+      englishOnly={(await getDictionary()).lang === "en"}
       backTexts={{ es: dictionaries.es.usBack, en: dictionaries.en.usBack }}
       course={{ href: `/app/cursos/${page.course.slug}`, name: page.course.title }}
       userId={viewer.user.id}

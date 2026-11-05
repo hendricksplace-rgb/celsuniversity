@@ -31,7 +31,7 @@ export default async function CoursePage({ params }: Props) {
   if (!viewer) redirect(`/entrar?next=/app/cursos/${slug}`);
 
   const theme = themeForCourse({ slug });
-  const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
+  const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff, lang);
   if (!page) notFound();
   const access = await canAccessCourse(supabase, viewer, page.course.id);
   // CelsBSNS: the old week-list page is gone; old links and bookmarks land on the student's current week.

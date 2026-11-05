@@ -30,7 +30,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
   const { data: ebook } = await supabase
     .from("ebooks")
     .select(
-      "id, course_id, slug, title, subtitle, program, pdf_path, cover_path, est_minutes, screens, quiz, resources, review_notes, status, course:courses(slug, title)",
+      "id, course_id, slug, title, subtitle, subtitle_en, program, pdf_path, cover_path, est_minutes, screens, quiz, resources, review_notes, status, course:courses(slug, title)",
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -43,7 +43,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
     usN && course?.slug
       ? Promise.all([
           supabase.from("profiles").select("civics_senator, civics_representative").eq("id", viewer.user.id).maybeSingle(),
-          loadCoursePage(supabase, viewer.user.id, course.slug, themeForCourse({ slug: course.slug }), viewer.isStaff),
+          loadCoursePage(supabase, viewer.user.id, course.slug, themeForCourse({ slug: course.slug }), viewer.isStaff, lang),
         ])
       : null;
 
@@ -59,19 +59,10 @@ export default async function EbookPage({ params, searchParams }: Props) {
     resourceSlugs.length
       ? supabase.from("ebooks").select("slug, title").in("slug", resourceSlugs)
       : Promise.resolve({ data: [] as { slug: string; title: string }[] }),
-    signStorageRefs(
-      supabase,
-      collectStorageRefs([ebook.pdf_path, ebook.cover_path, ebook.screens]),
-      { courseId: ebook.course_id, viewer },
-    ),
+    signStorageRefs(supabase, collectStorageRefs([ebook.pdf_path, ebook.cover_path, ebook.screens]), { courseId: ebook.course_id, viewer }),
     // The module whose lesson shows this book's PDF: offline_downloads tracks the download per module.
     ebook.pdf_path
-      ? supabase
-          .from("content_blocks")
-          .select("lesson:lessons(module_id)")
-          .eq("data->>ebook_pdf", ebook.pdf_path)
-          .limit(1)
-          .maybeSingle()
+      ? supabase.from("content_blocks").select("lesson:lessons(module_id)").eq("data->>ebook_pdf", ebook.pdf_path).limit(1).maybeSingle()
       : Promise.resolve({ data: null }),
   ]);
   const moduleId = (one(host?.lesson) as { module_id?: string } | null)?.module_id ?? null;
@@ -87,7 +78,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
     const asked = screen ?? (p && screens[Number(p) - 1]?.id) ?? null;
     const reader = (
       <CelsBookReader
-        ebook={ebook as unknown as Ebook}
+        ebook={{ ...ebook, subtitle: (lang === "en" ? ebook.subtitle_en : null) ?? ebook.subtitle } as unknown as Ebook}
         episodeN={usN}
         userId={viewer.user.id}
         initial={saved ? { ...saved, answers: (saved.answers ?? {}) as Answers } : null}
@@ -115,7 +106,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
         t={t.cv}
         cover={cover}
         n={usN}
-        topic={(ebook.subtitle ?? "").split(" · ").pop() || ebook.title}
+        topic={((lang === "en" ? ebook.subtitle_en : null) ?? ebook.subtitle ?? "").split(" · ").pop() || ebook.title}
         pages={screens.length}
         minutes={ebook.est_minutes}
         firstTime={!asked && at < 0 && !saved?.completed_at}
@@ -153,7 +144,7 @@ export default async function EbookPage({ params, searchParams }: Props) {
       )}
 
       <EbookReader
-        ebook={ebook as unknown as Ebook}
+        ebook={{ ...ebook, subtitle: (lang === "en" ? ebook.subtitle_en : null) ?? ebook.subtitle } as unknown as Ebook}
         userId={viewer.user.id}
         initial={saved ? { ...saved, answers: (saved.answers ?? {}) as Answers } : null}
         moduleId={moduleId}

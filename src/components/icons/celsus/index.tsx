@@ -19,7 +19,7 @@ export function IconVideo({ className }: P) {
   );
 }
 
-/** Tarjetas: stacked cards with "A" and "¿?". */
+/** Tarjetas: stacked cards with "A" and "?" (no "¿", so it reads in English mode too, C-045). */
 export function IconCards({ className }: P) {
   return (
     <svg {...svg} className={className}>
@@ -29,7 +29,7 @@ export function IconCards({ className }: P) {
         A
       </text>
       <text x="27" y="22" fontSize="9" fill="#C8102E" {...label}>
-        ¿?
+        ?
       </text>
     </svg>
   );

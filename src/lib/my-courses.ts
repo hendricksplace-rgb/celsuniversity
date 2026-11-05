@@ -8,9 +8,10 @@ import { PART_NAME, partKeyOf } from "@/lib/course-page";
 import { ROUTE_PROGRAM } from "@/lib/route";
 import { BSNS_SLUG, bsnsHomeHref } from "@/lib/bsns";
 import { lessonHrefs, lessonPagePath } from "@/lib/lesson-href";
+import { getLang } from "@/lib/i18n/server";
 import { SCREEN_PROBE, coverUrl, progressOf, screenCount, screenIds } from "@/lib/celsbook-progress";
 
-const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
+const pick = <T>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
 /** The CelsGLOBAL route on this page: four cards, MES 1 to MES 4. */
 export const ROUTE_CARDS = [
@@ -40,7 +41,6 @@ const partName = (title: string) => {
 };
 /** Part chips on the "Donde te quedaste" card: up to six, always including the current one. */
 const MAX_PARTS = 6;
-
 
 export type Glyph = "globe" | "doc" | "chat" | "money" | "people" | "check";
 export type BookTone = "us" | "us2" | "gl" | "gold" | "teal" | "rose" | "violet";
@@ -79,6 +79,7 @@ function glyphOf(slug: string, courseSlug: string | null): Glyph {
 }
 
 export async function loadMyCourses(supabase: Client, userId: string) {
+  const lang = await getLang();
   const [access, { data: enrollments }, { data: books }, { data: probes }, { data: answers }, { data: tools }] = await Promise.all([
     accessibleCourses(supabase, userId),
     supabase
@@ -87,16 +88,26 @@ export async function loadMyCourses(supabase: Client, userId: string) {
       .eq("user_id", userId)
       .eq("status", "active"),
     // RLS: published books in courses the student can open.
-    supabase.from("ebooks").select("id, slug, title, subtitle, program, est_minutes, cover_path, created_at, course:courses(slug, sort_order)").eq("status", "published"),
+    supabase
+      .from("ebooks")
+      .select("id, slug, title, subtitle, subtitle_en, program, est_minutes, cover_path, created_at, course:courses(slug, sort_order)")
+      .eq("status", "published"),
     // Typed as just the id: the screen-slot columns are read untyped in screenCount().
-    supabase.from("ebooks").select(`id, ${SCREEN_PROBE}` as "id").eq("status", "published"),
+    supabase
+      .from("ebooks")
+      .select(`id, ${SCREEN_PROBE}` as "id")
+      .eq("status", "published"),
     supabase.from("ebook_answers").select("ebook_id, last_screen, completed_at").eq("user_id", userId),
     supabase.rpc("can_use_ai_tools"),
   ]);
   const stats = await courseStats(supabase, userId, access.ids);
   const all = [...stats.values()].sort((a, b) => a.sort - b.sort);
   // "Continuar" goes to each next lesson's current page (C-021).
-  const hrefs = await lessonHrefs(supabase, { userId, isStaff: false }, all.map((c) => nextLesson(c)?.id));
+  const hrefs = await lessonHrefs(
+    supabase,
+    { userId, isStaff: false },
+    all.map((c) => nextLesson(c)?.id),
+  );
   for (const c of all) {
     const n = nextLesson(c);
     if (n) c.nextHref = hrefs.get(n.id);
@@ -156,7 +167,11 @@ export async function loadMyCourses(supabase: Client, userId: string) {
     const shown = parts.length > MAX_PARTS ? parts.slice(from, from + MAX_PARTS) : parts;
     resume = {
       course: r.course,
-      next: { id: r.next.id, href: r.course.nextHref && nextLesson(r.course)?.id === r.next.id ? r.course.nextHref : lessonPagePath(r.next.id), part: partName(r.next.title) },
+      next: {
+        id: r.next.id,
+        href: r.course.nextHref && nextLesson(r.course)?.id === r.next.id ? r.course.nextHref : lessonPagePath(r.next.id),
+        part: partName(r.next.title),
+      },
       unit: moduleIndex + 1,
       parts: shown,
       moreParts: parts.length - shown.length,
@@ -188,7 +203,8 @@ export async function loadMyCourses(supabase: Client, userId: string) {
       const ep = /episodio\s*(\d+)/i.exec(b.title);
       if (b.program === "celsus" || ep) {
         // "CelsUS · Episodio 3" with subtitle "<series> · Deberes, historia y derechos": the topic goes on the cover.
-        const topic = (b.subtitle ?? "").split(" · ").pop() || b.title;
+        // C-045: English mode reads the English topic (subtitle_en).
+        const topic = ((lang === "en" ? b.subtitle_en : null) ?? b.subtitle ?? "").split(" · ").pop() || b.title;
         return {
           id: b.id,
           slug: b.slug,
@@ -208,7 +224,20 @@ export async function loadMyCourses(supabase: Client, userId: string) {
         };
       }
       const glyph = glyphOf(b.slug, b.courseSlug);
-      return { id: b.id, slug: b.slug, program: b.program, kind: (b.slug.startsWith("guia-") ? "guide" : "ebook") as ShelfBook["kind"], face: b.title, caption: b.title, number: null, glyph, tone: TONE[glyph], minutes: b.est_minutes, screens, state };
+      return {
+        id: b.id,
+        slug: b.slug,
+        program: b.program,
+        kind: (b.slug.startsWith("guia-") ? "guide" : "ebook") as ShelfBook["kind"],
+        face: b.title,
+        caption: b.title,
+        number: null,
+        glyph,
+        tone: TONE[glyph],
+        minutes: b.est_minutes,
+        screens,
+        state,
+      };
     })
     .map((book, i) => ({ book, src: list[i] }))
     .sort(

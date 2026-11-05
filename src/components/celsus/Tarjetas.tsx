@@ -77,6 +77,8 @@ export type TarjetasProps = {
   signed: Record<string, string>;
   refreshAudio: () => Promise<Record<string, string>>;
   mode: EpisodeMode | TwentyMode;
+  /** C-045: the app is in English: only the English track (A), no "Ver en español" on the cards. */
+  englishOnly?: boolean;
 };
 
 const cap = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
@@ -85,7 +87,12 @@ function answerItems(a: string[]) {
   if (a.length !== 1 || (a[0].match(/,/g) ?? []).length <= 3) return a;
   return a[0]
     .split(",")
-    .map((x) => x.trim().replace(/^(and|y)\s+/i, "").replace(/\.$/, ""))
+    .map((x) =>
+      x
+        .trim()
+        .replace(/^(and|y)\s+/i, "")
+        .replace(/\.$/, ""),
+    )
     .filter(Boolean);
 }
 /** The Spanish line says the same as the English (proper names): ignore case, accents and punctuation. */
@@ -102,7 +109,14 @@ const SWIPE_PX = 50;
 
 const Chevron = ({ left }: { left?: boolean }) => (
   <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden focusable="false">
-    <path d={left ? "M14.5 5.5 8 12l6.5 6.5" : "M9.5 5.5 16 12l-6.5 6.5"} fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d={left ? "M14.5 5.5 8 12l6.5 6.5" : "M9.5 5.5 16 12l-6.5 6.5"}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
@@ -140,7 +154,7 @@ export function Tarjetas(p: TarjetasProps) {
   const { mode } = p;
   const router = useRouter();
   const twenty = mode.kind === "twenty";
-  const [track, setTrack] = useState<Track | null>(twenty ? "C" : p.track);
+  const [track, setTrack] = useState<Track | null>(twenty ? "C" : p.englishOnly && p.track ? "A" : p.track);
   // Screen labels: the student's ES/EN choice, else the track (card content always follows the track).
   const uiLang: Lang = p.langChoice ?? (track === "A" ? "en" : "es");
   const t = p.texts[uiLang];
@@ -227,7 +241,10 @@ export function Tarjetas(p: TarjetasProps) {
       pending.current = async () => {
         await createClient()
           .from("progress")
-          .upsert({ user_id: p.userId, lesson_id: mode.lessonId, flashcard_state: state, last_activity: now, client_updated_at: now }, { onConflict: "user_id,lesson_id" });
+          .upsert(
+            { user_id: p.userId, lesson_id: mode.lessonId, flashcard_state: state, last_activity: now, client_updated_at: now },
+            { onConflict: "user_id,lesson_id" },
+          );
       };
     } else {
       const known = new Set(cards20.current.known);
@@ -455,7 +472,7 @@ export function Tarjetas(p: TarjetasProps) {
                 </button>
               ))}
             </div>
-            {(["A", "B", "C"] as Track[]).map((g) => (
+            {((p.englishOnly ? ["A"] : ["A", "B", "C"]) as Track[]).map((g) => (
               <button key={g} type="button" className={`opt t${g}${rec === g ? " rec" : ""}`} onClick={() => void pick(g)}>
                 <span className="tl" aria-hidden>
                   {g}
@@ -570,7 +587,14 @@ export function Tarjetas(p: TarjetasProps) {
                 <>
                   <div className="prog">
                     <span className="cnt">{fill(t.count, { n: i + 1, total: deck.length })}</span>
-                    <div className="pbar" role="progressbar" aria-valuemin={0} aria-valuemax={deck.length} aria-valuenow={i} aria-label={fill(t.count, { n: i + 1, total: deck.length })}>
+                    <div
+                      className="pbar"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={deck.length}
+                      aria-valuenow={i}
+                      aria-label={fill(t.count, { n: i + 1, total: deck.length })}
+                    >
                       <i style={{ width: `${(i / deck.length) * 100}%` }} />
                     </div>
                     <div className="tally">
@@ -591,7 +615,13 @@ export function Tarjetas(p: TarjetasProps) {
                         {t.prev}
                       </span>
                     </button>
-                    <div key={i} className={`scene${from ? ` from-${from}` : ""}`} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onPointerCancel={() => (touch.current = null)}>
+                    <div
+                      key={i}
+                      className={`scene${from ? ` from-${from}` : ""}`}
+                      onPointerDown={onPointerDown}
+                      onPointerUp={onPointerUp}
+                      onPointerCancel={() => (touch.current = null)}
+                    >
                       <div
                         className={`fcard${flipped ? " flip" : ""}`}
                         role="group"
@@ -631,7 +661,7 @@ export function Tarjetas(p: TarjetasProps) {
                               🔊 {t.listenQ}
                             </button>
                           )}
-                          {track === "A" && card.es && (
+                          {track === "A" && card.es && !p.englishOnly && (
                             <button type="button" className="esb" lang={uiLang} tabIndex={flipped ? -1 : 0} onClick={toggleEs} aria-pressed={showEs}>
                               {showEs ? t.hideEs : t.showEs}
                             </button>
@@ -659,7 +689,7 @@ export function Tarjetas(p: TarjetasProps) {
                               🔊 {t.listenA}
                             </button>
                           )}
-                          {track === "A" && card.es && (
+                          {track === "A" && card.es && !p.englishOnly && (
                             <button type="button" className="esb" lang={uiLang} tabIndex={flipped ? 0 : -1} onClick={toggleEs} aria-pressed={showEs}>
                               {showEs ? t.hideEs : t.showEs}
                             </button>

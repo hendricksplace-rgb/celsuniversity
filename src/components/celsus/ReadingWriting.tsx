@@ -5,7 +5,7 @@
 // "Ya la leí") and 20 writing sentences (copy or dictation by Brian, checked word by word the way USCIS scores).
 // Progress is saved per student in progress.flashcard_state.rw; the lesson is complete at 20 read + 15 written.
 import "./reading-writing.css";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { fileRoute } from "@/components/reader/media";
 import { usePartDone } from "@/components/lesson/progress";
@@ -27,7 +27,17 @@ export type RwData = {
   settings?: { complete_rule?: { reading_done?: number; writing_correct?: number } };
 };
 /** Saved per student (progress.flashcard_state.rw). */
-export type RwState = { heardR: string[]; heardW: string[]; readDone: string[]; writeOk: string[]; writeTried: string[]; ri: number; wi: number; mode: "copy" | "dict"; tab: number };
+export type RwState = {
+  heardR: string[];
+  heardW: string[];
+  readDone: string[];
+  writeOk: string[];
+  writeTried: string[];
+  ri: number;
+  wi: number;
+  mode: "copy" | "dict";
+  tab: number;
+};
 const EMPTY: RwState = { heardR: [], heardW: [], readDone: [], writeOk: [], writeTried: [], ri: 0, wi: 0, mode: "copy", tab: 0 };
 
 /* ---------- the USCIS-style checker (from the mockup) ---------- */
@@ -116,7 +126,15 @@ export function checkWriting(target: string, typed: string) {
   const near = A.filter((x) => x.t === "a");
   const missContent = missing.filter((x) => !SHORT.has(x.w));
   const abbrev = ABBREV.test(typed);
-  return { cells: A, ok: !missContent.length && !extra.length && !abbrev, abbrev, near: near.length, missing: missing.length, missContent: missContent.length, extra: extra.length };
+  return {
+    cells: A,
+    ok: !missContent.length && !extra.length && !abbrev,
+    abbrev,
+    near: near.length,
+    missing: missing.length,
+    missContent: missContent.length,
+    extra: extra.length,
+  };
 }
 
 /* ---------- audio: one clip at a time, signed on request ---------- */
@@ -131,30 +149,53 @@ function usePlayer() {
     setWord(-1);
   }, []);
   useEffect(() => stop, [stop]);
-  const play = useCallback(
-    (key: string, ref: string, opts: { rate?: number; wt?: number[] } = {}) => {
-      el.current?.pause();
-      const a = new Audio(fileRoute(ref));
-      a.playbackRate = opts.rate ?? 1;
-      el.current = a;
-      setPlaying(key);
+  const play = useCallback((key: string, ref: string, opts: { rate?: number; wt?: number[] } = {}) => {
+    el.current?.pause();
+    const a = new Audio(fileRoute(ref));
+    a.playbackRate = opts.rate ?? 1;
+    el.current = a;
+    setPlaying(key);
+    setWord(-1);
+    if (opts.wt?.length) a.ontimeupdate = () => setWord(opts.wt!.findLastIndex((s) => s <= a.currentTime + 0.04));
+    const reset = () => {
+      setPlaying(null);
       setWord(-1);
-      if (opts.wt?.length) a.ontimeupdate = () => setWord(opts.wt!.findLastIndex((s) => s <= a.currentTime + 0.04));
-      const reset = () => {
-        setPlaying(null);
-        setWord(-1);
-      };
-      a.onended = () => {
-        if (el.current === a) reset();
-      };
-      void a.play().catch(reset);
-    },
-    [],
-  );
+    };
+    a.onended = () => {
+      if (el.current === a) reset();
+    };
+    void a.play().catch(reset);
+  }, []);
   return { play, stop, playing, word };
 }
 
-export function ReadingWriting({ data, t, lang, userId, lessonId, saved }: { data: RwData; t: T; lang: "es" | "en"; userId: string; lessonId: string; saved: Partial<RwState> | null }) {
+export function ReadingWriting({
+  data: raw,
+  t,
+  lang,
+  userId,
+  lessonId,
+  saved,
+}: {
+  data: RwData;
+  t: T;
+  lang: "es" | "en";
+  userId: string;
+  lessonId: string;
+  saved: Partial<RwState> | null;
+}) {
+  // C-045: English mode shows no Spanish (no translation line under the sentences, no "Ver en español").
+  const data = useMemo(
+    () =>
+      lang === "en"
+        ? {
+            ...raw,
+            reading_sentences: raw.reading_sentences.map((x) => ({ ...x, es: "" })),
+            writing_sentences: raw.writing_sentences.map((x) => ({ ...x, es: "" })),
+          }
+        : raw,
+    [raw, lang],
+  );
   const [st, setSt] = useState<RwState>(() => ({ ...EMPTY, ...(saved ?? {}) }));
   const player = usePlayer();
   const partDone = usePartDone();
@@ -168,7 +209,10 @@ export function ReadingWriting({ data, t, lang, userId, lessonId, saved }: { dat
     const now = new Date().toISOString();
     await createClient()
       .from("progress")
-      .upsert({ user_id: userId, lesson_id: lessonId, flashcard_state: { rw: latest.current }, last_activity: now, client_updated_at: now }, { onConflict: "user_id,lesson_id" });
+      .upsert(
+        { user_id: userId, lesson_id: lessonId, flashcard_state: { rw: latest.current }, last_activity: now, client_updated_at: now },
+        { onConflict: "user_id,lesson_id" },
+      );
   }, [userId, lessonId]);
   const update = (f: (s: RwState) => RwState) => {
     setSt((s) => f(s));
@@ -231,7 +275,9 @@ export function ReadingWriting({ data, t, lang, userId, lessonId, saved }: { dat
 
 type Player = ReturnType<typeof usePlayer>;
 type Ctl = { data: RwData; t: T; st: RwState; update: (f: (s: RwState) => RwState) => void; player: Player };
-const Html = ({ html, as: Tag = "span", className }: { html: string; as?: "span" | "p" | "div"; className?: string }) => <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />;
+const Html = ({ html, as: Tag = "span", className }: { html: string; as?: "span" | "p" | "div"; className?: string }) => (
+  <Tag className={className} dangerouslySetInnerHTML={{ __html: html }} />
+);
 const toggle = (list: string[], id: string, on: boolean) => (on ? (list.includes(id) ? list : [...list, id]) : list.filter((x) => x !== id));
 
 function How({ data, t, lang, onNext }: { data: RwData; t: T; lang: "es" | "en"; onNext: () => void }) {
@@ -297,7 +343,10 @@ function How({ data, t, lang, onNext }: { data: RwData; t: T; lang: "es" | "en";
             <span key={u}>
               {i > 0 && " · "}
               <a href={u} target="_blank" rel="noopener noreferrer">
-                {u.replace(/^https?:\/\/(www\.|public-inspection\.)?/, "").split("/").pop()}
+                {u
+                  .replace(/^https?:\/\/(www\.|public-inspection\.)?/, "")
+                  .split("/")
+                  .pop()}
               </a>
             </span>
           ))}
@@ -382,11 +431,30 @@ function Words({ text, word }: { text: string; word: number }) {
   );
 }
 
-function Dots({ items, cur, cls, onPick, label }: { items: Sentence[]; cur: number; cls: (s: Sentence) => string; onPick: (i: number) => void; label: (n: number) => string }) {
+function Dots({
+  items,
+  cur,
+  cls,
+  onPick,
+  label,
+}: {
+  items: Sentence[];
+  cur: number;
+  cls: (s: Sentence) => string;
+  onPick: (i: number) => void;
+  label: (n: number) => string;
+}) {
   return (
     <div className="dots">
       {items.map((s, i) => (
-        <button key={s.id} type="button" className={`dot${i === cur ? " cur" : ""} ${cls(s)}`} aria-label={label(i + 1)} aria-current={i === cur ? "true" : undefined} onClick={() => onPick(i)}>
+        <button
+          key={s.id}
+          type="button"
+          className={`dot${i === cur ? " cur" : ""} ${cls(s)}`}
+          aria-label={label(i + 1)}
+          aria-current={i === cur ? "true" : undefined}
+          onClick={() => onPick(i)}
+        >
           {i + 1}
         </button>
       ))}
@@ -433,7 +501,7 @@ function ReadPractice({ data, t, st, update, player }: Ctl) {
         <p className="sentence" lang="en">
           <Words text={it.text} word={player.playing === key ? player.word : -1} />
         </p>
-        {es && (
+        {es && it.es && (
           <div className="es" lang="es">
             {it.es}
           </div>
@@ -446,9 +514,11 @@ function ReadPractice({ data, t, st, update, player }: Ctl) {
         <button type="button" className="btn" aria-pressed={slow} onClick={() => setSlow(!slow)}>
           {t.slower}
         </button>
-        <button type="button" className="btn ghost" aria-pressed={es} onClick={() => setEs(!es)}>
-          {es ? t.hideEs : t.showEs}
-        </button>
+        {it.es && (
+          <button type="button" className="btn ghost" aria-pressed={es} onClick={() => setEs(!es)}>
+            {es ? t.hideEs : t.showEs}
+          </button>
+        )}
       </div>
       <div style={{ marginTop: 10 }}>
         <button
@@ -576,11 +646,7 @@ function WritePractice({ data, t, st, update, player }: Ctl) {
             {t.check}
           </button>
         </div>
-        {result === "empty" ? (
-          <div className="result">{t.writeFirst}</div>
-        ) : (
-          result && <WriteResult r={result} it={it} t={t} />
-        )}
+        {result === "empty" ? <div className="result">{t.writeFirst}</div> : result && <WriteResult r={result} it={it} t={t} />}
       </div>
       <div className="pager">
         <button type="button" className="btn ghost" disabled={i === 0} onClick={() => pick(i - 1)}>
@@ -643,9 +709,11 @@ function WriteResult({ r, it, t }: { r: ReturnType<typeof checkWriting>; it: Sen
       <p className="correct-line" lang="en">
         {it.text}
       </p>
-      <div style={{ fontSize: 16, color: "var(--muted)" }} lang="es">
-        {it.es}
-      </div>
+      {it.es && (
+        <div style={{ fontSize: 16, color: "var(--muted)" }} lang="es">
+          {it.es}
+        </div>
+      )}
       <div style={{ fontSize: 14, color: "var(--muted)", marginTop: 8 }}>{t.scoring}</div>
     </div>
   );

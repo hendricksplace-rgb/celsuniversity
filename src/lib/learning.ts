@@ -6,8 +6,10 @@ import { themeForCourse, type ThemeKey } from "@/lib/themes";
 import { studentLessons } from "@/lib/course-page";
 import { guidedModules } from "@/lib/guided-modules";
 import { HIDDEN_FROM_STUDENTS } from "@/lib/glossary";
+import { getLang } from "@/lib/i18n/server";
+import { inLanguage, tr } from "@/lib/i18n/row";
 
-const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
+const pick = <T>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v) ?? null;
 
 export type ModuleStats = {
   id: string;
@@ -50,7 +52,15 @@ export type CourseStats = {
   downloaded: boolean;
 };
 
-export type Assignment = { id: string; courseId: string; moduleId: string | null; moduleTitle: string | null; note: string | null; dueAt: string | null; className: string };
+export type Assignment = {
+  id: string;
+  courseId: string;
+  moduleId: string | null;
+  moduleTitle: string | null;
+  note: string | null;
+  dueAt: string | null;
+  className: string;
+};
 
 /** Courses the student can open, keyed by id. `programs` holds the slugs of the programs they're enrolled in. */
 export async function accessibleCourses(supabase: Client, userId: string) {
@@ -91,16 +101,19 @@ export async function accessibleCourses(supabase: Client, userId: string) {
 export async function courseStats(supabase: Client, userId: string, courseIds: string[]): Promise<Map<string, CourseStats>> {
   const out = new Map<string, CourseStats>();
   if (!courseIds.length) return out;
-  const [{ data: courses }, { data: modules }, { data: progress }, { data: downloads }] = await Promise.all([
-    supabase.from("courses").select("id, slug, title, description, cover_art_url, sort_order").in("id", courseIds),
+  const [{ data: courses }, { data: modules }, { data: progress }, { data: downloads }, lang] = await Promise.all([
+    supabase.from("courses").select("id, slug, title, title_en, description, description_en, cover_art_url, sort_order").in("id", courseIds),
     supabase
       .from("modules")
-      .select("id, course_id, title, kind, sort_order, artwork_url, lessons(id, title, sort_order, status, teacher_only, has_content)")
+      .select(
+        "id, course_id, title, title_en, kind, sort_order, artwork_url, lessons(id, title, title_en, language, sort_order, status, teacher_only, has_content)",
+      )
       .in("course_id", courseIds)
       .eq("status", "published")
       .order("sort_order"),
     supabase.from("progress").select("lesson_id, status, last_activity, xp_earned").eq("user_id", userId),
     supabase.from("offline_downloads").select("module_id, expires_at").eq("user_id", userId).is("removed_at", null),
+    getLang(),
   ]);
   const prog = new Map((progress ?? []).map((p) => [p.lesson_id, p]));
   // Guided courses (CelsGLOBAL step template): each module is one step, done when its 3 questions are answered
@@ -108,14 +121,18 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
   const modIds = (modules ?? []).map((m) => m.id);
   const [guided, { data: gp }] = await Promise.all([
     guidedModules(supabase, modIds),
-    modIds.length ? supabase.from("guided_step_progress").select("module_id, completed_at, updated_at").eq("user_id", userId).in("module_id", modIds) : Promise.resolve({ data: [] }),
+    modIds.length
+      ? supabase.from("guided_step_progress").select("module_id, completed_at, updated_at").eq("user_id", userId).in("module_id", modIds)
+      : Promise.resolve({ data: [] }),
   ]);
   const stepDone = new Map((gp ?? []).map((g) => [g.module_id, g]));
   const saved = new Set((downloads ?? []).filter((d) => !d.expires_at || new Date(d.expires_at) > new Date()).map((d) => d.module_id));
 
   for (const c of courses ?? []) {
     if (!c.slug) continue;
-    const mods = (modules ?? []).filter((m) => m.course_id === c.id);
+    // C-045: CelsUS in English mode: English titles, and the Spanish-track lessons don't count or show.
+    const L = themeForCourse({ slug: c.slug }) === "celsus" ? lang : "es";
+    const mods = (modules ?? []).filter((m) => m.course_id === c.id).map((m) => ({ ...m, title: tr(m, "title", L) ?? m.title }));
     const order: CourseStats["order"] = [];
     const ms: ModuleStats[] = [];
     let xp = 0;
@@ -138,15 +155,31 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         if (row?.updated_at && (!last || row.updated_at > last.at)) last = { at: row.updated_at, lessonId: rep.id, lessonTitle: title };
         // The step's first lesson stands for the step: /app/lecciones/<id> opens the step page.
         order.push({ id: rep.id, title, done: isDone, moduleId: m.id });
-        const stepLast = [row?.updated_at ?? null, ...own.map((l) => prog.get(l.id)?.last_activity ?? null)].filter((x): x is string => !!x).sort().pop() ?? null;
-        ms.push({ id: m.id, title: m.title, artwork: m.artwork_url, lessons: 1, done: isDone ? 1 : 0, complete: isDone, started: !isDone && stepLast ? 1 : 0, lastActivity: stepLast });
+        const stepLast =
+          [row?.updated_at ?? null, ...own.map((l) => prog.get(l.id)?.last_activity ?? null)]
+            .filter((x): x is string => !!x)
+            .sort()
+            .pop() ?? null;
+        ms.push({
+          id: m.id,
+          title: m.title,
+          artwork: m.artwork_url,
+          lessons: 1,
+          done: isDone ? 1 : 0,
+          complete: isDone,
+          started: !isDone && stepLast ? 1 : 0,
+          lastActivity: stepLast,
+        });
         weekIds.add(m.id);
         continue;
       }
       // studentLessons keeps an empty CelsVideo for the episode path; it can't be finished, so it doesn't count here.
-      const ls = studentLessons((m.lessons ?? []).filter((l) => l.status === "published" && !l.teacher_only && !HIDDEN_FROM_STUDENTS.has(l.id)).sort((a, b) => a.sort_order - b.sort_order)).filter(
-        (l) => l.has_content,
-      );
+      const ls = studentLessons(
+        (m.lessons ?? [])
+          .filter((l) => l.status === "published" && !l.teacher_only && !HIDDEN_FROM_STUDENTS.has(l.id) && inLanguage(l, L))
+          .map((l) => ({ ...l, title: tr(l, "title", L) ?? l.title }))
+          .sort((a, b) => a.sort_order - b.sort_order),
+      ).filter((l) => l.has_content);
       if (!ls.length) continue;
       let done = 0;
       let started = 0;
@@ -163,7 +196,16 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
         }
         order.push({ id: l.id, title: l.title, done: isDone, moduleId: m.id });
       }
-      ms.push({ id: m.id, title: m.title, artwork: m.artwork_url, lessons: ls.length, done, complete: ls.length > 0 && done === ls.length, started, lastActivity: modLast });
+      ms.push({
+        id: m.id,
+        title: m.title,
+        artwork: m.artwork_url,
+        lessons: ls.length,
+        done,
+        complete: ls.length > 0 && done === ls.length,
+        started,
+        lastActivity: modLast,
+      });
       if (m.kind === "lesson_week") weekIds.add(m.id);
     }
     const lessons = order.length;
@@ -173,8 +215,8 @@ export async function courseStats(supabase: Client, userId: string, courseIds: s
     out.set(c.id, {
       id: c.id,
       slug: c.slug,
-      title: c.title,
-      description: c.description,
+      title: tr(c, "title", L) ?? c.title,
+      description: tr(c, "description", L),
       cover: c.cover_art_url,
       sort: c.sort_order,
       brand: themeForCourse({ slug: c.slug }),
@@ -226,7 +268,15 @@ export async function myAssignments(supabase: Client, userId: string): Promise<A
     .order("created_at", { ascending: false });
   return (data ?? [])
     .filter((a) => pick(a.class)?.status === "active")
-    .map((a) => ({ id: a.id, courseId: a.course_id, moduleId: a.module_id, moduleTitle: pick(a.module)?.title ?? null, note: a.note, dueAt: a.due_at, className: pick(a.class)?.name ?? "" }));
+    .map((a) => ({
+      id: a.id,
+      courseId: a.course_id,
+      moduleId: a.module_id,
+      moduleTitle: pick(a.module)?.title ?? null,
+      note: a.note,
+      dueAt: a.due_at,
+      className: pick(a.class)?.name ?? "",
+    }));
 }
 
 const local = (d: Date | string) => new Date(new Date(d).toLocaleString("en-US", { timeZone: "America/Mexico_City" }));

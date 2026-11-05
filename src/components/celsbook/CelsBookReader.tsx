@@ -22,7 +22,6 @@ import { BookBlock, BookCtx, type Local } from "./Blocks";
 import { jakartaItalic } from "./fonts";
 import { Immersive } from "./Immersive";
 
-
 const SEEN = "_seen";
 const fill = (str: string, v: Record<string, string | number>) => str.replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
@@ -122,7 +121,10 @@ export function CelsBookReader(props: Props) {
   }, [keys]);
 
   const asked = props.startScreen ? screens.findIndex((s) => s.id === props.startScreen) : -1;
-  const resume = Math.max(0, screens.findIndex((s) => s.id === initial?.last_screen));
+  const resume = Math.max(
+    0,
+    screens.findIndex((s) => s.id === initial?.last_screen),
+  );
   const [cur, setCur] = useState(asked >= 0 ? asked : initial?.completed_at ? 0 : resume);
   const [answers, setAnswers] = useState<Answers>(initial?.answers ?? {});
   const [completedAt, setCompletedAt] = useState<string | null>(initial?.completed_at ?? null);
@@ -259,13 +261,14 @@ export function CelsBookReader(props: Props) {
   const key = keys[cur];
   const sec = SECTIONS[key];
   const seen = new Set(seenList(answers));
-  const tocLabel = (s: Screen, i: number) => (repeat.get(keys[i])! > 1 ? `${t.sections[keys[i]].short} · ${viewScreen(s, lang).title}` : t.sections[keys[i]].name);
+  const tocLabel = (s: Screen, i: number) =>
+    repeat.get(keys[i])! > 1 ? `${t.sections[keys[i]].short} · ${viewScreen(s, lang).title}` : t.sections[keys[i]].name;
 
   return (
     <SignedUrls.Provider value={signed}>
       <BookCtx.Provider value={ctx}>
         <div className={`cb ${jakartaItalic.variable}`} style={{ ["--sc" as string]: sec.c, ["--si" as string]: sec.ink }}>
-      <Immersive />
+          <Immersive />
           {props.back && (
             // C-013: the back buttons scroll away with the page; the sticky bar below stays slim while reading.
             <div className="tbnav">
@@ -281,7 +284,7 @@ export function CelsBookReader(props: Props) {
             )}
             <div className="ttl">
               <b>{fill(t.title, { n: episodeN })}</b>
-              {en ? null : subtitleOf(ebook.subtitle)}
+              {subtitleOf(ebook.subtitle)}
             </div>
             <button type="button" className="tocbtn" aria-expanded={tocOpen} aria-controls="cb-toc" onClick={() => setTocOpen(!tocOpen)}>
               {t.toc}
@@ -303,7 +306,13 @@ export function CelsBookReader(props: Props) {
                   const done = seen.has(s.id) && i !== cur;
                   return (
                     <li key={s.id}>
-                      <button type="button" className={i === cur ? "on" : ""} aria-current={i === cur ? "page" : undefined} style={{ ["--c" as string]: SECTIONS[keys[i]].c }} onClick={() => go(i)}>
+                      <button
+                        type="button"
+                        className={i === cur ? "on" : ""}
+                        aria-current={i === cur ? "page" : undefined}
+                        style={{ ["--c" as string]: SECTIONS[keys[i]].c }}
+                        onClick={() => go(i)}
+                      >
                         <i aria-hidden>{done ? "✓" : i + 1}</i>
                         <span className="l">{tocLabel(s, i)}</span>
                         {done && <span className="sr">{t.seen}</span>}
@@ -337,9 +346,7 @@ export function CelsBookReader(props: Props) {
             <button type="button" className="pv" disabled={cur === 0} onClick={() => go(cur - 1)}>
               {t.prev}
             </button>
-            <span className="pg">
-              {fill(t.page, { n: cur + 1, m: screens.length })}
-            </span>
+            <span className="pg">{fill(t.page, { n: cur + 1, m: screens.length })}</span>
             <button type="button" className="nx2" disabled={leaving} onClick={() => (cur === last ? void end() : go(cur + 1))}>
               {cur === last ? t.finish : t.next}
             </button>
@@ -451,7 +458,6 @@ function Page({
             <Link href={nextPart?.href ?? episodeHref} className="btn b-gold">
               {nextPart ? fill(t.continueWith, { part: nextPart.label }) : t.backToEpisode}
             </Link>
-
           </section>
         )}
       </div>

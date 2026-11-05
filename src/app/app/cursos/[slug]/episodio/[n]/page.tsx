@@ -15,7 +15,7 @@ import { loadEpisodeDecks, tracksFromDecks, type RawCard } from "@/lib/celsus-ca
 import { signStorageRefs } from "@/lib/storage";
 import { fileHref } from "@/lib/file-href";
 import { bookProgress, coverUrl } from "@/lib/celsbook-progress";
-import type { Dictionary } from "@/lib/i18n/dictionaries";
+import type { Dictionary, Lang } from "@/lib/i18n/dictionaries";
 import type { Episode, UsRole } from "@/lib/course-page";
 
 const sentenceCase = (s: string) => s.charAt(0) + s.slice(1).toLowerCase();
@@ -38,7 +38,10 @@ async function celsusDetails(
   episode: Episode,
   nextEpisode: Episode | null,
   t: Dictionary["us"],
+  lang: Lang,
 ) {
+  // C-045: English mode is all English: the English topic, no Spanish line under each question, no Spanish PDF.
+  const en = lang === "en";
   const cards = episode.parts.find((p) => p.role === "cards");
   const nextCards = nextEpisode?.parts.find((p) => p.role === "cards");
   const current = episode.parts.find((p) => !p.done) ?? null;
@@ -46,10 +49,15 @@ async function celsusDetails(
   const slugs = [`celsus-celsbook-episode-${episode.n}`, ...(nextEpisode ? [`celsus-celsbook-episode-${nextEpisode.n}`] : [])];
   const [{ data: blocks }, { data: books }, { data: me }, { data: currentBlocks }, { data: currentProgress }, decks] = await Promise.all([
     lessonIds.length
-      ? supabase.from("content_blocks").select("lesson_id, block_type, title, body").in("lesson_id", lessonIds).eq("block_type", "text").eq("teacher_only", false)
+      ? supabase
+          .from("content_blocks")
+          .select("lesson_id, block_type, title, body")
+          .in("lesson_id", lessonIds)
+          .eq("block_type", "text")
+          .eq("teacher_only", false)
       : Promise.resolve({ data: [] as { lesson_id: string; block_type: string; title: string | null; body: string | null }[] }),
     // RLS: students only see published e-books.
-    supabase.from("ebooks").select("id, slug, subtitle, est_minutes, quiz, cover_path").in("slug", slugs),
+    supabase.from("ebooks").select("id, slug, subtitle, subtitle_en, est_minutes, quiz, cover_path").in("slug", slugs),
     supabase.from("profiles").select("civics_track").eq("id", viewer.user.id).maybeSingle(),
     current?.started && current.role !== "cards"
       ? supabase.from("content_blocks").select("id").eq("lesson_id", current.id).eq("teacher_only", false)
@@ -65,11 +73,13 @@ async function celsusDetails(
   const of = (lessonId: string | undefined) => (blocks ?? []).filter((b) => b.lesson_id === lessonId);
   const downloadOf = (lessonId: string | undefined) => {
     const body = of(lessonId).find((b) => /descargar/i.test(b.title ?? ""))?.body ?? "";
-    const topic = body.match(/Semana\s*\d+\s*\/\s*Week\s*\d+\s*[—–-]\s*(.+)/)?.[1]?.trim() ?? "";
+    // "Semana 1 / Week 1 — Principios … \n(Principles …)": the Spanish topic, or the English one in parentheses.
+    const topic = (en ? body.match(/\n\(([^)\n]+)\)/)?.[1] : body.match(/Semana\s*\d+\s*\/\s*Week\s*\d+\s*[—–-]\s*(.+)/)?.[1])?.trim() ?? "";
     return { body, topic: topic ? sentenceCase(topic) : "" };
   };
   const { body } = downloadOf(cards?.id);
-  const topic = bookTopic(ebook?.subtitle) || downloadOf(cards?.id).topic;
+  const subtitle = (b: typeof ebook) => (en ? (b?.subtitle_en ?? b?.subtitle) : b?.subtitle);
+  const topic = bookTopic(subtitle(ebook)) || downloadOf(cards?.id).topic;
   const pdf = (lang: string) => body.match(new RegExp(`${lang}:\\s*(storage://\\S+\\.pdf)`, "i"))?.[1] ?? null;
   const refs = [pdf("English"), pdf("Español")].filter((r): r is string => !!r);
   const signed = refs.length ? await signStorageRefs(supabase, new Set(refs), { courseId, viewer, access: true }) : new Map<string, string>();
@@ -79,7 +89,7 @@ async function celsusDetails(
   // The 2025 questions (with their USCIS number) first, then any older cards.
   // Track C: only their starred (65/20) questions.
   const starred = new Set(deckByTrack.C.map((c) => c.key));
-  const all = deckByTrack.A.filter((c) => track !== "C" || starred.has(c.key)).map((c) => ({ en: c.q, es: c.es?.q ?? "", no: c.no }));
+  const all = deckByTrack.A.filter((c) => track !== "C" || starred.has(c.key)).map((c) => ({ en: c.q, es: en ? "" : (c.es?.q ?? ""), no: c.no }));
   const questions = [...all.filter((q) => q.no), ...all.filter((q) => !q.no)];
   const quizCount = Array.isArray(ebook?.quiz) ? ebook.quiz.length : 0;
   const myDeck = track ? deckByTrack[track] : deckByTrack.A;
@@ -112,14 +122,14 @@ async function celsusDetails(
     if (/^printable/i.test(p.title)) continue; // replaced by the PDFs below
     if (/reading and writing/i.test(p.title)) extras.push({ href: p.href, label: t.readingWriting, tag: t.practice, icon: "writing" });
     else if (/review/i.test(p.title)) extras.push({ href: p.href, label: t.review, tag: t.practice, icon: "review" });
-    else if (p.type === "video") extras.push({ href: p.href, label: p.title.replace(/\s*-\s*Subtitulada$/i, ""), tag: t.video, icon: "video" });
-    else extras.push({ href: p.href, label: p.title, tag: "", icon: "writing" });
+    else if (p.type === "video") extras.push({ href: p.href, label: p.name.replace(/\s*-\s*Subtitulada$/i, ""), tag: t.video, icon: "video" });
+    else extras.push({ href: p.href, label: p.name, tag: "", icon: "writing" });
   }
-  const en = pdf("English");
-  const es = pdf("Español");
+  const pdfEn = pdf("English");
+  const pdfEs = en ? null : pdf("Español");
   // Signed when tapped (/app/archivo): a URL signed with the page expires after 10 minutes.
-  if (en && signed.get(en)) extras.push({ href: fileHref(en), label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
-  if (es && signed.get(es)) extras.push({ href: fileHref(es), label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
+  if (pdfEn && signed.get(pdfEn)) extras.push({ href: fileHref(pdfEn), label: t.printableEn, tag: t.printPdf, icon: "print-en", external: true });
+  if (pdfEs && signed.get(pdfEs)) extras.push({ href: fileHref(pdfEs), label: t.printableEs, tag: t.printPdf, icon: "print-es", external: true });
 
   // C-030: the episode's CelsBook with its real cover and how far the student is.
   const cover = coverUrl(ebook?.cover_path);
@@ -134,7 +144,7 @@ async function celsusDetails(
     questions,
     track,
     resumeMeta,
-    nextTopic: bookTopic(nextBook?.subtitle) || downloadOf(nextCards?.id).topic,
+    nextTopic: bookTopic(subtitle(nextBook)) || downloadOf(nextCards?.id).topic,
   };
 }
 
@@ -143,13 +153,13 @@ type Props = { params: Promise<{ slug: string; n: string }>; searchParams: Promi
 export default async function EpisodePage({ params, searchParams }: Props) {
   const { slug, n } = await params;
   const { hecho } = await searchParams;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect(`/entrar?next=${episodePath(slug, Number(n))}`);
 
   const theme = themeForCourse({ slug });
-  const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff);
+  const page = await loadCoursePage(supabase, viewer.user.id, slug, theme, viewer.isStaff, lang);
   // Guided courses (CelsGLOBAL step template): an old module link opens that step's page for students.
   if (page && theme === "celsglobal" && (await isGuidedCourse(supabase, page.course.id))) redirect(stepPath(page.course.slug, Number(n) || 1));
   const episode = page?.episodes.find((e) => e.n === Number(n));
@@ -163,7 +173,7 @@ export default async function EpisodePage({ params, searchParams }: Props) {
     // Teachers and admins: the episode's Teacher's Guide (and, on the last episode, the final evaluation's) on top.
     const evaluation = !nextEpisode ? page.extras.find((x) => x.kind === "evaluation")?.id : undefined;
     const [us, guides] = await Promise.all([
-      celsusDetails(supabase, viewer, page.course.id, episode, nextEpisode, t.us),
+      celsusDetails(supabase, viewer, page.course.id, episode, nextEpisode, t.us, lang),
       canSeeTeacherGuides(viewer.role) ? moduleGuides(supabase, [episode.id, ...(evaluation ? [evaluation] : [])]) : null,
     ]);
     const tarjetas = `${episodePath(page.course.slug, episode.n)}/tarjetas`;

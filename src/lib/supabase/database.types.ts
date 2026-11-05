@@ -187,6 +187,8 @@ export type Database = {
       }
       badges: {
         Row: {
+          name_en: string | null
+          requirement_en: string | null
           category: string | null
           emblem_url: string | null
           icon: string | null
@@ -205,6 +207,8 @@ export type Database = {
           sort_order: number
         }
         Insert: {
+          name_en?: string | null
+          requirement_en?: string | null
           category?: string | null
           emblem_url?: string | null
           icon?: string | null
@@ -223,6 +227,8 @@ export type Database = {
           sort_order?: number
         }
         Update: {
+          name_en?: string | null
+          requirement_en?: string | null
           category?: string | null
           emblem_url?: string | null
           icon?: string | null
@@ -513,6 +519,9 @@ export type Database = {
       }
       content_blocks: {
         Row: {
+          title_en: string | null
+          body_en: string | null
+          language: string
           block_type: string
           body: string | null
           created_at: string
@@ -527,6 +536,9 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          title_en?: string | null
+          body_en?: string | null
+          language?: string
           block_type: string
           body?: string | null
           created_at?: string
@@ -541,6 +553,9 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          title_en?: string | null
+          body_en?: string | null
+          language?: string
           block_type?: string
           body?: string | null
           created_at?: string
@@ -608,6 +623,8 @@ export type Database = {
       }
       courses: {
         Row: {
+          title_en: string | null
+          description_en: string | null
           accent_color: string | null
           cover_art_url: string | null
           created_at: string
@@ -623,6 +640,8 @@ export type Database = {
           theme: string | null
         }
         Insert: {
+          title_en?: string | null
+          description_en?: string | null
           accent_color?: string | null
           cover_art_url?: string | null
           created_at?: string
@@ -638,6 +657,8 @@ export type Database = {
           theme?: string | null
         }
         Update: {
+          title_en?: string | null
+          description_en?: string | null
           accent_color?: string | null
           cover_art_url?: string | null
           created_at?: string
@@ -716,6 +737,7 @@ export type Database = {
       }
       ebooks: {
         Row: {
+          subtitle_en: string | null
           course_id: string
           cover_path: string | null
           created_at: string
@@ -735,6 +757,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          subtitle_en?: string | null
           course_id: string
           cover_path?: string | null
           created_at?: string
@@ -754,6 +777,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          subtitle_en?: string | null
           course_id?: string
           cover_path?: string | null
           created_at?: string
@@ -1803,6 +1827,8 @@ export type Database = {
       }
       lessons: {
         Row: {
+          title_en: string | null
+          language: string
           accent_color: string | null
           created_at: string
           has_content: boolean
@@ -1819,6 +1845,8 @@ export type Database = {
           xp_reward: number
         }
         Insert: {
+          title_en?: string | null
+          language?: string
           accent_color?: string | null
           created_at?: string
           has_content?: boolean
@@ -1835,6 +1863,8 @@ export type Database = {
           xp_reward?: number
         }
         Update: {
+          title_en?: string | null
+          language?: string
           accent_color?: string | null
           created_at?: string
           has_content?: boolean
@@ -1913,6 +1943,8 @@ export type Database = {
       }
       modules: {
         Row: {
+          title_en: string | null
+          description_en: string | null
           artwork_url: string | null
           course_id: string
           created_at: string
@@ -1927,6 +1959,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          title_en?: string | null
+          description_en?: string | null
           artwork_url?: string | null
           course_id: string
           created_at?: string
@@ -1941,6 +1975,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          title_en?: string | null
+          description_en?: string | null
           artwork_url?: string | null
           course_id?: string
           created_at?: string
@@ -2734,6 +2770,9 @@ export type Database = {
       }
       resources: {
         Row: {
+          label_en: string | null
+          description_en: string | null
+          language: string
           created_at: string
           description: string | null
           file_path: string | null
@@ -2747,6 +2786,9 @@ export type Database = {
           url: string | null
         }
         Insert: {
+          label_en?: string | null
+          description_en?: string | null
+          language?: string
           created_at?: string
           description?: string | null
           file_path?: string | null
@@ -2760,6 +2802,9 @@ export type Database = {
           url?: string | null
         }
         Update: {
+          label_en?: string | null
+          description_en?: string | null
+          language?: string
           created_at?: string
           description?: string | null
           file_path?: string | null
@@ -3354,7 +3399,15 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      i18n_missing: {
+        Row: {
+          field: string | null
+          id: string | null
+          tbl: string | null
+          value: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       ack_badges: { Args: { codes: string[] }; Returns: undefined }

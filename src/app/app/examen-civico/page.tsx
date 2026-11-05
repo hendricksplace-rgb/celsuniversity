@@ -17,12 +17,13 @@ const CHANGING_LINKS = [
 
 /** Start screen: the three 2025 exams, progress by section, and the questions whose answers change. */
 export default async function CivicsStart() {
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer) redirect("/entrar?next=/app/examen-civico");
 
-  const exams = await listExams(supabase, viewer);
+  // C-045: English mode hides the Spanish track (the Spanish exam and 65/20); they come back in Spanish.
+  const exams = (await listExams(supabase, viewer)).filter((e) => lang !== "en" || e.language !== "es");
   const course = one(one(exams[0]?.module)?.course);
   const ids = exams.map((e) => e.id);
   const [{ data: rows }, { data: attempts }, cards] = await Promise.all([
@@ -53,7 +54,7 @@ export default async function CivicsStart() {
     sections.set(section, s);
   }
   const lastAttempt = (id: string) => (attempts ?? []).find((a) => a.evaluation_id === id);
-  const fmt = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" });
+  const fmt = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "es-MX", { dateStyle: "medium" });
 
   const bankKnown = [...bank.keys()].filter((n) => known.has(n)).length;
   const readiness = bank.size ? Math.round((bankKnown / bank.size) * 100) : 0;
@@ -95,7 +96,9 @@ export default async function CivicsStart() {
               return (
                 <li key={e.id} className="t-card-accent relative flex flex-col gap-3 overflow-hidden rounded-2xl bg-white p-5 shadow-sm ring-1 ring-black/5">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="grid h-11 min-w-11 place-items-center rounded-full bg-[var(--cx-navy)] px-2 text-sm font-bold text-[var(--cx-gold)]">{label(kind)}</span>
+                    <span className="grid h-11 min-w-11 place-items-center rounded-full bg-[var(--cx-navy)] px-2 text-sm font-bold text-[var(--cx-gold)]">
+                      {label(kind)}
+                    </span>
                     <span className="cx-chip">{fill(t.civics.ruleChip, { count: e.exam_question_count, pass: e.pass_count })}</span>
                   </div>
                   <div className="space-y-1">
@@ -154,17 +157,17 @@ function Ring({ pct }: { pct: number }) {
     <svg viewBox="0 0 84 84" className="h-24 w-24 shrink-0" role="img" aria-label={`${pct}%`}>
       <circle cx="42" cy="42" r={r} fill="none" stroke="rgb(255 255 255 / 0.15)" strokeWidth="8" />
       {pct > 0 && (
-      <circle
-        cx="42"
-        cy="42"
-        r={r}
-        fill="none"
-        stroke="#FFD24D"
-        strokeWidth="8"
-        strokeLinecap="round"
-        strokeDasharray={`${(pct / 100) * c} ${c}`}
-        transform="rotate(-90 42 42)"
-      />
+        <circle
+          cx="42"
+          cy="42"
+          r={r}
+          fill="none"
+          stroke="#FFD24D"
+          strokeWidth="8"
+          strokeLinecap="round"
+          strokeDasharray={`${(pct / 100) * c} ${c}`}
+          transform="rotate(-90 42 42)"
+        />
       )}
       <text x="42" y="48" textAnchor="middle" fontSize="18" fontWeight="700" fill="#fff" fontFamily="var(--font-serif), Georgia, serif">
         {pct}%
@@ -178,7 +181,14 @@ function Bar({ value, total, label }: { value: number; total: number; label: str
   return (
     <div className="space-y-1">
       <p className="text-sm">{label}</p>
-      <div className="h-2 overflow-hidden rounded-full bg-[var(--t-border)]" role="progressbar" aria-label={label} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+      <div
+        className="h-2 overflow-hidden rounded-full bg-[var(--t-border)]"
+        role="progressbar"
+        aria-label={label}
+        aria-valuenow={pct}
+        aria-valuemin={0}
+        aria-valuemax={100}
+      >
         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, var(--cx-gold-dark), var(--cx-gold))" }} />
       </div>
     </div>

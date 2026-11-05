@@ -17,7 +17,8 @@ export function celscastTrack(data: Record<string, unknown>, sign: (ref: string)
       return {
         start: l.start!,
         text: l.text!,
-        es: typeof l.es === "string" && l.es.trim() ? l.es : undefined,
+        // C-045: English mode shows the English line only.
+        es: lang !== "en" && typeof l.es === "string" && l.es.trim() ? l.es : undefined,
         speaker: l.speaker ? (speakers[l.speaker] ?? l.speaker) : undefined,
         words: wt.length === parts.length ? parts.map((text, i) => ({ start: wt[i], text })) : undefined,
       };
@@ -33,7 +34,7 @@ export function celscastTrack(data: Record<string, unknown>, sign: (ref: string)
     chapters: chapters
       .filter((c) => typeof c?.start === "number" && typeof c?.title === "string")
       .map((c) => ({ start: c.start, title: lang === "es" && typeof c.title_es === "string" && c.title_es ? c.title_es : c.title })),
-    voice: Object.values(speakers).join(" y "),
+    voice: Object.values(speakers).join(lang === "en" ? " and " : " y "),
   };
 }
 

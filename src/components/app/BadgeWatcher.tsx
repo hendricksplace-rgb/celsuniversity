@@ -16,7 +16,7 @@ type Medal = {
   icon?: string | null;
 };
 
-export function BadgeWatcher({ title, cta }: { title: string; cta: string }) {
+export function BadgeWatcher({ title, cta, lang = "es" }: { title: string; cta: string; lang?: "es" | "en" }) {
   const pathname = usePathname();
   const router = useRouter();
   const [queue, setQueue] = useState<Medal[]>([]);
@@ -30,6 +30,17 @@ export function BadgeWatcher({ title, cta }: { title: string; cta: string }) {
       const { data } = await db.rpc("my_new_badges");
       if (cancelled || !data?.length) return;
       await db.rpc("ack_badges", { codes: data.map((m) => m.code) });
+      // C-045: medal names in English (badges.name_en) when the app is in English.
+      if (lang === "en") {
+        const { data: en } = await db
+          .from("badges")
+          .select("code, name_en")
+          .in(
+            "code",
+            data.map((m) => m.code),
+          );
+        for (const m of data) m.name = en?.find((b) => b.code === m.code)?.name_en ?? m.name;
+      }
       if (pathname.startsWith("/app/progreso")) router.refresh();
       if (!clientPref("sound")) return;
       setQueue((q) => [...q, ...data]);
@@ -40,7 +51,7 @@ export function BadgeWatcher({ title, cta }: { title: string; cta: string }) {
       cancelled = true;
       clearTimeout(h);
     };
-  }, [pathname, router]);
+  }, [pathname, router, lang]);
 
   useEffect(() => {
     if (!queue.length) return;
