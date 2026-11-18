@@ -365,6 +365,80 @@
         "nombre",
         "privacidad_url"
       ]
+    },
+    {
+      "id": "email-changed",
+      "file": "app/email-changed.html",
+      "program": "CelsU",
+      "trigger": "Admin → Estudiantes → «Cambiar correo» (al correo nuevo, si «Avisar al estudiante»)",
+      "subject": "Tu correo de CelsU cambió",
+      "preheader": "Tus cursos y tu avance siguen igual.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "correo_nuevo",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "email-changed-en",
+      "file": "app/email-changed-en.html",
+      "program": "CelsU",
+      "trigger": "Same as email-changed, for preferred_language = en",
+      "subject": "Your CelsU email has changed",
+      "preheader": "Your courses and progress stay the same.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "ayuda_url",
+        "boton_url",
+        "correo_nuevo",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "email-changed-old",
+      "file": "app/email-changed-old.html",
+      "program": "CelsU",
+      "trigger": "Admin → Estudiantes → «Cambiar correo» (aviso de seguridad al correo anterior, si «Avisar al estudiante»)",
+      "subject": "Cambiamos el correo de tu cuenta de CelsU",
+      "preheader": "Aviso de seguridad sobre tu cuenta.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "ayuda_url",
+        "correo_mascara",
+        "nombre",
+        "privacidad_url"
+      ]
+    },
+    {
+      "id": "email-changed-old-en",
+      "file": "app/email-changed-old-en.html",
+      "program": "CelsU",
+      "trigger": "Same as email-changed-old, for preferred_language = en",
+      "subject": "We changed the email on your CelsU account",
+      "preheader": "A security notice about your account.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "ayuda_url",
+        "correo_mascara",
+        "nombre",
+        "privacidad_url"
+      ]
     }
   ]
 }
