@@ -65,3 +65,6 @@ The files are `celsu-u.png`, `celstv-e.png`, `celsbsns.png`, `celsus.jpg`, `cels
 | eval-d30 | 30 days after the evaluation, to everyone |
 | welcome-* | On purchase, one per program (`welcome-bundle` for CelsTV + CelsBSNS) |
 | receipt | When the payment is confirmed |
+| email-changed(-en), email-changed-old(-en) | Admin → Estudiantes → «Cambiar correo» with «Avisar al estudiante» checked: the first to the new address, the security notice (new address masked, no button) to the old one. `-en` when `preferred_language = en` |
+
+**Email change** (`email-changed*`, sent by the `admin-change-email` function, C-046): `email-changed` uses `nombre`, `correo_nuevo` and `boton_url` (/entrar); `email-changed-old` uses `nombre` and `correo_mascara` (e.g. `ma***@gmail.com`). These are the first English app emails: the function picks the `-en` file for students in English mode.

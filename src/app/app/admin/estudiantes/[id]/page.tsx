@@ -5,6 +5,8 @@ import { getViewer, isAdminRole, one } from "@/lib/access";
 import { accessTargets } from "@/lib/grants";
 import { GrantForm, RevokeButton } from "@/components/admin/AccessForms";
 import { InviteButton } from "@/components/admin/InviteButtons";
+import { ChangeEmailButton } from "@/components/admin/ChangeEmail";
+import { getDictionary } from "@/lib/i18n/server";
 import { fmtDay, inviteLabel } from "@/lib/invites";
 
 export const metadata = { title: "Estudiante · CelsU" };
@@ -21,9 +23,9 @@ export default async function Estudiante({ params }: Props) {
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
   if (!viewer || !isAdminRole(viewer.role)) notFound();
-  const { data: p } = await supabase.from("profiles").select("id, email, display_name, created_at, requested_plan, requested_plan_at").eq("id", id).maybeSingle();
+  const { data: p } = await supabase.from("profiles").select("id, email, role, display_name, created_at, requested_plan, requested_plan_at").eq("id", id).maybeSingle();
   if (!p) notFound();
-  const [{ data: enr }, targets, { data: pledges }, { data: invites }, { data: signin }] = await Promise.all([
+  const [{ data: enr }, targets, { data: pledges }, { data: invites }, { data: signin }, { data: emailChange }, { t }] = await Promise.all([
     supabase
       .from("enrollments")
       .select("id, status, source, starts_at, expires_at, course:courses(title), program:programs(title)")
@@ -35,7 +37,12 @@ export default async function Estudiante({ params }: Props) {
     // «Enviar invitación»: every invitation sent (newest first) and the last sign-in (auth, through an admin RPC).
     supabase.from("student_invites").select("id, seq, sent_at, status, redeemed_at, activated_at, expires_at").eq("user_id", id).order("sent_at", { ascending: false }),
     supabase.rpc("admin_student_signins", { p_ids: [id] }),
+    // «Cambiar correo» (C-046): the latest change, for "Correo cambiado {fecha}".
+    supabase.from("admin_audit_log").select("at").eq("action", "change_email").eq("row_id", id).order("id", { ascending: false }).limit(1).maybeSingle(),
+    getDictionary(),
   ]);
+  // Administrators change student emails; only a super_admin changes a staff account's. Never your own (use your profile).
+  const canChangeEmail = viewer.user.id !== p.id && (viewer.role === "super_admin" || p.role === "student" || p.role === "individual_student");
   const lastInvite = invites?.[0] ?? null;
   const lastSignIn = signin?.[0]?.last_sign_in_at ?? null;
   const invite = inviteLabel(lastInvite);
@@ -50,9 +57,18 @@ export default async function Estudiante({ params }: Props) {
       </Link>
       <div>
         <h1 className="text-3xl font-extrabold">{p.display_name || p.email}</h1>
-        <p className="mt-1 text-sm font-semibold text-[#6B6680]">
-          {p.email} · se registró el {fmt(p.created_at)}
-        </p>
+        <div className="mt-1 flex flex-wrap items-center gap-x-1 text-sm font-semibold text-[#6B6680]">
+          <span className="break-all" data-testid="student-email">
+            {p.email}
+          </span>
+          {canChangeEmail && <ChangeEmailButton userId={p.id} currentEmail={p.email ?? ""} t={t.adminEmail} />}
+          <span>· se registró el {fmt(p.created_at)}</span>
+        </div>
+        {emailChange && (
+          <p className="mt-1 text-xs font-semibold text-[#8A86A0]" data-testid="email-changed-note">
+            {t.adminEmail.changedOn.replace("{date}", fmtDay(emailChange.at))}
+          </p>
+        )}
         {p.requested_plan && (
           <p className="mt-2 inline-flex rounded-full bg-[#FFF4D6] px-3 py-1 text-xs font-extrabold text-[#7A5A00]" data-testid="requested-plan">
             Reservó: {wanted?.name ?? p.requested_plan}
