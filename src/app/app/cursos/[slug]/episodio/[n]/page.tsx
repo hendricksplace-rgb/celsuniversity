@@ -217,8 +217,8 @@ export default async function EpisodePage({ params, searchParams }: Props) {
     return <PartList t={t.episode} episode={episode} title={episode.title || `${word} ${episode.n}`} courseHref={courseHref} kicker={`${word} ${episode.n}`} />;
   }
 
-  // Staff only: the Teachersbook stays off the student screens.
-  const { data: guide } = viewer.isStaff
+  // Staff and this course's class teachers (RLS returns it only to them): the Teachersbook, off student screens.
+  const { data: guide } = viewer.teacherView
     ? await supabase.from("lessons").select("id").eq("module_id", episode.id).eq("teacher_only", true).order("sort_order").limit(1).maybeSingle()
     : { data: null };
   const key = episodePath(page.course.slug, episode.n);

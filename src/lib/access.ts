@@ -1,7 +1,11 @@
 import "server-only";
 import type { Client } from "@/lib/supabase/types";
 
-export const STAFF_ROLES = ["super_admin", "director", "administrator", "teacher"] as const;
+/**
+ * School staff: every course and every student. A teacher is NOT staff (C-048): they see their own classes'
+ * students and courses through class membership, which the database enforces (private.teaches_user/course).
+ */
+export const STAFF_ROLES = ["super_admin", "director", "administrator"] as const;
 /** Who may open /admin. Only super_admin changes roles (enforced again by public.guard_profile_update). */
 export const ADMIN_ROLES = ["super_admin", "administrator"] as const;
 export const isAdminRole = (role: string) => (ADMIN_ROLES as readonly string[]).includes(role);
@@ -23,7 +27,10 @@ export async function getViewer(supabase: Client) {
     .eq("id", user.id)
     .maybeSingle();
   const role = (profile?.role as string | undefined) ?? "individual_student";
-  return { user, role, displayName: profile?.display_name ?? null, isStaff: (STAFF_ROLES as readonly string[]).includes(role) };
+  const isStaff = (STAFF_ROLES as readonly string[]).includes(role);
+  // teacherView: show teacher-only content (Teachersbook, guides) when the database returns it. For a teacher
+  // RLS only returns it for the courses of the classes they teach.
+  return { user, role, displayName: profile?.display_name ?? null, isStaff, teacherView: isStaff || role === "teacher" };
 }
 
 /**

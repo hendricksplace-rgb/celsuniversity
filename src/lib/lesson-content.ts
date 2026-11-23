@@ -21,7 +21,7 @@ export async function loadLessonContent(supabase: Client, viewer: Viewer, lesson
         .order("sort_order")
     : { data: [] };
   const visible = (blocks ?? [])
-    .filter((b) => (viewer.isStaff || !b.teacher_only) && (!lang || inLanguage(b, lang)))
+    .filter((b) => (viewer.teacherView || !b.teacher_only) && (!lang || inLanguage(b, lang)))
     .map((b) => ({
       id: b.id,
       block_type: b.block_type,
@@ -47,7 +47,7 @@ export async function loadLessonContent(supabase: Client, viewer: Viewer, lesson
       : Promise.resolve({ data: [] as { block_id: string; body: string }[] }),
   ]);
   // The parts of the lesson: every block that shows something to this viewer.
-  const kinds = new Map(visible.map((b) => [b.id, partKind(b, viewer.isStaff)] as const));
+  const kinds = new Map(visible.map((b) => [b.id, partKind(b, viewer.teacherView)] as const));
   return {
     visible,
     signed,
