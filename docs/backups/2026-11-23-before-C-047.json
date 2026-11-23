@@ -1,0 +1,24 @@
+{
+  "note": "C-047 backup: rows whose old state is not fully kept in data.media_url_legacy by the migration. Every other touched block / guided step video only changed media_url (old value now in media_url_legacy) and gained provider='youtube'. CelsTV CelsVideo lessons 10-32 had has_content=false and no blocks before C-047 (inserted blocks: block_type='video' in those lessons).",
+  "content_blocks": [
+    {
+      "id": "ef0c2ab5-b1be-40b1-b917-6d52258efc8f",
+      "lesson_id": "2af77e93-1602-445a-b646-19c462961474",
+      "block_type": "embed",
+      "title": "Cels Video",
+      "body": "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/c9CL6JFSBDA?si=7QKKhRWhcYZ0IXvL\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>",
+      "data": { "settings": { "src": "https://www.youtube.com/embed/c9CL6JFSBDA?si=7QKKhRWhcYZ0IXvL", "height": 315, "allowfullscreen": true } }
+    },
+    {
+      "id": "9a7c5f21-72a6-4851-8761-2d4e6f5a1568",
+      "title": "Introducción CV to Resume",
+      "data": {
+        "mime": "video/mp4",
+        "provider": "storage",
+        "media_url": "storage://course-media/78e640f6-fc48-4659-8db0-8ce01381caba/videos/eae594c6a_C1_-_M1_-_Intro.mp4",
+        "duration_s": 377,
+        "media_url_legacy": "https://base44.app/api/apps/6a4cfadfe1f30bc41a96d740/files/mp/public/6a4cfadfe1f30bc41a96d740/eae594c6a_C1_-_M1_-_Intro.mp4"
+      }
+    }
+  ]
+}

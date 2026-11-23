@@ -413,7 +413,7 @@ export function MoreVideos({ list }: { list: MoreVideo[] }) {
                 {m.wistia ? (
                   <video src={m.media_url} controls autoPlay playsInline poster={posterSrc(m.poster_url) ?? undefined} aria-label={m.title} />
                 ) : (
-                  <iframe src={`https://www.youtube-nocookie.com/embed/${m.id}?autoplay=1`} title={m.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
+                  <iframe src={`https://www.youtube-nocookie.com/embed/${m.id}?autoplay=1&playsinline=1&rel=0&modestbranding=1`} title={m.title} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen />
                 )}
               </div>
               <div>

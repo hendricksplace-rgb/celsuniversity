@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/types";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { EssBlock, MoreVideos } from "./Essentials";
+import { youtubeEmbed } from "@/lib/youtube";
 import { PRODUCT, clockOf, docModel, posterSrc, productPath, stepPath, titlesOf, visibleSections, type GuidedStep, type GuidedTheme, type Lang, type MoreVideo, type ResumeData, type StepState } from "@/lib/guided";
 import { PracticeView, pickScore, practiceDone, sortScore } from "./Practice";
 import { BuildSection, type BuildCtx } from "./Build";
@@ -463,7 +464,7 @@ function Head({ n, small, h }: { n: number; small: string; h: string }) {
 }
 
 /**
- * The step's video (Wistia delivery file or a direct .mp4). Before play: the step's designed poster (C-020), the
+ * The step's video (YouTube since C-047; a Wistia delivery file or a direct .mp4 still works). Before play: the step's designed poster (C-020), the
  * course play button at 76 % (never over the title) and the real length; a tap plays it inline, with the same poster
  * on the <video> so there's no black flash. Without a poster, the dark box with the same button.
  */
@@ -471,7 +472,10 @@ function StepVideo({ url, title, n, poster, duration, part }: { url: string; tit
   const [play, setPlay] = useState(false);
   // A poster that fails to load is tried once more, then the dark box shows (never a broken image).
   const [tries, setTries] = useState(0);
-  const file = directMedia(url);
+  // C-047: the step videos moved to YouTube (unlisted). Same poster and button before play; on tap, the
+  // youtube-nocookie player (rel=0) in the same box. Wistia / .mp4 files still play as a file.
+  const yt = youtubeEmbed(url, { autoplay: true });
+  const file = yt ? null : directMedia(url);
   const src = tries < 2 ? posterSrc(poster) : null;
   const img = src && tries === 1 ? `${src}&r=1` : src;
   return (
@@ -480,7 +484,7 @@ function StepVideo({ url, title, n, poster, duration, part }: { url: string; tit
         file ? (
           <video controls autoPlay playsInline src={file} poster={img ?? undefined} aria-label={title} />
         ) : (
-          <iframe src={url} title={title} allow="autoplay; fullscreen; picture-in-picture" allowFullScreen />
+          <iframe src={yt ?? url} title={title} allow="accelerometer; autoplay; encrypted-media; fullscreen; gyroscope; picture-in-picture" allowFullScreen data-provider={yt ? "youtube" : undefined} />
         )
       ) : (
         <button type="button" className={s.vidBtn} onClick={() => setPlay(true)} aria-label={`Reproducir el video: ${title}`} data-action="play">

@@ -3,6 +3,7 @@ import sanitizeHtml from "sanitize-html";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { collectStorageRefs, storageRefName, type SignedRefs } from "@/lib/storage";
 import { fileHref } from "@/lib/file-href";
+import { youtubeEmbed as ytEmbed } from "@/lib/youtube";
 import { Activity } from "./activities/Activity";
 import { ResponseBox } from "./ResponseBox";
 
@@ -41,14 +42,7 @@ const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : null
 export const settingsOf = (b: Block) => (b.data.settings && typeof b.data.settings === "object" ? (b.data.settings as Record<string, unknown>) : {});
 
 /** Public videos are the one thing allowed to live outside (YouTube). Returns a privacy-friendly embed URL. */
-export function youtubeEmbed(url: string | null) {
-  if (!url) return null;
-  const m =
-    /(?:youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/.exec(url);
-  // enablejsapi: the lesson tracker listens for the player's progress (90 % watched counts as done).
-  // playsinline keeps iPhone from forcing full screen; rel=0 shows only this channel's videos at the end.
-  return m ? `https://www.youtube-nocookie.com/embed/${m[1]}?enablejsapi=1&playsinline=1&rel=0&modestbranding=1` : null;
-}
+export const youtubeEmbed = (url: string | null) => ytEmbed(url);
 
 /**
  * Media still on Wistia plays straight from its delivery link until it moves (videos may live outside;
