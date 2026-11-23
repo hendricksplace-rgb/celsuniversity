@@ -1,6 +1,6 @@
 -- Removes everything c048_demo_esl_class.sql created: the Demo ESL school, its 2 classes, the 10 made-up students
--- and all their rows, and Nico's sign-up trigger. Nico's own account stays (he goes back to a plain student account
--- with no class; set his role again in Admin → Equipo if needed).
+-- and all their rows, and Nico's sign-up trigger. Nico's own account stays: he goes back to a plain student account
+-- with no school or class (C-049 made him the Demo ESL director; that is reset too).
 do $$
 declare
   v_org uuid := (select id from public.organizations where legacy_id = 'demo-c048');
@@ -15,7 +15,7 @@ begin
   delete from public.class_members where class_id in (select id from public.classes where organization_id = v_org);
   delete from public.class_courses where class_id in (select id from public.classes where organization_id = v_org);
   delete from public.classes where organization_id = v_org;
-  update public.profiles set organization_id = null, role = case when role = 'teacher' then 'individual_student'::public.user_role else role end
+  update public.profiles set organization_id = null, role = case when role in ('teacher', 'director') then 'individual_student'::public.user_role else role end
   where organization_id = v_org and not (id = any (ids));
   delete from auth.users where id = any (ids) and email like '%.demo@example.com' and raw_app_meta_data->>'demo' = 'true';
   delete from public.organizations where id = v_org;

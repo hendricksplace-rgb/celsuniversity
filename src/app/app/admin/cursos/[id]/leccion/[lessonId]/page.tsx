@@ -18,7 +18,7 @@ export default async function LessonEditorPage({ params }: Props) {
   const { id, lessonId } = await params;
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
-  if (!viewer || !(isAdminRole(viewer.role) || viewer.role === "director")) notFound();
+  if (!viewer || !isAdminRole(viewer.role)) notFound();
 
   const { data: lesson } = await supabase
     .from("lessons")

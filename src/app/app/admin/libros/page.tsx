@@ -7,7 +7,7 @@ import { setEbookStatus } from "./actions";
 
 type Props = { searchParams: Promise<{ status?: string; curso?: string; error?: string; ok?: string }> };
 
-const ADMIN_ROLES = ["super_admin", "director", "administrator"];
+const ADMIN_ROLES = ["super_admin", "administrator"];
 
 type Screen = { narration?: { audio?: string | null } | null };
 

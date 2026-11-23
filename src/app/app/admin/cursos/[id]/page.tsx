@@ -12,7 +12,7 @@ export default async function CourseEditorPage({ params }: Props) {
   const { id } = await params;
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
-  if (!viewer || !(isAdminRole(viewer.role) || viewer.role === "director")) notFound();
+  if (!viewer || !isAdminRole(viewer.role)) notFound();
 
   const { data: course } = await supabase.from("courses").select("id, title, status, slug").eq("id", id).maybeSingle();
   if (!course) notFound();

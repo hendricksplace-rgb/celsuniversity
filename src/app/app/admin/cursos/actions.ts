@@ -16,7 +16,7 @@ const FORBIDDEN: Result = { ok: false, error: "Solo los administradores pueden e
 async function admin() {
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
-  if (!viewer || !(isAdminRole(viewer.role) || viewer.role === "director")) return null;
+  if (!viewer || !isAdminRole(viewer.role)) return null;
   return { supabase, viewer };
 }
 
