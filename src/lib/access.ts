@@ -5,12 +5,12 @@ import type { Client } from "@/lib/supabase/types";
  * School staff: every course and every student. A teacher is NOT staff (C-048): they see their own classes'
  * students and courses through class membership, which the database enforces (private.teaches_user/course).
  */
-export const STAFF_ROLES = ["super_admin", "director", "administrator"] as const;
+export const STAFF_ROLES = ["super_admin", "administrator"] as const;
 /** Who may open /admin. Only super_admin changes roles (enforced again by public.guard_profile_update). */
 export const ADMIN_ROLES = ["super_admin", "administrator"] as const;
 export const isAdminRole = (role: string) => (ADMIN_ROLES as readonly string[]).includes(role);
 /** Who sees the CelsUS teacher guides: teachers and the admin roles (other school staff roles come later). */
-export const TEACHER_GUIDE_ROLES = ["teacher", "super_admin", "director", "administrator"] as const;
+export const TEACHER_GUIDE_ROLES = ["teacher", "super_admin", "administrator"] as const;
 export const canSeeTeacherGuides = (role: string) => (TEACHER_GUIDE_ROLES as readonly string[]).includes(role);
 
 /** Embedded relations come back as an object at runtime but are typed as arrays without generated DB types. */
@@ -23,28 +23,48 @@ export async function getViewer(supabase: Client) {
   if (!user) return null;
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, display_name")
+    .select("role, display_name, organization_id")
     .eq("id", user.id)
     .maybeSingle();
   const role = (profile?.role as string | undefined) ?? "individual_student";
   const isStaff = (STAFF_ROLES as readonly string[]).includes(role);
   // teacherView: show teacher-only content (Teachersbook, guides) when the database returns it. For a teacher
   // RLS only returns it for the courses of the classes they teach.
-  return { user, role, displayName: profile?.display_name ?? null, isStaff, teacherView: isStaff || role === "teacher" };
+  return {
+    user,
+    role,
+    displayName: profile?.display_name ?? null,
+    organizationId: (profile?.organization_id as string | null | undefined) ?? null,
+    isStaff,
+    // C-049: a director sees what their teachers see (RLS returns it only for their school's courses).
+    teacherView: isStaff || role === "teacher" || role === "director",
+  };
 }
 
 /**
  * Mirrors private.has_course_access() using only rows the user may read under RLS:
- * staff, an active enrollment in the course or one of its programs, or an active class that has it.
+ * staff, an active enrollment in the course or one of its programs, an active class that has it, or (a
+ * director) an active class of their school that has it.
  * Storage RLS runs the same check again when the URL is signed.
  */
 export async function canAccessCourse(
   supabase: Client,
-  viewer: { user: { id: string }; isStaff: boolean } | null,
+  viewer: { user: { id: string }; isStaff: boolean; role?: string; organizationId?: string | null } | null,
   courseId: string,
 ) {
   if (!viewer) return false;
   if (viewer.isStaff) return true;
+
+  // C-049: a director has the courses linked to their school's active classes (private.directs_course).
+  if (viewer.role === "director" && viewer.organizationId) {
+    const { count: viaSchool } = await supabase
+      .from("class_courses")
+      .select("class_id, classes!inner(organization_id, status)", { count: "exact", head: true })
+      .eq("course_id", courseId)
+      .eq("classes.organization_id", viewer.organizationId)
+      .eq("classes.status", "active");
+    if (viaSchool) return true;
+  }
 
   const { data: links } = await supabase.from("program_courses").select("program_id").eq("course_id", courseId);
   const programIds = (links ?? []).map((l) => l.program_id as string);

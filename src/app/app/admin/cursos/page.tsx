@@ -12,7 +12,7 @@ const focus = "focus-visible:outline focus-visible:outline-2 focus-visible:outli
 export default async function CourseListPage() {
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
-  if (!viewer || !(isAdminRole(viewer.role) || viewer.role === "director")) notFound();
+  if (!viewer || !isAdminRole(viewer.role)) notFound();
 
   // Staff read every course, module, lesson and block (catalog_read / content_read policies).
   const [{ data: courses }, { data: modules }, { data: lessons }, { data: blocks }] = await Promise.all([

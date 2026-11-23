@@ -136,3 +136,12 @@ begin
       for each row execute function private.c048_on_nico_signup();
   end if;
 end $$;
+
+-- Weak spots: the sample class struggles on CelsTV Episode 3 and Episode 5, so the teacher dashboard's
+-- "Review in class" has something real to show (quiz scores 4–6 out of 10 there).
+update public.progress p
+set quiz_score = 4 + (abs(hashtext(p.user_id::text || p.lesson_id::text)) % 3)
+from public.lessons l join public.modules m on m.id = l.module_id join public.courses c on c.id = m.course_id
+where p.lesson_id = l.id and c.slug = 'celstv-english-for-our-generation' and m.sort_order in (2, 4)
+  and l.lesson_type = 'quiz' and p.status = 'completed' and p.quiz_max_score is not null
+  and p.user_id in (select id from public.profiles where legacy_id like 'demo-c048-%');

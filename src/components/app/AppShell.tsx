@@ -39,7 +39,12 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
     { href: "/app", label: t.shell.home, icon: "home" },
     { href: "/app/cursos", label: t.shell.courses, icon: "courses" },
     { href: "/app/progreso", label: t.shell.progress, icon: "progress" },
-    ...(teaches ? [{ href: "/app/clases", label: t.shell.classes, icon: "classes" as const }] : []),
+    // C-049: a director gets "Mi escuela" (their school's locations) instead of "Mis clases".
+    ...(viewer.role === "director"
+      ? [{ href: "/app/escuela", label: t.shell.school, icon: "classes" as const }]
+      : teaches
+        ? [{ href: "/app/clases", label: t.shell.classes, icon: "classes" as const }]
+        : []),
   ];
   const name = viewer.displayName || viewer.user.email || "";
 

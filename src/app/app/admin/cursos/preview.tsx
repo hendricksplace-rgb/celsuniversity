@@ -10,7 +10,7 @@ import type { Block } from "@/components/lesson/LessonBlock";
 export async function previewLesson(lessonId: string, blocks: Block[]) {
   const supabase = await createClient();
   const viewer = await getViewer(supabase);
-  if (!viewer || !(isAdminRole(viewer.role) || viewer.role === "director")) return null;
+  if (!viewer || !isAdminRole(viewer.role)) return null;
   const { data: lesson } = await supabase.from("lessons").select("module:modules(course:courses(id, slug))").eq("id", lessonId).maybeSingle();
   const course = one(one(lesson?.module)?.course);
   if (!course) return null;

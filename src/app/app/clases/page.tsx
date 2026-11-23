@@ -38,6 +38,8 @@ export default async function MisClases() {
   if (mine) return <WithClass t={t.misClases} u={t.mycourses} data={mine} loc={loc} />;
 
   const role = me?.role ?? "individual_student";
+  // C-049: a director's "classes" are their school's locations.
+  if (role === "director") redirect("/app/escuela");
   const isStaff = (STAFF_ROLES as readonly string[]).includes(role);
   if (!isStaff && !teaching?.length) return <NoClass t={t.misClases} u={t.mycourses} data={await noClass} />;
 
@@ -56,7 +58,7 @@ async function TeacherClasses({
   teaching: string[];
   supabase: Awaited<ReturnType<typeof createClient>>;
 }) {
-  const isAdmin = ["super_admin", "director", "administrator"].includes(role);
+  const isAdmin = ["super_admin", "administrator"].includes(role);
   let query = supabase.from("classes").select("id, name, class_members(member_role)").eq("status", "active").order("name");
   if (!isAdmin) query = query.in("id", teaching);
   const { data: classes } = await query;
