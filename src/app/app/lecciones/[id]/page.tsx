@@ -322,7 +322,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
                 t={t.lesson}
                 activityT={t.activity}
                 civicsT={t.civics}
-                isStaff={viewer.isStaff}
+                isStaff={viewer.teacherView}
                 readers={readers}
                 readLabel={t.reader.interactive}
                 books={books}
@@ -358,7 +358,7 @@ export default async function LessonPage({ params, searchParams }: Props) {
                     t={t.lesson}
                     activityT={t.activity}
                     civicsT={t.civics}
-                    isStaff={viewer.isStaff}
+                    isStaff={viewer.teacherView}
                     readers={readers}
                     readLabel={t.reader.interactive}
                     books={books}

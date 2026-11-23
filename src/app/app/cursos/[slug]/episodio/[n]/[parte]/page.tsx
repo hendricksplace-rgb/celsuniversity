@@ -295,7 +295,7 @@ export default async function PartPage({ params, searchParams }: Props) {
             t={t.lesson}
             activityT={t.activity}
             civicsT={t.civics}
-            isStaff={viewer.isStaff}
+            isStaff={viewer.teacherView}
             readers={content.readers}
             books={content.books}
             answers={content.answers}
