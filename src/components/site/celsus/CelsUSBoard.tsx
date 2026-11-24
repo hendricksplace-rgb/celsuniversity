@@ -6,6 +6,7 @@ import { Component, Fragment } from "react";
 import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
+import { HeroTakeover } from "@/components/site/HeroTakeover";
 import "./celsus.css";
 
 const SHOW_TESTIMONIALS = false;
@@ -216,8 +217,6 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
       toggleMenu: function () { self.setState({ menuOpen: !self.state.menuOpen }); },
-      fwBack: burst([{ x: 22, y: 22, c: '#7FB8FF', d: 0, r: 34, sc: .7, op: .75 }, { x: 76, y: 18, c: '#FFE07A', d: 2.4, r: 30, sc: .65, op: .7 }]),
-      fwFront: burst([{ x: 11, y: 62, c: '#FF5A5A', d: 1.2, r: 58, sc: 1, op: 1 }, { x: 90, y: 56, c: '#FFFFFF', d: 3.6, r: 54, sc: 1, op: 1 }]),
       fwCta: burst([{ x: 70, y: 30, c: '#FFE07A', d: 0.6, r: 40, sc: .8, op: .9 }, { x: 88, y: 60, c: '#FF5A5A', d: 3, r: 36, sc: .7, op: .9 }]),
       path: path, civ: civ, sim: sim,
       faqs: FAQ.map(function (f, i) {
@@ -270,11 +269,26 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
 <main>
 
 {/* HERO */}
-<section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #1E4A7E 0%, #153A66 50%, #0E2A4F 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-180px", left: "-160px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,210,77,.20) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 56px", alignItems: "center" }}>
-<div style={{ flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "20px" }}>
+{/* C-060: the flag video takes over the whole hero, folds into the US, then docks on the right with no frame
+    (HeroTakeover, its second use after CelsTV). The hero's navy is lighter than the video's in every channel, so
+    the lighten blend leaves only the US and its soft glow. */}
+<HeroTakeover
+id="inicio"
+className="cu-ushero"
+video={{ webm: "/motion/celsus.webm", mp4: "/motion/celsus.mp4" }}
+posterImg="/motion/celsus-poster.webp"
+posterAlt="CelsUS"
+flyAt={6.0}
+skipTo={5.0}
+eFrac={0.622}
+logoCenter={{ x: 0.54, y: 0.483 }}
+stillShows="frame"
+landMask="radial-gradient(60% 60% at 54% 48%, #000 55%, transparent 80%)"
+slotSize={{ desktop: 300, mobile: 200 }}
+decor={<i className="hto-decor cu-ushalo" aria-hidden="true"></i>}
+backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-180px", left: "-160px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,210,77,.20) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></>}
+>
 <a href="/#programas" style={{ alignSelf: "flex-start", color: "#B9D2F2", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFD24D" }}>CELSUS · CIUDADANÍA</span>
 <h1 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(40px, 5.6vw, 68px)", lineHeight: "1.04", letterSpacing: "-2px" }}>English for Us.<br />Confidence for Life.</h1>
@@ -289,16 +303,7 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
 <span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.10)", border: "1px solid rgba(255,255,255,.14)" }}>Desde {fmtPrice(P, "celsus_estandar")} USD</span>
 </div>
 <p style={{ margin: "0", fontSize: "12px", color: "#9DB7D8" }}>CelsUS es un proveedor educativo independiente y no está afiliado con USCIS ni con ninguna agencia gubernamental.</p>
-</div>
-<div aria-hidden="true" style={{ flex: "1 1 420px", minWidth: "0" }}>
-<div className="cu-raise-dark" style={{ position: "relative", overflow: "hidden", borderRadius: "24px", aspectRatio: "16 / 10", background: "#0A2340" }}>
-<img className="cu-pan" src="/site/celsus-us3d.jpg" alt="" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", objectFit: "cover" }} />
-{(v.fwBack ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
-{(v.fwFront ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
-</div>
-</div>
-</div>
-</section>
+</HeroTakeover>
 
 {/* PATH TO CITIZENSHIP */}
 <section style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0E2A4F 0px, #102D53 33px, #14345D 67px, #1C406E 100px, #254F83 133px, #3B669C 167px, #6488B6 200px, #8EABCF 233px, #A9C0DD 267px, #BBCDE4 300px, #C8D8E9 333px, #D2DEED 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
