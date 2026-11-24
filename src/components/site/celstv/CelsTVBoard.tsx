@@ -9,6 +9,7 @@ import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving,
 import { HeroTakeover } from "@/components/site/HeroTakeover";
 import { EpisodeFlip } from "./EpisodeFlip";
 import "./celstv.css";
+import "@/components/site/site-nav.css";
 import "@/components/site/sections.css";
 
 /** Testimonials stay hidden until Matt sends real ones (celsu-website-spec.md: never invent any). */
@@ -121,10 +122,10 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 
 {/* NAV */}
 <header style={{ position: "relative", zIndex: "5", background: "#FFFFFF", borderBottom: "1px solid #ECEAF2" }}>
-<nav aria-label="Principal" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
-<a href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
-<img src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
-<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
+<nav aria-label="Principal" className="cu-nav" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
+<a className="cu-navbrand" href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
+<img className="cu-navlogo" src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
+<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span className="cu-navword" style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span className="cu-navby" style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
 </a>
 <div className="cu-desk" style={{ gap: "28px", fontWeight: "600", fontSize: "15px", alignItems: "center" }}>
 <a href="/#programas" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Programas</a>
@@ -134,13 +135,14 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 <a href="#faq" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Preguntas</a>
 <a href="/entrar" style={{ color: "#0F0D1E", textDecoration: "none", padding: "10px 0", fontWeight: "700" }}>Iniciar sesión</a>
 </div>
-<a href={enrollHref("celstv")} className="cu-btn cu-btn-pink cu-btn-sm">Inscríbete</a>
+<a href={enrollHref("celstv")} className="cu-btn cu-btn-pink cu-btn-sm cu-navcta">Inscríbete</a>
 <button type="button" className="cu-mob" onClick={v.toggleMenu} aria-label="Abrir men\u00fa" aria-expanded={v.menuExpanded} style={{ width: "46px", height: "46px", borderRadius: "10px", border: "1px solid #E2DFEA", background: "#FFFFFF", color: "#0F0D1E", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
 </button>
 </nav>
 {v.menuOpen ? (<>
 <div style={{ display: "flex", flexDirection: "column", padding: "4px 20px 16px", fontWeight: "600", fontSize: "17px", borderTop: "1px solid #ECEAF2" }}>
+<a href={enrollHref("celstv")} className="cu-btn cu-btn-pink cu-navmenucta">Inscríbete</a>
 <a href="/#programas" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Programas</a>
 <a href="#episodios" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Episodios</a>
 <a href="#planes" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Precios</a>

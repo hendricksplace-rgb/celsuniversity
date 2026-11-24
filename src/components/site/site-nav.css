@@ -1,0 +1,25 @@
+/* C-068: the site header on phones (homepage, CelsTV, CelsUS, CelsGLOBAL: they share this nav markup).
+   ≤ 480px: tighter row (gap 10, logo 36, wordmark 16, "BY LAM" 9); the wordmark may shrink (min-width 0) but is never
+   overlapped; the buttons never shrink; the homepage button reads "Evaluación". Below 360px the header button
+   hides and the open menu starts with it as a full-width button. Desktop unchanged. (Inline styles on the markup,
+   hence !important.) Side padding 16, the brand gap 8, the button's sides 14 and the menu button 44 (still a full
+   touch target) make the row fit at 360px without truncating the wordmark. */
+.cu-navcta-short,.cu-navmenucta{display:none !important}
+@media (max-width:480px){
+  .cu-nav{gap:10px !important;padding-left:16px !important;padding-right:16px !important}
+  .cu-navbrand{min-width:0;flex:0 1 auto;overflow:hidden;gap:8px !important}
+  .cu-navlogo{width:36px !important;flex:0 0 auto}
+  .cu-navbrand>span{min-width:0}
+  .cu-navword{font-size:16px !important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cu-navby{font-size:9px !important;gap:4px !important}
+  .cu-navby img{height:10px !important}
+  .cu-nav>.cu-navcta,.cu-nav>.cu-mob{flex:0 0 auto}
+  .cu-navcta{min-height:44px;padding:0 14px !important}
+  .cu-nav>.cu-mob{width:44px !important;height:44px !important}
+  .cu-navcta .cu-navcta-long{display:none}
+  .cu-navcta .cu-navcta-short{display:inline !important}
+}
+@media (max-width:359.98px){
+  .cu-nav>.cu-navcta{display:none !important}
+  .cu-navmenucta{display:flex !important;width:100%;margin:12px 0 4px}
+}
