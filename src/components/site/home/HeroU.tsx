@@ -33,8 +33,14 @@ export function HeroU({ replay }: { replay: number }) {
     }
     const v = video.current;
     if (!v) return;
+    // autoPlay can start the video before this effect runs (its "playing" event already gone), so the timer
+    // looks at the video itself: playing or already past 0:00 means it started in time.
+    const isPlaying = () => started.current || v.currentTime > 0 || (!v.paused && v.readyState >= 3);
     const fallback = () => {
-      if (started.current) return;
+      if (isPlaying()) {
+        started.current = true;
+        return;
+      }
       v.pause();
       setMode("static");
     };
@@ -44,6 +50,7 @@ export function HeroU({ replay }: { replay: number }) {
       window.clearTimeout(timer);
     };
     v.addEventListener("playing", onPlaying);
+    if (isPlaying()) onPlaying();
     v.play().catch(() => {
       window.clearTimeout(timer);
       fallback();
@@ -85,7 +92,6 @@ export function HeroU({ replay }: { replay: number }) {
           playsInline
           autoPlay
           preload="auto"
-          poster="/site/celsu-u-liquid-poster.webp"
           onEnded={() => setLogo(true)}
           onError={() => setMode("static")}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", WebkitMaskImage: MASK, maskImage: MASK }}
