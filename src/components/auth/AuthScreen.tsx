@@ -54,11 +54,19 @@ export function AuthScreen({ c, lang, view: initial, next, google, email: initia
   const [hello, setHello] = useState("");
   const card = useRef<HTMLDivElement>(null);
 
-  // The last method this device used (C-039), so password people don't have to tap "Prefiero…" every time.
+  // The last method this device used (C-039), so password people don't have to tap "Prefiero…" every time. Arriving
+  // from an invitation (C-071: /entrar?email=…), the code is the way in: code view, "Enviarme un código" focused
+  // (never sent on its own; the student taps it).
+  const sendBtn = useRef<HTMLButtonElement>(null);
   useEffect(() => {
+    if (initial === "login" && initialEmail) {
+      sendBtn.current?.focus();
+      return;
+    }
     try {
       if (localStorage.getItem(METHOD_KEY) === "password") setUsePassword(true);
     } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- first render only
   }, []);
   const rememberMethod = (m: "code" | "password") => {
     try {
@@ -221,7 +229,7 @@ export function AuthScreen({ c, lang, view: initial, next, google, email: initia
   );
 
   const button = (label: string) => (
-    <button type="submit" className="ev-btn" disabled={busy} aria-busy={busy} data-testid="auth-submit">
+    <button ref={sendBtn} type="submit" className="ev-btn" disabled={busy} aria-busy={busy} data-testid="auth-submit">
       {busy ? <span className="au-sp" aria-label="…" /> : label}
     </button>
   );

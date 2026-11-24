@@ -3,6 +3,7 @@ import "server-only";
 // (it needs the admin auth APIs); the app only calls it with its publishable key, plus the admin's session
 // when sending. The token in /activar?t= is never stored here: the function keeps its sha256.
 import { supabaseEnv } from "@/lib/supabase/env";
+import type { InviteTemplate } from "@/lib/invite-template";
 
 export type InviteRow = { user_id: string; seq: number; sent_at: string; status: string; redeemed_at: string | null; activated_at: string | null; expires_at: string };
 export type InviteOutcome = { user_id: string; status: "sent" | "stubbed" | "failed" | "duplicate" | "already" | "not_found"; sent_at?: string };
@@ -34,6 +35,17 @@ export async function sendInvites(userIds: string[], accessToken: string, resend
     results.push(...data.results);
   }
   return { ok: true as const, results };
+}
+
+/** C-071: which invitation each student would get now (the function decides; it can read the import mark). */
+export async function previewInviteTemplates(userIds: string[], accessToken: string): Promise<Map<string, InviteTemplate>> {
+  const out = new Map<string, InviteTemplate>();
+  for (let i = 0; i < userIds.length; i += 200) {
+    const { status, data } = await call<{ templates?: Record<string, InviteTemplate> }>({ action: "preview", user_ids: userIds.slice(i, i + 200) }, accessToken);
+    if (status !== 200 || !data?.templates) break;
+    for (const [k, v] of Object.entries(data.templates)) out.set(k, v);
+  }
+  return out;
 }
 
 export async function redeemInvite(token: string): Promise<Redeemed> {

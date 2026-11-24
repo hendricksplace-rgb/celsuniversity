@@ -5,6 +5,7 @@
 import { useState, useTransition } from "react";
 import { invitePending, inviteStudent, type InviteResult } from "@/app/app/admin/estudiantes/invite-actions";
 import { btn } from "@/components/builder/ui";
+import { INVITE_TEMPLATE_LABEL, type InviteTemplate } from "@/lib/invite-template";
 
 const DONE: Record<string, string> = {
   sent: "Invitación enviada.",
@@ -15,7 +16,7 @@ const DONE: Record<string, string> = {
   not_found: "No encontramos esta cuenta.",
 };
 
-export function InviteButton({ userId, sent }: { userId: string; sent: boolean }) {
+export function InviteButton({ userId, sent, template }: { userId: string; sent: boolean; template: InviteTemplate | null }) {
   const [pending, start] = useTransition();
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   return (
@@ -36,6 +37,10 @@ export function InviteButton({ userId, sent }: { userId: string; sent: boolean }
       >
         {pending ? "Enviando…" : sent ? "Reenviar invitación" : "Enviar invitación"}
       </button>
+      {/* C-071: which email goes out (the student-invite function makes the same choice). */}
+      <span className="text-xs font-bold text-[#5E5A73]" data-testid="invite-template" data-template={template ?? ""}>
+        {template ? `Correo: «${INVITE_TEMPLATE_LABEL[template]}»` : "Correo: se elige al enviar"}
+      </span>
       {msg && (
         <span role="status" className={`text-xs font-bold ${msg.ok ? "text-[#15803D]" : "text-[#B42318]"}`}>
           {msg.text}
@@ -45,7 +50,7 @@ export function InviteButton({ userId, sent }: { userId: string; sent: boolean }
   );
 }
 
-export function BulkInviteButton({ people, search }: { people: { id: string; label: string }[]; search: string }) {
+export function BulkInviteButton({ people, search }: { people: { id: string; label: string; template: InviteTemplate | null }[]; search: string }) {
   const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
   const [result, setResult] = useState<InviteResult | null>(null);
@@ -81,12 +86,13 @@ export function BulkInviteButton({ people, search }: { people: { id: string; lab
               ¿Enviar la invitación a {n} {n === 1 ? "estudiante" : "estudiantes"}?
             </h2>
             <p className="text-sm font-semibold text-[#5E5A73]">
-              Cada uno recibe «Tu nueva plataforma CelsU ya está lista» con un enlace para crear su contraseña (dura 30 días). No se puede deshacer.
+              Cada uno recibe su invitación con un enlace para crear su contraseña (dura 30 días): «Cambio de plataforma CelsGLOBAL» si viene de la plataforma anterior y solo tiene CelsGLOBAL; si no, «Bienvenida general». No se puede deshacer.
             </p>
             <ul className="max-h-48 overflow-auto rounded-xl border border-[#EFE6F2] p-3 text-sm font-semibold text-[#1B1830]">
               {people.map((p) => (
-                <li key={p.id} className="truncate">
-                  {p.label}
+                <li key={p.id} className="flex items-baseline justify-between gap-2">
+                  <span className="truncate">{p.label}</span>
+                  {p.template && <span className="shrink-0 text-xs font-bold text-[#5E5A73]">{INVITE_TEMPLATE_LABEL[p.template]}</span>}
                 </li>
               ))}
             </ul>

@@ -367,6 +367,28 @@
       ]
     },
     {
+      "id": "invite-general",
+      "file": "app/invite-general.html",
+      "program": "CelsU",
+      "trigger": "Admin → Estudiantes → «Enviar invitación» (todos, salvo alumnos CelsGLOBAL de la plataforma anterior). Entra con código en /entrar.",
+      "subject": "{{nombre}}, ¡te damos la bienvenida a CelsU! 🎉",
+      "preheader": "Tu acceso ya está activo. Entra con un código, sin contraseñas.",
+      "from_name": "CelsU",
+      "from_email": "hola@mail.celstv.com",
+      "marketing": false,
+      "reply_to": "hola@celstv.com",
+      "variables": [
+        "app_url",
+        "ayuda_url",
+        "boton_url",
+        "cursos_html",
+        "email",
+        "nombre",
+        "privacidad_url",
+        "programas_resumen"
+      ]
+    },
+    {
       "id": "email-changed",
       "file": "app/email-changed.html",
       "program": "CelsU",
