@@ -10,6 +10,7 @@ import "./home.css";
 import "@/components/site/site-nav.css";
 import "@/components/site/sections.css";
 import { HeroU } from "./HeroU";
+import { PromoBand } from "./PromoBand";
 import { LogoMotion } from "@/components/site/LogoMotion";
 
 // Everything below the hero only depends on the state it shows. The hero word turns every 2.6 s and
@@ -590,8 +591,11 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 </div>
 
+{/* C-070: the promo video band (it now carries the blue → light fade; #programas starts light) */}
+<PromoBand />
+
 {/* GOAL PICKER */}
-<section id="programas" className="cs-sec cs-lines cu-hmsec cu-hmfade" style={{ position: "relative", overflowX: "clip", background: "linear-gradient(180deg, #00A9DC 0px, #1DABDD 42px, #3EB0DF 84px, #5DB8E1 127px, #7AC1E4 169px, #96CAE7 211px, #AED3EA 253px, #C2DAEC 296px, #D0DFEE 338px, #D5E1EE 380px, #BFD0E3 100%)" }}>
+<section id="programas" className="cs-sec cs-lines cu-hmsec cu-hmfade" style={{ position: "relative", overflowX: "clip", background: "linear-gradient(180deg, #D5E1EE 0px, #BFD0E3 100%)" }}>
 <div className="cs-bg" aria-hidden="true"></div>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-120px", right: "-80px", width: "520px", height: "520px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
 <div style={{ position: "relative" }}>

@@ -137,7 +137,7 @@ main > section ~ section ~ section {
 @media (max-width:820px){.cu-hmsec{--gap:64px}}
 .cu-hmsec>*:not(.cs-bg):not(.cs-curve){position:relative}
 .cu-hmsec>.cu-orb{position:absolute}
-.cu-hmfade{padding-top:200px}
+.cu-hmfade{padding-top:calc(var(--gap) - 16px)} /* C-070: the blue → light fade moved up into the promo band */
 .cu-hmcut{padding-top:calc(var(--gap) + 40px)}
 .cu-hmcurve{padding-top:calc(var(--gap) + 30px)}
 .cu-hmfade.cs-lines>.cs-bg::after{background-image:linear-gradient(rgba(15,42,77,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(15,42,77,.06) 1px,transparent 1px)}
