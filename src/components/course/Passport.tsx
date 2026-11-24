@@ -481,7 +481,7 @@ export function Passport({ lang, userId, courseId, holder, interviewDate, today:
               </div>
             </div>
             <p>{c.lawS}</p>
-            <a className="us-lawbtn" href={`${lawHref}?subject=${encodeURIComponent(c.lawSubject)}`} onClick={sound.law}>
+            <a className="us-lawbtn" href={lawHref} target="_blank" rel="noopener" onClick={sound.law}>
               {c.lawB}
               <Chevron w={2.6} />
             </a>

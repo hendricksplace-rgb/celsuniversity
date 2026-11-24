@@ -7,6 +7,7 @@ import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import { HeroTakeover } from "@/components/site/HeroTakeover";
+import { HENDRICKS_LAW_URL } from "@/lib/partners";
 import "./celsus.css";
 
 const SHOW_TESTIMONIALS = false;
@@ -456,7 +457,7 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <p style={{ margin: "0", fontSize: "16px", lineHeight: "1.6", color: "#3F3B52" }}>CelsUS te prepara para la entrevista; las preguntas legales (elegibilidad, excepciones por edad y residencia, documentos) las resuelve un abogado. Trabajamos de la mano con Hendricks Law, firma de inmigración del abogado Michael Hendricks.</p>
 <p style={{ margin: "0", fontSize: "12px", color: "#6B6680" }}>CelsUS no ofrece asesoría legal. Hendricks Law es una firma independiente.</p>
 </div>
-<a href="mailto:hola@celstv.com?subject=Consulta%20con%20Hendricks%20Law" className="cu-btn cu-btn-dark">Contactar a Hendricks Law <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={HENDRICKS_LAW_URL} target="_blank" rel="noopener" className="cu-btn cu-btn-dark">Contactar a Hendricks Law <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </section>
 
