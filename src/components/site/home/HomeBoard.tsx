@@ -7,6 +7,7 @@ import { css } from "@/components/site/css";
 import { enrollHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
+import "@/components/site/sections.css";
 import { HeroU } from "./HeroU";
 import { LogoMotion } from "@/components/site/LogoMotion";
 
@@ -507,7 +508,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 
 {/* GOAL PICKER */}
-<section id="programas" style={{ position: "relative", overflowX: "clip", padding: "200px 20px 110px", background: "linear-gradient(180deg, #00A9DC 0px, #1DABDD 42px, #3EB0DF 84px, #5DB8E1 127px, #7AC1E4 169px, #96CAE7 211px, #AED3EA 253px, #C2DAEC 296px, #D0DFEE 338px, #D5E1EE 380px, #BFD0E3 100%)" }}>
+<section id="programas" className="cs-sec cs-lines cu-hmsec cu-hmfade" style={{ position: "relative", overflowX: "clip", background: "linear-gradient(180deg, #00A9DC 0px, #1DABDD 42px, #3EB0DF 84px, #5DB8E1 127px, #7AC1E4 169px, #96CAE7 211px, #AED3EA 253px, #C2DAEC 296px, #D0DFEE 338px, #D5E1EE 380px, #BFD0E3 100%)" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-120px", right: "-80px", width: "520px", height: "520px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -574,9 +576,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* LEVEL: Ana's journey */}
-<section id="nivel" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 120px", background: "linear-gradient(180deg, #BFD0E3 0px, #BDD0E4 35px, #B7D1E5 70px, #ADD1E7 105px, #A0D2EA 140px, #91D2ED 175px, #7FD3F0 210px, #6AC9EB 245px, #55BFE7 280px, #3FB6E2 315px, #29AFDF 350px, #11ABDD 385px, #00A9DC 420px, #006E9E 72%, #0F2A4D 100%)", color: "#FFFFFF" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-beam" aria-hidden="true"></span>
+<section id="nivel" className="cs-sec cs-cut cs-dots cu-hmsec cu-hmcut cu-hmnivel" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-beam"></span></div>
 <div ref={v.journey.sectionRef} style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "780px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#0F0D1E" }}>TU CAMINO</span>
@@ -647,8 +648,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* TRY IT */}
-<section id="prueba" style={{ position: "relative", overflowX: "clip", padding: "110px 20px 110px", background: "linear-gradient(180deg, #0F2A4D 0px, #0F2A4D 120px, #0B1E3A 100%)", color: "#FFFFFF" }}>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-140px", left: "30%", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(179,236,121,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="prueba" className="cs-sec cs-dots cu-hmsec cu-hmcurve cu-hmprueba" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", top: "-140px", left: "30%", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(179,236,121,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#006E9E" /></svg></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 64px", alignItems: "center" }}>
 <div className="cu-from-l" style={{ flex: "1 1 360px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -725,9 +727,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* METHOD */}
-<section id="metodo" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #112440 42px, #21334F 84px, #394B65 127px, #576981 169px, #79899F 211px, #9BAABC 253px, #B8C6D6 296px, #CDDAE7 338px, #D5E1EE 380px, #C6D6E8 100%)" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-200px", left: "-120px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="metodo" className="cs-sec cs-cut-r cs-lines cu-hmsec cu-hmcut cu-hmlight">
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-orb" style={{ position: "absolute", bottom: "-200px", left: "-120px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "36px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
@@ -756,11 +757,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* PLANS & PRICING */}
-<section id="precios" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C3D2E6 35px, #B9C6E0 70px, #ABB4D6 105px, #9A9FCB 140px, #8584B9 175px, #6D64A0 210px, #564587 245px, #463271 280px, #3A2760 315px, #321E53 350px, #2C194A 385px, #2A1747 420px, #16183A 60%, #0B1E3A 100%)", color: "#FFFFFF" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "80px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-160px", right: "-140px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,204,254,.25) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="precios" className="cs-sec cs-dots cu-hmsec cu-hmcurve cu-hmprecios" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-beam cu-beam-soft"></span><span className="cu-orb" style={{ position: "absolute", top: "80px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span><span className="cu-orb" style={{ position: "absolute", bottom: "-160px", right: "-140px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,204,254,.25) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#C6D6E8" /></svg></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "32px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#00CCFE" }}>PLANES Y PRECIOS</span>
@@ -835,9 +834,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 
 {/* TESTIMONIALS: hidden until Matt sends real ones (never invent any). */}
 {SHOW_TESTIMONIALS ? (<>
-<section style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #0B1E3A 120px, #16183A 55%, #2A1747 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-180px", right: "-100px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(246,172,0,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section className="cs-sec cs-dots cu-hmsec cu-hmstories" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span><span className="cu-orb" style={{ position: "absolute", top: "-180px", right: "-100px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(246,172,0,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
@@ -864,8 +862,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </>) : null}
 
 {/* SOFIA */}
-<section id="sofia" style={{ padding: "230px 20px 40px", background: "linear-gradient(180deg, #2A1747 0px, #2C194A 35px, #321E53 70px, #3A2760 105px, #463271 140px, #564587 175px, #6D64A0 210px, #8584B9 245px, #9DA1CC 280px, #B3BADA 315px, #C5CEE4 350px, #D1DCEB 385px, #D5E1EE 420px, #C6D6E8 100%)" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
+<section id="sofia" className="cs-sec cs-cut cs-lines cu-hmsec cu-hmcut cu-hmlight cu-hmsofia">
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span></div>
 <div className="cu-tilt cu-raise-dark" style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", background: "linear-gradient(135deg, #1A1733 0%, #0F0D1E 100%)", color: "#FFFFFF", borderRadius: "20px", padding: "36px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center" }}>
 <div style={{ width: "64px", height: "64px", borderRadius: "16px", background: "#00CCFE", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0F0D1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /><path d="M8.5 11h.01M12 11h.01M15.5 11h.01" /></svg>
@@ -879,7 +877,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* TEAM */}
-<section style={{ position: "relative", overflowX: "clip", padding: "56px 20px 96px", background: "#C6D6E8" }}>
+{/* C-066: not positioned, so its background paints under the Sofia card's shadow (one light band, no cut line);
+    it overlaps the CTA section by 1px, so a fractional boundary can't leave a white hairline between them. */}
+<section style={{ overflowX: "clip", padding: "16px 20px 97px", marginBottom: "-1px", background: "#C6D6E8" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#1E4877" }}>QUIÉNES SOMOS</span>
@@ -911,7 +911,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </Keep>
 {/* FOOTER */}
 </main>
-<footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
+<footer className="cs-sec cs-cut-r cs-dots cu-hmsec cu-hmcut cu-hmfoot" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>
 <div style={{ flex: "1 1 260px", minWidth: "0", display: "flex", flexDirection: "column", gap: "14px" }}>
