@@ -536,12 +536,16 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <main>
 
 {/* HERO on LAM blue */}
-<section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2BD8FF 0%, #00CCFE 45%, #00A9DC 100%)", padding: "64px 20px 88px" }}>
+{/* C-067: the liquid U takes over the whole hero, then lands in its spot (HeroU). cu-uintro = the takeover is on:
+    the copy hidden, the flat #02C5F7 layer (the video's background) over the gradient. */}
+<section id="inicio" className="cu-uhero cu-uintro" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2BD8FF 0%, #00CCFE 45%, #00A9DC 100%)" }}>
+<div className="cu-uflat" aria-hidden="true"></div>
+<noscript><style>{".cu-uintro .cu-ucopy>*{opacity:1 !important;transform:none !important}.cu-uflat{display:none}"}</style></noscript>
 <span className="cu-beam" aria-hidden="true"></span>
 <img className="cu-lam" src="/site/lam-white.png" alt="" aria-hidden="true" style={{ position: "absolute", left: "-2%", bottom: "-6%", width: "min(78%, 980px)", height: "auto", opacity: "0.22", pointerEvents: "none" }} />
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "24px 48px", alignItems: "center" }}>
 
-<div style={{ position: "relative", zIndex: "2", flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
+<div className="cu-ucopy" style={{ position: "relative", zIndex: "3", flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
 <button type="button" onClick={v.replayIntro} style={{ alignSelf: "flex-start", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", minHeight: "48px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
 {(v.tags ?? []).map((t: any, __i: number) => (<Fragment key={__i}><span className={t.cls} style={css(t.style)}>{t.label}</span></Fragment>))}
 </button>
@@ -557,7 +561,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 
 {/* The U: liquid ribbons swirl in and settle into the CelsU U (C-052, video), then the sharp logo fades in on top */}
-<div aria-hidden="true" style={{ position: "relative", zIndex: "1", flex: "1 1 400px", minWidth: "0", display: "flex", justifyContent: "center" }}>
+<div aria-hidden="true" className="cu-uslotcol" style={{ position: "relative", zIndex: "2", minWidth: "0", display: "flex", justifyContent: "center" }}>
 <HeroU replay={v.uReplay} />
 </div>
 </div>
