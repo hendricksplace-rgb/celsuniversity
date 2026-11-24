@@ -180,7 +180,8 @@ main > section ~ section ~ section {
 @media (max-width:820px){
   .cu-uhero{padding-top:28px}
   .cu-uslotcol{order:-1;flex-basis:100%}
-  .cu-uslot{width:min(78vw,320px)}
+  .cu-uslot{width:clamp(120px,min(52vw,200px,calc(100svh - 630px)),200px)} /* small enough that the pink button is on the first screen after the U lands (shorter phones: a smaller U, never under 120px) */
+  .cu-uhero>div:not(.cu-uflat){row-gap:16px !important}
   .cu-ucopy{flex-basis:100%}
 }
 @media (prefers-reduced-motion:reduce){.cu-uintro .cu-ucopy>*{opacity:1;transform:none}.cu-uflat{display:none}}
