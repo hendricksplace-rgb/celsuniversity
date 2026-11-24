@@ -19,7 +19,8 @@ export default async function AdminHome() {
     { href: "/app/admin/errores", title: "Errores", text: "Lo que falló en la app y en el servidor en los últimos 7 días, agrupado por mensaje." },
     { href: "/app/admin/bajas", title: "Solicitudes de eliminación", text: "Quién pidió borrar su cuenta y cuándo se completó (ARCO)." },
     { href: "/app/admin/entregas", title: "Entregas por revisar", text: "Las tareas de CelsBSNS que los estudiantes entregaron a su coach." },
-    { href: "/app/clases", title: "Clases", text: "Las clases y sus tareas asignadas." },
+    { href: "/app/admin/clases", title: "Clases", text: "Crea y edita las clases en vivo: horario en los dos idiomas, cursos, profesores y estudiantes." },
+    { href: "/app/clases", title: "Tareas de las clases", text: "Las clases y sus tareas asignadas." },
   ];
   return (
     <div className="space-y-5">

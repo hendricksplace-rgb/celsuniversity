@@ -36,3 +36,13 @@ export function bilingualHalf(s: string, lang: Lang) {
   if (lang === "en") return aEs ? b : a;
   return aEs ? a : b;
 }
+
+/**
+ * C-051: a class's schedule in `lang` (schedule_label = Spanish, schedule_label_en = English). Falls back to the
+ * other language when one is empty, so a class with only one filled in never shows a blank.
+ */
+export function scheduleOf(row: { schedule_label?: string | null; schedule_label_en?: string | null } | null | undefined, lang: Lang): string | null {
+  const es = row?.schedule_label?.trim() || null;
+  const en = row?.schedule_label_en?.trim() || null;
+  return lang === "en" ? (en ?? es) : (es ?? en);
+}

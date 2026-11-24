@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { STAFF_ROLES } from "@/lib/access";
 import { loadMyClass, loadNoClass } from "@/lib/my-classes";
 import { NoClass, WithClass } from "@/components/clases/MisClases";
+import { scheduleOf } from "@/lib/i18n/row";
+import type { Lang } from "@/lib/i18n/dictionaries";
 
 export async function generateMetadata() {
   const { t } = await getDictionary();
@@ -32,7 +34,7 @@ export default async function MisClases() {
   noClass.catch(() => {});
   const [{ data: me }, mine, { data: teaching }] = await Promise.all([
     supabase.from("profiles").select("role").eq("id", user.id).maybeSingle(),
-    loadMyClass(supabase, user.id),
+    loadMyClass(supabase, user.id, lang),
     supabase.from("class_members").select("class_id").eq("user_id", user.id).eq("member_role", "teacher"),
   ]);
   if (mine) return <WithClass t={t.misClases} u={t.mycourses} data={mine} loc={loc} />;
@@ -43,7 +45,7 @@ export default async function MisClases() {
   const isStaff = (STAFF_ROLES as readonly string[]).includes(role);
   if (!isStaff && !teaching?.length) return <NoClass t={t.misClases} u={t.mycourses} data={await noClass} />;
 
-  return <TeacherClasses t={t.classes} role={role} teaching={(teaching ?? []).map((m) => m.class_id)} supabase={supabase} />;
+  return <TeacherClasses t={t.classes} lang={lang} role={role} teaching={(teaching ?? []).map((m) => m.class_id)} supabase={supabase} />;
 }
 
 /** Classes the viewer teaches (admins see every active class). */
@@ -52,14 +54,16 @@ async function TeacherClasses({
   role,
   teaching,
   supabase,
+  lang,
 }: {
   t: Awaited<ReturnType<typeof getDictionary>>["t"]["classes"];
+  lang: Lang;
   role: string;
   teaching: string[];
   supabase: Awaited<ReturnType<typeof createClient>>;
 }) {
   const isAdmin = ["super_admin", "administrator"].includes(role);
-  let query = supabase.from("classes").select("id, name, class_members(member_role)").eq("status", "active").order("name");
+  let query = supabase.from("classes").select("id, name, schedule_label, schedule_label_en, class_members(member_role)").eq("status", "active").order("name");
   if (!isAdmin) query = query.in("id", teaching);
   const { data: classes } = await query;
 
@@ -75,6 +79,7 @@ async function TeacherClasses({
                 className="block rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#F5178C] motion-reduce:transition-none"
               >
                 <h2 className="text-lg font-extrabold">{cl.name}</h2>
+                {scheduleOf(cl, lang) && <p className="text-sm font-bold text-[#4A4766]">{scheduleOf(cl, lang)}</p>}
                 <p className="mt-1 text-sm font-semibold text-[#6B6680]">
                   {((n) => (n === 1 ? c.student : fill(c.students, { n })))((cl.class_members ?? []).filter((m) => m.member_role === "student").length)}
                 </p>

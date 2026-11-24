@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
 import { getViewer, isAdminRole } from "@/lib/access";
+import { scheduleOf } from "@/lib/i18n/row";
 import { canSeeClassStudents, teachesClass } from "@/lib/class-access";
 import { assignToClass, removeAssignment } from "../actions";
 import { classFocus, classInsights } from "@/lib/class-insights";
@@ -18,12 +19,12 @@ const pick = <T,>(v: T | T[] | null | undefined) => (Array.isArray(v) ? v[0] : v
 export default async function ClassPage({ params, searchParams }: Props) {
   const { id } = await params;
   const { error } = await searchParams;
-  const { t } = await getDictionary();
+  const { t, lang } = await getDictionary();
   const c = t.classes;
   const supabase = await createClient();
   const viewer = (await getViewer(supabase))!;
 
-  const { data: cl } = await supabase.from("classes").select("id, name, organization_id, class_members(user_id, member_role), class_courses(course_id)").eq("id", id).maybeSingle();
+  const { data: cl } = await supabase.from("classes").select("id, name, organization_id, schedule_label, schedule_label_en, class_members(user_id, member_role), class_courses(course_id)").eq("id", id).maybeSingle();
   if (!cl) notFound();
   // Assigning (a write): admins and the class's teacher. Seeing the students: also the school's director (C-049).
   const canAssign = isAdminRole(viewer.role) || teachesClass(viewer, cl);
@@ -49,7 +50,9 @@ export default async function ClassPage({ params, searchParams }: Props) {
           ‹ {c.back}
         </Link>
         <h1 className="mt-1 text-3xl font-extrabold sm:text-4xl">{cl.name}</h1>
-        <p className="text-sm font-semibold text-[#6B6680]">{students === 1 ? c.student : fill(c.students, { n: students })}</p>
+        <p className="text-sm font-semibold text-[#6B6680]">
+          {[scheduleOf(cl, lang), students === 1 ? c.student : fill(c.students, { n: students })].filter(Boolean).join(" · ")}
+        </p>
       </div>
 
       {canSee && (

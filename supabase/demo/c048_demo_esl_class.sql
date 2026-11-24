@@ -31,11 +31,11 @@ begin
   insert into public.organizations (legacy_id, name, notes)
   values ('demo-c048', 'Demo ESL', 'C-048 sample school for the ESL partner review. Safe to delete (supabase/demo/c048_demo_esl_class_remove.sql).')
   returning id into v_org;
-  insert into public.classes (legacy_id, organization_id, name, status, schedule_label)
-  values ('demo-c048-houston', v_org, 'Demo ESL · Houston', 'active', 'Lunes y miércoles · 7:00 pm')
+  insert into public.classes (legacy_id, organization_id, name, status, schedule_label, schedule_label_en)
+  values ('demo-c048-houston', v_org, 'Demo ESL · Houston', 'active', 'Lunes y miércoles · 7:00 pm', 'Mon & Wed · 7:00 pm')
   returning id into v_houston;
-  insert into public.classes (legacy_id, organization_id, name, status, schedule_label)
-  values ('demo-c048-dallas', v_org, 'Demo ESL · Dallas', 'active', 'Martes y jueves · 6:30 pm')
+  insert into public.classes (legacy_id, organization_id, name, status, schedule_label, schedule_label_en)
+  values ('demo-c048-dallas', v_org, 'Demo ESL · Dallas', 'active', 'Martes y jueves · 6:30 pm', 'Tue & Thu · 6:30 pm')
   returning id into v_dallas;
   insert into public.class_courses (class_id, course_id)
   values (v_houston, v_tv), (v_houston, v_bsns), (v_dallas, v_tv), (v_dallas, v_bsns);

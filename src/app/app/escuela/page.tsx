@@ -118,7 +118,7 @@ export default async function SchoolPage() {
   );
   if (!viewer.organizationId) return shell(<p className="rounded-[26px] border border-[#ECE8F3] bg-white p-6 font-bold">{t.noSchool}</p>);
 
-  const s = await schoolInsights(supabase, viewer.organizationId);
+  const s = await schoolInsights(supabase, viewer.organizationId, lang);
   if (!s.org) return shell(<p className="rounded-[26px] border border-[#ECE8F3] bg-white p-6 font-bold">{t.noSchool}</p>);
   const { org, cards, totals } = s;
 

@@ -1,5 +1,7 @@
 import "server-only";
 import type { createClient } from "@/lib/supabase/server";
+import type { Lang } from "@/lib/i18n/dictionaries";
+import { scheduleOf } from "@/lib/i18n/row";
 
 // C-048 teacher view: what a class teacher sees about their students. Everything is read with the teacher's own
 // session, so RLS limits it to the students of classes they teach (private.teaches_user) and admins.
@@ -339,12 +341,12 @@ export const CELEBRATE_MIN_STREAK = 5;
  * shows (C-050). Read with the director's session: RLS (private.directs_org / directs_user) returns only their
  * school. Nothing here is invented: each list is empty when its rule finds nothing.
  */
-export async function schoolInsights(supabase: Client, orgId: string) {
+export async function schoolInsights(supabase: Client, orgId: string, lang: Lang = "es") {
   const [{ data: org }, { data: classes }] = await Promise.all([
     supabase.from("organizations").select("id, name, logo_url").eq("id", orgId).maybeSingle(),
     supabase
       .from("classes")
-      .select("id, name, schedule_label, class_members(user_id, member_role), class_courses(course_id)")
+      .select("id, name, schedule_label, schedule_label_en, class_members(user_id, member_role), class_courses(course_id)")
       .eq("organization_id", orgId)
       .eq("status", "active")
       .order("name"),
@@ -372,7 +374,7 @@ export async function schoolInsights(supabase: Client, orgId: string) {
         id: c.id,
         name: c.name,
         city: cityOf(c.name, org?.name ?? null),
-        schedule: c.schedule_label,
+        schedule: scheduleOf(c, lang),
         teachers: names,
         students,
         courses,

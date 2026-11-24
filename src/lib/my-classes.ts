@@ -5,6 +5,8 @@ import type { Client } from "@/lib/supabase/types";
 import { accessibleCourses, courseStats, nextLesson, resumeCourse, type CourseStats } from "@/lib/learning";
 import { taskTime } from "@/lib/bsns";
 import { themeForCourse, type ThemeKey } from "@/lib/themes";
+import type { Lang } from "@/lib/i18n/dictionaries";
+import { scheduleOf } from "@/lib/i18n/row";
 
 /** profiles has no time zone column yet: every time on the page is shown in Mexico City time. */
 export const CLASS_TZ = "America/Mexico_City";
@@ -82,7 +84,7 @@ export function dueOf(dueAt: string | null, done: boolean, now = new Date()): Du
 async function studentClasses(supabase: Client, userId: string) {
   const { data } = await supabase
     .from("class_members")
-    .select("class:classes(id, name, status, next_session_at, duration_min, meeting_url, schedule_label, class_courses(course:courses(id, slug, title, sort_order)))")
+    .select("class:classes(id, name, status, next_session_at, duration_min, meeting_url, schedule_label, schedule_label_en, class_courses(course:courses(id, slug, title, sort_order)))")
     .eq("user_id", userId)
     .eq("member_role", "student");
   return (data ?? [])
@@ -91,7 +93,8 @@ async function studentClasses(supabase: Client, userId: string) {
     .sort((a, b) => a.name.localeCompare(b.name, "es"));
 }
 
-export async function loadMyClass(supabase: Client, userId: string) {
+/** `lang`: the viewer's language, for the schedule (C-051). */
+export async function loadMyClass(supabase: Client, userId: string, lang: Lang = "es") {
   const classes = await studentClasses(supabase, userId);
   if (!classes.length) return null;
   const classIds = classes.map((c) => c.id);
@@ -133,7 +136,7 @@ export async function loadMyClass(supabase: Client, userId: string) {
     return {
       id: c.id,
       name: c.name,
-      schedule: c.schedule_label?.trim() || null,
+      schedule: scheduleOf(c, lang),
       teacher,
       mates: ms.filter((m) => m.member_role === "student" && m.user_id !== userId).map((m) => person(m.user_id)),
       courses: (c.class_courses ?? [])
@@ -153,7 +156,7 @@ export async function loadMyClass(supabase: Client, userId: string) {
   const next: NextSession | null = ahead
     ? {
         classId: ahead.id,
-        className: ahead.schedule_label ? `${ahead.name} · ${ahead.schedule_label}` : ahead.name,
+        className: scheduleOf(ahead, lang) ? `${ahead.name} · ${scheduleOf(ahead, lang)}` : ahead.name,
         at: ahead.next_session_at!,
         durationMin: ahead.duration_min,
         meetingUrl: ahead.meeting_url && /^https:\/\//.test(ahead.meeting_url) ? ahead.meeting_url : null,

@@ -443,8 +443,9 @@ export type Database = {
           meeting_url: string | null
           name: string
           next_session_at: string | null
-          organization_id: string
+          organization_id: string | null
           schedule_label: string | null
+          schedule_label_en: string | null
           status: string
         }
         Insert: {
@@ -455,8 +456,9 @@ export type Database = {
           meeting_url?: string | null
           name: string
           next_session_at?: string | null
-          organization_id: string
+          organization_id?: string | null
           schedule_label?: string | null
+          schedule_label_en?: string | null
           status?: string
         }
         Update: {
@@ -467,8 +469,9 @@ export type Database = {
           meeting_url?: string | null
           name?: string
           next_session_at?: string | null
-          organization_id?: string
+          organization_id?: string | null
           schedule_label?: string | null
+          schedule_label_en?: string | null
           status?: string
         }
         Relationships: [
