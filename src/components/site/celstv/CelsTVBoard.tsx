@@ -6,6 +6,7 @@ import { Component, Fragment } from "react";
 import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
+import { HeroTakeover } from "@/components/site/HeroTakeover";
 import "./celstv.css";
 
 /** Testimonials stay hidden until Matt sends real ones (celsu-website-spec.md: never invent any). */
@@ -150,46 +151,54 @@ export default class CelsTVBoard extends Component<{ episodes: Episode[]; prices
 <main>
 
 {/* HERO */}
-<section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #CF6A96 0%, #B04378 50%, #8A2E62 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
-<span className="cu-beam" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-160px", right: "-120px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,120,.18) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 48px", alignItems: "center" }}>
-<div style={{ flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "20px" }}>
-<a href="/#programas" style={{ alignSelf: "flex-start", color: "#FFE3F0", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
+{/* C-057: the E video takes over the whole hero, then docks in the ring slot (HeroTakeover). Dark plum hero so
+    the video's #22102E background disappears under the lighten blend: every colour here stays at or above it. */}
+<HeroTakeover
+id="inicio"
+className="cu-tvhero"
+video={{ webm: "/motion/celstv-dark.webm", mp4: "/motion/celstv-dark.mp4" }}
+posterImg="/site/celstv-e.webp"
+posterAlt="CelsTV"
+flyAt={6.2}
+skipTo={5.4}
+eFrac={0.6}
+slotSize={{ desktop: 300, mobile: 220 }}
+logoHeight={{ desktop: 190, mobile: 140 }}
+decor={<><i className="hto-decor cu-tvring a" aria-hidden="true"></i><i className="hto-decor cu-tvring b" aria-hidden="true"></i><i className="hto-decor cu-tvring c" aria-hidden="true"></i></>}
+backdrop={<><span className="cu-beam" aria-hidden="true"></span>
+<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-160px", right: "-120px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,120,.18) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></>}
+>
+<a href="/#programas" style={{ alignSelf: "flex-start", color: "#E9D6FF", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFE08A" }}>CELSTV · INGLÉS PARA LA VIDA</span>
 <h1 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(40px, 5.8vw, 72px)", lineHeight: "1.02", letterSpacing: "-2px" }}>English for Our Generation.</h1>
-<p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#FFE3F0", maxWidth: "540px" }}>Aprende inglés como ves tu serie favorita: historias reales, música y cultura en episodios cortos. Sin libros aburridos, sin memorizar reglas.</p>
+<p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#EAD9F5", maxWidth: "540px" }}>Aprende inglés como ves tu serie favorita: historias reales, música y cultura en episodios cortos. Sin libros aburridos, sin memorizar reglas.</p>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-<a href="#planes" className="cu-btn cu-btn-dark">Ver planes y precios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href="#planes" className="cu-btn cu-btn-pink">Ver planes y precios <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 <a href={evalHref("celstv")} className="cu-btn cu-btn-light">Descubre tu nivel gratis</a>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.16)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)" }}>32 episodios · Temporada 1</span>
-<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.16)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)" }}>6 actividades por episodio</span>
-<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.16)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.25)" }}>Desde {fmtPrice(P, "celstv_standard")} USD</span>
+<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.12)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.2)" }}>32 episodios · Temporada 1</span>
+<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.12)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.2)" }}>6 actividades por episodio</span>
+<span style={{ fontWeight: "700", fontSize: "14px", padding: "8px 12px", borderRadius: "10px", background: "rgba(255,255,255,.12)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.2)" }}>Desde {fmtPrice(P, "celstv_standard")} USD</span>
 </div>
-</div>
-<div aria-hidden="true" style={{ flex: "1 1 420px", minWidth: "0", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px 24px" }}>
-<span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: "200px", height: "200px", flex: "0 0 auto" }}>
-<span style={{ position: "absolute", inset: "14px", borderRadius: "50%", background: "#FFFFFF", boxShadow: "0 24px 50px -16px rgba(80,0,40,.55)" }}></span>
-<span className="cu-ering" style={{ position: "absolute", width: "172px", height: "172px", borderRadius: "50%", border: "3px solid #FFFFFF" }}></span>
-<span className="cu-ering2" style={{ position: "absolute", width: "172px", height: "172px", borderRadius: "50%", border: "3px solid #43D6FE" }}></span>
-<span className="cu-ering3" style={{ position: "absolute", width: "172px", height: "172px", borderRadius: "50%", border: "3px solid #FFEF05" }}></span>
-<img src="/site/celstv-e.webp" alt="" style={{ position: "relative", height: "136px", width: "auto" }} />
-</span>
-<img src="/site/celstv-episodes.webp" alt="" style={{ flex: "1 1 260px", minWidth: "0", maxWidth: "440px", height: "auto", filter: "drop-shadow(0 26px 30px rgba(80,0,40,.45))" }} />
-</div>
-</div>
-</section>
+</HeroTakeover>
 
 {/* HOW EACH EPISODE WORKS */}
-<section id="funciona" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #8A2E62 0px, #882E62 33px, #832D62 67px, #7B2B62 100px, #712961 133px, #662661 167px, #5A2260 200px, #4E205A 233px, #421D54 267px, #391B4F 300px, #31194B 333px, #2C1848 367px, #2A1747 400px, #1F1640 70%, #16183A 100%)", color: "#FFFFFF" }}>
+{/* C-057: section 2 takes the pink the hero had: plum (the hero's bottom) → pink → #16183A (where #episodios starts).
+    Clipped on both axes: its light beam (top:-20%) used to reach ~200px up into the hero, over the video's blend. */}
+<section id="funciona" style={{ position: "relative", overflow: "clip", padding: "110px 20px 110px", background: "linear-gradient(180deg, #3A1A50 0px, #4F1F57 70px, #6A2660 140px, #872F69 230px, #A23C72 320px, #B04378 45%, #A13C6E 58%, #8A2E62 70%, #5C2353 82%, #2E1B45 92%, #16183A 100%)", color: "#FFFFFF" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "32px" }}>
-<div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "780px" }}>
-<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FF7DB8" }}>CÓMO FUNCIONA CADA EPISODIO</span>
+<div style={{ display: "flex", flexWrap: "wrap", gap: "32px 40px", alignItems: "center" }}>
+<div className="cu-reveal" style={{ flex: "1 1 380px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
+<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFE3F0" }}>CÓMO FUNCIONA CADA EPISODIO</span>
 <h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Observa. Participa. Domina.</h2>
-<p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#E3D6F0" }}>Cada episodio es una mini temporada de aprendizaje: ves la historia, la practicas de seis formas distintas y la dominas antes de pasar al siguiente.</p>
+<p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#FFE3F0", maxWidth: "540px" }}>Cada episodio es una mini temporada de aprendizaje: ves la historia, la practicas de seis formas distintas y la dominas antes de pasar al siguiente.</p>
+</div>
+{/* The episode cards: one swappable element (its own video replaces it in a later ticket). */}
+<div className="cu-tveps" style={{ flex: "1 1 420px", minWidth: "0", display: "flex", justifyContent: "center" }}>
+<img src="/site/celstv-episodes.webp" alt="" style={{ width: "100%", maxWidth: "520px", height: "auto", filter: "drop-shadow(0 26px 30px rgba(60,0,30,.5))" }} />
+</div>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
 <div role="tablist" aria-label="Actividades del episodio" style={{ flex: "1 1 420px", minWidth: "0", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 180px), 1fr))", gap: "12px" }}>

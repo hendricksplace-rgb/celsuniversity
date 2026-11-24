@@ -1,0 +1,264 @@
+"use client";
+
+// C-057: a program hero where the logo video takes over the whole hero, then flies into a slot on the right
+// (Matt's approved prototype, 2026-11-24). Built for CelsTV; CelsUS is next with its own video, colours and slot
+// decor.
+//
+// Sequence: the copy starts hidden; once the video can play through it plays from 0 over the whole hero
+// (object-fit: cover). At `flyAt` s the video's transform animates (1.4 s) so the logo lands on the slot's still
+// image; 450 ms later the copy reveals (staggered) and the decor fades in; the video holds its last frame there.
+// Skip: the "Saltar" button, wheel, touchmove, ArrowDown, PageDown, Space and Escape (seek to `skipTo`, then fly).
+// Replay: "Ver de nuevo" under the slot. Fallbacks (static image in the slot, copy right away): reduced motion (the
+// video is never requested: its sources are only added from JS), play() refused, a video error, or nothing
+// playing after 5 s.
+//
+// Blend: the stage (a full-hero layer, no z-index) has `mix-blend-mode: lighten`, so the video's flat background
+// disappears as long as every colour in the hero is at or above it in each RGB channel. Nothing between the
+// section and the stage may create a stacking context (no z-index / transform / filter on the section).
+import { useCallback, useEffect, useRef, useState } from "react";
+import "./hero-takeover.css";
+
+const START_TIMEOUT_MS = 5000;
+const COPY_AFTER_MS = 450;
+
+type Phase = "intro" | "landed" | "static";
+
+type Props = {
+  id?: string;
+  /** The logo video (webm first, then mp4). */
+  video: { webm: string; mp4: string };
+  /** The static logo shown in the slot (fallbacks) and measured as the landing target. */
+  posterImg: string;
+  posterAlt: string;
+  /** When the logo is complete and it can fly (s), and where a skip seeks to first (s). */
+  flyAt?: number;
+  skipTo?: number;
+  /** The logo's height as a share of the video's height (centred in the frame). */
+  eFrac?: number;
+  /** Slot size and the logo's height in it, desktop and mobile (≤ 820px). */
+  slotSize?: { desktop: number; mobile: number };
+  logoHeight?: { desktop: number; mobile: number };
+  /** Decor inside the slot, behind the logo (rings); shown after landing. Gets the class hto-decor. */
+  decor?: React.ReactNode;
+  /** Layers painted behind everything (beams, orbs). They must only lighten the hero. */
+  backdrop?: React.ReactNode;
+  /** The left column; each direct child reveals in turn. */
+  children: React.ReactNode;
+  onLanded?: () => void;
+  className?: string;
+  style?: React.CSSProperties;
+  labels?: { skip: string; replay: string };
+};
+
+export function HeroTakeover({
+  id,
+  video,
+  posterImg,
+  posterAlt,
+  flyAt = 6.2,
+  skipTo = 5.4,
+  eFrac = 0.6,
+  slotSize = { desktop: 300, mobile: 220 },
+  logoHeight = { desktop: 190, mobile: 140 },
+  decor,
+  backdrop,
+  children,
+  onLanded,
+  className,
+  style,
+  labels = { skip: "Saltar ›", replay: "↺ Ver de nuevo" },
+}: Props) {
+  const hero = useRef<HTMLElement | null>(null);
+  const vid = useRef<HTMLVideoElement | null>(null);
+  const still = useRef<HTMLImageElement | null>(null);
+  const [phase, setPhase] = useState<Phase>("intro");
+  const [fly, setFly] = useState(false);
+  const [src, setSrc] = useState(false);
+  const flown = useRef(false);
+  const timers = useRef<number[]>([]);
+  const landedCb = useRef(onLanded);
+  landedCb.current = onLanded;
+
+  const later = (fn: () => void, ms: number) => timers.current.push(window.setTimeout(fn, ms));
+  const clearTimers = () => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
+  };
+
+  /** The transform that puts the video's logo on the slot's still image. */
+  const target = useCallback(() => {
+    const h = hero.current!.getBoundingClientRect();
+    const s = still.current!.getBoundingClientRect();
+    const vh = Math.max(h.height, (h.width * 9) / 16); // the object-fit: cover height
+    const scale = (s.height || logoHeight.desktop) / (vh * eFrac);
+    const dx = s.left + s.width / 2 - (h.left + h.width / 2);
+    const dy = s.top + s.height / 2 - (h.top + h.height / 2);
+    return `translate(${dx}px, ${dy}px) scale(${scale})`;
+  }, [eFrac, logoHeight.desktop]);
+
+  /** Static fallback: no video, the still logo, the copy right away. */
+  const finish = useCallback(() => {
+    flown.current = true;
+    clearTimers();
+    vid.current?.pause();
+    setPhase("static");
+    landedCb.current?.();
+  }, []);
+
+  const flyNow = useCallback(() => {
+    const v = vid.current;
+    if (flown.current || !v) return;
+    flown.current = true;
+    clearTimers();
+    setFly(true);
+    void v.offsetWidth; // reflow first, or the transform snaps instead of animating
+    requestAnimationFrame(() => {
+      v.style.transform = target();
+      later(() => {
+        setPhase("landed");
+        landedCb.current?.();
+      }, COPY_AFTER_MS);
+    });
+  }, [target]);
+
+  const start = useCallback(() => {
+    const v = vid.current;
+    if (!v) return;
+    clearTimers();
+    flown.current = false;
+    setFly(false);
+    setPhase("intro");
+    v.style.transform = "none";
+    const go = () => {
+      if (flown.current) return; // the fallback took over meanwhile
+      try {
+        v.currentTime = 0;
+      } catch {
+        /* not loaded yet */
+      }
+      v.play().catch(finish);
+    };
+    if (v.readyState >= 4) go();
+    else v.addEventListener("canplaythrough", go, { once: true });
+    later(() => {
+      if (!flown.current && v.currentTime < 0.2) finish();
+    }, START_TIMEOUT_MS);
+  }, [finish]);
+
+  const skip = useCallback(() => {
+    const v = vid.current;
+    if (flown.current || !v) return;
+    if (v.currentTime < skipTo) {
+      try {
+        v.currentTime = skipTo;
+      } catch {
+        /* not seekable yet */
+      }
+    }
+    flyNow();
+  }, [flyNow, skipTo]);
+
+  // Start: reduced motion → static, the video never requested. Otherwise add the sources, then start.
+  useEffect(() => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      finish();
+      return;
+    }
+    setSrc(true);
+    return clearTimers;
+  }, [finish]);
+  useEffect(() => {
+    const v = vid.current;
+    if (!src || !v) return;
+    // A source that fails to load fires "error" on the <source>, which doesn't bubble: listen in the capture phase.
+    // Only the last source failing (the browser tries the next one first) or the video itself means no video.
+    const onError = (e: Event) => {
+      if (e.target instanceof HTMLSourceElement && e.target.nextElementSibling) return;
+      finish();
+    };
+    v.addEventListener("error", onError, true);
+    v.load();
+    start();
+    return () => v.removeEventListener("error", onError, true);
+  }, [src, start, finish]);
+
+  // While the intro runs: the video's clock flies it; scrolling or the keys skip it.
+  useEffect(() => {
+    const v = vid.current;
+    if (!v || phase !== "intro") return;
+    const onTime = () => {
+      if (!flown.current && v.currentTime >= flyAt) flyNow();
+    };
+    const onEnded = () => flyNow();
+    const onKey = (e: KeyboardEvent) => {
+      if (["ArrowDown", "PageDown", " ", "Escape"].includes(e.key)) skip();
+    };
+    v.addEventListener("timeupdate", onTime);
+    v.addEventListener("ended", onEnded);
+    window.addEventListener("wheel", skip, { passive: true });
+    window.addEventListener("touchmove", skip, { passive: true });
+    window.addEventListener("keydown", onKey);
+    return () => {
+      v.removeEventListener("timeupdate", onTime);
+      v.removeEventListener("ended", onEnded);
+      window.removeEventListener("wheel", skip);
+      window.removeEventListener("touchmove", skip);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [phase, flyAt, flyNow, skip]);
+
+  // After landing, keep the logo on the slot when the layout changes (no transition).
+  useEffect(() => {
+    if (phase !== "landed") return;
+    const onResize = () => {
+      const v = vid.current;
+      if (!v) return;
+      setFly(false);
+      v.style.transform = target();
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [phase, target]);
+
+  const vars = {
+    "--hto-slot": `${slotSize.desktop}px`,
+    "--hto-slot-m": `${slotSize.mobile}px`,
+    "--hto-logo": `${logoHeight.desktop}px`,
+    "--hto-logo-m": `${logoHeight.mobile}px`,
+  } as React.CSSProperties;
+
+  return (
+    <section ref={hero} id={id} className={`hto${className ? ` ${className}` : ""}`} data-phase={phase} style={{ ...vars, ...style }}>
+      {backdrop}
+      <div className={`hto-stage${fly ? " fly" : ""}`} aria-hidden="true">
+        <video ref={vid} muted playsInline preload="auto" tabIndex={-1}>
+          {src && <source src={video.webm} type="video/webm" />}
+          {src && <source src={video.mp4} type="video/mp4" />}
+        </video>
+      </div>
+      <div className="hto-wrap">
+        <div className="hto-copy">{children}</div>
+        <div className="hto-art">
+          <div className="hto-slot">
+            {decor}
+            {/* eslint-disable-next-line @next/next/no-img-element -- the brand still, also the landing target */}
+            <img ref={still} className="hto-still" src={posterImg} alt={posterAlt} />
+            {phase === "landed" && (
+              <button type="button" className="hto-again" onClick={start}>
+                {labels.replay}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      {phase === "intro" && (
+        <button type="button" className="hto-skip" onClick={skip}>
+          {labels.skip}
+        </button>
+      )}
+      <noscript>
+        <style>{".hto .hto-copy>*{opacity:1;transform:none}.hto .hto-still{opacity:1}.hto .hto-stage{display:none}"}</style>
+      </noscript>
+    </section>
+  );
+}

@@ -132,3 +132,20 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 .cu-mob{display:none}
 @media (max-width:880px){.cu-desk{display:none}.cu-mob{display:flex}}
 @media (prefers-reduced-motion: reduce){.sx,.sy1,.sy2,.st,.cu-wa,.cu-wb,.cu-marquee,.cu-glow,.cu-reveal,.cu-reveal-2,.cu-reveal-3,.cu-reveal-4,.cu-from-l,.cu-from-r,.cu-par,.cu-lam,.cu-beam,.cu-tilt,.cu-tilt-2,.cu-tilt-3,.cu-tilt-4,.cu-orb{animation:none !important}}
+
+/* C-057: the CelsTV hero (HeroTakeover): dark plum, every colour at or above the video's #22102E per channel. */
+.cu-tvhero{color:#FFFFFF;padding:64px 20px 120px;background:linear-gradient(180deg,rgba(58,26,80,0) 72%,#3A1A50 100%),radial-gradient(60% 70% at 85% 10%,rgba(242,1,116,.16),transparent 70%),radial-gradient(50% 60% at 10% 90%,rgba(67,214,254,.10),transparent 70%),linear-gradient(180deg,#2E1748 0%,#2C1644 60%,#3A1A50 100%)}
+@media (max-width:820px){.cu-tvhero{padding:40px 18px 90px}}
+/* Seamless hero → #funciona: the hero's bottom settles on #3A1A50 (first layer above), and both beams fade out (section 2's at both ends)
+   before the boundary instead of being cut by it. */
+.cu-tvhero .cu-beam{-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent 85%);mask-image:linear-gradient(180deg,#000 55%,transparent 85%)}
+#funciona>.cu-beam{-webkit-mask-image:linear-gradient(180deg,transparent 14%,#000 40%,#000 60%,transparent 86%);mask-image:linear-gradient(180deg,transparent 14%,#000 40%,#000 60%,transparent 86%)}
+.cu-tvring{position:absolute;border-radius:50%;border:3px solid}
+.cu-tvring.a{inset:8px;border-color:#F20174;border-style:dashed}
+.cu-tvring.b{inset:22px;border-color:#43D6FE}
+.cu-tvring.c{inset:36px;border-color:#FFEF05}
+.hto[data-phase="landed"] .cu-tvring{animation:cu-tvspin 14s linear infinite}
+.hto[data-phase="landed"] .cu-tvring.b{animation-duration:18s;animation-direction:reverse}
+.hto[data-phase="landed"] .cu-tvring.c{animation-duration:22s}
+@keyframes cu-tvspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.cu-tvring{animation:none !important}}
