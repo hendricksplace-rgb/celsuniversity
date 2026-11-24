@@ -7,6 +7,7 @@ import { css } from "@/components/site/css";
 import { enrollHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
+import { HeroU } from "./HeroU";
 
 // Everything below the hero only depends on the state it shows. The hero word turns every 2.6 s and
 // the intro tags light up one by one; without this the whole page re-rendered each time (Lighthouse:
@@ -315,8 +316,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
       toggleMenu: function () { self.setState({ menuOpen: !self.state.menuOpen }); },
-      playA: s.play % 2 === 0,
-      playB: s.play % 2 === 1,
+      uReplay: s.play,
       replay: function () { self.setState({ play: self.state.play + 1 }); },
       tags: [
         { label: 'APRENDE', bg: '#D6006A', fg: '#FFFFFF', glow: 'rgba(242,1,116,.55)' },
@@ -484,24 +484,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 </div>
 
-{/* The U: four ribbons swoosh across the hero, loop back and untwist into place */}
+{/* The U: liquid ribbons swirl in and settle into the CelsU U (C-052, video), then the sharp logo fades in on top */}
 <div aria-hidden="true" style={{ position: "relative", zIndex: "1", flex: "1 1 400px", minWidth: "0", display: "flex", justifyContent: "center" }}>
-{/* LOTTIE SLOT: Ludo will deliver the final CelsU "U" swoosh as a Lottie file. Swap the CSS swoosh below
-    (playA / playB layers) for the Lottie player here, keeping the same box and the reduced-motion fallback. */}
-<div className="cu-par" style={{ position: "relative", width: "min(100%, 520px)", aspectRatio: "1 / 1", perspective: "1000px" }}>
-{v.playA ? (<>
-<div style={{ position: "absolute", left: "12%", top: "20%", width: "76%", aspectRatio: "900 / 594" }}>
-<span className="cu-shadow" style={{ position: "absolute", left: "18%", right: "18%", bottom: "-14%", height: "16%", borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(0,50,80,.35) 0%, rgba(0,50,80,0) 70%)" }}></span>
-<img className="cu-land" src="/site/celsu-logo.png" alt="" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", filter: "drop-shadow(0 14px 22px rgba(0,50,80,.30)) drop-shadow(0 0 2px rgba(255,255,255,.6))" }} />
-</div>
-</>) : null}
-{v.playB ? (<>
-<div style={{ position: "absolute", left: "12%", top: "20%", width: "76%", aspectRatio: "900 / 594" }}>
-<span className="cu-shadow" style={{ position: "absolute", left: "18%", right: "18%", bottom: "-14%", height: "16%", borderRadius: "50%", background: "radial-gradient(ellipse at center, rgba(0,50,80,.35) 0%, rgba(0,50,80,0) 70%)" }}></span>
-<img className="cu-land" src="/site/celsu-logo.png" alt="" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", filter: "drop-shadow(0 14px 22px rgba(0,50,80,.30)) drop-shadow(0 0 2px rgba(255,255,255,.6))" }} />
-</div>
-</>) : null}
-</div>
+<HeroU replay={v.uReplay} />
 </div>
 </div>
 <button type="button" onClick={v.replay} style={{ position: "absolute", right: "20px", bottom: "18px", border: "none", background: "rgba(255,255,255,.7)", color: "#0F0D1E", fontWeight: "700", fontSize: "13px", padding: "9px 12px", borderRadius: "8px", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>

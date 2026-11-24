@@ -117,11 +117,6 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 @keyframes cu-flash{0%,14%{opacity:0;transform:scale(.3)}16%{opacity:1;transform:scale(1)}26%,100%{opacity:0;transform:scale(1.6)}}
 @keyframes cu-spark{0%,14%{opacity:0;transform:rotate(var(--a)) translateY(0) scaleY(.4)}17%{opacity:1}38%{opacity:1;transform:rotate(var(--a)) translateY(calc(var(--r) * -1)) scaleY(1)}58%,100%{opacity:0;transform:rotate(var(--a)) translateY(calc(var(--r) * -1.15)) scaleY(.3)}}
 @media (prefers-reduced-motion: reduce){.cu-fw{display:none}}
-@keyframes cu-land{0%{opacity:0;transform:translateY(-70%) rotate(-540deg) scale(.55)}15%{opacity:1}78%{transform:translateY(3%) rotate(-6deg) scale(1.02)}90%{transform:translateY(-1%) rotate(2deg) scale(1)}100%{opacity:1;transform:none}}
-@keyframes cu-shadow{0%{opacity:0;transform:scale(.3)}78%{opacity:1;transform:scale(1.08)}100%{opacity:1;transform:none}}
-.cu-land{animation:cu-land 2.4s cubic-bezier(.22,.8,.3,1) .2s both}
-.cu-shadow{animation:cu-shadow 2.4s cubic-bezier(.22,.8,.3,1) .2s both}
-@media (prefers-reduced-motion: reduce){.cu-land,.cu-shadow{animation:none}}
 @media (max-width:720px){.cu-jbubble{display:none !important}.cu-jquote{display:flex !important}.cu-jsign{font-size:11px !important;padding:5px 8px !important;left:40% !important}.cu-jsign img{display:none}.cu-jdot{left:-15px !important;top:-15px !important;width:30px !important;height:30px !important}.cu-jname{font-size:10px !important}}
 .cu-tile{transition:transform .25s ease, box-shadow .25s ease}
 .cu-tile:hover{transform:translateY(-4px)}
