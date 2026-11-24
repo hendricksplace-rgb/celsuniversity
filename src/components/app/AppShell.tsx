@@ -63,6 +63,10 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
             <Image src="/brand/celsu-u.png" alt="" width={30} height={20} />
             <span className="text-lg font-extrabold tracking-tight">CelsU</span>
           </Link>
+          {/* C-050: a school director sees their role next to the logo. */}
+          {viewer.role === "director" && (
+            <span className="rounded-full bg-[#F3EEFB] px-2.5 py-1 text-[13px] font-extrabold text-[#5A4E78]">{t.shell.director}</span>
+          )}
           <div className="mx-auto">
             <TopNav items={items} />
           </div>

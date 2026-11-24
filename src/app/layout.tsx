@@ -18,7 +18,7 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const jakarta = Plus_Jakarta_Sans({ variable: "--font-jakarta", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
 // CelsTV CelsCards and CelsBook (C-035, C-036): titles and words.
-const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"], weight: ["700", "800", "900"] });
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"], weight: ["600", "700", "800", "900"] });
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getDictionary();

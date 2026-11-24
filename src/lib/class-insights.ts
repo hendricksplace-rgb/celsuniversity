@@ -20,20 +20,40 @@ export const scoreTone = (pct: number) => (pct >= 80 ? "good" : pct >= 60 ? "ok"
 
 type LessonRow = { id: string; title: string; lesson_type: string; sort_order: number; status: string; teacher_only: boolean; has_content: boolean };
 type ModuleRow = { id: string; title: string; sort_order: number; status: string; kind: string; lessons: LessonRow[] };
-type CourseRow = { id: string; title: string; sort_order: number; modules: ModuleRow[] };
+type CourseRow = { id: string; slug: string | null; title: string; sort_order: number; modules: ModuleRow[] };
 type ProgressRow = { user_id: string; lesson_id: string; status: string; last_activity: string | null; quiz_score: number | null; quiz_max_score: number | null };
 
-export type Unit = { id: string; title: string; n: number; courseId: string; lessons: { id: string; title: string; quiz: boolean }[] };
+export type Unit = {
+  id: string;
+  title: string;
+  /** "Episode 3", "Week 2": the title's leading part (C-050). */
+  label: string;
+  n: number;
+  courseId: string;
+  lessons: { id: string; title: string; quiz: boolean }[];
+  /** The unit's Teacher's Book lesson (teacher-only), when RLS returns it to this viewer. */
+  guideLessonId: string | null;
+};
+type CourseUnits = { id: string; slug: string | null; title: string; short: string; units: Unit[] };
+
+/** "CelsTV" / "CelsBSNS" for the two class programs, else the course title (C-050). */
+export const shortCourse = (slug: string | null, title: string) =>
+  slug === "celstv-english-for-our-generation" ? "CelsTV" : slug === "english-for-business" ? "CelsBSNS" : title;
+/** "Episode 3: My Day" → "Episode 3"; "Week 2 – Business Etiquette" → "Week 2"; else the title. */
+export const unitLabel = (title: string) => /^(episode|week|module|semana|episodio|m[oó]dulo)\s*\d+/i.exec(title.trim())?.[0] ?? title;
 export type UnitResult = { unit: Unit; done: number; total: number; quiz: number | null; quizAt: string | null; last: string | null };
 export type CourseResult = {
   id: string;
   title: string;
+  slug: string | null;
+  /** CelsTV / CelsBSNS / the title. */
+  short: string;
   done: number;
   total: number;
   pct: number;
   quiz: number | null;
   quizzes: number;
-  at: { unit: string; lesson: string } | null;
+  at: { unit: string; label: string; lesson: string; when: string } | null;
   units: UnitResult[];
 };
 export type StudentInsight = {
@@ -73,10 +93,10 @@ function statusOf(days: number | null): Status {
 
 /** The class's courses as ordered units (episodes / weeks) with their student lessons. */
 async function loadUnits(supabase: Client, courseIds: string[]) {
-  if (!courseIds.length) return [] as { id: string; title: string; units: Unit[] }[];
+  if (!courseIds.length) return [] as CourseUnits[];
   const { data } = await supabase
     .from("courses")
-    .select("id, title, sort_order, modules(id, title, sort_order, status, kind, lessons(id, title, lesson_type, sort_order, status, teacher_only, has_content))")
+    .select("id, slug, title, sort_order, modules(id, title, sort_order, status, kind, lessons(id, title, lesson_type, sort_order, status, teacher_only, has_content))")
     .in("id", courseIds)
     .order("sort_order");
   return ((data ?? []) as unknown as CourseRow[]).map((co) => {
@@ -86,19 +106,21 @@ async function loadUnits(supabase: Client, courseIds: string[]) {
       .map((m, i) => ({
         id: m.id,
         title: m.title,
+        label: unitLabel(m.title),
         n: i + 1,
         courseId: co.id,
+        guideLessonId: [...m.lessons].sort((a, b) => a.sort_order - b.sort_order).find((l) => l.teacher_only && l.status === "published")?.id ?? null,
         lessons: m.lessons
           .filter((l) => l.status === "published" && !l.teacher_only && l.has_content)
           .sort((a, b) => a.sort_order - b.sort_order)
           .map((l) => ({ id: l.id, title: l.title, quiz: l.lesson_type === "quiz" })),
       }))
       .filter((u) => u.lessons.length > 0);
-    return { id: co.id, title: co.title, units };
+    return { id: co.id, slug: co.slug, title: co.title, short: shortCourse(co.slug, co.title), units };
   });
 }
 
-function courseResult(course: { id: string; title: string; units: Unit[] }, rows: Map<string, ProgressRow>): CourseResult {
+function courseResult(course: CourseUnits, rows: Map<string, ProgressRow>): CourseResult {
   const units = course.units.map((unit) => {
     const mine = unit.lessons.map((l) => rows.get(l.id)).filter((r): r is ProgressRow => !!r);
     const quizRows = unit.lessons.filter((l) => l.quiz).map((l) => rows.get(l.id)).filter((r): r is ProgressRow => !!r && r.status === "completed" && pctOf(r) !== null);
@@ -120,7 +142,7 @@ function courseResult(course: { id: string; title: string; units: Unit[] }, rows
       const r = rows.get(l.id);
       if (r?.last_activity && r.last_activity > atTime) {
         atTime = r.last_activity;
-        at = { unit: u.title, lesson: l.title };
+        at = { unit: u.title, label: u.label, lesson: l.title, when: r.last_activity };
       }
     }
   const done = units.reduce((a, u) => a + u.done, 0);
@@ -129,6 +151,8 @@ function courseResult(course: { id: string; title: string; units: Unit[] }, rows
   return {
     id: course.id,
     title: course.title,
+    slug: course.slug,
+    short: course.short,
     done,
     total,
     pct: total ? Math.round((done / total) * 100) : 0,
@@ -203,7 +227,7 @@ export type ClassFocus = {
 };
 
 /** The class summary and the "What to focus on next" list. */
-export function classFocus(courses: { id: string; title: string; units: Unit[] }[], students: StudentInsight[]): ClassFocus {
+export function classFocus(courses: CourseUnits[], students: StudentInsight[]): ClassFocus {
   const count = (s: Status) => students.filter((x) => x.status === s).length;
   const progress = courses.map((c) => ({
     id: c.id,
@@ -260,27 +284,60 @@ export const weakest = (s: StudentInsight) =>
     .sort((a, b) => a.pct - b.pct)
     .slice(0, 3);
 
-// ---- C-049: the director's school view -------------------------------------------------------------------
+// ---- C-049 / C-050: the director's school view ------------------------------------------------------------
 
 /** A student's overall progress: the average of their course percentages. */
 export const studentProgress = (s: StudentInsight) => (s.courses.length ? Math.round(s.courses.reduce((a, c) => a + c.pct, 0) / s.courses.length) : 0);
+/** Lessons the student has completed, all class courses together. */
+export const lessonsDone = (s: StudentInsight) => s.courses.reduce((a, c) => a + c.done, 0);
+/** Where the student is now: their most recent lesson's course and unit ("CelsTV Episode 15"). */
+export function currentPosition(s: StudentInsight): string | null {
+  const latest = s.courses.filter((c) => c.at).sort((a, b) => (a.at!.when < b.at!.when ? 1 : -1))[0];
+  return latest ? `${latest.short} ${latest.at!.label}` : null;
+}
+/** "First" of a display name. */
+export const firstName = (name: string) => name.trim().split(/\s+/)[0] ?? name;
+/** The location's city: the class name without its organization prefix ("Demo ESL · Dallas" → "Dallas"). */
+export function cityOf(className: string, orgName: string | null) {
+  let name = className.trim();
+  if (orgName && name.toLowerCase().startsWith(orgName.toLowerCase())) name = name.slice(orgName.length);
+  return name.replace(/^[\s·\-–—:|]+/, "").trim() || className;
+}
 
 export type LocationCard = {
   id: string;
   name: string;
+  city: string;
   schedule: string | null;
-  teacher: string | null;
+  teachers: string[];
   students: StudentInsight[];
+  courses: CourseUnits[];
   focus: ClassFocus;
   progress: number;
   behind: { student: StudentInsight; reason: NonNullable<ReturnType<typeof attentionReason>> }[];
   attentionShare: number;
+  /** The location's longest current streak (1+ days). */
+  topStreak: StudentInsight | null;
 };
+
+/** One student in the school-wide lists, with the location they belong to. */
+export type SchoolStudent = { student: StudentInsight; city: string; classId: string };
+
+/** "Needs you": away 14+ days, not started or quizzes under 60 % ("attention"), then 7–13 days away ("slowing"). */
+export type NeedsYou = SchoolStudent & { tone: "attention" | "slowing"; reason: { kind: "inactive" | "not_started" | "quiz" | "slowing"; days?: number; pct?: number } };
+
+/** Units the school finds hardest: at least 3 finished quizzes and a school average under REVIEW_BELOW. */
+export const REVIEW_MIN_QUIZZES = 3;
+export type HardUnit = { course: string; short: string; unit: Unit; pct: number; quizzes: number; min: number; max: number };
+
+/** The celebrate card needs a streak of at least this many days. */
+export const CELEBRATE_MIN_STREAK = 5;
 
 /**
  * Every active class (location) of the director's school, each with the same numbers as its class page, sorted
- * by the share of students who need attention (highest first). Read with the director's session: RLS
- * (private.directs_org / directs_user) returns only their school.
+ * by the share of students who need attention (highest first), plus the school-wide lists the "Mi escuela" page
+ * shows (C-050). Read with the director's session: RLS (private.directs_org / directs_user) returns only their
+ * school. Nothing here is invented: each list is empty when its rule finds nothing.
  */
 export async function schoolInsights(supabase: Client, orgId: string) {
   const [{ data: org }, { data: classes }] = await Promise.all([
@@ -299,37 +356,109 @@ export async function schoolInsights(supabase: Client, orgId: string) {
     (classes ?? []).map(async (c) => {
       const studentIds = (c.class_members ?? []).filter((m) => m.member_role === "student").map((m) => m.user_id);
       const { courses, students } = await classInsights(supabase, studentIds, (c.class_courses ?? []).map((cc) => cc.course_id));
-      const t = (c.class_members ?? []).find((m) => m.member_role === "teacher");
-      const tp = t ? (teachers ?? []).find((x) => x.id === t.user_id) : null;
+      const names = (c.class_members ?? [])
+        .filter((m) => m.member_role === "teacher")
+        .map((m) => (teachers ?? []).find((x) => x.id === m.user_id))
+        .filter((x): x is NonNullable<typeof x> => !!x)
+        .map((x) => x.display_name || x.email || "")
+        .filter(Boolean)
+        .sort();
       const behind = students
         .map((s) => ({ student: s, reason: attentionReason(s) }))
         .filter((x): x is LocationCard["behind"][number] => !!x.reason)
         .sort((a, b) => (b.student.daysAway ?? 9999) - (a.student.daysAway ?? 9999));
+      const top = [...students].filter((s) => s.streak >= 1).sort((a, b) => b.streak - a.streak)[0] ?? null;
       return {
         id: c.id,
         name: c.name,
+        city: cityOf(c.name, org?.name ?? null),
         schedule: c.schedule_label,
-        teacher: tp ? tp.display_name || tp.email : null,
+        teachers: names,
         students,
+        courses,
         focus: classFocus(courses, students),
         progress: avg(students.map(studentProgress)) ?? 0,
         behind,
         attentionShare: students.length ? behind.length / students.length : 0,
+        topStreak: top,
       };
     }),
   );
-  cards.sort((a, b) => b.attentionShare - a.attentionShare || a.name.localeCompare(b.name));
+  cards.sort((a, b) => b.attentionShare - a.attentionShare || a.city.localeCompare(b.city));
 
-  // Company totals: every student once, even if they're in two locations.
-  const all = new Map<string, StudentInsight>();
-  for (const c of cards) for (const s of c.students) if (!all.has(s.id)) all.set(s.id, s);
-  const everyone = [...all.values()];
+  // Every student once, with their location (a student in two locations counts in the first).
+  const seen = new Map<string, SchoolStudent>();
+  for (const c of cards) for (const s of c.students) if (!seen.has(s.id)) seen.set(s.id, { student: s, city: c.city, classId: c.id });
+  const everyone = [...seen.values()];
+  const all = everyone.map((x) => x.student);
+  const count = (st: Status) => all.filter((s) => s.status === st).length;
   const totals = {
-    students: everyone.length,
-    active: everyone.filter((s) => s.status === "active").length,
-    progress: avg(everyone.map(studentProgress)) ?? 0,
-    quiz: avg(everyone.filter((s) => s.quiz !== null).map((s) => s.quiz!)),
-    attention: everyone.filter((s) => attentionReason(s)).length,
+    students: all.length,
+    active: count("active"),
+    slowing: count("slowing"),
+    inactive: count("inactive"),
+    notStarted: count("not_started"),
+    progress: avg(all.map(studentProgress)) ?? 0,
+    quiz: avg(all.filter((s) => s.quiz !== null).map((s) => s.quiz!)),
+    attention: all.filter((s) => attentionReason(s)).length,
   };
-  return { org, cards, totals };
+
+  // Stars: the top 3 current streaks (1+ days).
+  const stars = everyone.filter((x) => x.student.streak >= 1).sort((a, b) => b.student.streak - a.student.streak).slice(0, 3);
+
+  // Needs you: attention first (longest away first), then slowing down.
+  const needsYou: NeedsYou[] = [
+    ...everyone
+      .map((x) => ({ ...x, r: attentionReason(x.student) }))
+      .filter((x) => x.r)
+      .sort((a, b) => (b.student.daysAway ?? 9999) - (a.student.daysAway ?? 9999))
+      .map(({ r, ...x }) => ({ ...x, tone: "attention" as const, reason: r! })),
+    ...everyone
+      .filter((x) => x.student.status === "slowing" && !attentionReason(x.student))
+      .sort((a, b) => (b.student.daysAway ?? 0) - (a.student.daysAway ?? 0))
+      .map((x) => ({ ...x, tone: "slowing" as const, reason: { kind: "slowing" as const, days: x.student.daysAway ?? undefined } })),
+  ];
+
+  // Hardest units across the school (each student's score on that unit's quiz).
+  const unitScores = new Map<string, { course: CourseUnits; unit: Unit; scores: number[] }>();
+  for (const c of cards)
+    for (const s of c.students)
+      for (const cr of s.courses)
+        for (const ur of cr.units) {
+          if (ur.quiz === null) continue;
+          const course = c.courses.find((x) => x.id === cr.id)!;
+          const key = ur.unit.id;
+          if (!unitScores.has(key)) unitScores.set(key, { course, unit: ur.unit, scores: [] });
+          unitScores.get(key)!.scores.push(ur.quiz);
+        }
+  const hardUnits: HardUnit[] = [...unitScores.values()]
+    .filter((x) => x.scores.length >= REVIEW_MIN_QUIZZES)
+    .map((x) => ({ course: x.course.title, short: x.course.short, unit: x.unit, pct: avg(x.scores)!, quizzes: x.scores.length, min: Math.min(...x.scores), max: Math.max(...x.scores) }))
+    .filter((x) => x.pct < REVIEW_BELOW)
+    .sort((a, b) => a.pct - b.pct || a.unit.n - b.unit.n)
+    .slice(0, 2)
+    .sort((a, b) => (a.course === b.course ? a.unit.n - b.unit.n : a.course.localeCompare(b.course)));
+
+  const celebrate = stars[0] && stars[0].student.streak >= CELEBRATE_MIN_STREAK ? stars[0] : null;
+  const away = everyone.filter((x) => x.student.status === "inactive").sort((a, b) => (b.student.daysAway ?? 0) - (a.student.daysAway ?? 0));
+  // "one in each city": every location has exactly one of the students away.
+  const awayOnePerCity = cards.length > 1 && away.length === cards.length && cards.every((c) => away.filter((a) => a.classId === c.id).length === 1);
+
+  return { org, cards, totals, stars, needsYou, hardUnits, celebrate, away, awayOnePerCity };
 }
+
+/** Fixed palette for initials avatars, picked by user id so a student keeps their color everywhere. */
+const AVATARS = ["#B80F68", "#2457B8", "#0E7FA6", "#6A4FC4", "#B4532A", "#1F7A3A"];
+export function avatarColor(id: string) {
+  // FNV-1a: spreads similar ids (UUIDs) evenly over the palette.
+  let h = 0x811c9dc5;
+  for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 0x01000193) >>> 0;
+  return AVATARS[h % AVATARS.length];
+}
+export const initials = (name: string) =>
+  name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
