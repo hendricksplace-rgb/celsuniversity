@@ -49,15 +49,18 @@
 
 /* 1 hero */
 .bv3-hero{padding:56px 0 calc(var(--gap) + 40px)}
-.bv3-hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.bv3-hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+/* C-055: the hero art (ProgramHeroArt) blends into the hero, so the hero is the stacking context it blends with:
+   the section isolates, glows and dots sit below at -1, the content wrapper stays z-index auto. */
+.bv3-hero{isolation:isolate}
+.bv3-hero>.bv3-glow,.bv3-hero.bv3-dots::after{z-index:-1}
+.bv3-blk.bv3-hero>.bv3-wrap{z-index:auto}
 .bv3 .bv3-back{font-size:14px;font-weight:700;color:#9FB6DE;margin-bottom:22px;display:inline-block}
 .bv3-hero h1{font-size:clamp(44px,7vw,92px);margin:2px 0 22px}
 .bv3-hero .bv3-sub{font-size:19px;line-height:1.55;max-width:560px}
 .bv3-ctas{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 22px}
 .bv3-chips{display:flex;gap:10px;flex-wrap:wrap}
 .bv3-chips span{font-size:14px;font-weight:700;padding:9px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.04)}
-.bv3-hcard{position:relative;border-radius:30px;padding:40px 36px 34px;background:linear-gradient(160deg,rgba(43,62,102,.75),rgba(24,38,70,.75));border:1px solid rgba(255,255,255,.14);box-shadow:0 40px 80px -30px rgba(0,0,0,.7);min-height:430px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.bv3-hlogo{display:block;width:78%;max-width:420px;height:auto;margin:0 auto 26px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.35))}
 .bv3-chat{display:flex;flex-direction:column;gap:12px;height:250px;overflow:hidden;justify-content:flex-end;-webkit-mask-image:linear-gradient(180deg,transparent,#000 22%);mask-image:linear-gradient(180deg,transparent,#000 22%)}
 .bv3-msg{max-width:82%;padding:13px 18px;border-radius:16px;font-weight:700;font-size:16.5px;line-height:1.35;animation:bv3-in .45s cubic-bezier(.2,.9,.3,1.2) both}
 .bv3-msg.a{align-self:flex-start;background:#fff;color:var(--ink);border-bottom-left-radius:6px}
@@ -67,7 +70,7 @@
 .bv3-msg.typing i:nth-child(2){animation-delay:.15s}.bv3-msg.typing i:nth-child(3){animation-delay:.3s}
 @keyframes bv3-in{from{opacity:0;transform:translateY(14px) scale(.96)}}
 @keyframes bv3-dot{50%{opacity:1;transform:translateY(-3px)}}
-.bv3-fplay{position:absolute;right:-22px;bottom:-22px;width:84px;height:84px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);animation:bv3-bob 3.2s ease-in-out infinite;z-index:3;font-family:inherit;color:#fff}
+.bv3-fplay{position:absolute;right:-6px;top:6px;width:84px;height:84px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);cursor:pointer;display:grid;place-items:center;box-shadow:0 18px 40px -12px rgba(0,0,0,.6);animation:bv3-bob 3.2s ease-in-out infinite;z-index:3;font-family:inherit;color:#fff}
 .bv3-fplay svg{width:28px;fill:#fff;margin-left:5px;position:relative;z-index:1}
 .bv3-fplay .ring{position:absolute;inset:-1px;border-radius:50%;border:2px solid rgba(242,1,116,.8);animation:bv3-ring 2.4s ease-out infinite}
 .bv3-fplay .r2{animation-delay:1.2s;border-color:rgba(53,195,240,.8)}
@@ -226,10 +229,9 @@
 @media (max-width:900px){
   .bv3{--gap:72px}
   .bv3-hero-grid,.bv3-two{grid-template-columns:1fr;gap:36px}
-  .bv3-hcard{min-height:0;padding:28px 20px 26px}
   .bv3-chat{height:210px}
   .bv3-msg{font-size:15px}
-  .bv3-fplay{right:10px;bottom:-26px;width:70px;height:70px}
+  .bv3-fplay{right:6px;top:6px;width:70px;height:70px}
   .bv3-fplay em{display:none}
   .bv3-cards{grid-template-columns:1fr;gap:26px}
   .bv3-pc.hot{transform:none}
