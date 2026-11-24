@@ -63,6 +63,16 @@ type Phase = "rest" | "playing" | "ended";
 // afterScroll instance: until then they don't watch the viewport (so they don't compete with the hero's intro).
 let scrolled = false;
 const waiting = new Set<() => void>();
+let off: () => void = () => undefined;
+/** Count the first scroll now. C-070: playing or skipping the promo video counts as one. */
+export function fireFirstScroll() {
+  if (scrolled) return;
+  scrolled = true;
+  off();
+  const fns = [...waiting];
+  waiting.clear();
+  fns.forEach((f) => f());
+}
 function onFirstScroll(fn: () => void): () => void {
   if (scrolled) {
     fn();
@@ -70,21 +80,14 @@ function onFirstScroll(fn: () => void): () => void {
   }
   waiting.add(fn);
   if (waiting.size === 1) {
-    const fire = () => {
-      if (scrolled) return;
-      scrolled = true;
-      off();
-      const fns = [...waiting];
-      waiting.clear();
-      fns.forEach((f) => f());
-    };
+    const fire = fireFirstScroll;
     const onScroll = () => {
       if (window.scrollY > 40) fire();
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "PageDown" || e.key === "ArrowDown" || e.key === " ") fire();
     };
-    const off = () => {
+    off = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("wheel", fire);
       window.removeEventListener("touchmove", fire);
