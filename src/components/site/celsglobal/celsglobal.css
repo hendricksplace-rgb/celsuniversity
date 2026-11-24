@@ -150,7 +150,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 
 /* C-061: the CelsGLOBAL hero (GlobalHero + HeroTakeover): G takeover → the 6-month route → the world opens up. */
 .gl-hero{--gold:#C7A24E;--gold2:#E9D29A;--ivory:#F4EEDD;--teal:#3F8FA6;color:#FFFFFF;min-height:clamp(640px,86vh,780px);padding:56px 20px 80px;
-  background:radial-gradient(40% 50% at 0% 0%,rgba(199,162,78,.20),transparent 70%),radial-gradient(40% 50% at 100% 100%,rgba(63,143,166,.22),transparent 70%),linear-gradient(160deg,#23395A,#1D3352 45%,#14182B)}
+  background:linear-gradient(180deg,rgba(20,24,43,0) 74%,#14182B 100%),radial-gradient(40% 50% at 0% 0%,rgba(199,162,78,.20),transparent 70%),radial-gradient(40% 50% at 100% 100%,rgba(63,143,166,.22),transparent 70%),linear-gradient(160deg,#23395A,#1D3352 45%,#14182B)}
 .gl-hero .hto-wrap{gap:28px 48px}
 .gl-hero .hto-copy{flex:1 1 440px;gap:18px}
 .gl-back{color:#B9C7DD;font-weight:700;font-size:14px;text-decoration:none;align-self:flex-start}
@@ -207,3 +207,26 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
   .gl-lab strong{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){.gl-map,.gl-end,.gl-count,.gl-world,.gl-lab,.gl-stop{transition:none;animation:none}.gl-dest.on{animation:none}}
+
+/* C-064: defined section edges (shared ../sections.css), except hero → #ruta, which fades. Each section paints its
+   own colour on its .cs-bg layer. Scoped to CelsGLOBAL classes (this CSS stays loaded after in-app navigation). */
+.cu-glsec{--gap:96px;padding:var(--gap) 20px}
+@media (max-width:820px){.cu-glsec{--gap:64px}}
+.cu-glcut{padding-top:calc(var(--gap) + 40px)}
+.cu-glfade{padding-top:200px}
+@media (max-width:820px){.cu-glfade{padding-top:140px}}
+.cu-glcurve{padding-top:calc(var(--gap) + 30px)}
+.cu-glruta>.cs-bg{background:linear-gradient(180deg,#14182B 0px,#151A2E 33px,#192036 67px,#1F2A42 100px,#273652 133px,#394D6A 167px,#63778D 200px,#8FA3B1 233px,#B0BFC5 267px,#C9CFD0 300px,#DCDDD8 333px,#E9E6DD 367px,#EEE9DF 400px,#ECE6DA 100%)}
+.cu-glinc>.cs-bg{background:radial-gradient(45% 50% at 100% 20%,rgba(199,162,78,.14),transparent 70%),linear-gradient(180deg,#1D3352,#1A2C48)}
+.cu-glivory>.cs-bg{background:linear-gradient(180deg,#EEE9DF,#ECE6DA)}
+.cu-glivory.cs-lines>.cs-bg::after{background-image:linear-gradient(rgba(60,50,30,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(60,50,30,.06) 1px,transparent 1px)}
+.cu-glplans>.cs-bg{background:radial-gradient(45% 50% at 0% 40%,rgba(63,143,166,.2),transparent 70%),linear-gradient(180deg,#14182B,#192540 60%,#1D3352)}
+.cu-glstories>.cs-bg{background:linear-gradient(180deg,#14182B,#1D3352)}
+/* beams fade before a section's top and bottom (a beam cut by the layer's edge draws a line) */
+.cu-glsec>.cs-bg>.cu-beam{-webkit-mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%);mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%)}
+/* serif section headings (Matt): Fraunces 600, as the hero's "sin fronteras." */
+.cu-glh2{font-family:var(--font-fraunces),Georgia,serif;font-weight:600;letter-spacing:-.5px}
+/* hero → #ruta: the hero's dots fade out over its bottom 40%, the hero settles on #14182B, the world video fades
+   out at the bottom too (no line at the hero's edge) */
+.gl-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.09) 1.2px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,#000 60%,transparent);mask-image:linear-gradient(180deg,#000 60%,transparent)}
+.gl-world{-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 38%,#000 62%),linear-gradient(180deg,#000 72%,transparent 98%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 38%,#000 62%),linear-gradient(180deg,#000 72%,transparent 98%);mask-composite:intersect}

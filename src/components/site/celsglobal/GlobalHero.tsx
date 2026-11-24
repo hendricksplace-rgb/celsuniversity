@@ -18,28 +18,65 @@
 // poster, the closing), no sound pill.
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { HeroTakeover, type HeroArtApi, type LandedMode } from "@/components/site/HeroTakeover";
+import {
+  HeroTakeover,
+  type HeroArtApi,
+  type LandedMode,
+} from "@/components/site/HeroTakeover";
 import { fraunces } from "./fonts";
 
 const MONTHS = [
   { n: 1, t: "Fundamentos", p: "CelsTV · Finanzas", add: 2, side: "r" },
-  { n: 2, t: "Inglés profesional", p: "English for Business", add: 1, side: "l" },
+  {
+    n: 2,
+    t: "Inglés profesional",
+    p: "English for Business",
+    add: 1,
+    side: "l",
+  },
   { n: 3, t: "Tu resume", p: "CV to Resume", add: 1, side: "r" },
   { n: 4, t: "Revisión experta", p: "Resume Review", add: 1, side: "l" },
-  { n: 5, t: "La entrevista", p: "Interview Code · Interview Prep", add: 2, side: "r" },
+  {
+    n: 5,
+    t: "La entrevista",
+    p: "Interview Code · Interview Prep",
+    add: 2,
+    side: "r",
+  },
   { n: 6, t: "Tu camino", p: "Visa TN", add: 1, side: "l" },
 ] as const;
 const FR = [0.12, 0.27, 0.42, 0.57, 0.72, 0.86];
-const PATH = "M70 400 C170 410 150 300 245 292 S 330 200 400 205 S 500 120 540 70";
-const ARC_ENDS = [[600, -40], [640, 90], [630, 230], [470, -60], [330, -50], [200, 20], [660, 330], [560, -80], [120, 110], [690, 10]];
+const PATH =
+  "M70 400 C170 410 150 300 245 292 S 330 200 400 205 S 500 120 540 70";
+const ARC_ENDS = [
+  [600, -40],
+  [640, 90],
+  [630, 230],
+  [470, -60],
+  [330, -50],
+  [200, 20],
+  [660, 330],
+  [560, -80],
+  [120, 110],
+  [690, 10],
+];
 const LEG_MS = 900;
 const ROUTE_AFTER_LANDING_MS = 1500; // landing (copy) is 0.45 s into the 1.4 s flight; the route starts 0.5 s after it ends
 const SOUND_KEY = "celsglobal.sound";
 
 type Pt = { x: number; y: number };
-type Geo = { L: number; p0: Pt; pe: Pt; stops: Pt[]; arcs: { d: string; stroke: string }[] };
+type Geo = {
+  L: number;
+  p0: Pt;
+  pe: Pt;
+  stops: Pt[];
+  arcs: { d: string; stroke: string }[];
+};
 
-const pct = (p: Pt) => ({ left: `${(p.x / 600) * 100}%`, top: `${(p.y / 470) * 100}%` });
+const pct = (p: Pt) => ({
+  left: `${(p.x / 600) * 100}%`,
+  top: `${(p.y / 470) * 100}%`,
+});
 const store = {
   get: () => {
     try {
@@ -77,7 +114,10 @@ export function GlobalHero({ price, enrollHref }: Props) {
   const [stopsOn, setStopsOn] = useState(0);
   const [count, setCount] = useState(0);
   const [dest, setDest] = useState(false);
-  const [arcs, setArcs] = useState<{ on: boolean; fast: boolean }>({ on: false, fast: false });
+  const [arcs, setArcs] = useState<{ on: boolean; fast: boolean }>({
+    on: false,
+    fast: false,
+  });
   const [world, setWorld] = useState<"off" | "load" | "on">("off");
   const [worldPlay, setWorldPlay] = useState(false);
   const [closing, setClosing] = useState(false);
@@ -91,7 +131,8 @@ export function GlobalHero({ price, enrollHref }: Props) {
   const [soundOn, setSoundOn] = useState(false);
   const [soundUi, setSoundUi] = useState(true);
 
-  const later = (fn: () => void, ms: number) => timers.current.push(window.setTimeout(fn, ms));
+  const later = (fn: () => void, ms: number) =>
+    timers.current.push(window.setTimeout(fn, ms));
   const clearTimers = () => {
     timers.current.forEach((t) => window.clearTimeout(t));
     timers.current = [];
@@ -114,14 +155,18 @@ export function GlobalHero({ price, enrollHref }: Props) {
       arcs: ARC_ENDS.map(([x, y], k) => {
         const cx = (pe.x + x) / 2 + (k % 2 ? 40 : -40);
         const cy = Math.min(pe.y, y) - 60;
-        return { d: `M${pe.x} ${pe.y} Q${cx} ${cy} ${x} ${y}`, stroke: k % 3 === 0 ? "#E9D29A" : "#7FD1C5" };
+        return {
+          d: `M${pe.x} ${pe.y} Q${cx} ${cy} ${x} ${y}`,
+          stroke: k % 3 === 0 ? "#E9D29A" : "#7FD1C5",
+        };
       }),
     });
     setSoundOn(store.get());
     return () => clearTimers();
   }, []);
   useEffect(() => {
-    if (geo) setArcLens(arcRefs.current.map((a) => (a ? a.getTotalLength() : 0)));
+    if (geo)
+      setArcLens(arcRefs.current.map((a) => (a ? a.getTotalLength() : 0)));
   }, [geo]);
   useEffect(() => {
     const box = mapRef.current;
@@ -133,7 +178,10 @@ export function GlobalHero({ price, enrollHref }: Props) {
         const lab = labRefs.current[i];
         if (!lab) return 0;
         const x = b.left + (geo.stops[i].x / 600) * b.width;
-        const over = m.side === "r" ? x + 16 + lab.offsetWidth - (vw - 12) : 12 - (x - 16 - lab.offsetWidth);
+        const over =
+          m.side === "r"
+            ? x + 16 + lab.offsetWidth - (vw - 12)
+            : 12 - (x - 16 - lab.offsetWidth);
         return Math.max(0, Math.ceil(over));
       });
       // The labels' boxes (map px), then push the lower of any two overlapping labels down until they clear.
@@ -155,7 +203,12 @@ export function GlobalHero({ price, enrollHref }: Props) {
             const c = rects[j];
             const ta = a.top + nd[i];
             const tc = c.top + nd[j];
-            if (a.left < c.left + c.w && c.left < a.left + a.w && ta < tc + c.h && tc < ta + a.h) {
+            if (
+              a.left < c.left + c.w &&
+              c.left < a.left + a.w &&
+              ta < tc + c.h &&
+              tc < ta + a.h
+            ) {
               const lower = ta >= tc ? i : j;
               const upperBottom = lower === i ? tc + c.h : ta + a.h;
               nd[lower] += Math.ceil(upperBottom - (lower === i ? ta : tc)) + 4;
@@ -216,10 +269,13 @@ export function GlobalHero({ price, enrollHref }: Props) {
       setWorld("on");
       setWorldPlay(true);
     }, t + 700);
-    later(() => {
-      setClosing(true);
-      setSoundUi(false);
-    }, t + 700 + 900);
+    later(
+      () => {
+        setClosing(true);
+        setSoundUi(false);
+      },
+      t + 700 + 900,
+    );
   }, []);
 
   const onLanded = useCallback(
@@ -257,7 +313,10 @@ export function GlobalHero({ price, enrollHref }: Props) {
     const on = !soundOn;
     setSoundOn(on);
     store.set(on);
-    if (on) playSound(introAt.current ? (performance.now() - introAt.current) / 1000 : 0);
+    if (on)
+      playSound(
+        introAt.current ? (performance.now() - introAt.current) / 1000 : 0,
+      );
     else audio.current?.pause();
   };
   useEffect(() => {
@@ -289,14 +348,25 @@ export function GlobalHero({ price, enrollHref }: Props) {
   const renderArt = (api: HeroArtApi) => (
     <div className="gl-route" aria-label="Tu ruta de 6 meses">
       <div ref={mapRef} className={`gl-map${dim ? " dim" : ""}`}>
-        <svg viewBox="0 0 600 470" preserveAspectRatio="none" aria-hidden="true">
+        <svg
+          viewBox="0 0 600 470"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
           <defs>
             <linearGradient id="glrg" x1="0" x2="1" y1="1" y2="0">
               <stop offset="0" stopColor="#3F8FA6" />
               <stop offset="1" stopColor="#E9D29A" />
             </linearGradient>
           </defs>
-          <path d={PATH} fill="none" stroke="rgba(255,255,255,.10)" strokeWidth="2" strokeDasharray="3 7" vectorEffect="non-scaling-stroke" />
+          <path
+            d={PATH}
+            fill="none"
+            stroke="rgba(255,255,255,.10)"
+            strokeWidth="2"
+            strokeDasharray="3 7"
+            vectorEffect="non-scaling-stroke"
+          />
           <path
             ref={pathRef}
             d={PATH}
@@ -304,7 +374,15 @@ export function GlobalHero({ price, enrollHref }: Props) {
             stroke="url(#glrg)"
             strokeWidth="3.5"
             strokeLinecap="round"
-            style={geo ? { strokeDasharray: geo.L, strokeDashoffset: geo.L * (1 - draw.frac), transition: `stroke-dashoffset ${draw.ms}ms ease-in-out` } : { opacity: 0 }}
+            style={
+              geo
+                ? {
+                    strokeDasharray: geo.L,
+                    strokeDashoffset: geo.L * (1 - draw.frac),
+                    transition: `stroke-dashoffset ${draw.ms}ms ease-in-out`,
+                  }
+                : { opacity: 0 }
+            }
           />
           <g>
             {geo?.arcs.map((a, k) => (
@@ -321,7 +399,14 @@ export function GlobalHero({ price, enrollHref }: Props) {
                 opacity=".85"
                 style={
                   arcLens[k]
-                    ? { strokeDasharray: arcLens[k], strokeDashoffset: arcs.on ? 0 : arcLens[k], transition: arcs.on && !arcs.fast ? `stroke-dashoffset 1100ms ease-out ${k * 70}ms` : "none" }
+                    ? {
+                        strokeDasharray: arcLens[k],
+                        strokeDashoffset: arcs.on ? 0 : arcLens[k],
+                        transition:
+                          arcs.on && !arcs.fast
+                            ? `stroke-dashoffset 1100ms ease-out ${k * 70}ms`
+                            : "none",
+                      }
                     : { opacity: 0 }
                 }
               />
@@ -331,7 +416,13 @@ export function GlobalHero({ price, enrollHref }: Props) {
         {geo && (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element -- the G still: the landing target */}
-            <img ref={api.stillRef} className="hto-still gl-dock" src="/site/celsglobal-mark.png" alt="" style={pct(geo.p0)} />
+            <img
+              ref={api.stillRef}
+              className="hto-still gl-dock"
+              src="/site/celsglobal-mark.png"
+              alt=""
+              style={pct(geo.p0)}
+            />
             {MONTHS.map((m, i) => {
               const o = pct(geo.stops[i]);
               const on = i < stopsOn;
@@ -345,8 +436,14 @@ export function GlobalHero({ price, enrollHref }: Props) {
                     className={`gl-lab${on ? " on" : ""}`}
                     style={
                       m.side === "r"
-                        ? { top: `calc(${o.top} + ${((shift[i] ?? 0) > 8 ? 14 : 6) + (nudge[i] ?? 0)}px)`, left: `calc(${o.left} + ${16 - (shift[i] ?? 0)}px)` }
-                        : { top: `calc(${o.top} - ${58 - (nudge[i] ?? 0)}px)`, right: `calc(${100 - (geo.stops[i].x / 600) * 100}% + ${16 - (shift[i] ?? 0)}px)` }
+                        ? {
+                            top: `calc(${o.top} + ${((shift[i] ?? 0) > 8 ? 14 : 6) + (nudge[i] ?? 0)}px)`,
+                            left: `calc(${o.left} + ${16 - (shift[i] ?? 0)}px)`,
+                          }
+                        : {
+                            top: `calc(${o.top} - ${58 - (nudge[i] ?? 0)}px)`,
+                            right: `calc(${100 - (geo.stops[i].x / 600) * 100}% + ${16 - (shift[i] ?? 0)}px)`,
+                          }
                     }
                   >
                     <b>MES {m.n}</b>
@@ -356,13 +453,18 @@ export function GlobalHero({ price, enrollHref }: Props) {
                 </div>
               );
             })}
-            <div className={`gl-dest${dest ? " on" : ""}`} style={pct(geo.pe)} />
+            <div
+              className={`gl-dest${dest ? " on" : ""}`}
+              style={pct(geo.pe)}
+            />
           </>
         )}
       </div>
       <div className={`gl-end${closing ? " on" : ""}`}>
         <h2>Se abre un mundo de oportunidades.</h2>
-        <p className="gl-who">Una nueva carrera · Nuevos clientes · Nuevos mercados</p>
+        <p className="gl-who">
+          Una nueva carrera · Nuevos clientes · Nuevos mercados
+        </p>
       </div>
       <div className="gl-count">
         <span className="gl-pills">
@@ -370,10 +472,20 @@ export function GlobalHero({ price, enrollHref }: Props) {
             <i key={i} className={i < count ? "on" : undefined} />
           ))}
         </span>
-        {closing ? <span className="gl-final">8 de 8 incluidos · 6 meses · un solo precio</span> : <span>{count} de 8 incluidos</span>}
+        {closing ? (
+          <span className="gl-final">
+            8 de 8 incluidos · 6 meses · un solo precio
+          </span>
+        ) : (
+          <span>{count} de 8 incluidos</span>
+        )}
       </div>
       {api.phase === "landed" && mode !== "static" && (
-        <button type="button" className="hto-again gl-again" onClick={() => replay(api)}>
+        <button
+          type="button"
+          className="hto-again gl-again"
+          onClick={() => replay(api)}
+        >
           ↺ Ver de nuevo
         </button>
       )}
@@ -396,14 +508,34 @@ export function GlobalHero({ price, enrollHref }: Props) {
       onIntroStart={onIntroStart}
       renderArt={renderArt}
       backdrop={
-        <div className={`gl-world${world === "on" ? " on" : ""}`} aria-hidden="true">
-          {world !== "off" && (
-            <video ref={worldVid} muted playsInline preload="auto" poster="/motion/celsglobal-world-poster.webp" tabIndex={-1}>
-              {mode !== "static" && <source src="/motion/celsglobal-world.webm" type="video/webm" />}
-              {mode !== "static" && <source src="/motion/celsglobal-world.mp4" type="video/mp4" />}
-            </video>
-          )}
-        </div>
+        <>
+          <span className="gl-dots" aria-hidden="true" />
+          <div
+            className={`gl-world${world === "on" ? " on" : ""}`}
+            aria-hidden="true"
+          >
+            {world !== "off" && (
+              <video
+                ref={worldVid}
+                muted
+                playsInline
+                preload="auto"
+                poster="/motion/celsglobal-world-poster.webp"
+                tabIndex={-1}
+              >
+                {mode !== "static" && (
+                  <source
+                    src="/motion/celsglobal-world.webm"
+                    type="video/webm"
+                  />
+                )}
+                {mode !== "static" && (
+                  <source src="/motion/celsglobal-world.mp4" type="video/mp4" />
+                )}
+              </video>
+            )}
+          </div>
+        </>
       }
       overlay={
         <>
@@ -413,7 +545,12 @@ export function GlobalHero({ price, enrollHref }: Props) {
             <source src="/motion/celsglobal-theme.ogg" type="audio/ogg" />
           </audio>
           {soundUi && mode !== "static" && (
-            <button type="button" className="gl-sound" onClick={toggleSound} aria-pressed={soundOn}>
+            <button
+              type="button"
+              className="gl-sound"
+              onClick={toggleSound}
+              aria-pressed={soundOn}
+            >
               {soundOn ? "🔇 Silenciar" : "🔊 Activar sonido"}
             </button>
           )}
@@ -423,19 +560,33 @@ export function GlobalHero({ price, enrollHref }: Props) {
       <Link href="/#programas" className="gl-back">
         ← Todos los programas
       </Link>
-      <span className="gl-kick">CELSGLOBAL · INTERNATIONAL BUSINESS DEVELOPMENT</span>
+      <span className="gl-kick">
+        CELSGLOBAL · INTERNATIONAL BUSINESS DEVELOPMENT
+      </span>
       <h1 className="gl-h1">
         Tu carrera,
         <br />
         <em>sin fronteras.</em>
       </h1>
       <p className="gl-sub">
-        Un programa de 6 meses para profesionales que quieren crecer en Estados Unidos: inglés de negocios, un resume al estilo americano, entrevistas que sí ganas, tus finanzas en orden y tu camino con la Visa TN.
+        Un programa de 6 meses para profesionales que quieren crecer en Estados
+        Unidos: inglés de negocios, un resume al estilo americano, entrevistas
+        que sí ganas, tus finanzas en orden y tu camino con la Visa TN.
       </p>
       <div className="gl-ctas">
         <a href={enrollHref} className="cu-btn cu-btn-gold">
           Inscríbete por {price}{" "}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
             <path d="M5 12h14" />
             <path d="m13 6 6 6-6 6" />
           </svg>
