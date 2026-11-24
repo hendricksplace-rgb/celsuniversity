@@ -9,6 +9,8 @@ import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import { GlobalHero } from "./GlobalHero";
+import { fraunces } from "./fonts";
+import "@/components/site/sections.css";
 import "./celsglobal.css";
 
 // Only real testimonials: the section stays hidden until Matt sends them (celsu-website-spec.md).
@@ -113,7 +115,7 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
     // Prices from public.products (see the page), never the board's copy.
     const P = this.props.prices;
     return (
-      <div style={{ fontFamily: "var(--font-jakarta), system-ui, sans-serif", color: "#0F0D1E", background: "#FFFFFF", minWidth: "0", overflowX: "hidden" }}>
+      <div className={fraunces.variable} style={{ fontFamily: "var(--font-jakarta), system-ui, sans-serif", color: "#0F0D1E", background: "#FFFFFF", minWidth: "0", overflowX: "hidden" }}>
 
 {/* NAV */}
 <header style={{ position: "relative", zIndex: "5", background: "#FFFFFF", borderBottom: "1px solid #ECEAF2" }}>
@@ -153,12 +155,13 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 <GlobalHero price={fmtPrice(P, "celsglobal")} enrollHref={enrollHref("celsglobal")} />
 
 {/* 6-MONTH ROUTE */}
-<section id="ruta" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #14182B 0px, #151A2E 33px, #192036 67px, #1F2A42 100px, #273652 133px, #394D6A 167px, #63778D 200px, #8FA3B1 233px, #B0BFC5 267px, #C9CFD0 300px, #DCDDD8 333px, #E9E6DD 367px, #EEE9DF 400px, #ECE6DA 100%)" }}>
+<section id="ruta" className="cs-sec cu-glsec cu-glfade cu-glruta">
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexWrap: "wrap", gap: "16px 32px", alignItems: "flex-end", justifyContent: "space-between" }}>
 <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#2E6F86" }}>TU RUTA DE 6 MESES</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Un paso cada mes. Una carrera nueva al final.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>Un paso cada mes. Una carrera nueva al final.</h2>
 <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#45506A" }}>CelsTV te acompaña todo el programa para reforzar tu inglés base. Cada mes suma un enfoque nuevo.</p>
 </div>
 <button type="button" onClick={v.togglePlay} className="cu-btn cu-btn-sm cu-btn-dark">{v.playLabel}</button>
@@ -193,12 +196,12 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </section>
 
 {/* WHAT'S INCLUDED */}
-<section id="incluye" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #ECE6DA 0px, #E7E3D8 33px, #DBDBD4 67px, #C8CECD 100px, #B0BEC4 133px, #90A7B3 167px, #668595 200px, #3D6578 233px, #2A5168 267px, #25455F 300px, #213B58 333px, #1E3554 367px, #1D3352 400px, #1A2C48 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<section id="incluye" className="cs-sec cs-cut cs-dots cu-glsec cu-glcut cu-glinc" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#DDBE72" }}>TODO LO QUE INCLUYE</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>8 programas y servicios. Una sola inscripción.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>8 programas y servicios. Una sola inscripción.</h2>
 <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#C3D0DE" }}>Cursos para aprender, servicios personalizados para aplicar lo aprendido y acceso a inglés base mientras avanzas.</p>
 </div>
 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 270px), 1fr))", gap: "16px" }}>
@@ -216,11 +219,12 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </section>
 
 {/* WHO IT'S FOR */}
-<section style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #1A2C48 0px, #1D304C 33px, #253A55 67px, #314A64 100px, #425F78 133px, #5B798F 167px, #8299A9 200px, #ABBAC3 233px, #C5CED0 267px, #D5D9D6 300px, #E2E1DB 333px, #EBE7DE 367px, #EEE9DF 400px, #ECE6DA 100%)" }}>
+<section className="cs-sec cs-cut-r cs-lines cu-glsec cu-glcut cu-glivory">
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#2E6F86" }}>¿PARA QUIÉN ES?</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Para profesionales listos para el siguiente nivel.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>Para profesionales listos para el siguiente nivel.</h2>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
 <div className="cu-raise cu-tilt" style={{ flex: "1 1 300px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px", padding: "28px 26px", borderRadius: "18px", background: "#FFFFFF", borderTop: "5px solid #3F8FA6" }}><span style={{ width: "44px", height: "44px", borderRadius: "12px", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "800", color: "#FFFFFF", background: "#3F8FA6" }}>1</span><h3 style={{ margin: "0", fontWeight: "800", fontSize: "21px" }}>Profesionistas en México</h3><p style={{ margin: "0", fontSize: "16px", lineHeight: "1.6", color: "#45506A" }}>Ingenieros, contadores, administradores y otras profesiones que buscan trabajar en Estados Unidos y quieren entender la Visa TN.</p></div>
@@ -232,13 +236,13 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </section>
 
 {/* PRICING */}
-<section id="planes" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #ECE6DA 0px, #E7E3D8 33px, #DBDBD4 67px, #C8CECD 100px, #B0BEC4 133px, #8FA3B1 167px, #63778D 200px, #394D6A 233px, #273652 267px, #1F2A42 300px, #192036 333px, #151A2E 367px, #14182B 400px, #14182B 100%)", color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
-
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<section id="planes" className="cs-sec cs-dots cu-glsec cu-glcurve cu-glplans" style={{ color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#ECE6DA" /></svg></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#DDBE72" }}>INVERSIÓN</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Un precio. Seis meses. Todo incluido.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>Un precio. Seis meses. Todo incluido.</h2>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "18px", alignItems: "stretch" }}>
 <article className="cu-sheen cu-tilt" style={{ position: "relative", flex: "1.2 1 380px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px", padding: "32px 30px 30px", borderRadius: "22px", color: "#FFFFFF", background: "linear-gradient(135deg, rgba(199,162,78,.22), rgba(63,143,166,.10) 60%, rgba(255,255,255,.04))", border: "1px solid rgba(221,190,114,.55)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.22), 0 0 48px -10px rgba(199,162,78,.5), 0 34px 70px -24px rgba(0,0,0,.7)" }}><span style={{ position: "absolute", right: "18px", top: "18px", fontWeight: "800", fontSize: "11px", letterSpacing: "1.2px", color: "#14182B", background: "linear-gradient(180deg,#EBD08C,#C7A24E)", padding: "6px 10px", borderRadius: "7px" }}>PROGRAMA COMPLETO</span><span style={{ fontWeight: "700", fontSize: "12px", letterSpacing: "1.5px", color: "#DDBE72" }}>CELSGLOBAL</span><h3 style={{ margin: "0", fontWeight: "800", fontSize: "26px", letterSpacing: "-0.4px" }}>International Business Development</h3><div style={{ display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}><span style={{ fontWeight: "800", fontSize: "56px", letterSpacing: "-1.5px", lineHeight: "1" }}>{fmtPrice(P, "celsglobal")}</span><span style={{ fontWeight: "700", fontSize: "15px", color: "#C9D3E6" }}>USD · pago único{fmtPlan(P, "celsglobal_plan") ? ` o ${fmtPlan(P, "celsglobal_plan").count} pagos de ${fmtPlan(P, "celsglobal_plan").first}` : ""}</span></div><span style={{ fontSize: "14px", color: "#A9B4CC", fontWeight: "600" }}>Programa de 6 meses · Se cobra en dólares</span><ul style={{ listStyle: "none", margin: "6px 0 0", padding: "0", display: "flex", flexDirection: "column", gap: "10px" }}><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>English for Business (CelsBSNS) completo</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>CV to Resume + Resume Review personalizado</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>Crack the U.S. Interview Code + Interview Prep</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>Finanzas Personales</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>Tu Camino con la Visa TN</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>CelsTV para tu inglés base</span></li><li style={{ display: "flex", gap: "10px", fontSize: "15px", lineHeight: "1.45", color: "#E6E9F0" }}><span style={{ display: "flex", color: "#DDBE72" }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "0 0 auto", marginTop: "2px" }}><path d="M20 6 9 17l-5-5" /></svg></span><span>Ruta guiada de 6 meses</span></li></ul><a href={planHref("celsglobal")} className="cu-btn cu-btn-gold" style={{ marginTop: "auto", alignSelf: "stretch" }}>Inscríbete en CelsGLOBAL <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a></article>
@@ -260,11 +264,12 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 
 {/* TESTIMONIALS */}
 {SHOW_TESTIMONIALS ? (
-<section style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: "linear-gradient(180deg, #14182B 0px, #14182B 120px, #192540 55%, #1D3352 100%)", color: "#FFFFFF" }}>
+<section className="cs-sec cs-cut cs-dots cu-glsec cu-glcut cu-glstories" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#DDBE72" }}>PROFESIONALES CELSGLOBAL</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Historias reales.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>Historias reales.</h2>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "18px" }}>
 <figure className="cu-tilt cu-raise-dark" style={{ flex: "1 1 280px", minWidth: "0", margin: "0", background: "#FFFFFF", color: "#0F0D1E", borderRadius: "16px", padding: "26px", display: "flex", flexDirection: "column", gap: "16px", borderTop: "5px solid #3F8FA6" }}><blockquote style={{ margin: "0", fontSize: "17px", lineHeight: "1.6" }}>"[Testimonio real de un alumno de CelsGLOBAL]"</blockquote><figcaption style={{ fontWeight: "600", fontSize: "14px", color: "#6B6680" }}>[Nombre], [Profesión, Ciudad]</figcaption></figure>
@@ -276,11 +281,12 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 ) : null}
 
 {/* FAQ */}
-<section id="faq" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: SHOW_TESTIMONIALS ? "linear-gradient(180deg, #1D3352 0px, #203655 33px, #27405D 67px, #334E6A 100px, #43607A 133px, #5B798F 167px, #8299A9 200px, #ABBAC3 233px, #C5CED0 267px, #D5D9D6 300px, #E2E1DB 333px, #EBE7DE 367px, #EEE9DF 400px, #ECE6DA 100%)" : "linear-gradient(180deg, #14182B 0px, rgba(29,51,82,0) 140px), linear-gradient(180deg, #1D3352 0px, #203655 33px, #27405D 67px, #334E6A 100px, #43607A 133px, #5B798F 167px, #8299A9 200px, #ABBAC3 233px, #C5CED0 267px, #D5D9D6 300px, #E2E1DB 333px, #EBE7DE 367px, #EEE9DF 400px, #ECE6DA 100%)" }}>
+<section id="faq" className="cs-sec cs-cut-r cs-lines cu-glsec cu-glcut cu-glivory">
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#2E6F86" }}>PREGUNTAS FRECUENTES</span>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Antes de empezar.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1" }}>Antes de empezar.</h2>
 </div>
 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
 {(v.faqs ?? []).map((q: any, __i: number) => (<Fragment key={__i}>
@@ -299,13 +305,14 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 </section>
 
 {/* FINAL CTA */}
-<section id="evaluacion" style={{ padding: "0 20px 96px", background: "#ECE6DA" }}>
-<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 #14182B, 0 30px 60px -18px rgba(20,24,43,.5), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(160deg, #23395A 0%, #14182B 80%)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
+{/* C-064: no band of its own: a card on the FAQ's ivory background (#ECE6DA), thin gold border, no confetti. */}
+<section id="evaluacion" className="cu-glsec-cta" style={{ padding: "0 20px 96px", background: "#ECE6DA" }}>
+<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 #14182B, 0 30px 60px -18px rgba(20,24,43,.5), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(135deg, #23395A 0%, #14182B 100%)", border: "1px solid rgba(233,210,154,.4)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <div style={{ position: "relative", flex: "1 1 380px", minWidth: "0", display: "flex", alignItems: "center", gap: "22px" }}>
 <span className="cu-g-float" style={{ flex: "0 0 auto" }}><svg viewBox="0 0 140 140" width="72" height="72" aria-hidden="true" style={{ display: "block", overflow: "visible" }}><defs><linearGradient id="gTGc" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#2E6F86" /><stop offset=".55" stopColor="#5FB3C8" /><stop offset="1" stopColor="#DDBE72" /></linearGradient><linearGradient id="gRhc" gradientUnits="userSpaceOnUse" x1="70" y1="0" x2="134" y2="0"><stop offset="0" stopColor="#9A5470" /><stop offset="1" stopColor="#CC8AA0" /></linearGradient></defs><path d="M100 32 A 47 47 0 1 0 114 84" fill="none" stroke="url(#gTGc)" strokeWidth="24" strokeLinecap="round" /><path d="M74 78 H 124" fill="none" stroke="url(#gRhc)" strokeWidth="18" strokeLinecap="round" /><path d="M114 64 L 130 78 L 114 92" fill="none" stroke="url(#gRhc)" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
 <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-<h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(28px, 3.4vw, 40px)", lineHeight: "1.12", letterSpacing: "-0.8px" }}>En 6 meses, otra carrera.</h2>
+<h2 className="cu-glh2" style={{ margin: "0", fontSize: "clamp(28px, 3.4vw, 40px)", lineHeight: "1.12" }}>En 6 meses, otra carrera.</h2>
 <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#C3D0DE" }}>Inscríbete hoy o empieza con la evaluación gratis para saber desde dónde arrancas.</p>
 </div>
 </div>
