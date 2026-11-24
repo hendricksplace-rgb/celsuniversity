@@ -177,3 +177,10 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 /* Beams inside a section's background fade out before its top and bottom (the beam box runs from -20% to 120%):
    a beam cut by the layer's edge drew a line, e.g. across the Qué incluye → Planes navy block. */
 .cu-ussec>.cs-bg>.cu-beam{-webkit-mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%);mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%)}
+
+/* The civics quiz keeps the height of its tallest state (invisible sizers in the same grid cell). */
+.cu-civstack{display:grid}
+.cu-civstack>*{grid-area:1/1;min-width:0}
+.cu-civreal{display:flex;flex-direction:column;gap:14px}
+.cu-civreal>.cu-civintro{flex:1;justify-content:center}
+.cu-civsizer{visibility:hidden;pointer-events:none}

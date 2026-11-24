@@ -119,35 +119,9 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
     this.setState({ simStep: 0, simMsgs: [], simFinished: false, simScore: 0 });
     this._simOfficer(0);
   }
-  renderVals() {
-    var PR = this.props.prices;
-    var self = this, s = this.state;
-    // fireworks (same system as the homepage)
-    var burst = function (list) {
-      return list.map(function (b) {
-        var sparks = [];
-        for (var k = 0; k < 14; k++) sparks.push({ style: '--a: ' + (k * 360 / 14) + 'deg; --d: ' + b.d + 's; --r: ' + (b.r * (k % 2 ? 0.82 : 1)) + 'px;' });
-        return { style: 'left: ' + b.x + '%; top: ' + b.y + '%; color: ' + b.c + '; --d: ' + b.d + 's; opacity: ' + b.op + '; transform: scale(' + b.sc + ');', sparks: sparks };
-      });
-    };
-    // path
-    var P = [
-      { t: 'Aprende la cívica', d: 'Las preguntas oficiales explicadas de forma sencilla, con audio y apoyo en español.' },
-      { t: 'Domina el inglés de la entrevista', d: 'El vocabulario y las frases que usa el oficial, para entender y responder con calma.' },
-      { t: 'Practica con simulacros', d: 'Ensaya la entrevista completa hasta que se sienta natural.' },
-      { t: 'Preséntate con confianza', d: 'Llegas preparado, entiendes lo que te preguntan y respondes con seguridad.' }
-    ];
-    var COLORS = ['#194876', '#2C6BC4', '#B5232C', '#C9A227'];
-    var path = P.map(function (p, i) {
-      var on = i === s.pathStep, done = i < s.pathStep;
-      return { num: i === 3 ? '★' : String(i + 1), title: p.t, desc: p.d,
-        style: 'display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 18px; transition: all .4s ease; ' +
-          (on ? 'background: linear-gradient(150deg, ' + COLORS[i] + ', #0E2A4F); color: #FFFFFF; transform: translateY(-6px); box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 28px 50px -20px rgba(10,30,70,.6);'
-              : 'background: #FFFFFF; color: #0F0D1E; box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(10,20,40,.08), 0 18px 36px -18px rgba(10,20,40,.35);'),
-        numStyle: 'width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; ' +
-          (on ? 'background: #FFFFFF; color: ' + COLORS[i] + ';' : (done ? 'background: ' + COLORS[i] + '; color: #FFFFFF;' : 'background: #E0EAF5; color: #194876;')) };
-    });
-    // civics practice
+  /** The civics quiz view-model for a state (the real one, or a sizer: see civSizers). */
+  civFor(s) {
+    var self = this;
     var Q = this.Q, q = Q[Math.min(s.qi, Q.length - 1)];
     var base = 'display: flex; align-items: center; gap: 12px; text-align: left; min-height: 54px; padding: 10px 14px; border-radius: 12px; font-weight: 600; font-size: 15px; cursor: pointer; font-family: inherit; animation-delay: ';
     var options = q.opts.map(function (t, i) {
@@ -179,6 +153,40 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
       score: s.score,
       verdict: s.score >= 4 ? '¡Vas muy bien! Con práctica constante llegarás al examen con total seguridad.' : (s.score >= 2 ? 'Buen comienzo. Con el curso completo practicas todas las preguntas con audio y explicaciones.' : 'No te preocupes: para eso es el curso. Practicarás cada pregunta hasta dominarla.')
     };
+    return civ;
+  }
+  renderVals() {
+    var PR = this.props.prices;
+    var self = this, s = this.state;
+    // fireworks (same system as the homepage)
+    var burst = function (list) {
+      return list.map(function (b) {
+        var sparks = [];
+        for (var k = 0; k < 14; k++) sparks.push({ style: '--a: ' + (k * 360 / 14) + 'deg; --d: ' + b.d + 's; --r: ' + (b.r * (k % 2 ? 0.82 : 1)) + 'px;' });
+        return { style: 'left: ' + b.x + '%; top: ' + b.y + '%; color: ' + b.c + '; --d: ' + b.d + 's; opacity: ' + b.op + '; transform: scale(' + b.sc + ');', sparks: sparks };
+      });
+    };
+    // path
+    var P = [
+      { t: 'Aprende la cívica', d: 'Las preguntas oficiales explicadas de forma sencilla, con audio y apoyo en español.' },
+      { t: 'Domina el inglés de la entrevista', d: 'El vocabulario y las frases que usa el oficial, para entender y responder con calma.' },
+      { t: 'Practica con simulacros', d: 'Ensaya la entrevista completa hasta que se sienta natural.' },
+      { t: 'Preséntate con confianza', d: 'Llegas preparado, entiendes lo que te preguntan y respondes con seguridad.' }
+    ];
+    var COLORS = ['#194876', '#2C6BC4', '#B5232C', '#C9A227'];
+    var path = P.map(function (p, i) {
+      var on = i === s.pathStep, done = i < s.pathStep;
+      return { num: i === 3 ? '★' : String(i + 1), title: p.t, desc: p.d,
+        style: 'display: flex; flex-direction: column; gap: 10px; padding: 24px; border-radius: 18px; transition: all .4s ease; ' +
+          (on ? 'background: linear-gradient(150deg, ' + COLORS[i] + ', #0E2A4F); color: #FFFFFF; transform: translateY(-6px); box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 28px 50px -20px rgba(10,30,70,.6);'
+              : 'background: #FFFFFF; color: #0F0D1E; box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(10,20,40,.08), 0 18px 36px -18px rgba(10,20,40,.35);'),
+        numStyle: 'width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; ' +
+          (on ? 'background: #FFFFFF; color: ' + COLORS[i] + ';' : (done ? 'background: ' + COLORS[i] + '; color: #FFFFFF;' : 'background: #E0EAF5; color: #194876;')) };
+    });
+    // civics practice (C-064 follow-up: built by civFor so the height sizers use the same view-model)
+    var civ = this.civFor(s);
+    var civSizers = this.Q.map(function (x, i) { return self.civFor(Object.assign({}, s, { cStarted: true, done: false, qi: i, cPhase: 'opts', answer: (x.a + 1) % x.opts.length, es: true, cSpeaking: false, cSpoken: 999 })); })
+      .concat([self.civFor(Object.assign({}, s, { cStarted: true, done: true, score: 0 }))]);
     // interview simulator
     var step = this.SIM[s.simStep];
     var sim = {
@@ -219,7 +227,7 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
       toggleMenu: function () { self.setState({ menuOpen: !self.state.menuOpen }); },
-      path: path, civ: civ, sim: sim,
+      path: path, civ: civ, civSizers: civSizers, sim: sim,
       faqs: FAQ.map(function (f, i) {
         var open = s.faq === i;
         return { q: f.q, a: f.a, open: open, expanded: open ? 'true' : 'false', toggle: function () { self.setState({ faq: self.state.faq === i ? -1 : i }); },
@@ -229,6 +237,58 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
     };
   }
 
+  /** The quiz while a question runs (the real one, or a sizer). */
+  civActive(c) {
+    return (<>
+<div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+<span style={{ fontWeight: "800", fontSize: "12px", letterSpacing: "1.2px", color: "#194876", background: "#E0EAF5", padding: "6px 10px", borderRadius: "8px" }}>PREGUNTA {c.pos}</span>
+<button type="button" onClick={c.toggleEs} aria-pressed={c.esPressed} style={css(c.esStyle)}>{c.esLabel}</button>
+</div>
+<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "16px", padding: "20px", borderRadius: "16px", background: "linear-gradient(150deg, #1E4A7E, #0E2A4F)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.14)" }}>
+<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<button type="button" className={c.spkClass} onClick={c.speak} aria-label="Escuchar la pregunta" style={{ position: "relative", width: "52px", height: "52px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
+{c.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "20px" }}><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span></span></>) : null}
+{c.notSpeaking ? (<><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
+</button>
+<div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 auto", minWidth: "0" }}>
+<p aria-label={c.q} style={{ margin: "0", fontWeight: "800", fontSize: "clamp(19px, 2.2vw, 24px)", lineHeight: "1.3" }}>{(c.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}</p>
+{c.showEsQ ? (<><p className="cu-drop" style={{ margin: "0", fontSize: "15px", color: "#B9D2F2" }}>{c.qEs}</p></>) : null}
+</div>
+</div>
+{c.showOpts ? (<>
+<div className="cu-open" style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
+{(c.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
+<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span style={{ display: "flex", flexDirection: "column", gap: "2px" }}><span>{o.text}</span>{c.showEs ? (<><span style={{ fontSize: "13px", fontWeight: "500", color: "#6B6680" }}>{o.es}</span></>) : null}</span></button>
+</Fragment>))}
+</div>
+</>) : null}
+{c.answered ? (<>
+<div className="cu-drop" style={css(c.fbStyle)}>
+<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "16px" }}>{c.fbTitle}</p>
+<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{c.why}</p>
+</div>
+<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={c.next}>{c.nextLabel}</button>
+</div>
+</>) : null}
+</div>
+</>);
+  }
+  /** The quiz result (the real one, or a sizer). */
+  civDone(c) {
+    return (<>
+<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
+<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{c.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
+<p style={{ margin: "0", fontSize: "16px", lineHeight: "1.6", color: "#3F3B52" }}>{c.verdict}</p>
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+<a href="#planes" className="cu-btn cu-btn-pink cu-btn-sm">Practica todas las preguntas</a>
+<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={c.restart}>Repetir</button>
+</div>
+</div>
+</>);
+  }
   render() {
     const v = this.renderVals();
     // Prices from public.products (see the page), never the board's copy.
@@ -338,60 +398,25 @@ backdrop={<><span className="cu-usdots" aria-hidden="true"></span><span classNam
 </div>
 <div className="cu-tilt cu-raise-dark" style={{ flex: "1 1 480px", minWidth: "0", background: "#FFFFFF", color: "#0F0D1E", borderRadius: "22px", padding: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
 <div aria-hidden="true" style={{ display: "flex", gap: "6px" }}>{(v.civ.dots ?? []).map((d: any, __i: number) => (<Fragment key={__i}><span style={css(d.style)}></span></Fragment>))}</div>
+{/* C-064 follow-up: the real quiz plus invisible copies of its tallest states (each question answered, with the
+    Spanish lines; the result) in one grid cell: the card keeps the height of its largest state, so the page below
+    never jumps while the quiz runs. */}
+<div className="cu-civstack">
+<div className="cu-civreal">
 {v.civ.intro ? (<>
-<div style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "14px", padding: "28px 24px", borderRadius: "16px", background: "linear-gradient(150deg, #1E4A7E, #0E2A4F)", color: "#FFFFFF" }}>
+<div className="cu-civintro" style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "14px", padding: "28px 24px", borderRadius: "16px", background: "linear-gradient(150deg, #1E4A7E, #0E2A4F)", color: "#FFFFFF" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <span style={{ fontWeight: "700", fontSize: "12px", letterSpacing: "1.5px", color: "#FFD24D" }}>5 PREGUNTAS · COMO EN LA ENTREVISTA</span>
 <p style={{ margin: "0", fontWeight: "800", fontSize: "24px", lineHeight: "1.3" }}>Escucha la pregunta en inglés y elige la respuesta correcta.</p>
 <button type="button" className="cu-btn cu-btn-light" onClick={v.civ.start}><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>Comenzar práctica</button>
 </div>
 </>) : null}
-{v.civ.active ? (<>
-<div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-<span style={{ fontWeight: "800", fontSize: "12px", letterSpacing: "1.2px", color: "#194876", background: "#E0EAF5", padding: "6px 10px", borderRadius: "8px" }}>PREGUNTA {v.civ.pos}</span>
-<button type="button" onClick={v.civ.toggleEs} aria-pressed={v.civ.esPressed} style={css(v.civ.esStyle)}>{v.civ.esLabel}</button>
+{v.civ.active ? this.civActive(v.civ) : null}
+{v.civ.done ? this.civDone(v.civ) : null}
 </div>
-<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "16px", padding: "20px", borderRadius: "16px", background: "linear-gradient(150deg, #1E4A7E, #0E2A4F)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.14)" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<button type="button" className={v.civ.spkClass} onClick={v.civ.speak} aria-label="Escuchar la pregunta" style={{ position: "relative", width: "52px", height: "52px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
-{v.civ.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "20px" }}><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span><span style={{ background: "#194876" }}></span></span></>) : null}
-{v.civ.notSpeaking ? (<><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
-</button>
-<div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 auto", minWidth: "0" }}>
-<p aria-label={v.civ.q} style={{ margin: "0", fontWeight: "800", fontSize: "clamp(19px, 2.2vw, 24px)", lineHeight: "1.3" }}>{(v.civ.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}</p>
-{v.civ.showEsQ ? (<><p className="cu-drop" style={{ margin: "0", fontSize: "15px", color: "#B9D2F2" }}>{v.civ.qEs}</p></>) : null}
+{(v.civSizers ?? []).map((c: any, __i: number) => (<div key={__i} className="cu-civsizer" aria-hidden="true" inert>{c.done ? this.civDone(c) : this.civActive(c)}</div>))}
 </div>
-</div>
-{v.civ.showOpts ? (<>
-<div className="cu-open" style={{ display: "flex", flexDirection: "column", gap: "9px" }}>
-{(v.civ.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
-<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span style={{ display: "flex", flexDirection: "column", gap: "2px" }}><span>{o.text}</span>{v.civ.showEs ? (<><span style={{ fontSize: "13px", fontWeight: "500", color: "#6B6680" }}>{o.es}</span></>) : null}</span></button>
-</Fragment>))}
-</div>
-</>) : null}
-{v.civ.answered ? (<>
-<div className="cu-drop" style={css(v.civ.fbStyle)}>
-<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "16px" }}>{v.civ.fbTitle}</p>
-<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{v.civ.why}</p>
-</div>
-<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={v.civ.next}>{v.civ.nextLabel}</button>
-</div>
-</>) : null}
-</div>
-</>) : null}
-{v.civ.done ? (<>
-<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "12px", alignItems: "flex-start" }}>
-<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{v.civ.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
-<p style={{ margin: "0", fontSize: "16px", lineHeight: "1.6", color: "#3F3B52" }}>{v.civ.verdict}</p>
-<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<a href="#planes" className="cu-btn cu-btn-pink cu-btn-sm">Practica todas las preguntas</a>
-<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={v.civ.restart}>Repetir</button>
-</div>
-</div>
-</>) : null}
+
 
 </div>
 </div>
