@@ -8,6 +8,7 @@ import { enrollHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
 import { HeroU } from "./HeroU";
+import { LogoMotion } from "@/components/site/LogoMotion";
 
 // Everything below the hero only depends on the state it shows. The hero word turns every 2.6 s and
 // the intro tags light up one by one; without this the whole page re-rendered each time (Lighthouse:
@@ -225,6 +226,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       var dark = t.kind === 'bsns' || t.kind === 'us' || t.kind === 'ibd';
       return {
         label: t.label, program: t.program, num: '0' + (i + 1), featured: t.featured, usOn: on && t.kind === 'us',
+        motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[t.kind],
         isTV: t.kind === 'tv', isBSNS: t.kind === 'bsns', isUS: t.kind === 'us', isIBD: t.kind === 'ibd',
         numColor: dark ? 'rgba(255,255,255,.75)' : '#4A5A6E',
         pressed: on ? 'true' : 'false',
@@ -240,6 +242,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     var r = recs[s.goal];
     var rec = {
       tag: r.tag, name: r.name, short: r.short, price: r.price, blurb: r.blurb, note: r.note, hasNote: !!r.note, href: r.href,
+      motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[r.kind], replay: s.goal,
       isTV: r.kind === 'tv', isBSNS: r.kind === 'bsns', isUS: r.kind === 'us', isPlaceholder: r.kind === 'ph',
       artStyle: 'position: relative; overflow: hidden; flex: 1 1 380px; min-height: 280px; border-radius: 14px; background: ' + r.tint + '; display: flex; align-items: center; justify-content: center; transition: background .3s;',
       tagStyle: 'font-weight: 700; font-size: 12px; letter-spacing: 1.5px; color: ' + r.text + ';'
@@ -517,11 +520,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 {(v.goals ?? []).map((g: any, __i: number) => (<Fragment key={__i}>
 <button type="button" className="cu-tile cu-sheen" onClick={g.pick} aria-pressed={g.pressed} style={css(g.tileStyle)}>
 <span style={css(g.artStyle)}>
-{g.isTV ? (<><span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", perspective: "600px" }}><span className="cu-ering" style={{ position: "absolute", width: "70px", height: "70px", borderRadius: "50%", border: "2px solid #F20174" }}></span><span className="cu-ering2" style={{ position: "absolute", width: "70px", height: "70px", borderRadius: "50%", border: "2px solid #43D6FE" }}></span><span className="cu-ering3" style={{ position: "absolute", width: "70px", height: "70px", borderRadius: "50%", border: "2px solid #FFC800" }}></span><img loading="lazy" decoding="async" src="/site/celstv-e.webp" alt="" style={{ position: "relative", height: "78px", width: "auto", filter: "drop-shadow(0 10px 14px rgba(120,0,60,.25))" }} /></span></>) : null}
-{g.isBSNS ? (<><img loading="lazy" decoding="async" className="cu-breathe" src="/site/celsbsns-logo.png" alt="" style={{ width: "78%", height: "auto" }} /></>) : null}
-{g.isUS ? (<><img loading="lazy" decoding="async" className="cu-pan" src="/site/celsus-us3d.jpg" alt="" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", objectFit: "cover" }} /></>) : null}
+{/* C-053: the program's animated logo fills the art area; badges and the CelsUS fireworks stay on top */}
+<LogoMotion program={g.motion} />
 {g.usOn ? (<>{(v.fwTile ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}</>) : null}
-{g.isIBD ? (<><img loading="lazy" decoding="async" src="/site/celsglobal-mark.png" alt="" style={{ height: "84px", width: "auto" }} /></>) : null}
 <span style={css(g.checkStyle)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>
 <span style={css(`position: absolute; left: 12px; top: 10px; font-weight: 800; font-size: 13px; letter-spacing: 1px; color: ${g.numColor};`)}>{g.num}</span>
 {g.featured ? (<><span style={{ position: "absolute", left: "12px", bottom: "10px", fontWeight: "800", fontSize: "11px", letterSpacing: "1px", color: "#FFFFFF", background: "linear-gradient(180deg,#FF3D97,#D9006A)", padding: "5px 9px", borderRadius: "6px", boxShadow: "0 6px 14px -4px rgba(242,1,116,.6)" }}>MÁS POPULAR</span></>) : null}
@@ -537,25 +538,22 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <div style={css(v.rec.artStyle)}>
 {v.rec.isTV ? (<>
 <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px 20px", width: "100%", padding: "24px 16px", boxSizing: "border-box" }}>
-<span style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", width: "170px", height: "170px", perspective: "800px", flex: "0 0 auto" }}>
-<span className="cu-ering" style={{ position: "absolute", width: "140px", height: "140px", borderRadius: "50%", border: "2px solid #F20174" }}></span>
-<span className="cu-ering2" style={{ position: "absolute", width: "140px", height: "140px", borderRadius: "50%", border: "2px solid #43D6FE" }}></span>
-<span className="cu-ering3" style={{ position: "absolute", width: "140px", height: "140px", borderRadius: "50%", border: "2px solid #FFC800" }}></span>
-<img loading="lazy" decoding="async" src="/site/celstv-e.webp" alt="CelsTV" style={{ position: "relative", height: "150px", width: "auto", filter: "drop-shadow(0 18px 22px rgba(120,0,60,.28))" }} />
+<span style={{ position: "relative", display: "block", width: "200px", height: "200px", flex: "0 0 auto", borderRadius: "14px", overflow: "hidden" }}>
+<LogoMotion program="celstv" replayKey={v.rec.replay} label="CelsTV" />
 </span>
 <img loading="lazy" decoding="async" src="/site/celstv-episodes.webp" alt="Episodios de CelsTV" style={{ flex: "1 1 240px", minWidth: "0", maxWidth: "360px", height: "auto" }} />
 </div>
 </>) : null}
 {v.rec.isBSNS ? (<>
-<img loading="lazy" decoding="async" className="cu-breathe" src="/site/celsbsns-logo.png" alt="CelsBSNS" style={{ width: "70%", height: "auto" }} />
+<LogoMotion program="celsbsns" replayKey={v.rec.replay} label="CelsBSNS" />
 </>) : null}
 {v.rec.isUS ? (<>
-<img loading="lazy" decoding="async" className="cu-pan" src="/site/celsus-us3d.jpg" alt="CelsUS" style={{ position: "absolute", inset: "0", width: "100%", height: "100%", objectFit: "cover" }} />
+<LogoMotion program="celsus" replayKey={v.rec.replay} label="CelsUS" />
 {(v.fwBack ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 {(v.fwFront ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 </>) : null}
 {v.rec.isPlaceholder ? (<>
-<img loading="lazy" decoding="async" src="/site/celsglobal-lockup-dark.png" alt="CelsGLOBAL, International Business Development" style={{ width: "84%", height: "auto" }} />
+<LogoMotion program="celsglobal" replayKey={v.rec.replay} label="CelsGLOBAL, International Business Development" />
 </>) : null}
 </div>
 <div style={{ flex: "1 1 340px", minWidth: "0", display: "flex", flexDirection: "column", gap: "14px", padding: "16px 12px" }}>
