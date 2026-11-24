@@ -14,7 +14,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/app",
     scope: "/",
     display: "standalone",
-    background_color: "#F7F5FA",
+    // C-069: the launch screen is the U opener's blue, so the native splash flows straight into it.
+    background_color: "#02C5F7",
     theme_color: "#F5178C",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

@@ -41,7 +41,7 @@ export const viewport: Viewport = { themeColor: "#F5178C" };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const { lang, t } = await getDictionary();
   return (
-    <html lang={lang}>
+    <html lang={lang} suppressHydrationWarning>
       <body className={`${poppins.variable} ${inter.variable} ${jakarta.variable} ${serif.variable} ${nunito.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: captureInstallPrompt }} />
         <InstallProvider t={t.install}>
