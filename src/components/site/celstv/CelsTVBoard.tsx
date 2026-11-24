@@ -8,6 +8,7 @@ import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import { HeroTakeover } from "@/components/site/HeroTakeover";
 import "./celstv.css";
+import "@/components/site/sections.css";
 
 /** Testimonials stay hidden until Matt sends real ones (celsu-website-spec.md: never invent any). */
 const SHOW_TESTIMONIALS = false;
@@ -165,7 +166,7 @@ eFrac={0.6}
 slotSize={{ desktop: 300, mobile: 220 }}
 logoHeight={{ desktop: 190, mobile: 140 }}
 decor={<><i className="hto-decor cu-tvring a" aria-hidden="true"></i><i className="hto-decor cu-tvring b" aria-hidden="true"></i><i className="hto-decor cu-tvring c" aria-hidden="true"></i></>}
-backdrop={<><span className="cu-beam" aria-hidden="true"></span>
+backdrop={<><span className="cu-tvdots" aria-hidden="true"></span><span className="cu-beam" aria-hidden="true"></span>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-160px", right: "-120px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,214,120,.18) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></>}
 >
 <a href="/#programas" style={{ alignSelf: "flex-start", color: "#E9D6FF", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
@@ -184,10 +185,10 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </HeroTakeover>
 
 {/* HOW EACH EPISODE WORKS */}
-{/* C-057: section 2 takes the pink the hero had: plum (the hero's bottom) → pink → #16183A (where #episodios starts).
-    Clipped on both axes: its light beam (top:-20%) used to reach ~200px up into the hero, over the video's blend. */}
-<section id="funciona" style={{ position: "relative", overflow: "clip", padding: "110px 20px 110px", background: "linear-gradient(180deg, #3A1A50 0px, #4F1F57 70px, #6A2660 140px, #872F69 230px, #A23C72 320px, #B04378 45%, #A13C6E 58%, #8A2E62 70%, #5C2353 82%, #2E1B45 92%, #16183A 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+{/* C-057/C-058: section 2 takes the pink the hero had. Its top is the one fade on the page (Matt's choice): plum
+    (the hero's bottom) → pink; every other section change is a defined edge. */}
+<section id="funciona" className="cs-sec cu-tvsec cu-tvhow" style={{ overflow: "clip", color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "32px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "32px 40px", alignItems: "center" }}>
 <div className="cu-reveal" style={{ flex: "1 1 380px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -221,8 +222,8 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </section>
 
 {/* EPISODES */}
-<section id="episodios" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #16183A 0px, #191A3E 33px, #221F48 67px, #2F2859 100px, #41326E 133px, #564587 167px, #6D64A0 200px, #8584B9 233px, #9DA1CC 267px, #B3BADA 300px, #C5CEE4 333px, #D1DCEB 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "200px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="episodios" className="cs-sec cs-cut-r cs-lines cu-tvsec cu-tvcut cu-tvlight">
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", top: "200px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "26px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "16px" }}>
 <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
@@ -253,8 +254,9 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </section>
 
 {/* WHAT MAKES IT DIFFERENT */}
-<section style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C4D6E8 33px, #BDD6E9 67px, #B2D5EB 100px, #A4D5EC 133px, #93D4EE 167px, #7FD3F0 200px, #6AC9EB 233px, #55BFE7 267px, #3FB6E2 300px, #29AFDF 333px, #11ABDD 367px, #00A9DC 400px, #0094C8 100%)" }}>
-<span className="cu-beam" aria-hidden="true"></span>
+<section className="cs-sec cs-dots cu-tvsec cu-tvwhy">
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam"></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#C6D6E8" /></svg></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "32px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#0F0D1E" }}>POR QUÉ FUNCIONA</span>
@@ -270,10 +272,10 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </section>
 
 {/* PLANS */}
-<section id="planes" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0094C8 0px, #0191C5 33px, #0489BD 67px, #087EB1 100px, #0C6FA2 133px, #0E5F91 167px, #0F4F80 200px, #16416E 233px, #18345D 267px, #18284F 300px, #172044 333px, #161A3D 367px, #16183A 400px, #0B1E3A 100%)", color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
+<section id="planes" className="cs-sec cs-cut cs-dots cu-tvsec cu-tvcut cu-tvplans" style={{ color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
 
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "260px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span>
+<span className="cu-orb" style={{ position: "absolute", top: "260px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#00CCFE" }}>PLANES Y PRECIOS</span>
@@ -319,7 +321,8 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 
 {/* TESTIMONIALS (hidden until real ones arrive) */}
 {SHOW_TESTIMONIALS ? (<>
-<section style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #0B1E3A 120px, #16183A 55%, #2A1747 100%)", color: "#FFFFFF" }}>
+<section className="cs-sec cs-cut cs-dots cu-tvsec cu-tvcut cu-tvstories" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#F6AC00" }}>ALUMNOS DE CELSTV</span>
@@ -335,7 +338,8 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </>) : null}
 
 {/* FAQ */}
-<section id="faq" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #2A1747 0px, #2C194A 33px, #321E53 67px, #3A2760 100px, #463271 133px, #564587 167px, #6D64A0 200px, #8584B9 233px, #9DA1CC 267px, #B3BADA 300px, #C5CEE4 333px, #D1DCEB 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
+<section id="faq" className="cs-sec cs-cut-r cs-lines cu-tvsec cu-tvcut cu-tvlight">
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#1E4877" }}>PREGUNTAS FRECUENTES</span>
@@ -358,15 +362,16 @@ backdrop={<><span className="cu-beam" aria-hidden="true"></span>
 </section>
 
 {/* FINAL CTA */}
+{/* C-058: no band of its own: the FAQ's light background continues (#C6D6E8) and this is a card on it. */}
 <section id="evaluacion" style={{ padding: "0 20px 96px", background: "#C6D6E8" }}>
-<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), 0 2px 0 #8A2E62, 0 30px 60px -18px rgba(120,30,80,.4), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(180deg, #CF6A96 0%, #B04378 50%, #8A2E62 100%)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
+<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), 0 2px 0 #8A2E62, 0 30px 60px -18px rgba(120,30,80,.4), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(135deg, #2E1748 0%, #8A2E62 100%)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
 <span className="cu-beam" aria-hidden="true"></span>
 <img src="/site/celstv-e.webp" alt="" aria-hidden="true" style={{ position: "absolute", right: "30px", bottom: "-40px", height: "220px", width: "auto", opacity: ".22" }} />
 <div style={{ position: "relative", flex: "1 1 380px", minWidth: "0", display: "flex", flexDirection: "column", gap: "10px" }}>
 <h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(28px, 3.4vw, 40px)", lineHeight: "1.12", letterSpacing: "-0.8px" }}>¿No sabes por dónde empezar?</h2>
 <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#FFE3F0" }}>Haz la evaluación gratis en 10 minutos y te decimos desde qué episodio empezar.</p>
 </div>
-<a href={evalHref("celstv")} className="cu-btn cu-btn-dark">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={evalHref("celstv")} className="cu-btn cu-btn-pink">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </section>
 

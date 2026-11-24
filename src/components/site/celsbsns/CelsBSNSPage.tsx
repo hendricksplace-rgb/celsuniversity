@@ -17,6 +17,7 @@ import { mxn, price, saving, separately, type SitePrices } from "@/components/si
 import { ProgramHeroArt } from "@/components/site/ProgramHeroArt";
 import "./celsbsns.css";
 import "./celsbsns-v3.css";
+import "../sections.css";
 
 /** Unlisted YouTube id of the CelsBSNS video; null hides the play button. */
 const VSL_YOUTUBE_ID: string | null = null;
@@ -364,9 +365,9 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         </section>
 
         {/* 2 · PRECIOS (the results email lands here) */}
-        <section className="bv3-blk bv3-pricing bv3-cut" id="planes">
+        <section className="bv3-blk bv3-pricing bv3-cut cs-sec cs-cut" id="planes">
           <span id="precios" aria-hidden="true" className="bv3-anchor" />
-          <div className="bv3-bg" aria-hidden="true">
+          <div className="cs-bg" aria-hidden="true">
             <div className="bv3-aur a1" />
             <div className="bv3-aur a2" />
             <div className="bv3-aur a3" />
@@ -473,9 +474,9 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         </section>
 
         {/* 3 · RUTA */}
-        <section className="bv3-blk bv3-light bv3-lines bv3-cut" id="ruta" ref={routeRef}>
+        <section className="bv3-blk bv3-light bv3-lines bv3-cut cs-sec cs-cut" id="ruta" ref={routeRef}>
           <span id="programa" aria-hidden="true" className="bv3-anchor" />
-          <div className="bv3-bg" aria-hidden="true" />
+          <div className="cs-bg" aria-hidden="true" />
           <div className="bv3-wrap">
             <div className="bv3-head">
               <div>
@@ -565,8 +566,8 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         </section>
 
         {/* 5 · PARA QUIÉN ES */}
-        <section className="bv3-blk bv3-light bv3-lines bv3-cut-r" id="quien">
-          <div className="bv3-bg" aria-hidden="true" />
+        <section className="bv3-blk bv3-light bv3-lines bv3-cut-r cs-sec cs-cut-r" id="quien">
+          <div className="cs-bg" aria-hidden="true" />
           <div className="bv3-wrap">
             <div className="bv3-head">
               <div>
@@ -655,8 +656,8 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         </section>
 
         {/* 7 · CTA FINAL */}
-        <section className="bv3-blk bv3-dark bv3-dots bv3-final bv3-cut-r" id="evaluacion">
-          <div className="bv3-bg" aria-hidden="true">
+        <section className="bv3-blk bv3-dark bv3-dots bv3-final bv3-cut-r cs-sec cs-cut-r" id="evaluacion">
+          <div className="cs-bg" aria-hidden="true">
             <div className="bv3-glow" style={{ width: 420, height: 420, background: "#F20174", right: 0, top: -80, opacity: 0.3 }} />
           </div>
           <div className="bv3-wrap">
