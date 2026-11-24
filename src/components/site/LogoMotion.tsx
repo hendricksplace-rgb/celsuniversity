@@ -1,10 +1,16 @@
 "use client";
 
 // C-053: an animated program logo (Higgsfield videos, 8 s, ending on the real logo). Dumb and prop-driven so it
-// drops into any box: it fills its parent (object-fit: cover), plays ONCE when it's half in view, and holds on the
+// drops into any box: it fills its parent (object-fit: cover), plays ONCE when it comes into view, and holds on the
 // last frame. The poster (that last frame) sits underneath and the video only shows once it's really playing, so
 // the box is never empty or black. Fallbacks leave the poster: prefers-reduced-motion, autoplay refused, or not
 // playing within READY_MS. `replayKey` replays it (the home recommendation panel, when the goal changes).
+//
+// C-054 (app Home program cards) adds, all optional so the website keeps its behaviour:
+//   tone="dark"       the dark CelsTV video (for the dark-plum card)
+//   oncePerDay="…"    play at most once a day for that key (localStorage); later the settled poster shows
+//   threshold/delayMs when it fires (40 % in view, staggered cards)
+//   playOpacity / restOpacity / restFadeMs: big while playing, then it settles into a watermark
 import { useEffect, useRef, useState } from "react";
 
 export type MotionProgram = "celstv" | "celsbsns" | "celsus" | "celsglobal" | "celsu";
@@ -17,14 +23,52 @@ const SOURCES: Record<MotionProgram, { webm: string; mp4: string; poster: string
   // The C-052 hero U (square, flat blue): available for a later switch of HeroU to this component.
   celsu: { webm: "/site/celsu-u-liquid.webm", mp4: "/site/celsu-u-liquid.mp4", poster: "/site/celsu-logo.png" },
 };
+/** Dark-background versions (C-054): only CelsTV differs; the others are already dark. */
+const DARK: Partial<Record<MotionProgram, { webm: string; mp4: string; poster: string }>> = {
+  celstv: { webm: "/motion/celstv-dark.webm", mp4: "/motion/celstv-dark.mp4", poster: "/motion/celstv-dark-poster.webp" },
+};
 
 const READY_MS = 2500;
 const reducedMotion = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+const today = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+};
+const STORE = "celsu.logoMotion.";
+const playedToday = (key: string) => {
+  try {
+    return localStorage.getItem(STORE + key) === today();
+  } catch {
+    return false;
+  }
+};
+const markPlayed = (key: string) => {
+  try {
+    localStorage.setItem(STORE + key, today());
+  } catch {
+    /* private mode: it may play again, that's fine */
+  }
+};
+
+type Phase = "rest" | "playing" | "ended";
 
 type Props = {
   program: MotionProgram;
+  /** "dark": the dark-background video where one exists (CelsTV on the app's dark card). */
+  tone?: "light" | "dark";
   /** Change it to play the animation again from the start. */
   replayKey?: string | number;
+  /** Play at most once a day for this key (localStorage); later the settled poster shows. */
+  oncePerDay?: string;
+  /** Share of the box that must be visible to start (default 0.5). */
+  threshold?: number;
+  /** Wait this long after it comes into view before playing (staggers a row of them). */
+  delayMs?: number;
+  /** Opacity while playing (default 1) and at rest: before, after, or poster only (default 1). */
+  playOpacity?: number;
+  restOpacity?: number;
+  /** How long the fade from playOpacity to restOpacity takes after it ends (default 1200 ms). */
+  restFadeMs?: number;
   /** When the animation stands in for the logo: its accessible name (else it's decorative). */
   label?: string;
   /** How the video fits its box (default cover: fill it). */
@@ -33,11 +77,26 @@ type Props = {
   style?: React.CSSProperties;
 };
 
-export function LogoMotion({ program, replayKey, label, fit = "cover", className, style }: Props) {
-  const src = SOURCES[program];
+export function LogoMotion({
+  program,
+  tone = "light",
+  replayKey,
+  oncePerDay,
+  threshold = 0.5,
+  delayMs = 0,
+  playOpacity = 1,
+  restOpacity = 1,
+  restFadeMs = 1200,
+  label,
+  fit = "cover",
+  className,
+  style,
+}: Props) {
+  const src = (tone === "dark" && DARK[program]) || SOURCES[program];
   const box = useRef<HTMLSpanElement | null>(null);
   const video = useRef<HTMLVideoElement | null>(null);
   const [showVideo, setShowVideo] = useState(false);
+  const [phase, setPhase] = useState<Phase>("rest");
   const seen = useRef(false);
 
   /** Play from the start; if it isn't really playing within READY_MS (or play() is refused), keep the poster. */
@@ -49,12 +108,15 @@ export function LogoMotion({ program, replayKey, label, fit = "cover", className
     const onPlaying = () => {
       ok = true;
       setShowVideo(true);
+      setPhase("playing");
+      if (oncePerDay) markPlayed(oncePerDay);
     };
     v.addEventListener("playing", onPlaying, { once: true });
     const timer = window.setTimeout(() => {
       if (ok) return;
       v.removeEventListener("playing", onPlaying);
       v.pause();
+      setPhase("rest");
     }, READY_MS);
     try {
       v.currentTime = 0;
@@ -64,30 +126,40 @@ export function LogoMotion({ program, replayKey, label, fit = "cover", className
     v.play().catch(() => {
       window.clearTimeout(timer);
       v.removeEventListener("playing", onPlaying);
+      setPhase("rest");
     });
   };
 
-  // First play: once, when half of it is in view. The video isn't requested before that (preload="none").
+  // First play: once, when it comes into view (and, with oncePerDay, only if it hasn't played today). The video
+  // isn't requested before that (preload="none").
   useEffect(() => {
     const el = box.current;
-    if (!el || reducedMotion()) return;
-    if (!("IntersectionObserver" in window)) {
+    if (!el || reducedMotion() || (oncePerDay && playedToday(oncePerDay))) return;
+    let delay: number | undefined;
+    const go = () => {
       seen.current = true;
-      play();
+      if (delayMs) delay = window.setTimeout(play, delayMs);
+      else play();
+    };
+    if (!("IntersectionObserver" in window)) {
+      go();
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting) && !seen.current) {
-          seen.current = true;
           io.disconnect();
-          play();
+          go();
         }
       },
-      { threshold: 0.5 },
+      { threshold },
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      io.disconnect();
+      window.clearTimeout(delay);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only: one first play per mount
   }, []);
 
   // Replays: only after the first play has happened.
@@ -98,9 +170,11 @@ export function LogoMotion({ program, replayKey, label, fit = "cover", className
       return;
     }
     if (seen.current) play();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- replays follow replayKey only
   }, [replayKey]);
 
   const layer: React.CSSProperties = { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: fit };
+  const opacity = phase === "playing" ? playOpacity : restOpacity;
   return (
     <span
       ref={box}
@@ -110,7 +184,16 @@ export function LogoMotion({ program, replayKey, label, fit = "cover", className
       aria-hidden={label ? undefined : true}
       data-logo-motion={program}
       data-playing={showVideo ? "true" : "false"}
-      style={{ position: "absolute", inset: 0, display: "block", overflow: "hidden", ...style }}
+      data-phase={phase}
+      style={{
+        position: "absolute",
+        inset: 0,
+        display: "block",
+        overflow: "hidden",
+        opacity,
+        transition: `opacity ${phase === "ended" ? restFadeMs : 300}ms ease`,
+        ...style,
+      }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- the poster: tiny webp, the last frame */}
       <img src={src.poster} alt="" loading="lazy" decoding="async" style={layer} />
@@ -121,7 +204,10 @@ export function LogoMotion({ program, replayKey, label, fit = "cover", className
         preload="none"
         aria-hidden="true"
         tabIndex={-1}
-        onEnded={() => setShowVideo(true)}
+        onEnded={() => {
+          setShowVideo(true);
+          setPhase("ended");
+        }}
         style={{ ...layer, opacity: showVideo ? 1 : 0, transition: "opacity 200ms ease" }}
       >
         <source src={src.webm} type="video/webm" />
