@@ -9,6 +9,7 @@ import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving,
 import { HeroTakeover } from "@/components/site/HeroTakeover";
 import { HENDRICKS_LAW_URL } from "@/lib/partners";
 import "./celsus.css";
+import "@/components/site/sections.css";
 
 const SHOW_TESTIMONIALS = false;
 
@@ -218,7 +219,6 @@ export default class CelsUSBoard extends Component<{ prices: SitePrices }, any> 
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
       toggleMenu: function () { self.setState({ menuOpen: !self.state.menuOpen }); },
-      fwCta: burst([{ x: 70, y: 30, c: '#FFE07A', d: 0.6, r: 40, sc: .8, op: .9 }, { x: 88, y: 60, c: '#FF5A5A', d: 3, r: 36, sc: .7, op: .9 }]),
       path: path, civ: civ, sim: sim,
       faqs: FAQ.map(function (f, i) {
         var open = s.faq === i;
@@ -287,7 +287,7 @@ stillShows="frame"
 landMask="radial-gradient(60% 60% at 54% 48%, #000 55%, transparent 80%)"
 slotSize={{ desktop: 300, mobile: 200 }}
 decor={<i className="hto-decor cu-ushalo" aria-hidden="true"></i>}
-backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+backdrop={<><span className="cu-usdots" aria-hidden="true"></span><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-180px", left: "-160px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,210,77,.20) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></>}
 >
 <a href="/#programas" style={{ alignSelf: "flex-start", color: "#B9D2F2", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
@@ -307,8 +307,9 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </HeroTakeover>
 
 {/* PATH TO CITIZENSHIP */}
-<section style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0E2A4F 0px, #102D53 33px, #14345D 67px, #1C406E 100px, #254F83 133px, #3B669C 167px, #6488B6 200px, #8EABCF 233px, #A9C0DD 267px, #BBCDE4 300px, #C8D8E9 333px, #D2DEED 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "220px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+{/* C-062: the one fade on the page (Matt's choice): hero navy → light; every other change is a defined edge. */}
+<section className="cs-sec cu-ussec cu-usfade cu-ussteps">
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", top: "220px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#1E4877" }}>TU CAMINO</span>
@@ -327,8 +328,8 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </section>
 
 {/* CIVICS PRACTICE */}
-<section id="practica" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 33px, #B2C6DD 67px, #9CB4D2 100px, #829EC3 133px, #6583AC 167px, #48628A 200px, #2D4269 233px, #1F355B 267px, #193156 300px, #132D52 333px, #0F2B50 367px, #0E2A4F 400px, #0B1E3A 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<section id="practica" className="cs-sec cs-cut cs-dots cu-ussec cu-uscut cu-usprac" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 56px", alignItems: "center" }}>
 <div className="cu-from-l" style={{ flex: "1 1 340px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFD24D" }}>PRACTICA COMO EN EL EXAMEN</span>
@@ -397,8 +398,8 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </section>
 
 {/* INTERVIEW SIMULATOR */}
-<section id="entrevista" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #0D213F 33px, #122A4D 67px, #1A3962 100px, #244C7E 133px, #3B669C 167px, #6488B6 200px, #8EABCF 233px, #A9C0DD 267px, #BBCDE4 300px, #C8D8E9 333px, #D2DEED 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-160px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="entrevista" className="cs-sec cs-cut-r cs-lines cu-ussec cu-uscut cu-uslight">
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", bottom: "-160px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 56px", alignItems: "flex-start" }}>
 <div className="cu-from-l" style={{ flex: "1 1 340px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#B5232C" }}>SIMULADOR DE ENTREVISTA</span>
@@ -443,11 +444,8 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </div>
 </div>
 </div>
-</section>
-
-{/* LEGAL PARTNER */}
-<section style={{ padding: "0 20px 110px", background: "#C6D6E8" }}>
-<div className="cu-reveal cu-raise" style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "20px 32px", padding: "28px", borderRadius: "22px", background: "linear-gradient(135deg, #FFFFFF 0%, #F2F6FB 100%)" }}>
+{/* LEGAL PARTNER (C-062: inside #entrevista, on its light background: no seam) */}
+<div className="cu-reveal cu-raise" style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "40px auto 0", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "20px 32px", padding: "28px", borderRadius: "22px", background: "linear-gradient(135deg, #FFFFFF 0%, #F2F6FB 100%)" }}>
 <span aria-hidden="true" style={{ flex: "0 0 auto", width: "64px", height: "64px", borderRadius: "18px", background: "linear-gradient(160deg, #1E4A7E, #0E2A4F)", color: "#FFD24D", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 14px 28px -12px rgba(14,42,79,.6)" }}>
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v18" /><path d="M5 21h14" /><path d="M5 7h14" /><path d="m5 7-3 7a4 4 0 0 0 6 0z" /><path d="m19 7-3 7a4 4 0 0 0 6 0z" /></svg>
 </span>
@@ -462,8 +460,9 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </section>
 
 {/* WHAT'S INCLUDED */}
-<section style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 33px, #B2C6DD 67px, #9CB4D2 100px, #829EC3 133px, #6583AC 167px, #48628A 200px, #2D4269 233px, #213860 267px, #1D3962 300px, #193A64 333px, #163A66 367px, #153A66 400px, #0E2A4F 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<section className="cs-sec cs-dots cu-ussec cu-uscurve cu-usinc" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#C6D6E8" /></svg></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFD24D" }}>QUÉ INCLUYE</span>
@@ -482,9 +481,9 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </section>
 
 {/* PLANS */}
-<section id="planes" style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: SHOW_TESTIMONIALS ? "linear-gradient(180deg, #0E2A4F 0%, #0B1E3A 100%)" : "linear-gradient(180deg, #0E2A4F 0%, #0B1E3A 70%, #10274A 88%, #153A66 100%)", color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
+<section id="planes" className="cs-sec cs-dots cu-ussec cu-usplans" style={{ color: "#FFFFFF" }}><span id="precios" aria-hidden="true" style={{ position: "absolute", top: "0" }}></span>
 
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "160px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,210,77,.18) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", top: "160px", right: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,210,77,.18) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#7FB8FF" }}>PLANES Y PRECIOS</span>
@@ -518,7 +517,8 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 
 {/* TESTIMONIALS: hidden until Matt sends real ones (never invent any). */}
 {SHOW_TESTIMONIALS ? (
-<section style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #0B1E3A 120px, #10274A 55%, #153A66 100%)", color: "#FFFFFF" }}>
+<section className="cs-sec cs-cut cs-dots cu-ussec cu-uscut cu-usstories" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#FFD24D" }}>NUEVOS CIUDADANOS</span>
@@ -534,7 +534,8 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 ) : null}
 
 {/* FAQ */}
-<section id="faq" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #153A66 0px, #163C69 33px, #1A4170 67px, #20497B 100px, #275389 133px, #3B669C 167px, #6488B6 200px, #8EABCF 233px, #A9C0DD 267px, #BBCDE4 300px, #C8D8E9 333px, #D2DEED 367px, #D5E1EE 400px, #C6D6E8 100%)" }}>
+<section id="faq" className="cs-sec cs-cut-r cs-lines cu-ussec cu-uscut cu-uslight">
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ position: "relative", maxWidth: "900px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "24px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#1E4877" }}>PREGUNTAS FRECUENTES</span>
@@ -557,15 +558,15 @@ backdrop={<><span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 </section>
 
 {/* FINAL CTA */}
+{/* C-062: no band of its own: a card on the FAQ's light background (#C6D6E8). Formal: gold, no fireworks. */}
 <section id="evaluacion" style={{ padding: "0 20px 96px", background: "#C6D6E8" }}>
-<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 #0E2A4F, 0 30px 60px -18px rgba(10,30,70,.5), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(160deg, #1E4A7E 0%, #0E2A4F 75%)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
+<div style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", transform: "perspective(1200px) rotateX(4deg)", boxShadow: "inset 0 1px 0 rgba(255,255,255,.18), 0 2px 0 #0E2A4F, 0 30px 60px -18px rgba(10,30,70,.5), 0 60px 90px -40px rgba(15,13,30,.45)", background: "linear-gradient(135deg, #1E4A7E 0%, #0B1E3A 100%)", border: "1px solid rgba(255,210,77,.35)", color: "#FFFFFF", borderRadius: "20px", padding: "48px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center", justifyContent: "space-between" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-{(v.fwCta ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 <div style={{ position: "relative", flex: "1 1 380px", minWidth: "0", display: "flex", flexDirection: "column", gap: "10px" }}>
 <h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(28px, 3.4vw, 40px)", lineHeight: "1.12", letterSpacing: "-0.8px" }}>Tu entrevista, con confianza.</h2>
 <p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#C9D6EE" }}>Empieza hoy. Haz la evaluación gratis y te decimos cuánto inglés necesitas reforzar para tu entrevista.</p>
 </div>
-<a href={evalHref("celsus")} className="cu-btn cu-btn-pink">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
+<a href={evalHref("celsus")} className="cu-btn cu-btn-gold">Empezar mi evaluación <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
 </div>
 </section>
 
