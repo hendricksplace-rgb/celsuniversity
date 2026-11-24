@@ -8,10 +8,13 @@
 // - Plan buttons go straight to the checkout (/comprar/resumen); while purchases are closed it sends people on
 //   (src/lib/purchase-closed.ts).
 // - The video button only shows once VSL_YOUTUBE_ID is set.
+// - C-055: the hero's right column is ProgramHeroArt (no box): the animated logo, then the chat underneath, which
+//   starts once the logo has settled.
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { checkoutHref, enrollHref, evalHref, recommendedPlan } from "@/lib/enroll";
 import { mxn, price, saving, separately, type SitePrices } from "@/components/site/prices";
+import { ProgramHeroArt } from "@/components/site/ProgramHeroArt";
 import "./celsbsns.css";
 import "./celsbsns-v3.css";
 
@@ -78,14 +81,16 @@ function Arrow() {
   );
 }
 
-/** The hero conversation: up to 4 bubbles, a "typing" dot before each, the 6 lines in a loop. */
-function Chat() {
+/** The hero conversation: up to 4 bubbles, a "typing" dot before each, the 6 lines in a loop. It starts when
+ *  `start` turns true (after the logo animation); under reduced motion it shows its first 4 lines right away. */
+function Chat({ start }: { start: boolean }) {
   const [shown, setShown] = useState<{ k: number; typing: boolean }[]>([]);
   useEffect(() => {
     if (reducedMotion()) {
       setShown([0, 1, 2, 3].map((k) => ({ k, typing: false })));
       return;
     }
+    if (!start) return;
     let i = 0;
     let t: ReturnType<typeof setTimeout>;
     const add = () => {
@@ -99,7 +104,7 @@ function Chat() {
     };
     add();
     return () => clearTimeout(t);
-  }, []);
+  }, [start]);
   return (
     <div className="bv3-chat" aria-hidden="true">
       {shown.map(({ k, typing }) => {
@@ -316,21 +321,24 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
                 <span>Certificado CelsUniversity</span>
               </div>
             </div>
-            <div className="bv3-hcard">
-              {/* eslint-disable-next-line @next/next/no-img-element -- static brand asset */}
-              <img className="bv3-hlogo" src="/site/celsbsns-logo.png" alt="CelsBSNS" />
-              <Chat />
-              {VSL_YOUTUBE_ID && (
-                <button type="button" className="bv3-fplay" onClick={() => setVideo(true)} aria-label="Ver el video de CelsBSNS">
-                  <span className="ring" />
-                  <span className="ring r2" />
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7 4.5l13 7.5-13 7.5z" />
-                  </svg>
-                  <em>Ver video</em>
-                </button>
-              )}
-            </div>
+            <ProgramHeroArt
+              className="bv3-hart"
+              program="celsbsns"
+              label="CelsBSNS"
+              slot={(ready) => <Chat start={ready} />}
+              overlay={
+                VSL_YOUTUBE_ID && (
+                  <button type="button" className="bv3-fplay" onClick={() => setVideo(true)} aria-label="Ver el video de CelsBSNS">
+                    <span className="ring" />
+                    <span className="ring r2" />
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M7 4.5l13 7.5-13 7.5z" />
+                    </svg>
+                    <em>Ver video</em>
+                  </button>
+                )
+              }
+            />
           </div>
         </section>
 

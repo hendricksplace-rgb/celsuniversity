@@ -1,0 +1,11 @@
+/* C-055 ProgramHeroArt: the program hero's right column, no box. See ProgramHeroArt.tsx.
+   The mask reaches 0 exactly at the frame's edges (the ticket's 75%/70% mask left ~45% at the top: the bubbles
+   flying in were cut on a straight line); the settled wordmark stays inside the solid 62%. */
+.pha{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
+.pha-top{position:relative;width:100%;max-width:560px;aspect-ratio:16/9}
+.pha-logo{position:absolute;inset:0;pointer-events:none;mix-blend-mode:lighten;-webkit-mask-image:radial-gradient(50% 50% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(50% 50% at 50% 50%,#000 62%,transparent 100%)}
+.pha-slot{position:relative;width:90%;max-width:504px;margin-top:-40px}
+@media (max-width:900px){
+  .pha-top{max-width:none}
+  .pha-slot{width:100%;max-width:none}
+}

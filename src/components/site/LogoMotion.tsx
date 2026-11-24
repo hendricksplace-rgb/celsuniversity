@@ -11,6 +11,11 @@
 //   oncePerDay="…"    play at most once a day for that key (localStorage); later the settled poster shows
 //   threshold/delayMs when it fires (40 % in view, staggered cards)
 //   playOpacity / restOpacity / restFadeMs: big while playing, then it settles into a watermark
+// C-055 (program page heroes, ProgramHeroArt):
+//   eager             above the fold: play right away on mount (no IntersectionObserver, no lazy poster); still
+//                     preload="none", so under reduced motion the video is never requested
+//   onDone            called once the logo has settled: the video ended, or the poster stays instead
+//                     (reduced motion, autoplay refused, not playing within READY_MS, already played today)
 import { useEffect, useRef, useState } from "react";
 
 export type MotionProgram = "celstv" | "celsbsns" | "celsus" | "celsglobal" | "celsu";
@@ -69,6 +74,10 @@ type Props = {
   restOpacity?: number;
   /** How long the fade from playOpacity to restOpacity takes after it ends (default 1200 ms). */
   restFadeMs?: number;
+  /** Above the fold: load and play at once, poster not lazy. */
+  eager?: boolean;
+  /** Called once the logo has settled (video ended, or the poster stays). */
+  onDone?: () => void;
   /** When the animation stands in for the logo: its accessible name (else it's decorative). */
   label?: string;
   /** How the video fits its box (default cover: fill it). */
@@ -87,6 +96,8 @@ export function LogoMotion({
   playOpacity = 1,
   restOpacity = 1,
   restFadeMs = 1200,
+  eager = false,
+  onDone,
   label,
   fit = "cover",
   className,
@@ -98,11 +109,17 @@ export function LogoMotion({
   const [showVideo, setShowVideo] = useState(false);
   const [phase, setPhase] = useState<Phase>("rest");
   const seen = useRef(false);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+  const done = () => doneRef.current?.();
 
   /** Play from the start; if it isn't really playing within READY_MS (or play() is refused), keep the poster. */
   const play = () => {
     const v = video.current;
-    if (!v || reducedMotion()) return;
+    if (!v || reducedMotion()) {
+      done();
+      return;
+    }
     setShowVideo(false);
     let ok = false;
     const onPlaying = () => {
@@ -117,6 +134,7 @@ export function LogoMotion({
       v.removeEventListener("playing", onPlaying);
       v.pause();
       setPhase("rest");
+      done();
     }, READY_MS);
     try {
       v.currentTime = 0;
@@ -127,6 +145,7 @@ export function LogoMotion({
       window.clearTimeout(timer);
       v.removeEventListener("playing", onPlaying);
       setPhase("rest");
+      done();
     });
   };
 
@@ -134,14 +153,17 @@ export function LogoMotion({
   // isn't requested before that (preload="none").
   useEffect(() => {
     const el = box.current;
-    if (!el || reducedMotion() || (oncePerDay && playedToday(oncePerDay))) return;
+    if (!el || reducedMotion() || (oncePerDay && playedToday(oncePerDay))) {
+      done();
+      return;
+    }
     let delay: number | undefined;
     const go = () => {
       seen.current = true;
       if (delayMs) delay = window.setTimeout(play, delayMs);
       else play();
     };
-    if (!("IntersectionObserver" in window)) {
+    if (eager || !("IntersectionObserver" in window)) {
       go();
       return;
     }
@@ -196,7 +218,7 @@ export function LogoMotion({
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- the poster: tiny webp, the last frame */}
-      <img src={src.poster} alt="" loading="lazy" decoding="async" style={layer} />
+      <img src={src.poster} alt="" loading={eager ? "eager" : "lazy"} decoding="async" style={layer} />
       <video
         ref={video}
         muted
@@ -207,6 +229,7 @@ export function LogoMotion({
         onEnded={() => {
           setShowVideo(true);
           setPhase("ended");
+          done();
         }}
         style={{ ...layer, opacity: showVideo ? 1 : 0, transition: "opacity 200ms ease" }}
       >
