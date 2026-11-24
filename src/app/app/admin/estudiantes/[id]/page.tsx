@@ -7,7 +7,8 @@ import { GrantForm, RevokeButton } from "@/components/admin/AccessForms";
 import { InviteButton } from "@/components/admin/InviteButtons";
 import { ChangeEmailButton } from "@/components/admin/ChangeEmail";
 import { getDictionary } from "@/lib/i18n/server";
-import { fmtDay, inviteLabel } from "@/lib/invites";
+import { fmtDay, inviteLabel, previewInviteTemplates } from "@/lib/invites";
+import { INVITE_TEMPLATE_LABEL } from "@/lib/invite-template";
 
 export const metadata = { title: "Estudiante · CelsU" };
 
@@ -43,6 +44,9 @@ export default async function Estudiante({ params }: Props) {
   ]);
   // Administrators change student emails; only a super_admin changes a staff account's. Never your own (use your profile).
   const canChangeEmail = viewer.user.id !== p.id && (viewer.role === "super_admin" || p.role === "student" || p.role === "individual_student");
+  // C-071: which invitation would go out (the student-invite function decides; null if it couldn't say).
+  const token = (await supabase.auth.getSession()).data.session?.access_token;
+  const inviteTemplate = token ? ((await previewInviteTemplates([id], token)).get(id) ?? null) : null;
   const lastInvite = invites?.[0] ?? null;
   const lastSignIn = signin?.[0]?.last_sign_in_at ?? null;
   const invite = inviteLabel(lastInvite);
@@ -92,10 +96,10 @@ export default async function Estudiante({ params }: Props) {
         <p className="text-sm font-semibold text-[#6B6680]">
           {lastInvite
             ? `Última enviada el ${fmtDay(lastInvite.sent_at)}${invites && invites.length > 1 ? ` (${invites.length} en total)` : ""} · el enlace vence el ${fmtDay(lastInvite.expires_at)}.`
-            : "Le llega «Tu nueva plataforma CelsU ya está lista» con un enlace para crear su contraseña (dura 30 días)."}{" "}
+            : `Le llega ${inviteTemplate ? `«${INVITE_TEMPLATE_LABEL[inviteTemplate]}»` : "su invitación"} con un enlace para crear su contraseña (dura 30 días).`}{" "}
           {lastSignIn ? `Entró por última vez el ${fmtDay(lastSignIn)}.` : "Nunca ha entrado."}
         </p>
-        <InviteButton userId={p.id} sent={!!lastInvite} />
+        <InviteButton userId={p.id} sent={!!lastInvite} template={inviteTemplate} />
       </section>
 
       <section className="space-y-3 rounded-3xl border border-[#EFE6F2] bg-white p-5 shadow-sm">

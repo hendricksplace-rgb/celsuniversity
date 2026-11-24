@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getViewer, isAdminRole } from "@/lib/access";
 import { focus, input } from "@/components/builder/ui";
 import { BulkInviteButton } from "@/components/admin/InviteButtons";
-import { fmtDay, inviteLabel, type InviteRow } from "@/lib/invites";
+import { fmtDay, inviteLabel, previewInviteTemplates, type InviteRow } from "@/lib/invites";
 
 export const metadata = { title: "Estudiantes · CelsU" };
 
@@ -26,6 +26,9 @@ export default async function Estudiantes({ searchParams }: Props) {
   const needle = search.toLowerCase();
   const pending = (pendingAll ?? []).filter((p) => !needle || p.email?.toLowerCase().includes(needle) || p.display_name?.toLowerCase().includes(needle));
   const pendingIds = new Set(pending.map((p) => p.user_id));
+  // C-071: which invitation each pending student would get (shown in the «Enviar a todos» confirmation).
+  const token = (await supabase.auth.getSession()).data.session?.access_token;
+  const pendingTemplate = token && pendingIds.size ? await previewInviteTemplates([...pendingIds], token) : new Map();
 
   let query = supabase.from("profiles").select("id, email, display_name, created_at, requested_plan").in("role", ["individual_student", "student"]).order("created_at", { ascending: false }).limit(50);
   if (search) query = query.or(`email.ilike.%${search}%,display_name.ilike.%${search}%`);
@@ -81,7 +84,7 @@ export default async function Estudiantes({ searchParams }: Props) {
             Invitación pendiente ({pending.length})
           </Link>
         </nav>
-        <BulkInviteButton search={search} people={pending.map((p) => ({ id: p.user_id, label: p.display_name && p.display_name !== p.email ? `${p.display_name} · ${p.email}` : p.email }))} />
+        <BulkInviteButton search={search} people={pending.map((p) => ({ id: p.user_id, label: p.display_name && p.display_name !== p.email ? `${p.display_name} · ${p.email}` : p.email, template: pendingTemplate.get(p.user_id) ?? null }))} />
       </div>
       <p className="text-xs font-semibold text-[#6B6680]">Pendiente = tiene acceso, nunca ha entrado y no se le ha enviado invitación.</p>
       {!people?.length ? (
