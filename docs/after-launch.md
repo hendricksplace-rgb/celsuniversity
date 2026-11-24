@@ -9,7 +9,6 @@ Not needed for the October 19, 2026 switch. The order is roughly by value.
 ## Product and content
 - **CelsTV episodes 3–8 have no CelsVideo.** It's a content gap for Cowork; the part shows "llega muy pronto".
 - **Testimonials.** The section stays hidden until Matt sends real ones (`celsu-website-spec.md`).
-- **Hendricks Law button (CelsUS).** It's a mailto to hola@celstv.com until Matt sends the URL.
 - **Share-image copy.** The prices and short lines on the share images are fixed text in `src/components/site/og.tsx`. Update them if `products` prices change.
 - **Legal review.** The bracketed `[LAWYER…]` and `[MATT…]` notes in `/privacidad` and `/terminos` are hidden on the site but still open.
 
