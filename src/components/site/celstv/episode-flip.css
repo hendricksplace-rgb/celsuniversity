@@ -1,0 +1,24 @@
+/* C-059 EpisodeFlip: see EpisodeFlip.tsx. Every length is a multiple of --k (the stage's fit to its column). */
+.ef{position:relative;width:100%;min-width:0}
+.ef-stage{position:relative;height:calc(var(--k) * 350px);perspective:calc(var(--k) * 1400px);transform-style:preserve-3d}
+.ef-card{position:absolute;left:50%;top:calc(var(--k) * 44px);width:calc(var(--k) * 500px);margin-left:calc(var(--k) * -250px);aspect-ratio:16/9;border-radius:calc(var(--k) * 16px);overflow:hidden;background:#2C1644;box-shadow:0 calc(var(--k) * 30px) calc(var(--k) * 60px) calc(var(--k) * -18px) rgba(30,0,20,.75),0 calc(var(--k) * 8px) calc(var(--k) * 18px) rgba(30,0,20,.35);transform-origin:50% 50%;backface-visibility:hidden;
+  transition:transform var(--d) cubic-bezier(.2,.8,.2,1),opacity var(--d) cubic-bezier(.2,.8,.2,1),filter var(--d) cubic-bezier(.2,.8,.2,1)}
+.ef-card img{object-fit:cover}
+.ef-front{transform:translate3d(0,0,0);opacity:1;filter:brightness(1)}
+.ef-right{transform:translate3d(calc(var(--x) * var(--k)),calc(var(--k) * -26px),calc(var(--k) * -160px)) rotateY(-14deg) rotateZ(-4deg) scale(.86);opacity:1;filter:brightness(.72)}
+.ef-left{transform:translate3d(calc(var(--x) * var(--k) * -1),calc(var(--k) * -26px),calc(var(--k) * -160px)) rotateY(14deg) rotateZ(4deg) scale(.86);opacity:1;filter:brightness(.72)}
+.ef-enter{transform:translate3d(calc(var(--k) * -60px),calc(var(--k) * 30px),calc(var(--k) * 220px)) rotateY(75deg) scale(1.05);opacity:0;filter:brightness(1)}
+.ef-out{transform:translate3d(calc(var(--k) * -360px),calc(var(--k) * -40px),calc(var(--k) * -320px)) rotateY(30deg) scale(.7);opacity:0;filter:brightness(.72)}
+.ef-sweep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.38) 50%,transparent 70%);transform:translateX(-110%);animation:ef-sweep .9s ease-out .15s forwards}
+@keyframes ef-sweep{to{transform:translateX(110%)}}
+
+.ef-cap{position:relative;height:58px;margin-top:6px}
+.ef-count,.ef-end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:13px;letter-spacing:2px}
+.ef-count{color:#FFE3F0;transition:opacity .35s ease}
+.ef[data-phase="idle"] .ef-count,.ef[data-phase="ending"] .ef-count,.ef[data-phase="done"] .ef-count{opacity:0}
+.ef-dashes{display:flex;gap:6px}
+.ef-dashes i{width:26px;height:5px;border-radius:3px;background:rgba(255,255,255,.25);transition:background .3s ease}
+.ef-dashes i.on{background:#FFE08A}
+.ef-end{color:#FFE08A;font-size:14px;opacity:0;transition:opacity .7s ease}
+.ef[data-phase="done"] .ef-end{opacity:1}
+@media (prefers-reduced-motion:reduce){.ef-card,.ef-count,.ef-end{transition:none}.ef-sweep{display:none}}
