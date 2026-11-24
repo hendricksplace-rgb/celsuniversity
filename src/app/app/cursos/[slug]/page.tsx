@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { HENDRICKS_LAW_URL } from "@/lib/partners";
+import { HENDRICKS_LAW_URL, HENDRICKS_LAW_URL_EN } from "@/lib/partners";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDictionary } from "@/lib/i18n/server";
@@ -91,7 +91,7 @@ export default async function CoursePage({ params }: Props) {
   if (page.layout === "episodes") return <EpisodesView page={page} t={t.course} notice={notice} />;
   if (page.layout === "citizenship") {
     const data = await passportData(supabase, viewer, page);
-    return <Passport lang={lang} notice={notice} lawHref={HENDRICKS_LAW_URL} {...data} />;
+    return <Passport lang={lang} notice={notice} lawHref={lang === "en" ? HENDRICKS_LAW_URL_EN : HENDRICKS_LAW_URL} {...data} />;
   }
   return <WeeksView page={page} t={t.course} theme={theme} notice={notice} />;
 }
