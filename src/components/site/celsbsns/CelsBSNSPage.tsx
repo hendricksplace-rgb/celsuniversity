@@ -194,6 +194,27 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
   };
 
   const W = WEEKS.map((w, i) => (weeks[i] ? { ...w, en: weeks[i] } : w));
+  /** A week's text. `sizer`: an invisible copy that only reserves height (C-056). */
+  const weekBody = (w: (typeof W)[number], i: number, sizer = false) => (
+    <div key={sizer ? i : "cur"} className={sizer ? "body bv3-wsizer" : "body"} aria-hidden={sizer || undefined}>
+      <div className="en">
+        Week {i + 1} · {w.en}
+      </div>
+      <h3>{w.es}</h3>
+      <p>{w.desc}</p>
+      <div className="bv3-quote" lang="en">
+        &ldquo;{w.say}&rdquo;
+      </div>
+      <div className="bv3-tags">
+        Esta semana:
+        {TASKS.map((t) => (
+          <span key={t.label} style={{ background: t.bg, color: t.fg }}>
+            {t.label}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
   const cur = W[week];
 
   // Which card stands out: the plan chosen on /inscribirme, else the plan for the evaluation level, else Premium.
@@ -345,9 +366,11 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         {/* 2 · PRECIOS (the results email lands here) */}
         <section className="bv3-blk bv3-pricing bv3-cut" id="planes">
           <span id="precios" aria-hidden="true" className="bv3-anchor" />
-          <div className="bv3-aur a1" />
-          <div className="bv3-aur a2" />
-          <div className="bv3-aur a3" />
+          <div className="bv3-bg" aria-hidden="true">
+            <div className="bv3-aur a1" />
+            <div className="bv3-aur a2" />
+            <div className="bv3-aur a3" />
+          </div>
           <div className="bv3-wrap">
             {level && (
               <div className="bv3-res" role="status">
@@ -452,6 +475,7 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
         {/* 3 · RUTA */}
         <section className="bv3-blk bv3-light bv3-lines bv3-cut" id="ruta" ref={routeRef}>
           <span id="programa" aria-hidden="true" className="bv3-anchor" />
+          <div className="bv3-bg" aria-hidden="true" />
           <div className="bv3-wrap">
             <div className="bv3-head">
               <div>
@@ -480,23 +504,9 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
                 <b>{week + 1}</b>
                 <small className="of">de 10</small>
               </div>
-              <div className="body">
-                <div className="en">
-                  Week {week + 1} · {cur.en}
-                </div>
-                <h3>{cur.es}</h3>
-                <p>{cur.desc}</p>
-                <div className="bv3-quote" lang="en">
-                  &ldquo;{cur.say}&rdquo;
-                </div>
-                <div className="bv3-tags">
-                  Esta semana:
-                  {TASKS.map((t) => (
-                    <span key={t.label} style={{ background: t.bg, color: t.fg }}>
-                      {t.label}
-                    </span>
-                  ))}
-                </div>
+              <div className="bv3-wstack">
+                {weekBody(cur, week)}
+                {W.map((w, i) => weekBody(w, i, true))}
               </div>
               <div className="ctrl">
                 <button type="button" onClick={() => setPlaying((p) => !p)}>
@@ -556,6 +566,7 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
 
         {/* 5 · PARA QUIÉN ES */}
         <section className="bv3-blk bv3-light bv3-lines bv3-cut-r" id="quien">
+          <div className="bv3-bg" aria-hidden="true" />
           <div className="bv3-wrap">
             <div className="bv3-head">
               <div>
@@ -645,7 +656,9 @@ export default function CelsBSNSPage({ weeks = [], prices: P, access }: Props) {
 
         {/* 7 · CTA FINAL */}
         <section className="bv3-blk bv3-dark bv3-dots bv3-final bv3-cut-r" id="evaluacion">
-          <div className="bv3-glow" style={{ width: 420, height: 420, background: "#F20174", right: 0, top: -80, opacity: 0.3 }} />
+          <div className="bv3-bg" aria-hidden="true">
+            <div className="bv3-glow" style={{ width: 420, height: 420, background: "#F20174", right: 0, top: -80, opacity: 0.3 }} />
+          </div>
           <div className="bv3-wrap">
             <div>
               <h2>¿Tienes nivel B2? Compruébalo en 10 minutos.</h2>
