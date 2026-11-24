@@ -147,3 +147,63 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 @keyframes cu-mer{0%{transform:scaleX(1)}50%{transform:scaleX(.04)}100%{transform:scaleX(-1)}}
 .cu-mer{transform-origin:200px 200px;transform-box:view-box;animation:cu-mer 12s linear infinite}
 @media (prefers-reduced-motion: reduce){.cu-draw{animation:none;stroke-dashoffset:0}.cu-g-float,.cu-mer{animation:none}}
+
+/* C-061: the CelsGLOBAL hero (GlobalHero + HeroTakeover): G takeover → the 6-month route → the world opens up. */
+.gl-hero{--gold:#C7A24E;--gold2:#E9D29A;--ivory:#F4EEDD;--teal:#3F8FA6;color:#FFFFFF;min-height:clamp(640px,86vh,780px);padding:56px 20px 80px;
+  background:radial-gradient(40% 50% at 0% 0%,rgba(199,162,78,.20),transparent 70%),radial-gradient(40% 50% at 100% 100%,rgba(63,143,166,.22),transparent 70%),linear-gradient(160deg,#23395A,#1D3352 45%,#14182B)}
+.gl-hero .hto-wrap{gap:28px 48px}
+.gl-hero .hto-copy{flex:1 1 440px;gap:18px}
+.gl-back{color:#B9C7DD;font-weight:700;font-size:14px;text-decoration:none;align-self:flex-start}
+.gl-kick{font-weight:800;font-size:12.5px;letter-spacing:2px;color:var(--gold)}
+.gl-h1{margin:0;font-weight:800;font-size:clamp(40px,5.6vw,70px);line-height:1.02;letter-spacing:-2px}
+.gl-h1 em{font-family:var(--font-fraunces),Georgia,serif;font-style:italic;font-weight:500;color:var(--ivory);letter-spacing:-1px}
+.gl-sub{margin:0;font-size:18px;line-height:1.6;color:#C9D3E3;max-width:540px}
+.gl-ctas,.gl-chips{display:flex;flex-wrap:wrap;gap:12px}
+.gl-chips{gap:10px}
+/* the right column: the route (below the copy on phones) */
+.hto.gl-hero .hto-art{flex:1 1 520px;min-height:0;display:block;padding-bottom:0}
+.gl-route{position:relative}
+.gl-map{position:relative;width:100%;aspect-ratio:600/470;transition:opacity 1.2s ease}
+.gl-map.dim{opacity:.18}
+.gl-map svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.gl-hero .hto-still.gl-dock{position:absolute;width:13%;height:auto;transform:translate(-50%,-50%);filter:drop-shadow(0 8px 14px rgba(0,0,0,.5))}
+.gl-stop{position:absolute;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:var(--gold);opacity:0;transition:opacity .3s}
+.gl-stop.on{opacity:1;animation:gl-ping 1.1s ease-out}
+@keyframes gl-ping{0%{box-shadow:0 0 0 0 rgba(233,210,154,.7)}100%{box-shadow:0 0 0 18px rgba(233,210,154,0)}}
+.gl-lab{position:absolute;width:max-content;max-width:190px;font-size:12.5px;line-height:1.3;opacity:0;transform:translateY(6px);transition:opacity .45s,transform .45s}
+.gl-lab.on{opacity:1;transform:none}
+.gl-lab b{display:block;font-size:10.5px;letter-spacing:1.6px;color:var(--gold2)}
+.gl-lab strong{display:block;font-size:15px}
+.gl-lab span{color:#9FD4E2;font-weight:700}
+.gl-dest{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,#fff,var(--gold2) 40%,rgba(199,162,78,0) 70%);opacity:0;transition:opacity .4s}
+.gl-dest.on{opacity:1;animation:gl-glow 2.4s ease-in-out infinite}
+@keyframes gl-glow{50%{transform:translate(-50%,-50%) scale(1.5)}}
+/* the closing, with a soft dark backdrop so it reads over the Earth's lights */
+.gl-end{position:relative;isolation:isolate;margin-top:10px;opacity:0;transform:translateY(10px);transition:opacity .8s,transform .8s}
+.gl-end::before{content:"";position:absolute;inset:-34px -48px;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,rgba(10,14,30,.78),rgba(10,14,30,.5) 55%,transparent)}
+.gl-end.on{opacity:1;transform:none}
+.gl-end h2{margin:0;font-family:var(--font-fraunces),Georgia,serif;font-weight:600;font-size:clamp(26px,3vw,36px);line-height:1.1;color:var(--ivory);text-wrap:balance;text-shadow:0 2px 14px rgba(10,14,30,.8)}
+.gl-who{margin:8px 0 0;color:#9FD4E2;font-weight:700;font-size:15px;text-shadow:0 1px 10px rgba(10,14,30,.9)}
+.gl-count{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap;font-weight:800;font-size:13px;letter-spacing:1px;color:#C9D3E3;opacity:0;transition:opacity .6s .6s;text-shadow:0 1px 8px rgba(10,14,30,.9)}
+.hto[data-phase="landed"] .gl-count,.hto[data-phase="static"] .gl-count{opacity:1}
+.gl-pills{display:flex;gap:5px}
+.gl-pills i{width:22px;height:6px;border-radius:3px;background:rgba(255,255,255,.15);transition:background .3s}
+.gl-pills i.on{background:var(--gold)}
+.gl-final{color:var(--gold2)}
+.gl-hero .gl-again{position:static;transform:none;margin-top:16px}
+/* the world: a background layer behind the copy, its left side faded so the headline stays clean */
+.gl-world{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1.6s ease;-webkit-mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 38%,#000 62%);mask-image:linear-gradient(90deg,transparent 0,rgba(0,0,0,.35) 38%,#000 62%)}
+.gl-world.on{opacity:.95}
+.gl-world video{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover}
+.hto[data-phase="static"] .gl-world{transition:none}
+/* sound: a small pill, top-right, during the intro */
+.gl-sound{position:absolute;top:18px;right:20px;font:inherit;font-weight:700;font-size:13px;color:#fff;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:36px}
+.gl-sound[aria-pressed="true"]{background:rgba(199,162,78,.3);border-color:rgba(233,210,154,.55)}
+@media (max-width:860px){
+  .gl-hero{padding:40px 18px 70px;align-items:flex-start}
+  .hto.gl-hero .hto-art{order:0;flex-basis:100%;min-height:0;padding-bottom:0}
+  .gl-map{aspect-ratio:600/640} /* taller on phones: the stretched route spreads the 6 labels apart */
+  .gl-lab{max-width:130px;font-size:11.5px}
+  .gl-lab strong{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){.gl-map,.gl-end,.gl-count,.gl-world,.gl-lab,.gl-stop{transition:none;animation:none}.gl-dest.on{animation:none}}

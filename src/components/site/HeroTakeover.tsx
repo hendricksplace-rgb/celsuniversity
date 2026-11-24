@@ -21,8 +21,20 @@ import "./hero-takeover.css";
 
 const START_TIMEOUT_MS = 5000;
 const COPY_AFTER_MS = 450;
+const FLIGHT_MS = 1400;
 
 type Phase = "intro" | "landed" | "static";
+/** How the intro ended: it flew on its own, the visitor skipped it, or it fell back to the static still. */
+export type LandedMode = "flown" | "skipped" | "static";
+export type HeroArtApi = {
+  /** Put this on the image the logo lands on (the landing target; give it the class hto-still). */
+  stillRef: React.RefObject<HTMLImageElement | null>;
+  phase: Phase;
+  /** True once the video has handed over to the still (with `handoff`). */
+  docked: boolean;
+  /** Runs the whole intro again (only meaningful once landed). */
+  replay: () => void;
+};
 
 type Props = {
   id?: string;
@@ -52,7 +64,17 @@ type Props = {
   backdrop?: React.ReactNode;
   /** The left column; each direct child reveals in turn. */
   children: React.ReactNode;
-  onLanded?: () => void;
+  onLanded?: (mode: LandedMode) => void;
+  /** Called when the intro video really starts playing (from 0), e.g. to sync music. */
+  onIntroStart?: () => void;
+  /** C-061: a custom right column instead of the slot (CelsGLOBAL's route): it renders the landing still. */
+  renderArt?: (api: HeroArtApi) => React.ReactNode;
+  /** A mask on the takeover video for its whole life (e.g. a radial edge). */
+  videoMask?: string;
+  /** After the flight, hide the video and show the still (so the still can be styled, e.g. dimmed). */
+  handoff?: boolean;
+  /** Controls painted over everything in the hero (e.g. a sound button). */
+  overlay?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   labels?: { skip: string; replay: string };
@@ -69,6 +91,11 @@ export function HeroTakeover({
   logoCenter = { x: 0.5, y: 0.5 },
   stillShows = "logo",
   landMask,
+  videoMask,
+  handoff = false,
+  renderArt,
+  overlay,
+  onIntroStart,
   slotSize = { desktop: 300, mobile: 220 },
   logoHeight = { desktop: 190, mobile: 140 },
   decor,
@@ -85,7 +112,11 @@ export function HeroTakeover({
   const [phase, setPhase] = useState<Phase>("intro");
   const [fly, setFly] = useState(false);
   const [src, setSrc] = useState(false);
+  const [docked, setDocked] = useState(false);
   const flown = useRef(false);
+  const skipped = useRef(false);
+  const startCb = useRef(onIntroStart);
+  startCb.current = onIntroStart;
   const timers = useRef<number[]>([]);
   const landedCb = useRef(onLanded);
   landedCb.current = onLanded;
@@ -120,7 +151,7 @@ export function HeroTakeover({
     clearTimers();
     vid.current?.pause();
     setPhase("static");
-    landedCb.current?.();
+    landedCb.current?.("static");
   }, []);
 
   const flyNow = useCallback(() => {
@@ -134,17 +165,20 @@ export function HeroTakeover({
       v.style.transform = target();
       later(() => {
         setPhase("landed");
-        landedCb.current?.();
+        landedCb.current?.(skipped.current ? "skipped" : "flown");
       }, COPY_AFTER_MS);
+      if (handoff) later(() => setDocked(true), FLIGHT_MS + 50);
     });
-  }, [target]);
+  }, [target, handoff]);
 
   const start = useCallback(() => {
     const v = vid.current;
     if (!v) return;
     clearTimers();
     flown.current = false;
+    skipped.current = false;
     setFly(false);
+    setDocked(false);
     setPhase("intro");
     v.style.transform = "none";
     const go = () => {
@@ -154,6 +188,7 @@ export function HeroTakeover({
       } catch {
         /* not loaded yet */
       }
+      v.addEventListener("playing", () => startCb.current?.(), { once: true });
       v.play().catch(finish);
     };
     if (v.readyState >= 4) go();
@@ -166,6 +201,7 @@ export function HeroTakeover({
   const skip = useCallback(() => {
     const v = vid.current;
     if (flown.current || !v) return;
+    skipped.current = true;
     if (v.currentTime < skipTo) {
       try {
         v.currentTime = skipTo;
@@ -244,10 +280,11 @@ export function HeroTakeover({
     "--hto-logo": `${logoHeight.desktop}px`,
     "--hto-logo-m": `${logoHeight.mobile}px`,
     ...(landMask ? { "--hto-landmask": landMask } : {}),
+    ...(videoMask ? { "--hto-vmask": videoMask } : {}),
   } as React.CSSProperties;
 
   return (
-    <section ref={hero} id={id} className={`hto${className ? ` ${className}` : ""}`} data-phase={phase} style={{ ...vars, ...style }}>
+    <section ref={hero} id={id} className={`hto${className ? ` ${className}` : ""}`} data-phase={phase} data-docked={docked ? "true" : undefined} style={{ ...vars, ...style }}>
       {backdrop}
       <div className={`hto-stage${fly ? " fly" : ""}`} aria-hidden="true">
         <video ref={vid} muted playsInline preload="auto" tabIndex={-1}>
@@ -257,19 +294,24 @@ export function HeroTakeover({
       </div>
       <div className="hto-wrap">
         <div className="hto-copy">{children}</div>
-        <div className="hto-art">
-          <div className="hto-slot">
-            {decor}
-            {/* eslint-disable-next-line @next/next/no-img-element -- the brand still, also the landing target */}
-            <img ref={still} className="hto-still" src={posterImg} alt={posterAlt} />
-            {phase === "landed" && (
-              <button type="button" className="hto-again" onClick={start}>
-                {labels.replay}
-              </button>
-            )}
+        {renderArt ? (
+          <div className="hto-art hto-art-custom">{renderArt({ stillRef: still, phase, docked, replay: start })}</div>
+        ) : (
+          <div className="hto-art">
+            <div className="hto-slot">
+              {decor}
+              {/* eslint-disable-next-line @next/next/no-img-element -- the brand still, also the landing target */}
+              <img ref={still} className="hto-still" src={posterImg} alt={posterAlt} />
+              {phase === "landed" && (
+                <button type="button" className="hto-again" onClick={start}>
+                  {labels.replay}
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+      {overlay}
       {phase === "intro" && (
         <button type="button" className="hto-skip" onClick={skip}>
           {labels.skip}
