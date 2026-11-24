@@ -79,15 +79,9 @@ a:focus-visible,button:focus-visible{outline:3px solid #0F0D1E;outline-offset:3p
 .cu-btn-sm::before{border-radius:10px 10px 0 0}
 @keyframes cu-e{0%,100%{transform:translateY(0) rotateY(-16deg) rotate(-3deg)}50%{transform:translateY(-12px) rotateY(16deg) rotate(3deg)}}
 @keyframes cu-ering{0%{transform:scale(.8);opacity:.55}100%{transform:scale(1.5);opacity:0}}
-@keyframes cu-breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
-@keyframes cu-pan{0%,100%{transform:scale(1.14) translateX(-3.5%)}50%{transform:scale(1.14) translateX(3.5%)}}
 .cu-e{animation:cu-e 5.5s ease-in-out infinite;transform-style:preserve-3d}
 .cu-ering{animation:cu-ering 2.8s ease-out infinite}
-.cu-ering2{animation:cu-ering 2.8s ease-out .93s infinite}
-.cu-ering3{animation:cu-ering 2.8s ease-out 1.86s infinite}
-.cu-breathe{animation:cu-breathe 6s ease-in-out infinite}
-.cu-pan{animation:cu-pan 18s ease-in-out infinite}
-@media (prefers-reduced-motion: reduce){.cu-e,.cu-ering,.cu-ering2,.cu-ering3,.cu-breathe,.cu-pan{animation:none}}
+@media (prefers-reduced-motion: reduce){.cu-e,.cu-ering{animation:none}}
 .cu-wd{display:inline-block;margin-right:.26em;transition:color .25s ease}
 .cu-wd-off{opacity:.16;transform:translateY(8px)}
 @keyframes cu-wpop{0%{opacity:.2;transform:translateY(10px) scale(.85)}60%{opacity:1;transform:translateY(-3px) scale(1.08)}100%{opacity:1;transform:none}}
