@@ -284,7 +284,7 @@ function ProgramCard({ t, p, index }: { t: T; p: HomeProgram; index: number }) {
         <ul className={s.list}>
           {p.courses.map((c) => (
             <li key={c.id}>
-              <Link href={`/app/cursos/${c.slug}`} className="block hover:underline">
+              <Link data-opener={p.brand} href={`/app/cursos/${c.slug}`} className="block hover:underline">
                 <span className={s.row}>
                   {c.title} <small>{c.total ? `${c.done}/${c.total}` : t.noLessons}</small>
                 </span>
@@ -317,12 +317,12 @@ function ProgramCard({ t, p, index }: { t: T; p: HomeProgram; index: number }) {
           </span>
         )}
         {global ? (
-          <Link href="/app/programas/celsglobal" className={s.pcLink}>
+          <Link data-opener={p.brand} href="/app/programas/celsglobal" className={s.pcLink}>
             {t.viewRoute} <span aria-hidden>→</span>
           </Link>
         ) : (
           p.next && (
-            <Link href={p.next.href} className={s.pcLink} aria-label={`${p.next.started ? t.openIt : t.start}: ${p.next.part} · ${p.focus?.title ?? ""}`}>
+            <Link data-opener={p.brand} href={p.next.href} className={s.pcLink} aria-label={`${p.next.started ? t.openIt : t.start}: ${p.next.part} · ${p.focus?.title ?? ""}`}>
               {p.next.started ? t.openIt : t.start} <span aria-hidden>→</span>
             </Link>
           )

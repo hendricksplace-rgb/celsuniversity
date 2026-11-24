@@ -110,6 +110,7 @@ export function HeroU({ replay }: { replay: number }) {
     setIntro(true);
     layoutFull();
     state.current = "intro";
+    sampled.current = 0;
     try {
       v.currentTime = 0;
     } catch {
@@ -163,11 +164,60 @@ export function HeroU({ replay }: { replay: number }) {
     };
   }, [sources, start, toStatic]);
 
+  // C-069: paint the flat layer with the video's real edge colours (browsers decode colours slightly differently: in
+  // Chrome a fixed #02C5F7 left a faint darker circle around the U), on `playing` and again at 1.0 s.
+  const sampled = useRef(0);
+  const matchColor = useCallback(() => {
+    const v = vid.current;
+    const flat = hero?.querySelector<HTMLElement>(".cu-uflat");
+    if (!v || !flat) return;
+    try {
+      const c = document.createElement("canvas");
+      c.width = 16;
+      c.height = 16;
+      const x = c.getContext("2d");
+      if (!x) return;
+      x.drawImage(v, 0, 0, 16, 16);
+      // The ribbons can sweep through any edge point: of several along the top and bottom rows, keep the one
+      // closest to the video's flat blue (#02C5F7); if none is close (all ribbon), keep the fixed colour.
+      const near = (cy: number) => {
+        let best: Uint8ClampedArray | null = null;
+        let bd = Infinity;
+        for (const cx of [1, 4, 8, 11, 14]) {
+          const d = x.getImageData(cx, cy, 1, 1).data;
+          const dist = Math.abs(d[0] - 2) + Math.abs(d[1] - 197) + Math.abs(d[2] - 247);
+          if (dist < bd) {
+            bd = dist;
+            best = d;
+          }
+        }
+        return bd <= 60 ? best : null;
+      };
+      const t = near(1);
+      const b = near(14);
+      if (!t || !b) return;
+      flat.style.background = `linear-gradient(180deg,rgb(${t[0]},${t[1]},${t[2]}),rgb(${b[0]},${b[1]},${b[2]}))`;
+    } catch {
+      /* keep #02C5F7 */
+    }
+  }, [hero]);
+
   // The video's clock flies it; at its end the sharp logo fades in.
   useEffect(() => {
     const v = vid.current;
     if (!sources || !v) return;
+    const onPlaying = () => {
+      if (!sampled.current) {
+        sampled.current = 1;
+        matchColor();
+      }
+    };
+    v.addEventListener("playing", onPlaying);
     const onTime = () => {
+      if (sampled.current < 2 && v.currentTime >= 1.0) {
+        sampled.current = 2;
+        matchColor();
+      }
       if (state.current === "intro" && v.currentTime >= FLY_AT) land();
     };
     const onEnded = () => {
@@ -177,10 +227,11 @@ export function HeroU({ replay }: { replay: number }) {
     v.addEventListener("timeupdate", onTime);
     v.addEventListener("ended", onEnded);
     return () => {
+      v.removeEventListener("playing", onPlaying);
       v.removeEventListener("timeupdate", onTime);
       v.removeEventListener("ended", onEnded);
     };
-  }, [sources, land]);
+  }, [sources, land, matchColor]);
 
   // Skip: a scroll, a swipe, a key or a tap on the hero during the intro.
   useEffect(() => {

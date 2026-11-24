@@ -161,7 +161,7 @@ main > section ~ section ~ section {
 /* C-067: the hero's U takeover (HeroU). The flat layer is the video's own background, so video and hero are one
    canvas; it fades out (1.4 s) as the U flies home. The copy fades in staggered from 0.7 s into the flight. */
 .cu-uhero{padding:64px 20px 88px}
-.cu-uflat{position:absolute;inset:0;z-index:1;background:#02C5F7;opacity:0;pointer-events:none;transition:opacity 1.4s ease}
+.cu-uflat{position:absolute;inset:0;z-index:1;background:#02C5F7;opacity:0;pointer-events:none;transition:opacity 1.4s ease,background .6s ease}
 .cu-uintro .cu-uflat{opacity:1}
 .cu-ucopy>*{transition:opacity .6s ease,transform .6s ease}
 .cu-uintro .cu-ucopy>*{opacity:0;transform:translateY(14px)}

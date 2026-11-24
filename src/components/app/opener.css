@@ -1,0 +1,27 @@
+/* C-069 AppOpener: see AppOpener.tsx. */
+@property --cu-r{syntax:"<length>";inherits:false;initial-value:0px}
+.cu-opener{display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;transition:background .6s ease;
+  --cu-r:0px;-webkit-mask-image:radial-gradient(circle at 50% 50%,transparent var(--cu-r),#000 calc(var(--cu-r) + 1px));mask-image:radial-gradient(circle at 50% 50%,transparent var(--cu-r),#000 calc(var(--cu-r) + 1px))}
+/* a cold open shows the blue canvas from the very first paint (before hydration), then the opener takes over */
+html.cu-opening-app .cu-opener{display:flex;background:#00B3F7}
+.cu-opener.on{display:flex}
+.cu-opener.open{transition:--cu-r .9s cubic-bezier(.6,0,.2,1),background .6s ease;--cu-r:150vmax}
+.cu-opener.open.fade{opacity:0;transition:opacity .9s ease}
+.cu-opener-stage{position:relative;flex:none;transition:transform .9s cubic-bezier(.6,0,.2,1),opacity .5s ease .25s}
+.cu-opener.open .cu-opener-stage{transform:scale(1.6);opacity:0}
+.cu-opener-stage video{position:absolute;inset:0;width:100%;height:100%;max-width:none}
+/* the U: square, its flat blue melting into the canvas */
+.cu-opener-stage.sq{width:min(118vw,118vh,760px);aspect-ratio:1/1}
+.cu-opener-stage.sq video{-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 55%,transparent 72%);mask-image:radial-gradient(circle at 50% 50%,#000 55%,transparent 72%)}
+/* programs: 16:9, wide enough on a phone for the logo to fill the screen (--zoom), full-bleed on desktop */
+.cu-opener-stage.wide{width:max(100vw,min(var(--zoom,150vw),177.8vh));aspect-ratio:16/9}
+.cu-opener-stage.wide video{-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 72%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 28%,#000 72%,transparent 100%)}
+.cu-opener-stage img{position:absolute;left:15%;width:70%;top:50%;transform:translateY(-50%);opacity:0;transition:opacity .3s ease;filter:drop-shadow(0 14px 22px rgba(0,50,80,.3))}
+.cu-opener-stage img.show{opacity:1}
+.cu-opener-skip{position:absolute;right:16px;top:calc(14px + env(safe-area-inset-top));border:none;background:rgba(255,255,255,.75);font:inherit;font-weight:700;font-size:13px;padding:8px 12px;border-radius:999px;color:#0F0D1E;cursor:pointer}
+/* the app underneath eases in as the iris opens (only the page content: the sticky header and fixed tab bar keep
+   their positioning) */
+[data-app-main]{transition:transform .9s cubic-bezier(.2,.8,.2,1),opacity .6s ease}
+html.cu-opening [data-app-main]{transform:scale(.94);opacity:.4}
+[data-app-main]:focus{outline:none}
+@media (prefers-reduced-motion:reduce){.cu-opener,html.cu-opening-app .cu-opener{display:none !important}html.cu-opening [data-app-main]{transform:none;opacity:1}}

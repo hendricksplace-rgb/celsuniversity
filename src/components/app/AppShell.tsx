@@ -13,6 +13,8 @@ import { withDefaults } from "@/lib/prefs";
 import { BadgeWatcher } from "./BadgeWatcher";
 import { CheerWatcher } from "@/components/leaderboard/CheerWatcher";
 import { VideoReadyWatcher } from "@/components/bsns/VideoReadyWatcher";
+import { AppOpener } from "./AppOpener";
+import { OPENER_BOOT } from "./opener-boot";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const { lang, t } = await getDictionary();
@@ -57,6 +59,9 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       data-autoplay={prefs.autoplay_audio ? "on" : "off"}
       data-text={prefs.text_size}
     >
+      {/* C-069: decided before first paint (a cold open of the app shows the U opener, never the app first). */}
+      <script dangerouslySetInnerHTML={{ __html: OPENER_BOOT }} />
+      <AppOpener />
       <header data-app-header className="sticky top-0 z-30 border-b border-[#EFE6F2] bg-white/90 backdrop-blur">
         <nav className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2.5">
           <Link href="/app" className="flex items-center gap-1.5 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#F5178C]">
@@ -123,7 +128,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </nav>
       </header>
-      <main data-app-main className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">
+      <main data-app-main tabIndex={-1} className="mx-auto max-w-6xl px-4 pb-28 pt-6 md:pb-16 md:pt-8">
         {children}
       </main>
       <BadgeWatcher title={t.progress.newMedal} cta={t.progress.seeMedals} lang={lang === "en" ? "en" : "es"} />
