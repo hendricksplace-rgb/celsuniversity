@@ -1,8 +1,9 @@
 "use client";
 
 // C-057: a program hero where the logo video takes over the whole hero, then flies into a slot on the right
-// (Matt's approved prototype, 2026-11-24). Built for CelsTV; CelsUS is next with its own video, colours and slot
-// decor.
+// (Matt's approved prototype, 2026-11-24). Built for CelsTV (C-057); CelsUS (C-060)
+// is the second: its landing image is the whole final frame, with the logo off-centre in it (stillShows="frame",
+// logoCenter).
 //
 // Sequence: the copy starts hidden; once the video can play through it plays from 0 over the whole hero
 // (object-fit: cover). At `flyAt` s the video's transform animates (1.4 s) so the logo lands on the slot's still
@@ -33,8 +34,15 @@ type Props = {
   /** When the logo is complete and it can fly (s), and where a skip seeks to first (s). */
   flyAt?: number;
   skipTo?: number;
-  /** The logo's height as a share of the video's height (centred in the frame). */
+  /** The logo's height as a share of the video's height, and its centre in the frame (fractions). */
   eFrac?: number;
+  logoCenter?: { x: number; y: number };
+  /** What the slot's still image shows: just the logo (it lands on the logo) or the whole final frame (it lands
+   *  on the frame, so the logo keeps its place in it). */
+  stillShows?: "logo" | "frame";
+  /** A mask for the video once it flies (e.g. the poster's radial edge): a wide frame's glow would otherwise show
+   *  its corners in the slot. At fly time the frame's edges are plain background, so the switch can't be seen. */
+  landMask?: string;
   /** Slot size and the logo's height in it, desktop and mobile (≤ 820px). */
   slotSize?: { desktop: number; mobile: number };
   logoHeight?: { desktop: number; mobile: number };
@@ -58,6 +66,9 @@ export function HeroTakeover({
   flyAt = 6.2,
   skipTo = 5.4,
   eFrac = 0.6,
+  logoCenter = { x: 0.5, y: 0.5 },
+  stillShows = "logo",
+  landMask,
   slotSize = { desktop: 300, mobile: 220 },
   logoHeight = { desktop: 190, mobile: 140 },
   decor,
@@ -89,12 +100,19 @@ export function HeroTakeover({
   const target = useCallback(() => {
     const h = hero.current!.getBoundingClientRect();
     const s = still.current!.getBoundingClientRect();
-    const vh = Math.max(h.height, (h.width * 9) / 16); // the object-fit: cover height
-    const scale = (s.height || logoHeight.desktop) / (vh * eFrac);
-    const dx = s.left + s.width / 2 - (h.left + h.width / 2);
-    const dy = s.top + s.height / 2 - (h.top + h.height / 2);
+    const vh = Math.max(h.height, (h.width * 9) / 16); // the object-fit: cover size
+    const vw = (vh * 16) / 9;
+    const sh = s.height || logoHeight.desktop;
+    // Land the logo on the still: the still is the logo itself, or the whole frame with the logo inside it.
+    const scale = stillShows === "frame" ? sh / vh : sh / (vh * eFrac);
+    const lx = stillShows === "frame" ? s.left + s.width * logoCenter.x : s.left + s.width / 2;
+    const ly = stillShows === "frame" ? s.top + s.height * logoCenter.y : s.top + s.height / 2;
+    const ox = (logoCenter.x - 0.5) * vw * scale; // the logo's offset from the video's centre, once scaled
+    const oy = (logoCenter.y - 0.5) * vh * scale;
+    const dx = lx - (h.left + h.width / 2) - ox;
+    const dy = ly - (h.top + h.height / 2) - oy;
     return `translate(${dx}px, ${dy}px) scale(${scale})`;
-  }, [eFrac, logoHeight.desktop]);
+  }, [eFrac, logoCenter.x, logoCenter.y, stillShows, logoHeight.desktop]);
 
   /** Static fallback: no video, the still logo, the copy right away. */
   const finish = useCallback(() => {
@@ -225,6 +243,7 @@ export function HeroTakeover({
     "--hto-slot-m": `${slotSize.mobile}px`,
     "--hto-logo": `${logoHeight.desktop}px`,
     "--hto-logo-m": `${logoHeight.mobile}px`,
+    ...(landMask ? { "--hto-landmask": landMask } : {}),
   } as React.CSSProperties;
 
   return (
