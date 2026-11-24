@@ -34,15 +34,23 @@
 
 /* shaped blocks */
 .bv3-blk{position:relative;padding:var(--gap) 0;overflow:hidden}
-.bv3-dark{background:var(--navy);color:#fff}
+.bv3-dark{--bg:var(--navy);background:var(--bg);color:#fff}
 .bv3-dark .bv3-sub{color:#B7C4DC}
-.bv3-light{background:var(--ice);color:var(--ink)}
+.bv3-light{--bg:var(--ice);background:var(--bg);color:var(--ink)}
 .bv3-light .bv3-sub{color:var(--mut)}
 .bv3-dots::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.09) 1.2px,transparent 1.3px);background-size:22px 22px;-webkit-mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent);mask-image:linear-gradient(180deg,transparent,#000 20%,#000 80%,transparent)}
 .bv3-lines::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(19,40,77,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(19,40,77,.06) 1px,transparent 1px);background-size:48px 48px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000,transparent);mask-image:radial-gradient(ellipse 80% 70% at 50% 40%,#000,transparent)}
 .bv3-blk>.bv3-wrap{position:relative;z-index:1}
-.bv3-cut{clip-path:polygon(0 56px,100% 0,100% 100%,0 100%);margin-top:-56px;padding-top:calc(var(--gap) + 40px)}
-.bv3-cut-r{clip-path:polygon(0 0,100% 56px,100% 100%,0 100%);margin-top:-56px;padding-top:calc(var(--gap) + 40px)}
+/* Angled section edges. C-056: the clip lives on a static background layer (.bv3-bg, plus the ::after pattern),
+   never on the section: clipping the section made Chrome repaint it unclipped for a frame whenever an animated
+   child (the week circle, the rail) got or lost its compositor layer, so the edge flashed flat. The section
+   itself is transparent; its colour (--bg), aurora/glows and pattern are clipped; the content sits above (z 1).
+   Reuse this for the other program pages' v3 design, not a clip-path on the section. */
+.bv3-cut,.bv3-cut-r{--cut:polygon(0 56px,100% 0,100% 100%,0 100%);margin-top:-56px;padding-top:calc(var(--gap) + 40px)}
+.bv3-cut-r{--cut:polygon(0 0,100% 56px,100% 100%,0 100%)}
+.bv3-blk.bv3-cut,.bv3-blk.bv3-cut-r{background:transparent}
+.bv3-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--bg);-webkit-clip-path:var(--cut);clip-path:var(--cut)}
+.bv3-cut::after,.bv3-cut-r::after{-webkit-clip-path:var(--cut);clip-path:var(--cut)}
 .bv3-curve{position:absolute;left:0;right:0;top:-1px;height:70px;z-index:2;pointer-events:none}
 .bv3-curve svg{width:100%;height:100%;display:block}
 .bv3-glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;pointer-events:none;z-index:0}
@@ -81,8 +89,8 @@
 @keyframes bv3-ring{from{transform:scale(1);opacity:.9}to{transform:scale(1.7);opacity:0}}
 
 /* 2 pricing */
-.bv3-pricing{background:#091430;color:#fff}
-.bv3-aur{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;animation:bv3-drift 14s ease-in-out infinite alternate}
+.bv3-pricing{--bg:#091430;background:var(--bg);color:#fff}
+.bv3-aur{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;will-change:transform;animation:bv3-drift 14s ease-in-out infinite alternate}
 .bv3-aur.a1{width:560px;height:560px;background:#2F6FDB;left:-120px;top:120px;opacity:.45}
 .bv3-aur.a2{width:520px;height:520px;background:#F20174;right:-140px;top:60px;opacity:.32;animation-delay:-5s}
 .bv3-aur.a3{width:420px;height:420px;background:#FFC531;left:40%;bottom:-220px;opacity:.18;animation-delay:-9s}
@@ -137,9 +145,9 @@
 .bv3-head .bv3-sub{max-width:420px;font-size:17px;line-height:1.55}
 .bv3-path{position:relative;display:grid;grid-template-columns:repeat(10,1fr);margin:8px 0 6px}
 .bv3-rail{position:absolute;left:5%;right:5%;top:22px;height:5px;border-radius:3px;background:#C9D6E8}
-.bv3-rail i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,#35C3F0,#2F6FDB);transition:width .6s}
+.bv3-rail i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:linear-gradient(90deg,#35C3F0,#2F6FDB);transition:width .6s;will-change:width}
 .bv3-wk{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;background:none;border:0;padding:0;min-width:0;font-family:inherit;color:var(--ink)}
-.bv3-wk b{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:16px;box-shadow:0 6px 16px -8px rgba(19,40,77,.5);transition:.25s}
+.bv3-wk b{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#fff;font-size:16px;box-shadow:0 6px 16px -8px rgba(19,40,77,.5);transition:.25s;will-change:transform}
 .bv3-wk small{font-size:12.5px;font-weight:700;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .bv3-wk.done b{background:var(--blue);color:#fff}
 .bv3-wk.on b{background:radial-gradient(circle at 35% 30%,#2F6FDB,#13284D);color:#fff;transform:scale(1.18);box-shadow:0 0 0 6px rgba(47,111,219,.18),0 10px 22px -8px rgba(19,40,77,.8)}
@@ -152,6 +160,11 @@
 .bv3-wcard .num small.of{letter-spacing:0;font-weight:700}
 .bv3-wcard .num b{font-size:72px;line-height:1}
 .bv3-wcard .body{padding:28px 32px;min-width:0}
+/* C-056: every week's text sits in the same cell, invisible, so the card is always as tall as the tallest week
+   (at any width) and nothing below jumps when the week changes. */
+.bv3-wstack{display:grid;min-width:0}
+.bv3-wstack>.body{grid-area:1/1}
+.bv3-wsizer{visibility:hidden}
 .bv3-wcard .en{color:var(--blue);font-weight:700;font-size:14px}
 .bv3-wcard h3{font-size:28px;margin:6px 0 8px}
 .bv3-wcard p{color:var(--mut);line-height:1.5}
@@ -199,7 +212,7 @@
 .bv3-faq .a{color:var(--mut);line-height:1.6;padding:0 22px 20px}
 
 /* 7 final */
-.bv3-final{padding:72px 0;background:#1B3768}
+.bv3-final{padding:72px 0;--bg:#1B3768;background:var(--bg)}
 .bv3-final.bv3-cut-r{padding-top:112px}
 .bv3-final .bv3-wrap{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
 .bv3-final h2{font-size:clamp(28px,4vw,46px);max-width:620px}
