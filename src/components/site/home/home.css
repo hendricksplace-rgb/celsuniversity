@@ -184,3 +184,12 @@ main > section ~ section ~ section {
   .cu-ucopy{flex-basis:100%}
 }
 @media (prefers-reduced-motion:reduce){.cu-uintro .cu-ucopy>*{opacity:1;transform:none}.cu-uflat{display:none}}
+
+/* C-065: phones and touch screens: each goal tile links straight to its program ("Ver programa →"), and the
+   recommendation panel (redundant there) is hidden. Desktop: the tile selects, the panel shows. */
+.cu-tilego{display:none;margin-top:6px;font-weight:800;font-size:14px;color:#D6006A}
+@media (max-width:768px),(hover:none) and (pointer:coarse){
+  .cu-tilego{display:block}
+  .cu-tilecheck{display:none !important}
+  .cu-recpanel{display:none !important}
+}

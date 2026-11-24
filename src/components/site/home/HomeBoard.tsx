@@ -7,6 +7,7 @@ import { css } from "@/components/site/css";
 import { enrollHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
+import "@/components/site/site-nav.css";
 import "@/components/site/sections.css";
 import { HeroU } from "./HeroU";
 import { LogoMotion } from "@/components/site/LogoMotion";
@@ -43,6 +44,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     this.state = { goal: 'everyday', qi: 0, answer: null, score: 0, done: false, started: false, tagStep: -1, priceTab: 'tv', jStage: 0, jPlaying: true, phase: 'speak', spoken: 0, speaking: false, level: 'B1', wordIdx: 0, menuOpen: false, play: 0, voiceName: 'del navegador' };
   }
   componentDidMount() {
+    // C-065: phones and touch screens get the goal tiles as plain links (the panel is hidden there, CSS).
+    var tmq = window.matchMedia && window.matchMedia('(max-width: 768px), (hover: none) and (pointer: coarse)');
+    if (tmq) { var tSet = () => this.setState({ touchLayout: tmq.matches }); tSet(); this._tmq = tmq; this._tSet = tSet; if (tmq.addEventListener) tmq.addEventListener('change', tSet); }
     // The board's setup (intro sequence, Ana's path, voices) waits until the page is idle, so it
     // doesn't compete with the first paint and hydration (Lighthouse: total blocking time).
     var self = this;
@@ -199,7 +203,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       }, 850);
     });
   }
-  componentWillUnmount() { this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
+  componentWillUnmount() { if (this._tmq && this._tmq.removeEventListener) this._tmq.removeEventListener('change', this._tSet); this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
   /** The mini quiz view-model for a state (the real one, or a sizer: see quizSizers). */
   quizFor(s) {
     var self = this;
@@ -276,7 +280,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       { id: 'intl', label: 'Negocios internacionales', program: 'CelsGLOBAL · International Business Development', kind: 'ibd', tint: 'linear-gradient(160deg, #23395A, #14182B)', ring: '#C7A24E', featured: false }
     ];
     var goals = tiles.map(function (t, i) {
-      var on = t.id === s.goal;
+      // On phones / touch screens the tiles are links: no "selected" state there.
+      var on = !s.touchLayout && t.id === s.goal;
+      var r0 = recs[t.id];
       var dark = t.kind === 'bsns' || t.kind === 'us' || t.kind === 'ibd';
       return {
         label: t.label, program: t.program, num: '0' + (i + 1), featured: t.featured, usOn: on && t.kind === 'us',
@@ -284,7 +290,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
         isTV: t.kind === 'tv', isBSNS: t.kind === 'bsns', isUS: t.kind === 'us', isIBD: t.kind === 'ibd',
         numColor: dark ? 'rgba(255,255,255,.75)' : '#4A5A6E',
         pressed: on ? 'true' : 'false',
-        pick: function () { self.setState({ goal: t.id }); },
+        // C-065: a real link to the program (phones: one tap); on desktop a click selects the goal instead.
+        href: r0.href, linkLabel: 'Ver ' + r0.short + ': ' + t.label, delay: i * 300,
+        pick: function (e) { if (self.state.touchLayout) return; if (e) e.preventDefault(); self.setState({ goal: t.id, picked: true }); },
         tileStyle: 'display: flex; flex-direction: column; padding: 0; border: none; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left; background: #FFFFFF; font-family: inherit; ' +
           (on ? 'outline: 3px solid ' + t.ring + '; outline-offset: 3px; transform: translateY(-6px); box-shadow: inset 0 1px 0 #FFFFFF, 0 30px 50px -18px rgba(10,20,40,.5);'
               : 'box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(10,20,40,.08), 0 18px 36px -18px rgba(10,20,40,.35);'),
@@ -428,7 +436,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       })(),
       replayIntro: function () { try { if (self._ac && self._ac.state !== 'running') self._ac.resume(); } catch (e) {} self._intro(); },
       word: { text: heroWords[s.wordIdx], cls: s.wordIdx % 2 === 0 ? 'cu-wa' : 'cu-wb' },
-      goals: goals,
+      goals: goals, touchLayout: !!s.touchLayout,
+      // A goal click is an interaction: the panel's (newly mounted) logo needn't wait for a scroll after it.
+      panelAfterScroll: !s.picked,
       rec: rec,
       levels: levels,
       lvl: { code: cur.code, name: cur.name, can: cur.can, course: cur.course, barStyle: 'height: 100%; width: ' + pct + '%; background: #00CCFE; border-radius: 3px; transition: width .3s;' },
@@ -504,10 +514,10 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 
 {/* NAV */}
 <header style={{ position: "relative", zIndex: "5", background: "#FFFFFF", borderBottom: "1px solid #ECEAF2" }}>
-<nav aria-label="Principal" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
-<a href="#inicio" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
-<img src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
-<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
+<nav aria-label="Principal" className="cu-nav" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
+<a className="cu-navbrand" href="#inicio" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
+<img className="cu-navlogo" src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
+<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span className="cu-navword" style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span className="cu-navby" style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
 </a>
 <div className="cu-desk" style={{ gap: "28px", fontWeight: "600", fontSize: "15px", alignItems: "center" }}>
 <a href="#programas" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Programas</a>
@@ -517,13 +527,14 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <a href="#sofia" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Sofia</a>
 <a href="/entrar" style={{ color: "#0F0D1E", textDecoration: "none", padding: "10px 0", fontWeight: "700" }}>Iniciar sesión</a>
 </div>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Evaluación gratis</a>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm cu-navcta"><span className="cu-navcta-long">Evaluación gratis</span><span className="cu-navcta-short">Evaluación</span></a>
 <button type="button" className="cu-mob" onClick={v.toggleMenu} aria-label="Abrir men\u00fa" aria-expanded={v.menuExpanded} style={{ width: "46px", height: "46px", borderRadius: "10px", border: "1px solid #E2DFEA", background: "#FFFFFF", color: "#0F0D1E", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
 </button>
 </nav>
 {v.menuOpen ? (<>
 <div style={{ display: "flex", flexDirection: "column", padding: "4px 20px 16px", fontWeight: "600", fontSize: "17px", borderTop: "1px solid #ECEAF2" }}>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-navmenucta">Evaluación gratis</a>
 <a href="#programas" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Programas</a>
 <a href="#nivel" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Tu nivel</a>
 <a href="#precios" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Precios</a>
@@ -592,42 +603,45 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 <div role="group" aria-label="Elige tu meta" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: "16px" }}>
 {(v.goals ?? []).map((g: any, __i: number) => (<Fragment key={__i}>
-<button type="button" className="cu-tile cu-sheen" onClick={g.pick} aria-pressed={g.pressed} style={css(g.tileStyle)}>
+{/* C-065: a real link to the program (phones / touch screens: one tap opens it); on desktop, after hydration, a
+    toggle button that selects the goal and updates the panel below. */}
+<a href={g.href} className="cu-tile cu-sheen" onClick={g.pick} {...(v.touchLayout ? { "aria-label": g.linkLabel } : { role: "button", "aria-pressed": g.pressed })} style={{ ...css(g.tileStyle), textDecoration: "none", color: "inherit" }}>
 <span style={css(g.artStyle)}>
 {/* C-053: the program's animated logo fills the art area; badges and the CelsUS fireworks stay on top */}
-<LogoMotion program={g.motion} />
+<LogoMotion program={g.motion} afterScroll threshold={0.4} delayMs={g.delay} />
 {g.usOn ? (<>{(v.fwTile ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}</>) : null}
-<span style={css(g.checkStyle)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>
+<span className="cu-tilecheck" style={css(g.checkStyle)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>
 <span style={css(`position: absolute; left: 12px; top: 10px; font-weight: 800; font-size: 13px; letter-spacing: 1px; color: ${g.numColor};`)}>{g.num}</span>
 {g.featured ? (<><span style={{ position: "absolute", left: "12px", bottom: "10px", fontWeight: "800", fontSize: "11px", letterSpacing: "1px", color: "#FFFFFF", background: "linear-gradient(180deg,#FF3D97,#D9006A)", padding: "5px 9px", borderRadius: "6px", boxShadow: "0 6px 14px -4px rgba(242,1,116,.6)" }}>MÁS POPULAR</span></>) : null}
 </span>
 <span style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px 18px 20px", textAlign: "left" }}>
 <span style={{ fontWeight: "800", fontSize: "19px", lineHeight: "1.25", color: "#0F0D1E" }}>{g.label}</span>
 <span style={{ fontWeight: "600", fontSize: "14px", color: "#4A5A6E" }}>{g.program}</span>
+<span className="cu-tilego" aria-hidden="true">Ver programa →</span>
 </span>
-</button>
+</a>
 </Fragment>))}
 </div>
-<div className="cu-tilt cu-raise" style={{ background: "#FFFFFF", borderRadius: "20px", padding: "12px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
+<div className="cu-tilt cu-raise cu-recpanel" style={{ background: "#FFFFFF", borderRadius: "20px", padding: "12px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
 <div style={css(v.rec.artStyle)}>
 {v.rec.isTV ? (<>
 <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px 20px", width: "100%", padding: "24px 16px", boxSizing: "border-box" }}>
 <span style={{ position: "relative", display: "block", width: "200px", height: "200px", flex: "0 0 auto", borderRadius: "14px", overflow: "hidden" }}>
-<LogoMotion program="celstv" replayKey={v.rec.replay} label="CelsTV" />
+<LogoMotion program="celstv" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsTV" />
 </span>
 <img loading="lazy" decoding="async" src="/site/celstv-episodes.webp" alt="Episodios de CelsTV" style={{ flex: "1 1 240px", minWidth: "0", maxWidth: "360px", height: "auto" }} />
 </div>
 </>) : null}
 {v.rec.isBSNS ? (<>
-<LogoMotion program="celsbsns" replayKey={v.rec.replay} label="CelsBSNS" />
+<LogoMotion program="celsbsns" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsBSNS" />
 </>) : null}
 {v.rec.isUS ? (<>
-<LogoMotion program="celsus" replayKey={v.rec.replay} label="CelsUS" />
+<LogoMotion program="celsus" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsUS" />
 {(v.fwBack ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 {(v.fwFront ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 </>) : null}
 {v.rec.isPlaceholder ? (<>
-<LogoMotion program="celsglobal" replayKey={v.rec.replay} label="CelsGLOBAL, International Business Development" />
+<LogoMotion program="celsglobal" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsGLOBAL, International Business Development" />
 </>) : null}
 </div>
 <div style={{ flex: "1 1 340px", minWidth: "0", display: "flex", flexDirection: "column", gap: "14px", padding: "16px 12px" }}>
