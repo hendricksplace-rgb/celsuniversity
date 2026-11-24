@@ -6,6 +6,7 @@ import type { Dictionary } from "@/lib/i18n/dictionaries";
 import type { BandItem, ContinueBook, ContinueLesson, HomeData, HomeProgram } from "@/lib/home";
 import { CoverBook } from "@/components/celsbook/CoverBook";
 import type { ThemeKey } from "@/lib/themes";
+import { LogoMotion } from "@/components/site/LogoMotion";
 import { Gauge, MEDAL_ICON } from "./Gauge";
 import s from "./inicio.module.css";
 
@@ -210,11 +211,6 @@ export function Band({ t, items }: { t: T; items: BandItem[] }) {
   );
 }
 
-const DECO: Partial<Record<ThemeKey, { src: string; w: number; h: number }>> = {
-  celstv: { src: "/site/celstv-e.webp", w: 567, h: 600 },
-  celsbsns: { src: "/site/celsbsns-bubbles.png", w: 289, h: 252 },
-  celsus: { src: "/site/celsus-us3d.jpg", w: 1000, h: 540 },
-};
 const CARD: Record<ThemeKey, string> = {
   celstv: s.tv,
   celsbsns: s.bs,
@@ -244,28 +240,32 @@ function Logo({ brand }: { brand: ThemeKey }) {
   );
 }
 
-function Globe() {
+/** C-054: the program's animated logo behind the card's text. Once a day per program (then the settled poster),
+ *  the cards staggered 400 ms; big while playing, then it softens into a watermark. */
+function CardMotion({ brand, index }: { brand: ThemeKey; index: number }) {
   return (
-    <svg className={s.deco} viewBox="0 0 200 200" aria-hidden fill="none" stroke="#E9D29A" strokeWidth="1.2">
-      <circle cx="100" cy="100" r="92" />
-      <ellipse cx="100" cy="100" rx="40" ry="92" />
-      <ellipse cx="100" cy="100" rx="70" ry="92" />
-      <line x1="100" y1="8" x2="100" y2="192" />
-      <ellipse cx="100" cy="100" rx="92" ry="30" />
-      <ellipse cx="100" cy="100" rx="92" ry="62" />
-      <line x1="8" y1="100" x2="192" y2="100" />
-    </svg>
+    <span className={s.motion} aria-hidden>
+      <LogoMotion
+        program={brand}
+        tone={brand === "celstv" ? "dark" : undefined}
+        oncePerDay={`home-${brand}`}
+        threshold={0.4}
+        delayMs={index * 400}
+        playOpacity={0.9}
+        restOpacity={brand === "celsglobal" ? 0.22 : 0.3}
+        restFadeMs={1200}
+      />
+    </span>
   );
 }
 
-function ProgramCard({ t, p }: { t: T; p: HomeProgram }) {
+function ProgramCard({ t, p, index }: { t: T; p: HomeProgram; index: number }) {
   const percent = pct(p.done, p.total);
-  const deco = DECO[p.brand];
   const global = p.brand === "celsglobal";
   return (
     <article className={`${s.pc} ${CARD[p.brand]}`}>
       <span className={s.layer} aria-hidden />
-      {deco ? <Image className={s.deco} src={deco.src} alt="" aria-hidden width={deco.w} height={deco.h} sizes="340px" loading="lazy" /> : <Globe />}
+      <CardMotion brand={p.brand} index={index} />
       <div className={s.top}>
         {global ? (
           <h3 className={s.logo}>
@@ -341,8 +341,8 @@ export function Programs({ t, programs, before }: { t: T; programs: HomeProgram[
         {t.pickToday}
       </h2>
       <div className={s.pgrid}>
-        {programs.map((p) => (
-          <ProgramCard key={p.brand} t={t} p={p} />
+        {programs.map((p, i) => (
+          <ProgramCard key={p.brand} t={t} p={p} index={i} />
         ))}
       </div>
     </section>

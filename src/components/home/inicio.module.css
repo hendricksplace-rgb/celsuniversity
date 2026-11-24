@@ -481,7 +481,7 @@
     inset 0 -40px 60px rgba(0, 0, 0, 0.25);
   background: radial-gradient(60% 50% at 15% 0%, rgba(255, 255, 255, 0.1), transparent 70%);
 }
-.pc > *:not(.deco):not(.layer) {
+.pc > *:not(.motion):not(.layer) {
   position: relative;
   z-index: 3;
 }
@@ -574,12 +574,20 @@
 .pcLink:hover {
   background: rgba(255, 255, 255, 0.22);
 }
-.deco {
+/* C-054: the animated program logo, behind the text (z 0, under ::after's sheen). Screen blend drops the video's
+   dark background into the card; the mask reaches 0 before the video's top and left edges (the ticket's
+   70%/80% mask left the top ~20% visible: the CelsUS flag and CelsGLOBAL map showed an edge). */
+.motion {
   position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 60%;
+  aspect-ratio: 16 / 9;
   z-index: 0;
   pointer-events: none;
-  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.45));
-  height: auto;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(60% 65% at 60% 55%, #000 40%, transparent 80%);
+  mask-image: radial-gradient(60% 65% at 60% 55%, #000 40%, transparent 80%);
 }
 .tv {
   --c1: #e8137b;
@@ -589,13 +597,6 @@
   --glow: rgba(232, 19, 123, 0.35);
   background: radial-gradient(120% 120% at 0% 0%, #5e1a63 0%, #3a1240 45%, #22102e 100%);
 }
-.tv .deco {
-  right: -46px;
-  bottom: -70px;
-  width: 260px;
-  opacity: 0.16;
-  transform: rotate(-12deg);
-}
 .bs {
   --c1: #00ccfe;
   --c2: #33d8ff;
@@ -604,13 +605,6 @@
   --glow: rgba(0, 204, 254, 0.3);
   background: radial-gradient(120% 120% at 0% 0%, #14427c 0%, #0c2a55 50%, #081b3a 100%);
 }
-.bs .deco {
-  right: -40px;
-  bottom: -50px;
-  width: 250px;
-  opacity: 0.2;
-  transform: rotate(-10deg);
-}
 .us {
   --c1: #c9a24a;
   --c2: #f2d27a;
@@ -618,17 +612,6 @@
   --bgc: #0e2547;
   --glow: rgba(201, 162, 74, 0.3);
   background: radial-gradient(120% 120% at 100% 0%, #1d3f73 0%, #0e2547 55%, #091831 100%);
-}
-.us .deco {
-  right: -40px;
-  top: 70px;
-  width: 340px;
-  opacity: 0.28;
-  border-radius: 40px;
-  transform: rotate(-6deg);
-  mix-blend-mode: screen;
-  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent);
-  mask-image: radial-gradient(closest-side, #000 55%, transparent);
 }
 .us .logo img {
   border-radius: 10px;
@@ -640,13 +623,6 @@
   --bgc: #0f1b33;
   --glow: rgba(201, 162, 74, 0.28);
   background: radial-gradient(120% 120% at 100% 0%, #22385e 0%, #0f1b33 55%, #0a1224 100%);
-}
-.gl .deco {
-  width: 360px;
-  right: -110px;
-  bottom: -130px;
-  opacity: 0.22;
-  filter: none;
 }
 .list {
   margin: 16px 0 0;
