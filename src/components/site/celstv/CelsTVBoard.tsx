@@ -7,6 +7,7 @@ import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import { HeroTakeover } from "@/components/site/HeroTakeover";
+import { EpisodeFlip } from "./EpisodeFlip";
 import "./celstv.css";
 import "@/components/site/sections.css";
 
@@ -196,9 +197,12 @@ backdrop={<><span className="cu-tvdots" aria-hidden="true"></span><span classNam
 <h2 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(30px, 4vw, 46px)", lineHeight: "1.1", letterSpacing: "-1px" }}>Observa. Participa. Domina.</h2>
 <p style={{ margin: "0", fontSize: "18px", lineHeight: "1.6", color: "#FFE3F0", maxWidth: "540px" }}>Cada episodio es una mini temporada de aprendizaje: ves la historia, la practicas de seis formas distintas y la dominas antes de pasar al siguiente.</p>
 </div>
-{/* The episode cards: one swappable element (its own video replaces it in a later ticket). */}
-<div className="cu-tveps" style={{ flex: "1 1 420px", minWidth: "0", display: "flex", justifyContent: "center" }}>
-<img src="/site/celstv-episodes.webp" alt="" style={{ width: "100%", maxWidth: "520px", height: "auto", filter: "drop-shadow(0 26px 30px rgba(60,0,30,.5))" }} />
+{/* C-059: the episode cards flip through and land on Episode 1 (EpisodeFlip), with the app's own thumbnails
+    (modules.artwork_url of episodes 1–8, the finished designs). If any of the 8 is missing: the old still. */}
+<div className="cu-tveps" style={{ flex: "1.4 1 520px", minWidth: "0", display: "flex", justifyContent: "center" }}>
+{(this.props.episodes || []).slice(0, 8).filter((e) => e && e.art).length === 8
+  ? <EpisodeFlip episodes={(this.props.episodes || []).slice(0, 8).map((e, i) => ({ num: i + 1, art: e.art }))} />
+  : <img src="/site/celstv-episodes.webp" alt="" style={{ width: "100%", maxWidth: "520px", height: "auto", filter: "drop-shadow(0 26px 30px rgba(60,0,30,.5))" }} />}
 </div>
 </div>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
