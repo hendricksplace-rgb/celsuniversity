@@ -129,3 +129,67 @@ main > section ~ section ~ section {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* C-066: defined section edges (shared ../sections.css), the same style as the program pages. The hero, the tilted
+   program bar and the fade into #programas stay exactly as they were; from #nivel down each section paints its own
+   colour on a clipped .cs-bg layer (orbs and beams inside it, beams faded before its edges). */
+.cu-hmsec{--gap:96px;padding:var(--gap) 20px}
+@media (max-width:820px){.cu-hmsec{--gap:64px}}
+.cu-hmsec>*:not(.cs-bg):not(.cs-curve){position:relative}
+.cu-hmsec>.cu-orb{position:absolute}
+.cu-hmfade{padding-top:200px}
+.cu-hmcut{padding-top:calc(var(--gap) + 40px)}
+.cu-hmcurve{padding-top:calc(var(--gap) + 30px)}
+.cu-hmfade.cs-lines>.cs-bg::after{background-image:linear-gradient(rgba(15,42,77,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(15,42,77,.06) 1px,transparent 1px)}
+.cu-hmnivel>.cs-bg{background:linear-gradient(180deg,#00A9DC,#0080B4 55%,#006E9E)}
+.cu-hmprueba>.cs-bg{background:linear-gradient(180deg,#0F2A4D,#0B1E3A)}
+.cu-hmlight>.cs-bg{background:linear-gradient(180deg,#D5E1EE,#C6D6E8)}
+.cu-hmprecios>.cs-bg{background:linear-gradient(180deg,#2A1747,#16183A)}
+.cu-hmstories>.cs-bg{background:linear-gradient(180deg,#16183A,#16183A)}
+.cu-hmsofia{padding-bottom:80px} /* room for the Sofia card's shadow (30px offset, 60px blur): it fades out inside the section instead of being cut at its edge; the team section starts 40px tighter */
+.cu-hmfoot{padding-bottom:36px}
+.cu-hmfoot>.cs-bg{background:#0F0D1E}
+.cu-hmsec>.cs-bg>.cu-beam{-webkit-mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%);mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%)}
+
+/* The mini quiz (#prueba) keeps the height of its tallest state (invisible sizers in the same grid cell). */
+.cu-qzstack{display:grid}
+.cu-qzstack>*{grid-area:1/1;min-width:0}
+.cu-qzreal{display:flex;flex-direction:column;gap:18px}
+.cu-qzreal>.cu-qzintro{flex:1;justify-content:center}
+.cu-qzsizer{visibility:hidden;pointer-events:none}
+
+/* C-067: the hero's U takeover (HeroU). The flat layer is the video's own background, so video and hero are one
+   canvas; it fades out (1.4 s) as the U flies home. The copy fades in staggered from 0.7 s into the flight. */
+.cu-uhero{padding:64px 20px 88px}
+.cu-uflat{position:absolute;inset:0;z-index:1;background:#02C5F7;opacity:0;pointer-events:none;transition:opacity 1.4s ease}
+.cu-uintro .cu-uflat{opacity:1}
+.cu-ucopy>*{transition:opacity .6s ease,transform .6s ease}
+.cu-uintro .cu-ucopy>*{opacity:0;transform:translateY(14px)}
+.cu-uhero:not(.cu-uintro):not(.cu-ustatic) .cu-ucopy>:nth-child(1){transition-delay:.7s}
+.cu-uhero:not(.cu-uintro):not(.cu-ustatic) .cu-ucopy>:nth-child(2){transition-delay:.82s}
+.cu-uhero:not(.cu-uintro):not(.cu-ustatic) .cu-ucopy>:nth-child(3){transition-delay:.94s}
+.cu-uhero:not(.cu-uintro):not(.cu-ustatic) .cu-ucopy>:nth-child(4){transition-delay:1.06s}
+.cu-uhero:not(.cu-uintro):not(.cu-ustatic) .cu-ucopy>:nth-child(5){transition-delay:1.18s}
+.cu-ustatic .cu-ucopy>*,.cu-ustatic .cu-uflat{transition:none}
+.cu-uslotcol{flex:1 1 400px}
+.cu-uslot{width:min(100%,520px)}
+.cu-ufly{position:absolute;left:0;top:0;width:0;height:0;z-index:2;transform-origin:0 0;pointer-events:none;-webkit-mask-image:radial-gradient(circle at 50% 50%,#000 52%,transparent 72%);mask-image:radial-gradient(circle at 50% 50%,#000 52%,transparent 72%)}
+.cu-ufly.go{transition:transform 1.4s cubic-bezier(.65,0,.25,1)}
+.cu-ufly video{display:block;width:100%;height:100%;max-width:none;object-fit:cover}
+/* phones: the U comes first, above the tags and the headline */
+@media (max-width:820px){
+  .cu-uhero{padding-top:28px}
+  .cu-uslotcol{order:-1;flex-basis:100%}
+  .cu-uslot{width:min(78vw,320px)}
+  .cu-ucopy{flex-basis:100%}
+}
+@media (prefers-reduced-motion:reduce){.cu-uintro .cu-ucopy>*{opacity:1;transform:none}.cu-uflat{display:none}}
+
+/* C-065: phones and touch screens: each goal tile links straight to its program ("Ver programa →"), and the
+   recommendation panel (redundant there) is hidden. Desktop: the tile selects, the panel shows. */
+.cu-tilego{display:none;margin-top:6px;font-weight:800;font-size:14px;color:#D6006A}
+@media (max-width:768px),(hover:none) and (pointer:coarse){
+  .cu-tilego{display:block}
+  .cu-tilecheck{display:none !important}
+  .cu-recpanel{display:none !important}
+}

@@ -14,6 +14,8 @@
 // C-055 (program page heroes, ProgramHeroArt):
 //   eager             above the fold: play right away on mount (no IntersectionObserver, no lazy poster); still
 //                     preload="none", so under reduced motion the video is never requested
+//   afterScroll       (C-065) don't watch the viewport until the visitor's first scroll; a replayKey change (a
+//                     click) still plays
 //   onDone            called once the logo has settled: the video ended, or the poster stays instead
 //                     (reduced motion, autoplay refused, not playing within READY_MS, already played today)
 import { useEffect, useRef, useState } from "react";
@@ -57,6 +59,45 @@ const markPlayed = (key: string) => {
 
 type Phase = "rest" | "playing" | "ended";
 
+// C-065: the page's first scroll (scrollY > 40, wheel, touchmove, PageDown / ArrowDown / Space), shared by every
+// afterScroll instance: until then they don't watch the viewport (so they don't compete with the hero's intro).
+let scrolled = false;
+const waiting = new Set<() => void>();
+function onFirstScroll(fn: () => void): () => void {
+  if (scrolled) {
+    fn();
+    return () => undefined;
+  }
+  waiting.add(fn);
+  if (waiting.size === 1) {
+    const fire = () => {
+      if (scrolled) return;
+      scrolled = true;
+      off();
+      const fns = [...waiting];
+      waiting.clear();
+      fns.forEach((f) => f());
+    };
+    const onScroll = () => {
+      if (window.scrollY > 40) fire();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "PageDown" || e.key === "ArrowDown" || e.key === " ") fire();
+    };
+    const off = () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", fire);
+      window.removeEventListener("touchmove", fire);
+      window.removeEventListener("keydown", onKey);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("wheel", fire, { passive: true });
+    window.addEventListener("touchmove", fire, { passive: true });
+    window.addEventListener("keydown", onKey);
+  }
+  return () => waiting.delete(fn);
+}
+
 type Props = {
   program: MotionProgram;
   /** "dark": the dark-background video where one exists (CelsTV on the app's dark card). */
@@ -76,6 +117,8 @@ type Props = {
   restFadeMs?: number;
   /** Above the fold: load and play at once, poster not lazy. */
   eager?: boolean;
+  /** C-065: don't watch the viewport until the visitor has scrolled (the poster shows until then). */
+  afterScroll?: boolean;
   /** Called once the logo has settled (video ended, or the poster stays). */
   onDone?: () => void;
   /** When the animation stands in for the logo: its accessible name (else it's decorative). */
@@ -97,6 +140,7 @@ export function LogoMotion({
   restOpacity = 1,
   restFadeMs = 1200,
   eager = false,
+  afterScroll = false,
   onDone,
   label,
   fit = "cover",
@@ -176,8 +220,9 @@ export function LogoMotion({
       },
       { threshold },
     );
-    io.observe(el);
+    const cancelWait = afterScroll ? onFirstScroll(() => io.observe(el)) : (io.observe(el), () => undefined);
     return () => {
+      cancelWait();
       io.disconnect();
       window.clearTimeout(delay);
     };
@@ -191,7 +236,11 @@ export function LogoMotion({
       first.current = false;
       return;
     }
-    if (seen.current) play();
+    // afterScroll: a replay comes from a click (an interaction), so it plays even before the first scroll.
+    if (seen.current || (afterScroll && !reducedMotion())) {
+      seen.current = true;
+      play();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- replays follow replayKey only
   }, [replayKey]);
 

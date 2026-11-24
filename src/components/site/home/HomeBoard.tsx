@@ -7,6 +7,8 @@ import { css } from "@/components/site/css";
 import { enrollHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
 import "./home.css";
+import "@/components/site/site-nav.css";
+import "@/components/site/sections.css";
 import { HeroU } from "./HeroU";
 import { LogoMotion } from "@/components/site/LogoMotion";
 
@@ -21,6 +23,8 @@ const Keep = memo(
 
 // Testimonials stay hidden until there are real ones (celsu-website-spec.md).
 const SHOW_TESTIMONIALS = false;
+/** Handlers for the quiz's invisible height sizers: they're inert, so these never run. */
+const QZ_NOOP = { replaySpeech: () => {}, next: () => {}, restart: () => {} };
 // The home page isn't a program's #planes section: its plan and bundle buttons go through /inscribirme
 // (Matt, 2026-10-20), carrying the plan's product code (&plan=). Bundles open with their main program
 // (CelsTV + CelsBSNS → CelsBSNS, CelsUS + CelsTV → CelsUS).
@@ -40,6 +44,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     this.state = { goal: 'everyday', qi: 0, answer: null, score: 0, done: false, started: false, tagStep: -1, priceTab: 'tv', jStage: 0, jPlaying: true, phase: 'speak', spoken: 0, speaking: false, level: 'B1', wordIdx: 0, menuOpen: false, play: 0, voiceName: 'del navegador' };
   }
   componentDidMount() {
+    // C-065: phones and touch screens get the goal tiles as plain links (the panel is hidden there, CSS).
+    var tmq = window.matchMedia && window.matchMedia('(max-width: 768px), (hover: none) and (pointer: coarse)');
+    if (tmq) { var tSet = () => this.setState({ touchLayout: tmq.matches }); tSet(); this._tmq = tmq; this._tSet = tSet; if (tmq.addEventListener) tmq.addEventListener('change', tSet); }
     // The board's setup (intro sequence, Ana's path, voices) waits until the page is idle, so it
     // doesn't compete with the first paint and hydration (Lighthouse: total blocking time).
     var self = this;
@@ -196,79 +203,10 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       }, 850);
     });
   }
-  componentWillUnmount() { this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
-  renderVals() {
-    var PR = this.props.prices;
+  componentWillUnmount() { if (this._tmq && this._tmq.removeEventListener) this._tmq.removeEventListener('change', this._tSet); this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
+  /** The mini quiz view-model for a state (the real one, or a sizer: see quizSizers). */
+  quizFor(s) {
     var self = this;
-    var s = this.state;
-    var burst = function (list) {
-      return list.map(function (b) {
-        var sparks = [];
-        for (var k = 0; k < 14; k++) sparks.push({ style: '--a: ' + (k * 360 / 14) + 'deg; --d: ' + b.d + 's; --r: ' + (b.r * (k % 2 ? 0.82 : 1)) + 'px;' });
-        return { style: 'left: ' + b.x + '%; top: ' + b.y + '%; color: ' + b.c + '; --d: ' + b.d + 's; opacity: ' + b.op + '; transform: scale(' + b.sc + ');', sparks: sparks };
-      });
-    };
-    var heroWords = ['carrera.', 'negocio.', 'ciudadanía.', 'inglés.'];
-    var recs = {
-      everyday: { kind: 'tv', tag: 'CELSTV · INGLÉS PARA LA VIDA', text: '#C8005F', tint: '#FDF0F6', name: 'English for Our Generation', short: 'CelsTV', price: 'Desde ' + fmtPrice(PR, 'celstv_standard') + ' USD', blurb: 'Aprende inglés para tu día a día con una serie en video: historias, música y cultura, en episodios cortos.', note: '', href: '/celstv' },
-      work: { kind: 'bsns', tag: 'CELSBSNS · INGLÉS DE NEGOCIOS', text: '#2C6BC4', tint: '#0F0D1E', name: 'English for Business', short: 'CelsBSNS', price: 'Desde ' + fmtPrice(PR, 'celsbsns_standard') + ' USD', blurb: '10 semanas para dominar juntas, correos, presentaciones y entrevistas en inglés.', note: 'Requiere nivel B2. Si aún no lo tienes, te recomendamos el paquete CelsTV + CelsBSNS.', href: '/celsbsns' },
-      citizen: { kind: 'us', tag: 'CELSUS · CIUDADANÍA', text: '#1E4877', tint: '#0A2340', name: 'CelsUS Para Ciudadanía', short: 'CelsUS', price: 'Desde ' + fmtPrice(PR, 'celsus_estandar') + ' USD', blurb: 'Las 128 preguntas de cívica con audio, inglés para la entrevista y simulacros, en inglés y español.', note: '', href: '/celsus' },
-      intl: { kind: 'ph', tag: 'CELSGLOBAL · DESARROLLO INTERNACIONAL', text: '#3F8FA6', tint: 'linear-gradient(160deg, #23395A, #14182B)', name: 'International Business Development', short: 'CelsGLOBAL', price: fmtPrice(PR, 'celsglobal') + ' USD · 6 meses', blurb: 'Inglés de negocios, resume al estilo americano, entrevistas, finanzas personales y tu camino con la Visa TN, en un programa guiado de 6 meses.', note: '', href: '/celsglobal' }
-    };
-    var tiles = [
-      { id: 'everyday', label: 'Inglés para la vida', program: 'CelsTV · English for Our Generation', kind: 'tv', tint: '#FDE4F0', ring: '#F20174', featured: true },
-      { id: 'work', label: 'Crecer en mi trabajo', program: 'CelsBSNS · English for Business', kind: 'bsns', tint: '#0F0D1E', ring: '#43D6FE', featured: false },
-      { id: 'citizen', label: 'Mi ciudadanía', program: 'CelsUS · English for Us', kind: 'us', tint: '#194876', ring: '#B3EC79', featured: false },
-      { id: 'intl', label: 'Negocios internacionales', program: 'CelsGLOBAL · International Business Development', kind: 'ibd', tint: 'linear-gradient(160deg, #23395A, #14182B)', ring: '#C7A24E', featured: false }
-    ];
-    var goals = tiles.map(function (t, i) {
-      var on = t.id === s.goal;
-      var dark = t.kind === 'bsns' || t.kind === 'us' || t.kind === 'ibd';
-      return {
-        label: t.label, program: t.program, num: '0' + (i + 1), featured: t.featured, usOn: on && t.kind === 'us',
-        motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[t.kind],
-        isTV: t.kind === 'tv', isBSNS: t.kind === 'bsns', isUS: t.kind === 'us', isIBD: t.kind === 'ibd',
-        numColor: dark ? 'rgba(255,255,255,.75)' : '#4A5A6E',
-        pressed: on ? 'true' : 'false',
-        pick: function () { self.setState({ goal: t.id }); },
-        tileStyle: 'display: flex; flex-direction: column; padding: 0; border: none; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left; background: #FFFFFF; font-family: inherit; ' +
-          (on ? 'outline: 3px solid ' + t.ring + '; outline-offset: 3px; transform: translateY(-6px); box-shadow: inset 0 1px 0 #FFFFFF, 0 30px 50px -18px rgba(10,20,40,.5);'
-              : 'box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(10,20,40,.08), 0 18px 36px -18px rgba(10,20,40,.35);'),
-        artStyle: 'position: relative; overflow: hidden; height: 130px; display: flex; align-items: center; justify-content: center; background: ' + t.tint + ';',
-        checkStyle: 'position: absolute; right: 12px; top: 12px; z-index: 2; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; ' +
-          (on ? 'background: ' + t.ring + '; color: ' + (t.kind === 'everyday' ? '#FFFFFF' : '#0F0D1E') + '; box-shadow: 0 4px 10px rgba(0,0,0,.25);' : 'background: rgba(255,255,255,.85); color: transparent; border: 2px solid rgba(15,13,30,.25);')
-      };
-    });
-    var r = recs[s.goal];
-    var rec = {
-      tag: r.tag, name: r.name, short: r.short, price: r.price, blurb: r.blurb, note: r.note, hasNote: !!r.note, href: r.href,
-      motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[r.kind], replay: s.goal,
-      isTV: r.kind === 'tv', isBSNS: r.kind === 'bsns', isUS: r.kind === 'us', isPlaceholder: r.kind === 'ph',
-      artStyle: 'position: relative; overflow: hidden; flex: 1 1 380px; min-height: 280px; border-radius: 14px; background: ' + r.tint + '; display: flex; align-items: center; justify-content: center; transition: background .3s;',
-      tagStyle: 'font-weight: 700; font-size: 12px; letter-spacing: 1.5px; color: ' + r.text + ';'
-    };
-    var lv = [
-      { code: 'A1', name: 'Principiante', can: 'Saludas, te presentas y entiendes frases muy simples.', course: 'CelsTV, desde el Episodio 1' },
-      { code: 'A2', name: 'Básico', can: 'Hablas de tu rutina, haces compras y pides direcciones.', course: 'CelsTV' },
-      { code: 'B1', name: 'Intermedio', can: 'Mantienes conversaciones cotidianas y cuentas experiencias.', course: 'Paquete CelsTV + CelsBSNS' },
-      { code: 'B2', name: 'Intermedio alto', can: 'Participas en juntas, das opiniones y escribes correos profesionales.', course: 'CelsBSNS: English for Business' },
-      { code: 'C1', name: 'Avanzado', can: 'Presentas, negocias y te expresas con fluidez y precisión.', course: 'CelsBSNS + CelsGLOBAL' },
-      { code: 'C2', name: 'Maestría', can: 'Te comunicas con total dominio en cualquier contexto profesional.', course: 'CelsGLOBAL' }
-    ];
-    var idx = 0;
-    lv.forEach(function (l, i) { if (l.code === s.level) idx = i; });
-    var levels = lv.map(function (l, i) {
-      var on = i === idx;
-      return {
-        code: l.code,
-        pressed: on ? 'true' : 'false',
-        pick: function () { self.setState({ level: l.code }); },
-        style: 'flex: 1 1 0; min-width: 0; min-height: 52px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 16px; transition: all .2s; ' +
-          (on ? 'background: #0F0D1E; color: #FFFFFF; border: 1px solid #0F0D1E;' : (i < idx ? 'background: #E5F9FF; color: #0F0D1E; border: 1px solid #BFEFFC;' : 'background: #FFFFFF; color: #6B6680; border: 1px solid #ECEAF2;'))
-      };
-    });
-    var cur = lv[idx];
-    var pct = Math.round(((idx + 1) / 6) * 100);
     var Q = this.Q;
     var q = Q[Math.min(s.qi, Q.length - 1)];
     var base = 'display: flex; align-items: center; gap: 14px; text-align: left; min-height: 56px; padding: 12px 16px; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer; font-family: inherit; ';
@@ -315,6 +253,91 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       nextLabel: s.qi < Q.length - 1 ? 'Siguiente frase' : 'Ver mi resultado',
       score: s.score, verdict: verdicts[s.score]
     };
+    return quiz;
+  }
+  renderVals() {
+    var PR = this.props.prices;
+    var self = this;
+    var s = this.state;
+    var burst = function (list) {
+      return list.map(function (b) {
+        var sparks = [];
+        for (var k = 0; k < 14; k++) sparks.push({ style: '--a: ' + (k * 360 / 14) + 'deg; --d: ' + b.d + 's; --r: ' + (b.r * (k % 2 ? 0.82 : 1)) + 'px;' });
+        return { style: 'left: ' + b.x + '%; top: ' + b.y + '%; color: ' + b.c + '; --d: ' + b.d + 's; opacity: ' + b.op + '; transform: scale(' + b.sc + ');', sparks: sparks };
+      });
+    };
+    var heroWords = ['carrera.', 'negocio.', 'ciudadanía.', 'inglés.'];
+    var recs = {
+      everyday: { kind: 'tv', tag: 'CELSTV · INGLÉS PARA LA VIDA', text: '#C8005F', tint: '#FDF0F6', name: 'English for Our Generation', short: 'CelsTV', price: 'Desde ' + fmtPrice(PR, 'celstv_standard') + ' USD', blurb: 'Aprende inglés para tu día a día con una serie en video: historias, música y cultura, en episodios cortos.', note: '', href: '/celstv' },
+      work: { kind: 'bsns', tag: 'CELSBSNS · INGLÉS DE NEGOCIOS', text: '#2C6BC4', tint: '#0F0D1E', name: 'English for Business', short: 'CelsBSNS', price: 'Desde ' + fmtPrice(PR, 'celsbsns_standard') + ' USD', blurb: '10 semanas para dominar juntas, correos, presentaciones y entrevistas en inglés.', note: 'Requiere nivel B2. Si aún no lo tienes, te recomendamos el paquete CelsTV + CelsBSNS.', href: '/celsbsns' },
+      citizen: { kind: 'us', tag: 'CELSUS · CIUDADANÍA', text: '#1E4877', tint: '#0A2340', name: 'CelsUS Para Ciudadanía', short: 'CelsUS', price: 'Desde ' + fmtPrice(PR, 'celsus_estandar') + ' USD', blurb: 'Las 128 preguntas de cívica con audio, inglés para la entrevista y simulacros, en inglés y español.', note: '', href: '/celsus' },
+      intl: { kind: 'ph', tag: 'CELSGLOBAL · DESARROLLO INTERNACIONAL', text: '#3F8FA6', tint: 'linear-gradient(160deg, #23395A, #14182B)', name: 'International Business Development', short: 'CelsGLOBAL', price: fmtPrice(PR, 'celsglobal') + ' USD · 6 meses', blurb: 'Inglés de negocios, resume al estilo americano, entrevistas, finanzas personales y tu camino con la Visa TN, en un programa guiado de 6 meses.', note: '', href: '/celsglobal' }
+    };
+    var tiles = [
+      { id: 'everyday', label: 'Inglés para la vida', program: 'CelsTV · English for Our Generation', kind: 'tv', tint: '#FDE4F0', ring: '#F20174', featured: true },
+      { id: 'work', label: 'Crecer en mi trabajo', program: 'CelsBSNS · English for Business', kind: 'bsns', tint: '#0F0D1E', ring: '#43D6FE', featured: false },
+      { id: 'citizen', label: 'Mi ciudadanía', program: 'CelsUS · English for Us', kind: 'us', tint: '#194876', ring: '#B3EC79', featured: false },
+      { id: 'intl', label: 'Negocios internacionales', program: 'CelsGLOBAL · International Business Development', kind: 'ibd', tint: 'linear-gradient(160deg, #23395A, #14182B)', ring: '#C7A24E', featured: false }
+    ];
+    var goals = tiles.map(function (t, i) {
+      // On phones / touch screens the tiles are links: no "selected" state there.
+      var on = !s.touchLayout && t.id === s.goal;
+      var r0 = recs[t.id];
+      var dark = t.kind === 'bsns' || t.kind === 'us' || t.kind === 'ibd';
+      return {
+        label: t.label, program: t.program, num: '0' + (i + 1), featured: t.featured, usOn: on && t.kind === 'us',
+        motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[t.kind],
+        isTV: t.kind === 'tv', isBSNS: t.kind === 'bsns', isUS: t.kind === 'us', isIBD: t.kind === 'ibd',
+        numColor: dark ? 'rgba(255,255,255,.75)' : '#4A5A6E',
+        pressed: on ? 'true' : 'false',
+        // C-065: a real link to the program (phones: one tap); on desktop a click selects the goal instead.
+        href: r0.href, linkLabel: 'Ver ' + r0.short + ': ' + t.label, delay: i * 300,
+        pick: function (e) { if (self.state.touchLayout) return; if (e) e.preventDefault(); self.setState({ goal: t.id, picked: true }); },
+        tileStyle: 'display: flex; flex-direction: column; padding: 0; border: none; border-radius: 18px; overflow: hidden; cursor: pointer; text-align: left; background: #FFFFFF; font-family: inherit; ' +
+          (on ? 'outline: 3px solid ' + t.ring + '; outline-offset: 3px; transform: translateY(-6px); box-shadow: inset 0 1px 0 #FFFFFF, 0 30px 50px -18px rgba(10,20,40,.5);'
+              : 'box-shadow: inset 0 1px 0 #FFFFFF, 0 2px 4px rgba(10,20,40,.08), 0 18px 36px -18px rgba(10,20,40,.35);'),
+        artStyle: 'position: relative; overflow: hidden; height: 130px; display: flex; align-items: center; justify-content: center; background: ' + t.tint + ';',
+        checkStyle: 'position: absolute; right: 12px; top: 12px; z-index: 2; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; ' +
+          (on ? 'background: ' + t.ring + '; color: ' + (t.kind === 'everyday' ? '#FFFFFF' : '#0F0D1E') + '; box-shadow: 0 4px 10px rgba(0,0,0,.25);' : 'background: rgba(255,255,255,.85); color: transparent; border: 2px solid rgba(15,13,30,.25);')
+      };
+    });
+    var r = recs[s.goal];
+    var rec = {
+      tag: r.tag, name: r.name, short: r.short, price: r.price, blurb: r.blurb, note: r.note, hasNote: !!r.note, href: r.href,
+      motion: { tv: 'celstv', bsns: 'celsbsns', us: 'celsus', ibd: 'celsglobal', ph: 'celsglobal' }[r.kind], replay: s.goal,
+      isTV: r.kind === 'tv', isBSNS: r.kind === 'bsns', isUS: r.kind === 'us', isPlaceholder: r.kind === 'ph',
+      artStyle: 'position: relative; overflow: hidden; flex: 1 1 380px; min-height: 280px; border-radius: 14px; background: ' + r.tint + '; display: flex; align-items: center; justify-content: center; transition: background .3s;',
+      tagStyle: 'font-weight: 700; font-size: 12px; letter-spacing: 1.5px; color: ' + r.text + ';'
+    };
+    var lv = [
+      { code: 'A1', name: 'Principiante', can: 'Saludas, te presentas y entiendes frases muy simples.', course: 'CelsTV, desde el Episodio 1' },
+      { code: 'A2', name: 'Básico', can: 'Hablas de tu rutina, haces compras y pides direcciones.', course: 'CelsTV' },
+      { code: 'B1', name: 'Intermedio', can: 'Mantienes conversaciones cotidianas y cuentas experiencias.', course: 'Paquete CelsTV + CelsBSNS' },
+      { code: 'B2', name: 'Intermedio alto', can: 'Participas en juntas, das opiniones y escribes correos profesionales.', course: 'CelsBSNS: English for Business' },
+      { code: 'C1', name: 'Avanzado', can: 'Presentas, negocias y te expresas con fluidez y precisión.', course: 'CelsBSNS + CelsGLOBAL' },
+      { code: 'C2', name: 'Maestría', can: 'Te comunicas con total dominio en cualquier contexto profesional.', course: 'CelsGLOBAL' }
+    ];
+    var idx = 0;
+    lv.forEach(function (l, i) { if (l.code === s.level) idx = i; });
+    var levels = lv.map(function (l, i) {
+      var on = i === idx;
+      return {
+        code: l.code,
+        pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ level: l.code }); },
+        style: 'flex: 1 1 0; min-width: 0; min-height: 52px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 16px; transition: all .2s; ' +
+          (on ? 'background: #0F0D1E; color: #FFFFFF; border: 1px solid #0F0D1E;' : (i < idx ? 'background: #E5F9FF; color: #0F0D1E; border: 1px solid #BFEFFC;' : 'background: #FFFFFF; color: #6B6680; border: 1px solid #ECEAF2;'))
+      };
+    });
+    var cur = lv[idx];
+    var pct = Math.round(((idx + 1) / 6) * 100);
+    // the mini quiz (built by quizFor, so the height sizers use the same view-model)
+    var quiz = this.quizFor(s);
+    var Q = this.Q;
+    var longest = 0;
+    var quizSizers = Q.map(function (x, i) { return self.quizFor(Object.assign({}, s, { started: true, done: false, qi: i, phase: 'opts', answer: (x.a + 1) % x.opts.length, speaking: false, spoken: 999 })); });
+    for (var sc = 0; sc <= Q.length; sc++) { var vq = self.quizFor(Object.assign({}, s, { started: true, done: true, score: sc })); if (!longest || String(vq.verdict).length > String(longest.verdict).length) longest = vq; }
+    quizSizers.push(longest);
     return {
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
@@ -413,11 +436,13 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       })(),
       replayIntro: function () { try { if (self._ac && self._ac.state !== 'running') self._ac.resume(); } catch (e) {} self._intro(); },
       word: { text: heroWords[s.wordIdx], cls: s.wordIdx % 2 === 0 ? 'cu-wa' : 'cu-wb' },
-      goals: goals,
+      goals: goals, touchLayout: !!s.touchLayout,
+      // A goal click is an interaction: the panel's (newly mounted) logo needn't wait for a scroll after it.
+      panelAfterScroll: !s.picked,
       rec: rec,
       levels: levels,
       lvl: { code: cur.code, name: cur.name, can: cur.can, course: cur.course, barStyle: 'height: 100%; width: ' + pct + '%; background: #00CCFE; border-radius: 3px; transition: width .3s;' },
-      quiz: quiz,
+      quiz: quiz, quizSizers: quizSizers,
       voiceName: s.voiceName,
       start: function () { self.setState({ score: 0 }); self._play(0); },
       replaySpeech: function () { if (!self.state.speaking) self._speak(self.state.qi, null); },
@@ -426,6 +451,60 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     };
   }
 
+  /** The quiz while a phrase runs (the real one, or a sizer). h: the handlers. */
+  quizActive(q, h) {
+    return (<>
+<div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+<span style={css(q.progStyle)}>{q.prog}</span>
+<span style={{ fontWeight: "600", fontSize: "13px", color: "#6B6680" }}>{q.ctx} · {q.pos}</span>
+</div>
+<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "18px", flexWrap: "wrap", padding: "22px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), 0 18px 36px -18px rgba(15,13,30,.8)" }}>
+<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<button type="button" className={q.spkClass} onClick={h.replaySpeech} aria-label="Escuchar otra vez" style={{ position: "relative", width: "58px", height: "58px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
+{q.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "22px" }}><span></span><span></span><span></span><span></span></span></>) : null}
+{q.notSpeaking ? (<><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
+</button>
+<p aria-label={q.say} style={{ position: "relative", margin: "0", fontWeight: "800", fontSize: "clamp(22px, 2.6vw, 30px)", lineHeight: "1.3", flex: "1 1 220px", letterSpacing: "-0.3px" }}>
+{(q.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}
+</p>
+</div>
+{q.showPrompt ? (<>
+<p className="cu-drop" style={{ margin: "0", fontWeight: "800", fontSize: "19px" }}>{q.prompt}</p>
+</>) : null}
+{q.showOpts ? (<>
+<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+{(q.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
+<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span>{o.text}</span></button>
+</Fragment>))}
+</div>
+</>) : null}
+{q.answered ? (<>
+<div className="cu-drop" style={css(q.fbStyle)}>
+<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "17px" }}>{q.fbTitle}</p>
+<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{q.why}</p>
+</div>
+<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={h.next}>{q.nextLabel}</button>
+</div>
+</>) : null}
+</div>
+</>);
+  }
+  /** The quiz result (the real one, or a sizer). */
+  quizDone(q, h) {
+    return (<>
+<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "14px", alignItems: "flex-start", padding: "8px 0" }}>
+<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{q.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
+<p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#3F3B52" }}>{q.verdict}</p>
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Descubre tu nivel real</a>
+<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={h.restart}>Repetir quiz</button>
+</div>
+</div>
+</>);
+  }
   render() {
     const v = this.renderVals();
     // Prices from public.products (see the page), never the board's copy.
@@ -435,10 +514,10 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 
 {/* NAV */}
 <header style={{ position: "relative", zIndex: "5", background: "#FFFFFF", borderBottom: "1px solid #ECEAF2" }}>
-<nav aria-label="Principal" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
-<a href="#inicio" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
-<img src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
-<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
+<nav aria-label="Principal" className="cu-nav" style={{ maxWidth: "1240px", margin: "0 auto", padding: "12px 20px", display: "flex", alignItems: "center", gap: "20px" }}>
+<a className="cu-navbrand" href="#inicio" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none", color: "#0F0D1E", marginRight: "auto" }}>
+<img className="cu-navlogo" src="/site/celsu-logo.png" alt="" style={{ width: "44px", height: "auto", display: "block" }} />
+<span style={{ display: "flex", flexDirection: "column", gap: "4px", lineHeight: "1" }}><span className="cu-navword" style={{ fontWeight: "800", fontSize: "19px", letterSpacing: "-0.3px" }}>CelsUniversity</span><span className="cu-navby" style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: "600", fontSize: "11px", letterSpacing: "1.5px", color: "#6B6680" }}>BY <img src="/site/lam-logo.png" alt="LAM" style={{ height: "13px", width: "auto", display: "block" }} /></span></span>
 </a>
 <div className="cu-desk" style={{ gap: "28px", fontWeight: "600", fontSize: "15px", alignItems: "center" }}>
 <a href="#programas" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Programas</a>
@@ -448,13 +527,14 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <a href="#sofia" style={{ color: "#3F3B52", textDecoration: "none", padding: "10px 0" }}>Sofia</a>
 <a href="/entrar" style={{ color: "#0F0D1E", textDecoration: "none", padding: "10px 0", fontWeight: "700" }}>Iniciar sesión</a>
 </div>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Evaluación gratis</a>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm cu-navcta"><span className="cu-navcta-long">Evaluación gratis</span><span className="cu-navcta-short">Evaluación</span></a>
 <button type="button" className="cu-mob" onClick={v.toggleMenu} aria-label="Abrir men\u00fa" aria-expanded={v.menuExpanded} style={{ width: "46px", height: "46px", borderRadius: "10px", border: "1px solid #E2DFEA", background: "#FFFFFF", color: "#0F0D1E", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
 </button>
 </nav>
 {v.menuOpen ? (<>
 <div style={{ display: "flex", flexDirection: "column", padding: "4px 20px 16px", fontWeight: "600", fontSize: "17px", borderTop: "1px solid #ECEAF2" }}>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-navmenucta">Evaluación gratis</a>
 <a href="#programas" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Programas</a>
 <a href="#nivel" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Tu nivel</a>
 <a href="#precios" style={{ color: "#0F0D1E", textDecoration: "none", padding: "13px 0" }}>Precios</a>
@@ -467,12 +547,16 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 <main>
 
 {/* HERO on LAM blue */}
-<section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2BD8FF 0%, #00CCFE 45%, #00A9DC 100%)", padding: "64px 20px 88px" }}>
+{/* C-067: the liquid U takes over the whole hero, then lands in its spot (HeroU). cu-uintro = the takeover is on:
+    the copy hidden, the flat #02C5F7 layer (the video's background) over the gradient. */}
+<section id="inicio" className="cu-uhero cu-uintro" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #2BD8FF 0%, #00CCFE 45%, #00A9DC 100%)" }}>
+<div className="cu-uflat" aria-hidden="true"></div>
+<noscript><style>{".cu-uintro .cu-ucopy>*{opacity:1 !important;transform:none !important}.cu-uflat{display:none}"}</style></noscript>
 <span className="cu-beam" aria-hidden="true"></span>
 <img className="cu-lam" src="/site/lam-white.png" alt="" aria-hidden="true" style={{ position: "absolute", left: "-2%", bottom: "-6%", width: "min(78%, 980px)", height: "auto", opacity: "0.22", pointerEvents: "none" }} />
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "24px 48px", alignItems: "center" }}>
 
-<div style={{ position: "relative", zIndex: "2", flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
+<div className="cu-ucopy" style={{ position: "relative", zIndex: "3", flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "22px" }}>
 <button type="button" onClick={v.replayIntro} style={{ alignSelf: "flex-start", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "10px", minHeight: "48px", padding: "0", border: "none", background: "transparent", cursor: "pointer", fontFamily: "inherit" }}>
 {(v.tags ?? []).map((t: any, __i: number) => (<Fragment key={__i}><span className={t.cls} style={css(t.style)}>{t.label}</span></Fragment>))}
 </button>
@@ -488,7 +572,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 
 {/* The U: liquid ribbons swirl in and settle into the CelsU U (C-052, video), then the sharp logo fades in on top */}
-<div aria-hidden="true" style={{ position: "relative", zIndex: "1", flex: "1 1 400px", minWidth: "0", display: "flex", justifyContent: "center" }}>
+<div aria-hidden="true" className="cu-uslotcol" style={{ position: "relative", zIndex: "2", minWidth: "0", display: "flex", justifyContent: "center" }}>
 <HeroU replay={v.uReplay} />
 </div>
 </div>
@@ -507,7 +591,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 
 {/* GOAL PICKER */}
-<section id="programas" style={{ position: "relative", overflowX: "clip", padding: "200px 20px 110px", background: "linear-gradient(180deg, #00A9DC 0px, #1DABDD 42px, #3EB0DF 84px, #5DB8E1 127px, #7AC1E4 169px, #96CAE7 211px, #AED3EA 253px, #C2DAEC 296px, #D0DFEE 338px, #D5E1EE 380px, #BFD0E3 100%)" }}>
+<section id="programas" className="cs-sec cs-lines cu-hmsec cu-hmfade" style={{ position: "relative", overflowX: "clip", background: "linear-gradient(180deg, #00A9DC 0px, #1DABDD 42px, #3EB0DF 84px, #5DB8E1 127px, #7AC1E4 169px, #96CAE7 211px, #AED3EA 253px, #C2DAEC 296px, #D0DFEE 338px, #D5E1EE 380px, #BFD0E3 100%)" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-120px", right: "-80px", width: "520px", height: "520px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.55) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
@@ -518,42 +603,45 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </div>
 <div role="group" aria-label="Elige tu meta" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: "16px" }}>
 {(v.goals ?? []).map((g: any, __i: number) => (<Fragment key={__i}>
-<button type="button" className="cu-tile cu-sheen" onClick={g.pick} aria-pressed={g.pressed} style={css(g.tileStyle)}>
+{/* C-065: a real link to the program (phones / touch screens: one tap opens it); on desktop, after hydration, a
+    toggle button that selects the goal and updates the panel below. */}
+<a href={g.href} className="cu-tile cu-sheen" onClick={g.pick} {...(v.touchLayout ? { "aria-label": g.linkLabel } : { role: "button", "aria-pressed": g.pressed })} style={{ ...css(g.tileStyle), textDecoration: "none", color: "inherit" }}>
 <span style={css(g.artStyle)}>
 {/* C-053: the program's animated logo fills the art area; badges and the CelsUS fireworks stay on top */}
-<LogoMotion program={g.motion} />
+<LogoMotion program={g.motion} afterScroll threshold={0.4} delayMs={g.delay} />
 {g.usOn ? (<>{(v.fwTile ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}</>) : null}
-<span style={css(g.checkStyle)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>
+<span className="cu-tilecheck" style={css(g.checkStyle)}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg></span>
 <span style={css(`position: absolute; left: 12px; top: 10px; font-weight: 800; font-size: 13px; letter-spacing: 1px; color: ${g.numColor};`)}>{g.num}</span>
 {g.featured ? (<><span style={{ position: "absolute", left: "12px", bottom: "10px", fontWeight: "800", fontSize: "11px", letterSpacing: "1px", color: "#FFFFFF", background: "linear-gradient(180deg,#FF3D97,#D9006A)", padding: "5px 9px", borderRadius: "6px", boxShadow: "0 6px 14px -4px rgba(242,1,116,.6)" }}>MÁS POPULAR</span></>) : null}
 </span>
 <span style={{ display: "flex", flexDirection: "column", gap: "6px", padding: "18px 18px 20px", textAlign: "left" }}>
 <span style={{ fontWeight: "800", fontSize: "19px", lineHeight: "1.25", color: "#0F0D1E" }}>{g.label}</span>
 <span style={{ fontWeight: "600", fontSize: "14px", color: "#4A5A6E" }}>{g.program}</span>
+<span className="cu-tilego" aria-hidden="true">Ver programa →</span>
 </span>
-</button>
+</a>
 </Fragment>))}
 </div>
-<div className="cu-tilt cu-raise" style={{ background: "#FFFFFF", borderRadius: "20px", padding: "12px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
+<div className="cu-tilt cu-raise cu-recpanel" style={{ background: "#FFFFFF", borderRadius: "20px", padding: "12px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "stretch" }}>
 <div style={css(v.rec.artStyle)}>
 {v.rec.isTV ? (<>
 <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px 20px", width: "100%", padding: "24px 16px", boxSizing: "border-box" }}>
 <span style={{ position: "relative", display: "block", width: "200px", height: "200px", flex: "0 0 auto", borderRadius: "14px", overflow: "hidden" }}>
-<LogoMotion program="celstv" replayKey={v.rec.replay} label="CelsTV" />
+<LogoMotion program="celstv" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsTV" />
 </span>
 <img loading="lazy" decoding="async" src="/site/celstv-episodes.webp" alt="Episodios de CelsTV" style={{ flex: "1 1 240px", minWidth: "0", maxWidth: "360px", height: "auto" }} />
 </div>
 </>) : null}
 {v.rec.isBSNS ? (<>
-<LogoMotion program="celsbsns" replayKey={v.rec.replay} label="CelsBSNS" />
+<LogoMotion program="celsbsns" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsBSNS" />
 </>) : null}
 {v.rec.isUS ? (<>
-<LogoMotion program="celsus" replayKey={v.rec.replay} label="CelsUS" />
+<LogoMotion program="celsus" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsUS" />
 {(v.fwBack ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 {(v.fwFront ?? []).map((f: any, __i: number) => (<Fragment key={__i}><span className="cu-fw" style={css(f.style)}><u></u><b></b>{(f.sparks ?? []).map((k: any, __i: number) => (<Fragment key={__i}><i style={css(k.style)}></i></Fragment>))}</span></Fragment>))}
 </>) : null}
 {v.rec.isPlaceholder ? (<>
-<LogoMotion program="celsglobal" replayKey={v.rec.replay} label="CelsGLOBAL, International Business Development" />
+<LogoMotion program="celsglobal" afterScroll={v.panelAfterScroll} replayKey={v.rec.replay} label="CelsGLOBAL, International Business Development" />
 </>) : null}
 </div>
 <div style={{ flex: "1 1 340px", minWidth: "0", display: "flex", flexDirection: "column", gap: "14px", padding: "16px 12px" }}>
@@ -574,9 +662,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* LEVEL: Ana's journey */}
-<section id="nivel" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 120px", background: "linear-gradient(180deg, #BFD0E3 0px, #BDD0E4 35px, #B7D1E5 70px, #ADD1E7 105px, #A0D2EA 140px, #91D2ED 175px, #7FD3F0 210px, #6AC9EB 245px, #55BFE7 280px, #3FB6E2 315px, #29AFDF 350px, #11ABDD 385px, #00A9DC 420px, #006E9E 72%, #0F2A4D 100%)", color: "#FFFFFF" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-beam" aria-hidden="true"></span>
+<section id="nivel" className="cs-sec cs-cut cs-dots cu-hmsec cu-hmcut cu-hmnivel" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-beam"></span></div>
 <div ref={v.journey.sectionRef} style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "780px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#0F0D1E" }}>TU CAMINO</span>
@@ -647,8 +734,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* TRY IT */}
-<section id="prueba" style={{ position: "relative", overflowX: "clip", padding: "110px 20px 110px", background: "linear-gradient(180deg, #0F2A4D 0px, #0F2A4D 120px, #0B1E3A 100%)", color: "#FFFFFF" }}>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-140px", left: "30%", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(179,236,121,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="prueba" className="cs-sec cs-dots cu-hmsec cu-hmcurve cu-hmprueba" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-orb" style={{ position: "absolute", top: "-140px", left: "30%", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(179,236,121,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#006E9E" /></svg></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 64px", alignItems: "center" }}>
 <div className="cu-from-l" style={{ flex: "1 1 360px", minWidth: "0", display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -661,73 +749,32 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 {(v.quiz.dots ?? []).map((d: any, __i: number) => (<Fragment key={__i}><span style={css(d.style)}></span></Fragment>))}
 </div>
 
+{/* The real quiz plus invisible copies of its tallest states (each phrase answered; the longest result) in one grid
+    cell: the card keeps the height of its largest state, so the page below never jumps while the quiz runs. */}
+<div className="cu-qzstack">
+<div className="cu-qzreal">
 {v.quiz.intro ? (<>
-<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px", padding: "28px 24px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", position: "relative", overflow: "hidden" }}>
+<div className="cu-qzintro" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px", padding: "28px 24px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", position: "relative", overflow: "hidden" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#00CCFE" }}>5 FRASES · 1 MINUTO</span>
 <p style={{ margin: "0", fontWeight: "800", fontSize: "26px", lineHeight: "1.25" }}>Escucha inglés real y descubre cuánto entiendes.</p>
 <button type="button" className="cu-btn cu-btn-pink cu-pulse" onClick={v.start}><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>Empezar el quiz</button>
 </div>
 </>) : null}
+{v.quiz.active ? this.quizActive(v.quiz, v) : null}
+{v.quiz.done ? this.quizDone(v.quiz, v) : null}
+</div>
+{(v.quizSizers ?? []).map((q: any, __i: number) => (<div key={__i} className="cu-qzsizer" aria-hidden="true" inert>{q.done ? this.quizDone(q, QZ_NOOP) : this.quizActive(q, QZ_NOOP)}</div>))}
+</div>
 
-{v.quiz.active ? (<>
-<div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-<span style={css(v.quiz.progStyle)}>{v.quiz.prog}</span>
-<span style={{ fontWeight: "600", fontSize: "13px", color: "#6B6680" }}>{v.quiz.ctx} · {v.quiz.pos}</span>
-</div>
-<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "18px", flexWrap: "wrap", padding: "22px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), 0 18px 36px -18px rgba(15,13,30,.8)" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<button type="button" className={v.quiz.spkClass} onClick={v.replaySpeech} aria-label="Escuchar otra vez" style={{ position: "relative", width: "58px", height: "58px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
-{v.quiz.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "22px" }}><span></span><span></span><span></span><span></span></span></>) : null}
-{v.quiz.notSpeaking ? (<><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
-</button>
-<p aria-label={v.quiz.say} style={{ position: "relative", margin: "0", fontWeight: "800", fontSize: "clamp(22px, 2.6vw, 30px)", lineHeight: "1.3", flex: "1 1 220px", letterSpacing: "-0.3px" }}>
-{(v.quiz.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}
-</p>
-</div>
-{v.quiz.showPrompt ? (<>
-<p className="cu-drop" style={{ margin: "0", fontWeight: "800", fontSize: "19px" }}>{v.quiz.prompt}</p>
-</>) : null}
-{v.quiz.showOpts ? (<>
-<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-{(v.quiz.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
-<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span>{o.text}</span></button>
-</Fragment>))}
-</div>
-</>) : null}
-{v.quiz.answered ? (<>
-<div className="cu-drop" style={css(v.quiz.fbStyle)}>
-<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "17px" }}>{v.quiz.fbTitle}</p>
-<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{v.quiz.why}</p>
-</div>
-<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={v.next}>{v.quiz.nextLabel}</button>
-</div>
-</>) : null}
-</div>
-</>) : null}
-
-{v.quiz.done ? (<>
-<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "14px", alignItems: "flex-start", padding: "8px 0" }}>
-<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{v.quiz.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
-<p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#3F3B52" }}>{v.quiz.verdict}</p>
-<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Descubre tu nivel real</a>
-<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={v.restart}>Repetir quiz</button>
-</div>
-</div>
-</>) : null}
 </div>
 </div>
 </div>
 </section>
 
 {/* METHOD */}
-<section id="metodo" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #112440 42px, #21334F 84px, #394B65 127px, #576981 169px, #79899F 211px, #9BAABC 253px, #B8C6D6 296px, #CDDAE7 338px, #D5E1EE 380px, #C6D6E8 100%)" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-200px", left: "-120px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="metodo" className="cs-sec cs-cut-r cs-lines cu-hmsec cu-hmcut cu-hmlight">
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-orb" style={{ position: "absolute", bottom: "-200px", left: "-120px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,255,255,.6) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "36px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
@@ -756,11 +803,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* PLANS & PRICING */}
-<section id="precios" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #C6D6E8 0px, #C3D2E6 35px, #B9C6E0 70px, #ABB4D6 105px, #9A9FCB 140px, #8584B9 175px, #6D64A0 210px, #564587 245px, #463271 280px, #3A2760 315px, #321E53 350px, #2C194A 385px, #2A1747 420px, #16183A 60%, #0B1E3A 100%)", color: "#FFFFFF" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "80px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-160px", right: "-140px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,204,254,.25) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section id="precios" className="cs-sec cs-dots cu-hmsec cu-hmcurve cu-hmprecios" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span><span className="cu-beam cu-beam-soft"></span><span className="cu-orb" style={{ position: "absolute", top: "80px", left: "-140px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(242,1,116,.30) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span><span className="cu-orb" style={{ position: "absolute", bottom: "-160px", right: "-140px", width: "620px", height: "620px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,204,254,.25) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
+<div className="cs-curve" aria-hidden="true"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0 0h1440v20C1080 70 360 70 0 20z" fill="#C6D6E8" /></svg></div>
 <div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "32px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#00CCFE" }}>PLANES Y PRECIOS</span>
@@ -835,9 +880,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 
 {/* TESTIMONIALS: hidden until Matt sends real ones (never invent any). */}
 {SHOW_TESTIMONIALS ? (<>
-<section style={{ position: "relative", overflowX: "clip", padding: "90px 20px 110px", background: "linear-gradient(180deg, #0B1E3A 0px, #0B1E3A 120px, #16183A 55%, #2A1747 100%)", color: "#FFFFFF" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-180px", right: "-100px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(246,172,0,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
+<section className="cs-sec cs-dots cu-hmsec cu-hmstories" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"><span className="cu-beam cu-beam-soft"></span><span className="cu-orb" style={{ position: "absolute", top: "-180px", right: "-100px", width: "560px", height: "560px", borderRadius: "50%", background: "radial-gradient(circle, rgba(246,172,0,.22) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span></div>
 <div style={{ position: "relative" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "720px" }}>
@@ -864,8 +908,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </>) : null}
 
 {/* SOFIA */}
-<section id="sofia" style={{ padding: "230px 20px 40px", background: "linear-gradient(180deg, #2A1747 0px, #2C194A 35px, #321E53 70px, #3A2760 105px, #463271 140px, #564587 175px, #6D64A0 210px, #8584B9 245px, #9DA1CC 280px, #B3BADA 315px, #C5CEE4 350px, #D1DCEB 385px, #D5E1EE 420px, #C6D6E8 100%)" }}>
-<span aria-hidden="true" style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span>
+<section id="sofia" className="cs-sec cs-cut cs-lines cu-hmsec cu-hmcut cu-hmlight cu-hmsofia">
+<div className="cs-bg" aria-hidden="true"><span style={{ position: "absolute", left: "-10%", right: "-10%", top: "110px", height: "200px", pointerEvents: "none", background: "radial-gradient(60% 50% at 50% 50%, rgba(255,255,255,.10), rgba(255,255,255,0) 70%)" }}></span></div>
 <div className="cu-tilt cu-raise-dark" style={{ position: "relative", overflow: "hidden", maxWidth: "1240px", margin: "0 auto", background: "linear-gradient(135deg, #1A1733 0%, #0F0D1E 100%)", color: "#FFFFFF", borderRadius: "20px", padding: "36px 28px", display: "flex", flexWrap: "wrap", gap: "24px", alignItems: "center" }}>
 <div style={{ width: "64px", height: "64px", borderRadius: "16px", background: "#00CCFE", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0F0D1E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" /><path d="M8.5 11h.01M12 11h.01M15.5 11h.01" /></svg>
@@ -879,7 +923,9 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </section>
 
 {/* TEAM */}
-<section style={{ position: "relative", overflowX: "clip", padding: "56px 20px 96px", background: "#C6D6E8" }}>
+{/* C-066: not positioned, so its background paints under the Sofia card's shadow (one light band, no cut line);
+    it overlaps the CTA section by 1px, so a fractional boundary can't leave a white hairline between them. */}
+<section style={{ overflowX: "clip", padding: "16px 20px 97px", marginBottom: "-1px", background: "#C6D6E8" }}>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div className="cu-reveal" style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "760px" }}>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#1E4877" }}>QUIÉNES SOMOS</span>
@@ -911,7 +957,8 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 </Keep>
 {/* FOOTER */}
 </main>
-<footer style={{ background: "linear-gradient(180deg, #C6D6E8 0px, #C1D2E5 35px, #B2C6DD 70px, #9CB4D2 105px, #829EC3 140px, #6583AC 175px, #48628A 210px, #2D4269 245px, #202E4F 280px, #19203B 315px, #14162B 350px, #100F21 385px, #0F0D1E 420px)", color: "#FFFFFF", padding: "330px 20px 36px" }}>
+<footer className="cs-sec cs-cut-r cs-dots cu-hmsec cu-hmcut cu-hmfoot" style={{ color: "#FFFFFF" }}>
+<div className="cs-bg" aria-hidden="true"></div>
 <div style={{ maxWidth: "1240px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "28px" }}>
 <div style={{ display: "flex", flexWrap: "wrap", gap: "28px 64px" }}>
 <div style={{ flex: "1 1 260px", minWidth: "0", display: "flex", flexDirection: "column", gap: "14px" }}>
