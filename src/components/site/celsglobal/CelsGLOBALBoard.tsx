@@ -8,6 +8,7 @@ import { Component, Fragment } from "react";
 import { css } from "@/components/site/css";
 import { enrollHref, evalHref, planHref } from "@/lib/enroll";
 import { mxn as fmtMxn, plan as fmtPlan, price as fmtPrice, saving as fmtSaving, separately as fmtSeparately, type SitePrices } from "@/components/site/prices";
+import { GlobalHero } from "./GlobalHero";
 import "./celsglobal.css";
 
 // Only real testimonials: the section stays hidden until Matt sends them (celsu-website-spec.md).
@@ -148,49 +149,8 @@ export default class CelsGLOBALBoard extends Component<{ prices: SitePrices }, a
 <main>
 
 {/* HERO */}
-<section id="inicio" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #23395A 0%, #1D3352 45%, #14182B 100%)", color: "#FFFFFF", padding: "64px 20px 120px" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", top: "-200px", right: "-160px", width: "640px", height: "640px", borderRadius: "50%", background: "radial-gradient(circle, rgba(199,162,78,.20) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<span className="cu-orb" aria-hidden="true" style={{ position: "absolute", bottom: "-260px", left: "-200px", width: "640px", height: "640px", borderRadius: "50%", background: "radial-gradient(circle, rgba(63,143,166,.24) 0%, rgba(0,0,0,0) 70%)", pointerEvents: "none" }}></span>
-<div style={{ position: "relative", maxWidth: "1240px", margin: "0 auto", display: "flex", flexWrap: "wrap", gap: "32px 56px", alignItems: "center" }}>
-<div style={{ flex: "1 1 460px", minWidth: "0", display: "flex", flexDirection: "column", gap: "20px" }}>
-<a href="/#programas" style={{ alignSelf: "flex-start", color: "#AFC3D6", fontWeight: "700", fontSize: "14px", textDecoration: "none" }}>← Todos los programas</a>
-<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "2px", color: "#DDBE72" }}>CELSGLOBAL · INTERNATIONAL BUSINESS DEVELOPMENT</span>
-<h1 style={{ margin: "0", fontWeight: "800", fontSize: "clamp(40px, 5.6vw, 68px)", lineHeight: "1.04", letterSpacing: "-2px" }}>Tu carrera,<br /><span style={{ background: "linear-gradient(90deg, #7CC4D6, #DDBE72 60%, #D79AB0)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>sin fronteras.</span></h1>
-<p style={{ margin: "0", fontSize: "19px", lineHeight: "1.6", color: "#CBD6E2", maxWidth: "580px" }}>Un programa de 6 meses para profesionales que quieren crecer en Estados Unidos: inglés de negocios, un resume al estilo americano, entrevistas que sí ganas, tus finanzas en orden y tu camino con la Visa TN. Todo en un solo lugar.</p>
-<div style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
-<a href={enrollHref("celsglobal")} className="cu-btn cu-btn-gold">Inscríbete por {fmtPrice(P, "celsglobal")} <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></svg></a>
-<a href="#ruta" className="cu-btn cu-btn-ghost">Ver la ruta de 6 meses</a>
-</div>
-<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<span className="cu-chip">6 meses</span>
-<span className="cu-chip">8 programas y servicios</span>
-<span className="cu-chip">Inglés con apoyo en español</span>
-</div>
-</div>
-<div aria-hidden="true" style={{ flex: "1 1 420px", minWidth: "0", display: "flex", justifyContent: "center" }}>
-<div className="cu-raise-dark" style={{ position: "relative", overflow: "hidden", width: "100%", maxWidth: "500px", aspectRatio: "1 / 1", borderRadius: "28px", background: "radial-gradient(circle at 50% 45%, #2A4568 0%, #1A2B47 55%, #111526 100%)", border: "1px solid rgba(255,255,255,.10)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-<svg className="cu-globe" viewBox="0 0 400 400" style={{ position: "absolute", inset: "0", width: "100%", height: "100%" }}>
-<g fill="none" stroke="#7CC4D6" strokeOpacity=".22" strokeWidth="1.2">
-<circle cx="200" cy="200" r="160" />
-<ellipse cx="200" cy="200" rx="160" ry="56" />
-<ellipse cx="200" cy="200" rx="160" ry="112" />
-<path d="M40 200 H360" />
-<ellipse className="cu-mer" cx="200" cy="200" rx="160" ry="160" style={{ animationDelay: "0s" }} />
-<ellipse className="cu-mer" cx="200" cy="200" rx="160" ry="160" style={{ animationDelay: "-3s" }} />
-<ellipse className="cu-mer" cx="200" cy="200" rx="160" ry="160" style={{ animationDelay: "-6s" }} />
-<ellipse className="cu-mer" cx="200" cy="200" rx="160" ry="160" style={{ animationDelay: "-9s" }} />
-</g>
-</svg>
-<div style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: "18px" }}>
-<div className="cu-g-float"><svg viewBox="0 0 140 140" width="170" height="170" aria-hidden="true" style={{ display: "block", overflow: "visible" }}><defs><linearGradient id="gTGh" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#2E6F86" /><stop offset=".55" stopColor="#5FB3C8" /><stop offset="1" stopColor="#DDBE72" /></linearGradient><linearGradient id="gRhh" gradientUnits="userSpaceOnUse" x1="70" y1="0" x2="134" y2="0"><stop offset="0" stopColor="#9A5470" /><stop offset="1" stopColor="#CC8AA0" /></linearGradient></defs><path pathLength="1" className="cu-draw cu-draw-1" d="M100 32 A 47 47 0 1 0 114 84" fill="none" stroke="url(#gTGh)" strokeWidth="24" strokeLinecap="round" /><path pathLength="1" className="cu-draw cu-draw-2" d="M74 78 H 124" fill="none" stroke="url(#gRhh)" strokeWidth="18" strokeLinecap="round" /><path pathLength="1" className="cu-draw cu-draw-3" d="M114 64 L 130 78 L 114 92" fill="none" stroke="url(#gRhh)" strokeWidth="12" strokeLinecap="round" strokeLinejoin="round" /></svg></div>
-<span style={{ fontWeight: "800", fontSize: "30px", letterSpacing: "1px" }}>CELS<span style={{ fontWeight: "300" }}>GLOBAL</span></span>
-<span style={{ display: "flex", alignItems: "center", gap: "10px", fontWeight: "700", fontSize: "14px", color: "#DDBE72", padding: "8px 14px", borderRadius: "999px", background: "rgba(255,255,255,.08)", border: "1px solid rgba(221,190,114,.35)" }}><span className="cu-pulse" style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#DDBE72" }}></span>{v.heroTick}</span>
-</div>
-</div>
-</div>
-</div>
-</section>
+{/* C-061: G takeover → the 6-month route → the world opens up (GlobalHero). The price comes from products. */}
+<GlobalHero price={fmtPrice(P, "celsglobal")} enrollHref={enrollHref("celsglobal")} />
 
 {/* 6-MONTH ROUTE */}
 <section id="ruta" style={{ position: "relative", overflowX: "clip", padding: "230px 20px 110px", background: "linear-gradient(180deg, #14182B 0px, #151A2E 33px, #192036 67px, #1F2A42 100px, #273652 133px, #394D6A 167px, #63778D 200px, #8FA3B1 233px, #B0BFC5 267px, #C9CFD0 300px, #DCDDD8 333px, #E9E6DD 367px, #EEE9DF 400px, #ECE6DA 100%)" }}>

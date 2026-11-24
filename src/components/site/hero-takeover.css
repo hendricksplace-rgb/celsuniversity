@@ -29,7 +29,11 @@
    phone only a strip of a wide logo landed (C-060). Its centre is the hero's centre, so target() is unchanged. */
 .hto-stage video{position:absolute;width:max(100cqw,177.7778cqh);height:max(100cqh,56.25cqw);left:calc(50% - max(100cqw,177.7778cqh) / 2);top:calc(50% - max(100cqh,56.25cqw) / 2);max-width:none;max-height:none;object-fit:cover;transform-origin:50% 50%;will-change:transform} /* max-width: Tailwind preflight caps video at 100% */
 .hto-stage.fly video{transition:transform 1.4s cubic-bezier(.65,0,.25,1)}
-.hto-stage.fly video,.hto[data-phase="landed"] .hto-stage video{-webkit-mask-image:var(--hto-landmask,none);mask-image:var(--hto-landmask,none)}
+.hto-stage video{-webkit-mask-image:var(--hto-vmask,none);mask-image:var(--hto-vmask,none)}
+.hto-stage.fly video,.hto[data-phase="landed"] .hto-stage video{-webkit-mask-image:var(--hto-landmask,var(--hto-vmask,none));mask-image:var(--hto-landmask,var(--hto-vmask,none))}
+/* handoff: once landed, the still takes over from the video */
+.hto[data-docked="true"] .hto-stage{display:none}
+.hto[data-docked="true"] .hto-still{opacity:1}
 .hto-skip{position:absolute;right:20px;bottom:24px;font:inherit;font-weight:700;font-size:13px;color:#fff;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:8px 14px;cursor:pointer;min-height:36px}
 
 @media (max-width:820px){
