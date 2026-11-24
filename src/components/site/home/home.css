@@ -150,3 +150,10 @@ main > section ~ section ~ section {
 .cu-hmfoot{padding-bottom:36px}
 .cu-hmfoot>.cs-bg{background:#0F0D1E}
 .cu-hmsec>.cs-bg>.cu-beam{-webkit-mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%);mask-image:linear-gradient(180deg,transparent 14%,#000 32%,#000 68%,transparent 86%)}
+
+/* The mini quiz (#prueba) keeps the height of its tallest state (invisible sizers in the same grid cell). */
+.cu-qzstack{display:grid}
+.cu-qzstack>*{grid-area:1/1;min-width:0}
+.cu-qzreal{display:flex;flex-direction:column;gap:18px}
+.cu-qzreal>.cu-qzintro{flex:1;justify-content:center}
+.cu-qzsizer{visibility:hidden;pointer-events:none}

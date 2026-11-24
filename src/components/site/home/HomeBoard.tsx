@@ -22,6 +22,8 @@ const Keep = memo(
 
 // Testimonials stay hidden until there are real ones (celsu-website-spec.md).
 const SHOW_TESTIMONIALS = false;
+/** Handlers for the quiz's invisible height sizers: they're inert, so these never run. */
+const QZ_NOOP = { replaySpeech: () => {}, next: () => {}, restart: () => {} };
 // The home page isn't a program's #planes section: its plan and bundle buttons go through /inscribirme
 // (Matt, 2026-10-20), carrying the plan's product code (&plan=). Bundles open with their main program
 // (CelsTV + CelsBSNS → CelsBSNS, CelsUS + CelsTV → CelsUS).
@@ -198,6 +200,57 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     });
   }
   componentWillUnmount() { this._unmounted = true; clearTimeout(this._jT); if (this._jRaf) cancelAnimationFrame(this._jRaf); if (this._io) this._io.disconnect(); window.removeEventListener('resize', this._onResize); (this._introT || []).forEach(clearTimeout); if (this._unlock) { window.removeEventListener('pointerdown', this._unlock, true); window.removeEventListener('keydown', this._unlock, true); } this._clear(); if (this._t) clearInterval(this._t); }
+  /** The mini quiz view-model for a state (the real one, or a sizer: see quizSizers). */
+  quizFor(s) {
+    var self = this;
+    var Q = this.Q;
+    var q = Q[Math.min(s.qi, Q.length - 1)];
+    var base = 'display: flex; align-items: center; gap: 14px; text-align: left; min-height: 56px; padding: 12px 16px; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer; font-family: inherit; ';
+    var letters = ['A', 'B', 'C'];
+    var options = q.opts.map(function (t, i) {
+      var st, bs = 'flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; ';
+      if (s.answer === null) { st = base + 'background: linear-gradient(180deg,#FFFFFF,#F4F6FA); color: #0F0D1E; border: 1px solid #CFCBDB; box-shadow: inset 0 1px 0 #FFFFFF, 0 8px 18px -12px rgba(10,20,40,.45);'; bs += 'background: #0F0D1E; color: #FFFFFF;'; }
+      else if (i === q.a) { st = base + 'background: #EAF8DD; color: #1F4D0E; border: 1px solid #6FB43F; box-shadow: 0 0 0 3px rgba(111,180,63,.25);'; bs += 'background: #4E9A2A; color: #FFFFFF;'; }
+      else if (i === s.answer) { st = base + 'background: #FDF0F6; color: #8F0044; border: 1px solid #F20174;'; bs += 'background: #F20174; color: #FFFFFF;'; }
+      else { st = base + 'background: #FFFFFF; color: #8A8599; border: 1px solid #ECEAF2;'; bs += 'background: #ECEAF2; color: #8A8599;'; }
+      return {
+        text: t, letter: letters[i], badgeStyle: bs,
+        cls: 'cu-opt cu-optin' + (s.answer === null ? ' cu-opt-live' : ''),
+        style: st + ' animation-delay: ' + (i * 170) + 'ms;',
+        pick: function () {
+          if (self.state.answer !== null) return;
+          var ok = i === q.a;
+          if (ok) { self._tone(659, 0, .2, .1, 'triangle'); self._tone(988, .1, .35, .1, 'triangle'); } else { self._tone(196, 0, .35, .12, 'sawtooth'); }
+          self.setState({ answer: i, score: self.state.score + (ok ? 1 : 0) });
+        }
+      };
+    });
+    var right = s.answer === q.a;
+    var dots = Q.map(function (x, i) {
+      var c = s.done || i < s.qi ? '#0F0D1E' : (i === s.qi && s.started ? '#00CCFE' : '#E2E6EE');
+      return { style: 'flex: 1; height: 6px; border-radius: 3px; background: ' + c + '; transition: background .3s;' };
+    });
+    var wl = q.say.split(' ');
+    var words = wl.map(function (t, i) {
+      var on = i < s.spoken, cur = s.speaking && i === s.spoken - 1;
+      return { t: t, cls: 'cu-wd ' + (on ? 'cu-wd-on' : 'cu-wd-off'), style: cur ? 'color: #FF4FA3;' : 'color: #FFFFFF;' };
+    });
+    var verdicts = ['Buen comienzo. CelsTV te da las bases desde el Episodio 1.', 'Buen comienzo. CelsTV te da las bases desde el Episodio 1.', 'Vas bien. Con CelsTV ganarás fluidez rápidamente.', '¡Muy bien! Tienes una base sólida; la evaluación te dirá tu nivel exacto.', '¡Excelente! Podrías estar listo para CelsBSNS.', '¡Perfecto! Haz la evaluación para confirmar tu nivel.'];
+    var quiz = {
+      dots: dots, intro: !s.started, active: s.started && !s.done, done: s.done,
+      words: words, speaking: s.speaking, notSpeaking: !s.speaking,
+      spkClass: 'cu-btn cu-btn-pink' + (s.speaking ? ' cu-pulse' : ''),
+      showPrompt: s.phase !== 'speak', showOpts: s.phase === 'opts',
+      prog: q.prog, ctx: q.ctx, pos: (s.qi + 1) + ' de ' + Q.length, say: q.say, prompt: q.prompt, why: q.why,
+      progStyle: 'font-weight: 800; font-size: 12px; letter-spacing: 1.2px; color: ' + q.color + '; background: ' + q.bg + '; padding: 6px 10px; border-radius: 8px;',
+      options: options, answered: s.answer !== null,
+      fbTitle: right ? 'Correcto' : 'Casi',
+      fbStyle: 'display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border-radius: 12px; padding: 16px; color: #0F0D1E; ' + (right ? 'background: #F1FAE8;' : 'background: #FDF0F6;'),
+      nextLabel: s.qi < Q.length - 1 ? 'Siguiente frase' : 'Ver mi resultado',
+      score: s.score, verdict: verdicts[s.score]
+    };
+    return quiz;
+  }
   renderVals() {
     var PR = this.props.prices;
     var self = this;
@@ -270,52 +323,13 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     });
     var cur = lv[idx];
     var pct = Math.round(((idx + 1) / 6) * 100);
+    // the mini quiz (built by quizFor, so the height sizers use the same view-model)
+    var quiz = this.quizFor(s);
     var Q = this.Q;
-    var q = Q[Math.min(s.qi, Q.length - 1)];
-    var base = 'display: flex; align-items: center; gap: 14px; text-align: left; min-height: 56px; padding: 12px 16px; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer; font-family: inherit; ';
-    var letters = ['A', 'B', 'C'];
-    var options = q.opts.map(function (t, i) {
-      var st, bs = 'flex: 0 0 auto; width: 32px; height: 32px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; ';
-      if (s.answer === null) { st = base + 'background: linear-gradient(180deg,#FFFFFF,#F4F6FA); color: #0F0D1E; border: 1px solid #CFCBDB; box-shadow: inset 0 1px 0 #FFFFFF, 0 8px 18px -12px rgba(10,20,40,.45);'; bs += 'background: #0F0D1E; color: #FFFFFF;'; }
-      else if (i === q.a) { st = base + 'background: #EAF8DD; color: #1F4D0E; border: 1px solid #6FB43F; box-shadow: 0 0 0 3px rgba(111,180,63,.25);'; bs += 'background: #4E9A2A; color: #FFFFFF;'; }
-      else if (i === s.answer) { st = base + 'background: #FDF0F6; color: #8F0044; border: 1px solid #F20174;'; bs += 'background: #F20174; color: #FFFFFF;'; }
-      else { st = base + 'background: #FFFFFF; color: #8A8599; border: 1px solid #ECEAF2;'; bs += 'background: #ECEAF2; color: #8A8599;'; }
-      return {
-        text: t, letter: letters[i], badgeStyle: bs,
-        cls: 'cu-opt cu-optin' + (s.answer === null ? ' cu-opt-live' : ''),
-        style: st + ' animation-delay: ' + (i * 170) + 'ms;',
-        pick: function () {
-          if (self.state.answer !== null) return;
-          var ok = i === q.a;
-          if (ok) { self._tone(659, 0, .2, .1, 'triangle'); self._tone(988, .1, .35, .1, 'triangle'); } else { self._tone(196, 0, .35, .12, 'sawtooth'); }
-          self.setState({ answer: i, score: self.state.score + (ok ? 1 : 0) });
-        }
-      };
-    });
-    var right = s.answer === q.a;
-    var dots = Q.map(function (x, i) {
-      var c = s.done || i < s.qi ? '#0F0D1E' : (i === s.qi && s.started ? '#00CCFE' : '#E2E6EE');
-      return { style: 'flex: 1; height: 6px; border-radius: 3px; background: ' + c + '; transition: background .3s;' };
-    });
-    var wl = q.say.split(' ');
-    var words = wl.map(function (t, i) {
-      var on = i < s.spoken, cur = s.speaking && i === s.spoken - 1;
-      return { t: t, cls: 'cu-wd ' + (on ? 'cu-wd-on' : 'cu-wd-off'), style: cur ? 'color: #FF4FA3;' : 'color: #FFFFFF;' };
-    });
-    var verdicts = ['Buen comienzo. CelsTV te da las bases desde el Episodio 1.', 'Buen comienzo. CelsTV te da las bases desde el Episodio 1.', 'Vas bien. Con CelsTV ganarás fluidez rápidamente.', '¡Muy bien! Tienes una base sólida; la evaluación te dirá tu nivel exacto.', '¡Excelente! Podrías estar listo para CelsBSNS.', '¡Perfecto! Haz la evaluación para confirmar tu nivel.'];
-    var quiz = {
-      dots: dots, intro: !s.started, active: s.started && !s.done, done: s.done,
-      words: words, speaking: s.speaking, notSpeaking: !s.speaking,
-      spkClass: 'cu-btn cu-btn-pink' + (s.speaking ? ' cu-pulse' : ''),
-      showPrompt: s.phase !== 'speak', showOpts: s.phase === 'opts',
-      prog: q.prog, ctx: q.ctx, pos: (s.qi + 1) + ' de ' + Q.length, say: q.say, prompt: q.prompt, why: q.why,
-      progStyle: 'font-weight: 800; font-size: 12px; letter-spacing: 1.2px; color: ' + q.color + '; background: ' + q.bg + '; padding: 6px 10px; border-radius: 8px;',
-      options: options, answered: s.answer !== null,
-      fbTitle: right ? 'Correcto' : 'Casi',
-      fbStyle: 'display: flex; flex-wrap: wrap; align-items: center; gap: 12px; border-radius: 12px; padding: 16px; color: #0F0D1E; ' + (right ? 'background: #F1FAE8;' : 'background: #FDF0F6;'),
-      nextLabel: s.qi < Q.length - 1 ? 'Siguiente frase' : 'Ver mi resultado',
-      score: s.score, verdict: verdicts[s.score]
-    };
+    var longest = 0;
+    var quizSizers = Q.map(function (x, i) { return self.quizFor(Object.assign({}, s, { started: true, done: false, qi: i, phase: 'opts', answer: (x.a + 1) % x.opts.length, speaking: false, spoken: 999 })); });
+    for (var sc = 0; sc <= Q.length; sc++) { var vq = self.quizFor(Object.assign({}, s, { started: true, done: true, score: sc })); if (!longest || String(vq.verdict).length > String(longest.verdict).length) longest = vq; }
+    quizSizers.push(longest);
     return {
       menuOpen: s.menuOpen,
       menuExpanded: s.menuOpen ? 'true' : 'false',
@@ -418,7 +432,7 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
       rec: rec,
       levels: levels,
       lvl: { code: cur.code, name: cur.name, can: cur.can, course: cur.course, barStyle: 'height: 100%; width: ' + pct + '%; background: #00CCFE; border-radius: 3px; transition: width .3s;' },
-      quiz: quiz,
+      quiz: quiz, quizSizers: quizSizers,
       voiceName: s.voiceName,
       start: function () { self.setState({ score: 0 }); self._play(0); },
       replaySpeech: function () { if (!self.state.speaking) self._speak(self.state.qi, null); },
@@ -427,6 +441,60 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
     };
   }
 
+  /** The quiz while a phrase runs (the real one, or a sizer). h: the handlers. */
+  quizActive(q, h) {
+    return (<>
+<div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+<span style={css(q.progStyle)}>{q.prog}</span>
+<span style={{ fontWeight: "600", fontSize: "13px", color: "#6B6680" }}>{q.ctx} · {q.pos}</span>
+</div>
+<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "18px", flexWrap: "wrap", padding: "22px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), 0 18px 36px -18px rgba(15,13,30,.8)" }}>
+<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
+<button type="button" className={q.spkClass} onClick={h.replaySpeech} aria-label="Escuchar otra vez" style={{ position: "relative", width: "58px", height: "58px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
+{q.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "22px" }}><span></span><span></span><span></span><span></span></span></>) : null}
+{q.notSpeaking ? (<><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
+</button>
+<p aria-label={q.say} style={{ position: "relative", margin: "0", fontWeight: "800", fontSize: "clamp(22px, 2.6vw, 30px)", lineHeight: "1.3", flex: "1 1 220px", letterSpacing: "-0.3px" }}>
+{(q.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}
+</p>
+</div>
+{q.showPrompt ? (<>
+<p className="cu-drop" style={{ margin: "0", fontWeight: "800", fontSize: "19px" }}>{q.prompt}</p>
+</>) : null}
+{q.showOpts ? (<>
+<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+{(q.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
+<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span>{o.text}</span></button>
+</Fragment>))}
+</div>
+</>) : null}
+{q.answered ? (<>
+<div className="cu-drop" style={css(q.fbStyle)}>
+<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "17px" }}>{q.fbTitle}</p>
+<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{q.why}</p>
+</div>
+<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={h.next}>{q.nextLabel}</button>
+</div>
+</>) : null}
+</div>
+</>);
+  }
+  /** The quiz result (the real one, or a sizer). */
+  quizDone(q, h) {
+    return (<>
+<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "14px", alignItems: "flex-start", padding: "8px 0" }}>
+<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
+<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{q.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
+<p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#3F3B52" }}>{q.verdict}</p>
+<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Descubre tu nivel real</a>
+<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={h.restart}>Repetir quiz</button>
+</div>
+</div>
+</>);
+  }
   render() {
     const v = this.renderVals();
     // Prices from public.products (see the page), never the board's copy.
@@ -663,64 +731,24 @@ export default class MainBoard extends Component<{ prices: SitePrices }, any> {
 {(v.quiz.dots ?? []).map((d: any, __i: number) => (<Fragment key={__i}><span style={css(d.style)}></span></Fragment>))}
 </div>
 
+{/* The real quiz plus invisible copies of its tallest states (each phrase answered; the longest result) in one grid
+    cell: the card keeps the height of its largest state, so the page below never jumps while the quiz runs. */}
+<div className="cu-qzstack">
+<div className="cu-qzreal">
 {v.quiz.intro ? (<>
-<div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px", padding: "28px 24px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", position: "relative", overflow: "hidden" }}>
+<div className="cu-qzintro" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "16px", padding: "28px 24px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", position: "relative", overflow: "hidden" }}>
 <span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
 <span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#00CCFE" }}>5 FRASES · 1 MINUTO</span>
 <p style={{ margin: "0", fontWeight: "800", fontSize: "26px", lineHeight: "1.25" }}>Escucha inglés real y descubre cuánto entiendes.</p>
 <button type="button" className="cu-btn cu-btn-pink cu-pulse" onClick={v.start}><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" /></svg>Empezar el quiz</button>
 </div>
 </>) : null}
+{v.quiz.active ? this.quizActive(v.quiz, v) : null}
+{v.quiz.done ? this.quizDone(v.quiz, v) : null}
+</div>
+{(v.quizSizers ?? []).map((q: any, __i: number) => (<div key={__i} className="cu-qzsizer" aria-hidden="true" inert>{q.done ? this.quizDone(q, QZ_NOOP) : this.quizActive(q, QZ_NOOP)}</div>))}
+</div>
 
-{v.quiz.active ? (<>
-<div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-<div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-<span style={css(v.quiz.progStyle)}>{v.quiz.prog}</span>
-<span style={{ fontWeight: "600", fontSize: "13px", color: "#6B6680" }}>{v.quiz.ctx} · {v.quiz.pos}</span>
-</div>
-<div style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", gap: "18px", flexWrap: "wrap", padding: "22px", borderRadius: "18px", background: "linear-gradient(150deg, #1C1934 0%, #0F0D1E 70%)", color: "#FFFFFF", boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), 0 18px 36px -18px rgba(15,13,30,.8)" }}>
-<span className="cu-beam cu-beam-soft" aria-hidden="true"></span>
-<button type="button" className={v.quiz.spkClass} onClick={v.replaySpeech} aria-label="Escuchar otra vez" style={{ position: "relative", width: "58px", height: "58px", padding: "0", borderRadius: "50%", flex: "0 0 auto" }}>
-{v.quiz.speaking ? (<><span className="cu-eq" style={{ display: "flex", alignItems: "center", gap: "3px", height: "22px" }}><span></span><span></span><span></span><span></span></span></>) : null}
-{v.quiz.notSpeaking ? (<><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M19 5a10 10 0 0 1 0 14" /></svg></>) : null}
-</button>
-<p aria-label={v.quiz.say} style={{ position: "relative", margin: "0", fontWeight: "800", fontSize: "clamp(22px, 2.6vw, 30px)", lineHeight: "1.3", flex: "1 1 220px", letterSpacing: "-0.3px" }}>
-{(v.quiz.words ?? []).map((w: any, __i: number) => (<Fragment key={__i}><span className={w.cls} style={css(w.style)}>{w.t}</span></Fragment>))}
-</p>
-</div>
-{v.quiz.showPrompt ? (<>
-<p className="cu-drop" style={{ margin: "0", fontWeight: "800", fontSize: "19px" }}>{v.quiz.prompt}</p>
-</>) : null}
-{v.quiz.showOpts ? (<>
-<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-{(v.quiz.options ?? []).map((o: any, __i: number) => (<Fragment key={__i}>
-<button type="button" className={o.cls} onClick={o.pick} style={css(o.style)}><span style={css(o.badgeStyle)}>{o.letter}</span><span>{o.text}</span></button>
-</Fragment>))}
-</div>
-</>) : null}
-{v.quiz.answered ? (<>
-<div className="cu-drop" style={css(v.quiz.fbStyle)}>
-<div style={{ display: "flex", flexDirection: "column", gap: "4px", flex: "1 1 220px" }}>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "17px" }}>{v.quiz.fbTitle}</p>
-<p style={{ margin: "0", fontSize: "15px", lineHeight: "1.5" }}>{v.quiz.why}</p>
-</div>
-<button type="button" className="cu-btn cu-btn-dark cu-btn-sm" onClick={v.next}>{v.quiz.nextLabel}</button>
-</div>
-</>) : null}
-</div>
-</>) : null}
-
-{v.quiz.done ? (<>
-<div className="cu-drop" style={{ display: "flex", flexDirection: "column", gap: "14px", alignItems: "flex-start", padding: "8px 0" }}>
-<span style={{ fontWeight: "700", fontSize: "13px", letterSpacing: "1.5px", color: "#6B6680" }}>TU RESULTADO</span>
-<p style={{ margin: "0", fontWeight: "800", fontSize: "48px", lineHeight: "1" }}>{v.quiz.score} <span style={{ fontSize: "22px", color: "#6B6680" }}>de 5</span></p>
-<p style={{ margin: "0", fontSize: "17px", lineHeight: "1.6", color: "#3F3B52" }}>{v.quiz.verdict}</p>
-<div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-<a href="/evaluacion" className="cu-btn cu-btn-pink cu-btn-sm">Descubre tu nivel real</a>
-<button type="button" className="cu-btn cu-btn-light cu-btn-sm" onClick={v.restart}>Repetir quiz</button>
-</div>
-</div>
-</>) : null}
 </div>
 </div>
 </div>
