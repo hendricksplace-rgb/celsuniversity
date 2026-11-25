@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { getViewer, isAdminRole } from "@/lib/access";
 import { focus, input } from "@/components/builder/ui";
 import { BulkInviteButton } from "@/components/admin/InviteButtons";
+import { NewStudentButton, type CourseGroup } from "@/components/admin/NewStudentButton";
+import { themeForCourse, type ThemeKey } from "@/lib/themes";
 import { fmtDay, inviteLabel, previewInviteTemplates, type InviteRow } from "@/lib/invites";
 
 export const metadata = { title: "Estudiantes · CelsU" };
@@ -23,6 +25,19 @@ export default async function Estudiantes({ searchParams }: Props) {
   if (!viewer || !isAdminRole(viewer.role)) notFound();
   const search = (q ?? "").trim().slice(0, 80).replace(/[%,()]/g, "");
   const { data: pendingAll } = await supabase.rpc("admin_invite_pending");
+  // C-072 «Invitar estudiante nuevo»: the published courses, grouped by program.
+  const { data: published } = await supabase.from("courses").select("id, slug, title, theme").eq("status", "published").order("sort_order");
+  const GROUP: [ThemeKey, string][] = [
+    ["celstv", "CelsTV · English For Our Generation"],
+    ["celsbsns", "CelsBSNS · English for Business"],
+    ["celsus", "CelsUS · Para Ciudadanía"],
+    ["celsglobal", "CelsGLOBAL"],
+  ];
+  const courseGroups: CourseGroup[] = GROUP.map(([key, groupLabel]) => ({
+    key,
+    label: groupLabel,
+    courses: (published ?? []).filter((c) => themeForCourse({ slug: c.slug }) === key).map((c) => ({ id: c.id, title: c.title })),
+  })).filter((g) => g.courses.length);
   const needle = search.toLowerCase();
   const pending = (pendingAll ?? []).filter((p) => !needle || p.email?.toLowerCase().includes(needle) || p.display_name?.toLowerCase().includes(needle));
   const pendingIds = new Set(pending.map((p) => p.user_id));
@@ -57,11 +72,14 @@ export default async function Estudiantes({ searchParams }: Props) {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-3xl font-extrabold sm:text-4xl">Estudiantes</h1>
-        <p className="mt-1 text-sm font-semibold text-[#6B6680]">
-          Los estudiantes actuales se registran solos con su correo de siempre. Búscalos aquí y dales acceso a su programa.
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-extrabold sm:text-4xl">Estudiantes</h1>
+          <p className="mt-1 text-sm font-semibold text-[#6B6680]">
+            Los estudiantes actuales se registran solos con su correo de siempre. Búscalos aquí y dales acceso a su programa, o invita a alguien nuevo.
+          </p>
+        </div>
+        <NewStudentButton groups={courseGroups} />
       </div>
       <form className="flex flex-wrap gap-2" role="search">
         <label htmlFor="q" className="sr-only">

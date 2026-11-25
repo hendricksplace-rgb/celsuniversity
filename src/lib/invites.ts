@@ -48,6 +48,22 @@ export async function previewInviteTemplates(userIds: string[], accessToken: str
   return out;
 }
 
+export type CreateResult =
+  | { ok: true; status: "created"; user_id: string; courses: number; invite: InviteOutcome | null }
+  | { ok: true; status: "exists"; user_id: string | null }
+  | { ok: false; status: "partial"; user_id: string; error: string }
+  | { ok: false; error: string };
+
+/** C-072 «Invitar estudiante nuevo»: account + courses + invite-general, in the student-invite function. */
+export async function createStudent(input: { email: string; name: string; course_ids: string[]; expires_at: string | null; send: boolean }, accessToken: string): Promise<CreateResult> {
+  const { status, data } = await call<CreateResult & { error?: string }>({ action: "create", ...input }, accessToken);
+  if (status === 200 && data) return data;
+  if (status === 429) return { ok: false, error: "rate" };
+  if (status === 403) return { ok: false, error: "forbidden" };
+  if (status === 400 && data?.error) return { ok: false, error: data.error };
+  return { ok: false, error: "error" };
+}
+
 export async function redeemInvite(token: string): Promise<Redeemed> {
   const { status, data } = await call<Redeemed>({ action: "redeem", token });
   if (status === 429) return { ok: false, reason: "rate" };
