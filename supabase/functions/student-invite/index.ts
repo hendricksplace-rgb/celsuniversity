@@ -14,6 +14,12 @@
 //   { action: "preview", user_ids: uuid[] (≤ 200) }
 //       Admin only: { templates: { <user_id>: "invite-general" | "invite-celsglobal" } }, nothing sent (C-071:
 //       Admin → Estudiantes shows which email will go out).
+//   { action: "create", email, name, course_ids: uuid[], expires_at?: "YYYY-MM-DD" | null, send?: boolean }
+//       Admin only (C-072, «Invitar estudiante nuevo»): creates the login (email confirmed, no password), sets the
+//       profile (name, individual_student, es), grants the courses (individual, active, source 'admin-invite', from
+//       now; no end date unless expires_at) and, unless send === false, sends invite-general. Every write goes to
+//       admin_audit_log as the caller. An email that already has an account changes nothing: { status: "exists",
+//       user_id } (staff use "Dar acceso" / "Enviar invitación" on that student's page instead).
 //   { action: "redeem", token }
 //       Public (the token is the credential). Called by the app's /activar page. While the invitation is
 //       valid (30 days, password not set yet; re-clicks are fine) it returns a fresh recovery token_hash
@@ -202,6 +208,70 @@ async function preview(req: Request, body: Record<string, unknown>) {
   return json({ ok: true, templates });
 }
 
+const EMAIL = /^[^\s@<>"'()]+@[^\s@<>"'()]+\.[^\s@<>"'()]+$/;
+
+/** «Invitar estudiante nuevo» (C-072). */
+async function create(req: Request, body: Record<string, unknown>) {
+  const user = await caller(req);
+  if (!user) return json({ error: "forbidden" }, 403);
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const name = typeof body.name === "string" ? body.name.trim().replace(/\s+/g, " ") : "";
+  const courseIds = Array.isArray(body.course_ids) ? [...new Set(body.course_ids.filter((x): x is string => typeof x === "string" && UUID.test(x)))] : [];
+  const until = typeof body.expires_at === "string" && /^\d{4}-\d{2}-\d{2}$/.test(body.expires_at) ? new Date(`${body.expires_at}T23:59:59-06:00`) : null;
+  if (!EMAIL.test(email) || email.length > 254) return json({ error: "email" }, 400);
+  if (name.length < 2 || name.length > 80) return json({ error: "name" }, 400);
+  if (!courseIds.length || courseIds.length > 40) return json({ error: "courses" }, 400);
+  if (until && (Number.isNaN(until.getTime()) || until.getTime() <= Date.now())) return json({ error: "expires" }, 400);
+  if (!(await allowed(`invite-create:${user.id}`, 20, "10 minutes"))) return json({ error: "rate" }, 429);
+
+  // Courses must exist and be published (the same list "Dar acceso" offers).
+  const { data: courses } = await admin.from("courses").select("id, title").in("id", courseIds).eq("status", "published");
+  if ((courses ?? []).length !== courseIds.length) return json({ error: "courses" }, 400);
+
+  // Already has an account: change nothing.
+  const { data: existing } = await admin.from("profiles").select("id").ilike("email", email).limit(1).maybeSingle();
+  if (existing) return json({ ok: true, status: "exists", user_id: existing.id });
+
+  const { data: made, error: ce } = await admin.auth.admin.createUser({ email, email_confirm: true, user_metadata: { display_name: name } });
+  if (ce || !made.user) {
+    if (/already|exists|registered/i.test(ce?.message ?? "")) {
+      const { data: again } = await admin.from("profiles").select("id").ilike("email", email).limit(1).maybeSingle();
+      return json({ ok: true, status: "exists", user_id: again?.id ?? null });
+    }
+    throw new Error(`createUser: ${ce?.message ?? "no user"}`);
+  }
+  const userId = made.user.id;
+  const audit = (rows: Record<string, unknown>[]) => admin.from("admin_audit_log").insert(rows.map((r) => ({ actor: user.id, ...r })));
+
+  // The sign-up trigger made the profile from the metadata; make the rest explicit.
+  const profile = { display_name: name, email, role: "individual_student", preferred_language: "es" };
+  const { error: pe } = await admin.from("profiles").update(profile).eq("id", userId);
+  if (pe) throw new Error(`profile: ${pe.message}`);
+  await audit([{ action: "insert", table_name: "profiles", row_id: userId, after: { ...profile, created_by: "invitar-estudiante-nuevo" } }]);
+
+  const starts = new Date().toISOString();
+  const rows = (courses ?? []).map((c) => ({
+    user_id: userId,
+    course_id: c.id,
+    enrollment_type: "individual",
+    status: "active",
+    source: "admin-invite",
+    starts_at: starts,
+    expires_at: until ? until.toISOString() : null,
+  }));
+  const { data: enr, error: ee } = await admin.from("enrollments").insert(rows).select("id, course_id");
+  if (ee) {
+    await logFunctionError("student-invite", 500, `create ${userId}: enrollments ${ee.message}`);
+    // The account exists: staff finish on its page ("Dar acceso").
+    return json({ ok: false, status: "partial", user_id: userId, error: "enrollments" });
+  }
+  const title = new Map((courses ?? []).map((c) => [c.id, c.title]));
+  await audit((enr ?? []).map((e) => ({ action: "insert", table_name: "enrollments", row_id: e.id, course_id: e.course_id, after: { ...rows.find((r) => r.course_id === e.course_id), target: title.get(e.course_id) } })));
+
+  const invite = body.send === false ? null : await sendOne(userId, user.id, false, "invite-general");
+  return json({ ok: true, status: "created", user_id: userId, courses: enr?.length ?? 0, invite });
+}
+
 async function redeem(body: Record<string, unknown>) {
   const token = typeof body.token === "string" ? body.token.trim() : "";
   if (!/^[A-Za-z0-9_-]{40,64}$/.test(token)) return json({ ok: false, reason: "unknown" });
@@ -237,6 +307,7 @@ Deno.serve(async (req) => {
     if (body.action === "send") return await send(req, body);
     if (body.action === "redeem") return await redeem(body);
     if (body.action === "preview") return await preview(req, body);
+    if (body.action === "create") return await create(req, body);
     return json({ error: "action" }, 400);
   } catch (e) {
     await logFunctionError("student-invite", 500, e);

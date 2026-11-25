@@ -5,7 +5,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getViewer, isAdminRole } from "@/lib/access";
-import { sendInvites, type InviteOutcome } from "@/lib/invites";
+import { createStudent, sendInvites, type InviteOutcome } from "@/lib/invites";
 
 export type InviteResult = { ok: true; results: InviteOutcome[] } | { ok: false; error: string };
 
@@ -55,4 +55,49 @@ export async function invitePending(search: string, expected: number): Promise<I
   revalidatePath("/app/admin/estudiantes");
   if (!r.ok) return { ok: false, error: `${ERRORS[r.error]} (${r.results.length} enviadas antes del error)` };
   return { ok: true, results: r.results };
+}
+
+export type NewStudentResult =
+  | { ok: true; created: true; userId: string; courses: number; invited: boolean; inviteText: string }
+  | { ok: true; created: false; userId: string | null }
+  | { ok: false; error: string; userId?: string };
+
+const CREATE_ERRORS: Record<string, string> = {
+  email: "Revisa el correo.",
+  name: "Escribe su nombre (mínimo 2 letras).",
+  courses: "Elige al menos un curso.",
+  expires: "La fecha de fin debe ser después de hoy.",
+  rate: "Demasiados registros seguidos. Espera unos minutos.",
+  forbidden: "Solo los administradores pueden invitar estudiantes.",
+  error: "No se pudo crear la cuenta. Inténtalo de nuevo.",
+};
+
+/**
+ * C-072 «Invitar estudiante nuevo»: email + name + courses → the student-invite function creates the account,
+ * grants the courses and (unless unticked) sends invite-general. An email with an account already changes nothing.
+ */
+export async function inviteNewStudent(_prev: NewStudentResult | null, form: FormData): Promise<NewStudentResult> {
+  const s = await session();
+  if (!s) return { ok: false, error: CREATE_ERRORS.forbidden };
+  const email = String(form.get("email") ?? "").trim();
+  const name = String(form.get("name") ?? "").trim();
+  const course_ids = form.getAll("course").map(String);
+  const until = String(form.get("access") ?? "") === "until" ? String(form.get("expires_at") ?? "") : "";
+  if (String(form.get("access") ?? "") === "until" && !/^\d{4}-\d{2}-\d{2}$/.test(until)) return { ok: false, error: "Elige la fecha de fin." };
+  const r = await createStudent({ email, name, course_ids, expires_at: until || null, send: form.get("send") === "on" }, s.token);
+  revalidatePath("/app/admin/estudiantes");
+  if (!r.ok) {
+    if ("status" in r && r.status === "partial") return { ok: false, error: "Se creó la cuenta, pero no se pudieron dar los cursos. Ábrela y usa «Dar acceso».", userId: r.user_id };
+    return { ok: false, error: CREATE_ERRORS[r.error] ?? CREATE_ERRORS.error };
+  }
+  if (r.status === "exists") return { ok: true, created: false, userId: r.user_id };
+  const inv = r.invite?.status;
+  const inviteText = !r.invite
+    ? "No se envió la invitación (puedes enviarla desde su página)."
+    : inv === "sent"
+      ? "Invitación enviada."
+      : inv === "stubbed"
+        ? "Invitación registrada (modo prueba: el correo no salió)."
+        : "La cuenta quedó lista, pero el correo falló. Reenvíalo desde su página.";
+  return { ok: true, created: true, userId: r.user_id, courses: r.courses, invited: inv === "sent" || inv === "stubbed", inviteText };
 }
