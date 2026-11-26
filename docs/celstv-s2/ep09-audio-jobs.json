@@ -1,0 +1,979 @@
+{
+  "note": "CelsTV Section 2 · Episode 9 audio, same voices and file names as Episode 7. Rows match public.audio_jobs. Not queued: audio_jobs is read-only for Claude Code.",
+  "voices": {
+    "amy": "OZxMHsGaBmV5pjMIDIn0",
+    "brian": "nPczCjzI2devNBz1zQrb"
+  },
+  "card_audio_pending": {
+    "text": "To lie down",
+    "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/fc_ep_09_verbs_toliedown.mp3",
+    "voice": "the voice of the existing CelsCards (made before the audio_jobs queue; voice id not on record)"
+  },
+  "reused": [
+    "quiz q3 audio = card fc_ep_09_words_popcorn.mp3",
+    "quiz q7 audio = card fc_ep_09_phrases_canyouhelpmefindthebeautysalon.mp3",
+    "CelsBook words and phrases = their card audio"
+  ],
+  "jobs": [
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-watch.mp3",
+      "text": "I can watch a movie tonight.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-walk.mp3",
+      "text": "We can walk on the beach.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-sleep.mp3",
+      "text": "I can sleep late on the weekend.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-take-a-break.mp3",
+      "text": "You can take a break now.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-swim.mp3",
+      "text": "She can swim in the pool.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-read.mp3",
+      "text": "I can read a book on the couch.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-listen.mp3",
+      "text": "We can listen to music.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-lie-down.mp3",
+      "text": "Can I lie down on the bed?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-relax.mp3",
+      "text": "I can't relax at work.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-go.mp3",
+      "text": "Can we go to the spa?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "celsbook_example",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celsbook/ep-09/ex-to-order.mp3",
+      "text": "Can you order a pizza?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-bi.mp3",
+      "text": "Put the words in order.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-bi"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-build.mp3",
+      "text": "I can swim in the pool.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-build"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-p1.mp3",
+      "text": "We use can to talk about what we are able to do, and to ask for or give permission. After can, the verb never changes: no -s, no to.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-p1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-x1.mp3",
+      "text": "I can relax.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-x1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-x2.mp3",
+      "text": "She can swim.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-x2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s1-x3.mp3",
+      "text": "We can watch a movie.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s1-x3"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-q.mp3",
+      "text": "Which sentence is correct?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-q"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-why.mp3",
+      "text": "After can, use the base verb: She can swim.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-why"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-o1.mp3",
+      "text": "She can swims fast.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-o1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-o2.mp3",
+      "text": "She can to swim fast.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-o2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-o3.mp3",
+      "text": "She can swimming fast.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-o3"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-o4.mp3",
+      "text": "She can swim fast.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-o4"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-x1.mp3",
+      "text": "I need to relax. I can relax.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-x1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s2-x2.mp3",
+      "text": "He needs to sleep. He can sleep.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s2-x2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s3-p1.mp3",
+      "text": "Use can't, cannot, to say that something is not possible.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s3-p1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s3-f1.mp3",
+      "text": "Maria can't drink milk. She is allergic to it.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s3-f1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s3-f2.mp3",
+      "text": "I'm on vacation! I can sleep late.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s3-f2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s3-f3.mp3",
+      "text": "You can't sleep at work.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s3-f3"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-p1.mp3",
+      "text": "To ask a question, put can first: You can order. Can you order?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-p1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-hi.mp3",
+      "text": "Listen to each option and choose the word that completes the sentence.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-hi"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-sent.mp3",
+      "text": "Can you order a pizza for dinner?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-sent"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-w1.mp3",
+      "text": "Order.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-w1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-w2.mp3",
+      "text": "Sleep.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-w2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s4-w3.mp3",
+      "text": "Watch.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s4-w3"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s5-d.mp3",
+      "text": "Read the story about a relaxing weekend while you listen.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s5-d"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s5-read.mp3",
+      "text": "I am on vacation this weekend. I can sleep late and I can watch movies on the couch. My sister can't swim, but she can relax at the spa. Can we order a pizza? Yes, we can!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s5-read"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-d.mp3",
+      "text": "Listen: can is short and soft, can't is long and strong.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-d"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-f1w1.mp3",
+      "text": "Chill.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-f1w1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-f1w2.mp3",
+      "text": "Chill out.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-f1w2"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-f1w3.mp3",
+      "text": "Chocolate.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-f1w3"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-f2w1.mp3",
+      "text": "I can swim.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-f2w1"
+      }
+    },
+    {
+      "kind": "gram_v2",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/grammar-v2/ep-09/s6-f2w2.mp3",
+      "text": "I can't swim.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "key": "s6-f2w2"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/01.mp3",
+      "text": "¡Hola! Bienvenidos a CelsCast, el repaso del episodio 9. Soy Amy, y hoy me acompaña Brian.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 1,
+        "ch": 1,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/02.mp3",
+      "text": "Hi, everyone! Welcome back.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 2,
+        "ch": 1,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/03.mp3",
+      "text": "Hoy hablamos de descansar y del tiempo libre. Escucha con calma: no tienes que entender todo. Después lo repasamos juntos.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 3,
+        "ch": 1,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/04.mp3",
+      "text": "Brian, you look tired!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 4,
+        "ch": 2,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/05.mp3",
+      "text": "I am. I need to relax.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 5,
+        "ch": 2,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/06.mp3",
+      "text": "It's the weekend. You can sleep late!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 6,
+        "ch": 2,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/07.mp3",
+      "text": "Yes! And I can watch movies on the couch.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 7,
+        "ch": 2,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/08.mp3",
+      "text": "Can you order a pizza?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 8,
+        "ch": 2,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/09.mp3",
+      "text": "Sure! Pizza and popcorn. And you?",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 9,
+        "ch": 2,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/10.mp3",
+      "text": "I'm going to the spa. I'm taking a break.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 10,
+        "ch": 2,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/11.mp3",
+      "text": "Nice. Can I come?",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 11,
+        "ch": 2,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/12.mp3",
+      "text": "Of course you can!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 12,
+        "ch": 2,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/13.mp3",
+      "text": "Brian necesita descansar: I need to relax. Y el fin de semana puede hacer muchas cosas: I can sleep late. I can watch movies.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 13,
+        "ch": 3,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/14.mp3",
+      "text": "Can quiere decir «poder». Después de can, el verbo no cambia: I can relax, sin «to».",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 14,
+        "ch": 3,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/15.mp3",
+      "text": "Para preguntar, can va primero: Can you order a pizza? Y couch es «sillón». Popcorn son «palomitas».",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 15,
+        "ch": 3,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/16.mp3",
+      "text": "Ahora repite después de Brian. Tú puedes.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 16,
+        "ch": 4,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/17.mp3",
+      "text": "Relax. <break time=\"1.8s\" />Couch. <break time=\"1.8s\" />Popcorn. <break time=\"1.8s\" />Weekend. <break time=\"1.8s\" />",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 17,
+        "ch": 4,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/18.mp3",
+      "text": "I can sleep late. <break time=\"2.5s\" />Can you order a pizza? <break time=\"2.5s\" />",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 18,
+        "ch": 4,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/19.mp3",
+      "text": "¡Muy bien!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 19,
+        "ch": 4,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/20.mp3",
+      "text": "Tres preguntas rápidas. Contesta en voz alta antes de escuchar la respuesta.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 20,
+        "ch": 5,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/21.mp3",
+      "text": "¿Cómo se dice «relajarse»? <break time=\"2.5s\" />",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 21,
+        "ch": 5,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/22.mp3",
+      "text": "To relax.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 22,
+        "ch": 5,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/23.mp3",
+      "text": "¿Y «palomitas»? <break time=\"2.5s\" />",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 23,
+        "ch": 5,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/24.mp3",
+      "text": "Popcorn.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 24,
+        "ch": 5,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/25.mp3",
+      "text": "¿Cómo dices «yo puedo nadar»? <break time=\"2.5s\" />",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 25,
+        "ch": 5,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/26.mp3",
+      "text": "I can swim.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 26,
+        "ch": 5,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/27.mp3",
+      "text": "¡Excelente! Practica hoy: di en inglés tres cosas que puedes hacer el fin de semana: I can…",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 27,
+        "ch": 6,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/28.mp3",
+      "text": "See you next time. Bye!",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 28,
+        "ch": 6,
+        "sp": "brian"
+      }
+    },
+    {
+      "kind": "celscast",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/celscast/ep-09/29.mp3",
+      "text": "¡Nos vemos en el episodio diez!",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "n": 29,
+        "ch": 6,
+        "sp": "amy"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-1.mp3",
+      "text": "Choose the picture of pajamas.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "1"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-2.mp3",
+      "text": "Where can you swim?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "2"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-3.mp3",
+      "text": "Which word did you hear?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "3"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-4.mp3",
+      "text": "I want to blank a pizza for dinner.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "4"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-5.mp3",
+      "text": "Choose the picture for to read.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "5"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-6.mp3",
+      "text": "Which phrase means: Me estoy tomando un descanso?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "6"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-7.mp3",
+      "text": "What did you hear?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "7"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-8.mp3",
+      "text": "Which sentence is correct?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "8"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-9.mp3",
+      "text": "Did you hear can or can't?",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "9"
+      }
+    },
+    {
+      "kind": "quiz_q",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/q-10.mp3",
+      "text": "Put the words in order.",
+      "voice_id": "OZxMHsGaBmV5pjMIDIn0",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "qid": "10"
+      }
+    },
+    {
+      "kind": "quiz_listen",
+      "path": "0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/quiz/ep-09/listen-9.mp3",
+      "text": "I can't sleep at work.",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "model_id": "eleven_multilingual_v2",
+      "ref": {
+        "ep": 9,
+        "q": "9"
+      }
+    }
+  ]
+}
