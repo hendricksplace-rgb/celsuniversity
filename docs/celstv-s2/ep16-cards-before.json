@@ -1,0 +1,424 @@
+{
+ "settings": [
+  {
+   "back": "Hello",
+   "front": "Hola",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/8804fb9525_f8f5a5125_fc_ep_16_words_hello.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Goodbye",
+   "front": "Adiós",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/dd7d83f7d4_092ec76e7_fc_ep_16_words_goodbye.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Man",
+   "front": "Hombre",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/38d7f5b062_5391c6904_fc_ep_16_words_man.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Woman",
+   "front": "Mujer",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/83674e2756_0e6494f91_fc_ep_16_words_woman.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Boy",
+   "front": "Chico",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/41b032e3bb_c9b75cf7b_fc_ep_16_words_boy.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Girl",
+   "front": "Chica",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/c4954ef81a_232631c06_fc_ep_16_words_girl.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Mom",
+   "front": "Mamá",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/d1738cc41f_5ae5bf42c_fc_ep_16_words_mom.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Dad",
+   "front": "Papá",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/95399f9ceb_265df59b3_fc_ep_16_words_dad.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Grandma",
+   "front": "Abuela",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/9e3d9096b5_83baa1cb7_fc_ep_16_words_grandma.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Grandpa",
+   "front": "Abuelo",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/dfbbb19128_9b7c4f9a8_fc_ep_16_words_grandpa.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Carrots",
+   "front": "Zanahorias",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/100e2dac40_e8c0b1089_fc_ep_16_words_carrots.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Tomatoes",
+   "front": "Tomates",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/89532ab288_d44afd1bf_fc_ep_16_words_tomatoes.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Strawberry",
+   "front": "Fresa",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/c912bf5bfa_955c33820_fc_ep_16_words_strawberry.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Watermelon",
+   "front": "Sandía",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/01a7c4a44b_9e862acef_fc_ep_16_words_watermelon.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Pizza",
+   "front": "Pizza",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/003aee937f_7d9219619_fc_ep_16_words_pizza.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Wine",
+   "front": "Vino",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/e1cb9b0bcc_146e5d865_fc_ep_16_words_wine.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Chocolate",
+   "front": "Chocolate",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/291dbb1c9e_128cda3ca_fc_ep_16_words_chocolate.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Rose",
+   "front": "Rosa",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/6a335bc3bd_6a92cd9dc_fc_ep_16_words_rose.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Tree",
+   "front": "Árbol",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/2b33e7d524_a3de3c392_fc_ep_16_words_tree.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Grass",
+   "front": "Césped",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/689ccaa23b_99c5826aa_fc_ep_16_words_grass.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Picnic",
+   "front": "Picnic",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/951d5b72a9_fed4a962d_fc_ep_16_words_picnic.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Snacks",
+   "front": "Aperitivos",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/5682113be0_80830b3f0_fc_ep_16_words_snacks.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Chips",
+   "front": "Papas fritas",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/bd82af118c_76ce9045a_fc_ep_16_words_chips.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Soda",
+   "front": "Soda",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/0ed6f1a78f_b0fa7f88b_fc_ep_16_words_soda.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Hair",
+   "front": "Cabello",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/3a858e673f_46f9fc059_fc_ep_16_words_hair.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Teeth",
+   "front": "Dientes",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/b75f09b2e4_6d1e0ac68_fc_ep_16_words_teeth.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Bed",
+   "front": "Cama",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/aa037ddebd_f52cab45f_fc_ep_16_words_bed.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Bedroom",
+   "front": "Dormitorio",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/594d1e1926_895a40575_fc_ep_16_words_bedroom.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Bathroom",
+   "front": "Baño",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/dee2ed8490_adb8ccf90_fc_ep_16_words_bathroom.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Laptop",
+   "front": "Computadora portátil",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/ba353a90b4_7cad05eb3_fc_ep_16_words_laptop.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Tablet",
+   "front": "Tableta",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/0ae3af73da_f7b0d26f9_fc_ep_16_words_tablet.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Cell phone",
+   "front": "Teléfono móvil",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/0f6a4a798f_41afe1f85_fc_ep_16_words_cellphone.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Goals",
+   "front": "Objetivos",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/54ead14264_15c8cf319_fc_ep_16_words_goals.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Dreams",
+   "front": "Sueños",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/cde524a932_f5745831b_fc_ep_16_words_dreams.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Plans",
+   "front": "Planes",
+   "category": "words",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/52224b2222_6b55c1c82_fc_ep_16_words_plans.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To study",
+   "front": "Estudiar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/6b94c57d99_568cd4252_fc_ep_16_verbs_tostudy.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To say",
+   "front": "Decir",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/5aa460b1ef_65cfa72f6_fc_ep_16_verbs_tosay.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To greet",
+   "front": "Saludar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/95e477a252_a88b335b8_fc_ep_16_verbs_togreet.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To eat",
+   "front": "Comer",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/2295bd28ee_90526e06f_fc_ep_16_verbs_toeat.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To plan",
+   "front": "Planear",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/0090568314_7f72fef5a_fc_ep_16_verbs_toplan.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To dream",
+   "front": "Soñar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/1fa68c8671_344dcd680_fc_ep_16_verbs_todream.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To plant",
+   "front": "Plantar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/7f33e849b7_ec55bfa02_fc_ep_16_verbs_toplant.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To drive",
+   "front": "Conducir",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/57d77a9c58_6591b7739_fc_ep_16_verbs_todrive.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To see",
+   "front": "Ver",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/31c600a402_56d93c9df_fc_ep_16_verbs_tosee.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To love",
+   "front": "Amar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/cd3fa156cd_166c2fee2_fc_ep_16_verbs_tolove.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To shop",
+   "front": "Comprar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/1d746ff628_e3fce6f1b_fc_ep_16_verbs_toshop.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To introduce",
+   "front": "Presentar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/3f30a46839_bf5f6e365_fc_ep_16_verbs_tointroduce.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To brush",
+   "front": "Cepillar",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/091d6dae3b_0b44c87ee_fc_ep_16_verbs_tobrush.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To relax",
+   "front": "Relajarse",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/398c95d0ad_70ec03500_fc_ep_16_verbs_torelax.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "To be",
+   "front": "Ser",
+   "category": "verbs",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/284e1cc828_9a5a515e9_fc_ep_16_verbs_tobe.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "I am a human.",
+   "front": "Soy un humano",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/1907b2c83b_dbded61fe_fc_ep_16_phrases_iamahuman.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Where can I find _ ?",
+   "front": "¿Dónde puedo encontrar _ ?",
+   "category": "phrases",
+   "back_audio": null,
+   "front_audio": null
+  },
+  {
+   "back": "Where can I find the grocery store?",
+   "front": "¿Dónde puedo encontrar la tienda de comestibles?",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/e53a09a8a1_156ce3f67_fc_ep_16_phrases_wherecanifindthegrocerystore.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Can you help me find the zoo?",
+   "front": "¿Puedes ayudarme a encontrar el zoológico?",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/22ce7c67bb_fa3b9d187_fc_ep_16_phrases_canyouhelpmefindthezoo.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Can you help me find where my grandma lives?",
+   "front": "¿Puedes ayudarme a encontrar dónde vive mi abuela?",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/df0c07b495_80cbb0497_fc_ep_16_phrases_canyouhelpmefindwheremygrandmalives.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Let’s go !",
+   "front": "Vamos !",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/e865d2d5a6_24b41bad5_fc_ep_16_phrases_letsgo.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Let’s go to the library.",
+   "front": "Vamos a la biblioteca.",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/11d6e81b21_6d8efa62c_fc_ep_16_phrases_letsgotothelibrary.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "I need to brush my teeth.",
+   "front": "Necesito cepillarme los dientes.",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/09d9656245_23ae3e064_fc_ep_16_phrases_ineedtobrushmyteeth.mp3",
+   "front_audio": null
+  },
+  {
+   "back": "Hello_.",
+   "front": "Hola_.",
+   "category": "phrases",
+   "back_audio": null,
+   "front_audio": null
+  },
+  {
+   "back": "How are you today?",
+   "front": "¿Cómo estás hoy?",
+   "category": "phrases",
+   "back_audio": "storage://course-media/0928ee68-d20b-4cdf-8e4b-5489ce16b4a3/4576558a92_494e0061b_fc_ep_16_phrases_howareyoutoday.mp3",
+   "front_audio": null
+  }
+ ]
+}

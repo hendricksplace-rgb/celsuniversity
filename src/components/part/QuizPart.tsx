@@ -118,7 +118,7 @@ function Choice({ q, onAnswer }: { q: Extract<QuizQ, { kind: "choose" | "listen"
               className={`kit-drop kit-focus-light overflow-hidden rounded-2xl bg-white/10 transition ${state(i)}`}
               style={delay(i)}
             >
-              <QuizPicture opt={o} />
+              <QuizPicture opt={o} caption={picked !== null} />
             </button>
           ))}
         </div>
@@ -435,8 +435,9 @@ export function QuizPart({ questions }: { questions: QuizQ[] }) {
   );
 }
 
-/** A picture option: soft skeleton while it loads, the alt text as a caption below, a clean card if it fails. */
-function QuizPicture({ opt }: { opt: { img: string | null; ref: string | null; alt: string } }) {
+/** A picture option: soft skeleton while it loads, a clean card if it fails. The alt text shows as a caption only
+ *  once the student has answered: before that it would give the answer away ("Choose the picture of popcorn"). */
+function QuizPicture({ opt, caption }: { opt: { img: string | null; ref: string | null; alt: string }; caption: boolean }) {
   const [loaded, setLoaded] = useState(false);
   const missing = (
     <span aria-hidden className="grid size-full place-items-center bg-white/10 text-3xl opacity-60">
@@ -455,7 +456,7 @@ function QuizPicture({ opt }: { opt: { img: string | null; ref: string | null; a
           onLoad={() => setLoaded(true)}
         />
       </span>
-      <span className="block px-2 py-2 text-center text-sm font-bold leading-tight">{opt.alt}</span>
+      {caption && <span className="kit-drop block px-2 py-2 text-center text-sm font-bold leading-tight">{opt.alt}</span>}
     </span>
   );
 }

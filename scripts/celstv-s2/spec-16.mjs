@@ -1,0 +1,82 @@
+import { para, examples, build, choose, fill, reading, phonics } from "./pipe-helpers.mjs";
+
+const ABC = [["A", "/eɪ/"], ["B", "/bi/"], ["C", "/si/"], ["D", "/di/"], ["E", "/i/"], ["F", "/ɛf/"], ["G", "/dʒi/"], ["H", "/eɪtʃ/"], ["I", "/aɪ/"], ["J", "/dʒeɪ/"], ["K", "/keɪ/"], ["L", "/ɛl/"], ["M", "/ɛm/"],
+  ["N", "/ɛn/"], ["O", "/oʊ/"], ["P", "/pi/"], ["Q", "/kju/"], ["R", "/ɑr/"], ["S", "/ɛs/"], ["T", "/ti/"], ["U", "/ju/"], ["V", "/vi/"], ["W", "/ˈdʌbəlju/"], ["X", "/ɛks/"], ["Y", "/waɪ/"], ["Z", "/zi/"]];
+
+export default {
+  title: "Review 2",
+  cover: ["Everything you learned in episodes 9 to 15.", "Todo lo que aprendiste del episodio 9 al 15."],
+  groups: [
+    ["g1", "#35C3F0", "Episode 9", "EPISODIO 9", ["Beach", "Couch", "Popcorn"]],
+    ["g2", "#5B8DEF", "Episode 10", "EPISODIO 10", ["Shampoo", "Cheese"]],
+    ["g3", "#FFC531", "Episode 11", "EPISODIO 11", ["Company", "Owner", "Engineer"]],
+    ["g4", "#6DC067", "Episode 12", "EPISODIO 12", ["Guitar", "Speakers", "Volume"]],
+    ["g5", "#F5178C", "Episode 13", "EPISODIO 13", ["Tree", "Horse", "Sunset"]],
+    ["g6", "#8E5CFF", "Episode 14", "EPISODIO 14", ["Van", "Miles", "Snacks"]],
+    ["g7", "#35C3F0", "Episode 15", "EPISODIO 15", ["Goals", "Budget", "Career"]],
+    ["g8", "#FFC531", "Flashback 1–8", "FLASHBACK 1–8", ["Hello", "Breakfast", "Grandmother"]],
+  ],
+  verbs: [["To relax", null, null, 9], ["To take a break", null, null, 9], ["To buy", null, null, 10], ["To sell", null, null, 10], ["To advance", null, null, 11],
+    ["To turn down", null, null, 12], ["To plant", null, null, 13], ["To drive", null, null, 14], ["To spend", null, null, 14], ["To dream", null, null, 15]],
+  review: [
+    ["¿Cómo se dice «Alberca»?", ["Pool", "Beach", "Lake", "Bath"], 0],
+    ["Completa: «She is ___ engineer.»", ["a", "an", "the", "—"], 1],
+    ["¿Qué significa «I'll bring the snacks»?", ["Traje las botanas", "Yo llevo las botanas", "Quiero botanas", "No hay botanas"], 1],
+  ],
+  grammar: () => ({
+    topic_en: "Review 2: can, questions, articles, progressive, would like, have to, will",
+    topic_es: "Repaso 2: can, preguntas, artículos, progresivo, would like, have to, will",
+    hl: "\\b(can|can't|Can|What|Where|Who|a|an|the|isn't|aren't|would like|Would|would|have to|has to|will|won't|I'll)\\b",
+    sections: [
+      { key: "s1", name_es: "Repaso: can y preguntas", name_en: "Review: can and questions", task: build("Where can I find the bathroom?"), blocks: [
+        para("s1-p1", "Review: the question word goes first, then can, then the verb.", "Repasa: la palabra de pregunta primero, luego can, luego el verbo."),
+        examples("s1", ["Where can I buy speakers?", "What can I do?", "Who can help me?"]),
+      ] },
+      { key: "s2", name_es: "Repaso: a, an, the", name_en: "Review: a, an, the",
+        task: choose("s2", "Which sentence is correct?", "¿Qué oración es correcta?", ["I am engineer.", "I am a engineer.", "I am an engineer.", "I am the engineer."], 2,
+          "Engineer starts with a vowel sound, so we say an engineer. And jobs always take an article.", "«Engineer» empieza con sonido de vocal → an. Y las profesiones siempre llevan artículo."),
+        blocks: [para("s2-p1", "Remember: a before a consonant sound, an before a vowel sound.", "Recuerda: a antes de un sonido de consonante, an antes de un sonido de vocal.")] },
+      { key: "s3", name_es: "¿Qué verbo modal?", name_en: "Which modal verb?",
+        task: fill("s3", [["I", "can", "swim. I'm a good swimmer.", ["can", "have to"]], ["You", "have to", "wear a uniform at work.", ["can", "have to"]], ["", "Would", "you like some water?", ["Would", "Will"]], ["Tomorrow it", "will", "rain.", ["will", "would"]]]),
+        blocks: [para("s3-p1", "Can is for what you are able to do. Have to is for what you must do. Would like is polite. Will is for the future.",
+          "Can es lo que puedes hacer. Have to es lo que tienes que hacer. Would like es amable. Will es para el futuro.")] },
+      { key: "s4", name_es: "Repaso: respuestas cortas", name_en: "Review: short answers",
+        task: choose("s4", "Is she dancing? Choose the short answer.", "Is she dancing? Elige la respuesta corta.", ["No, she isn't.", "No, she not.", "No, isn't.", "No, she no dancing."], 0,
+          "Short answer: No, she isn't. Don't repeat the verb.", "Respuesta corta: No, she isn't. Sin repetir el verbo."),
+        blocks: [examples("s4", ["Are you working on Saturday? No, I'm not.", "Is he playing the drums? Yes, he is."])] },
+      { key: "s5", name_es: "Lectura", name_en: "Reading", task: null, blocks: [reading(
+        "Read and listen: everything from episodes 9 to 15 in one story.", "Lee y escucha: todo lo de los episodios 9 al 15 en una sola historia.",
+        "Hi! I'm a teacher at an international school. I can speak English and Spanish. This weekend I'm not working: I would like to relax at the spa. Next summer, we will go on a road trip. Where would you like to go?",
+        ["a", "an", "can", "not", "would like", "will", "Where"])] },
+      { key: "s6", name_es: "Phonics", name_en: "Phonics", task: null, blocks: [phonics(
+        "The alphabet from A to Z. How do you spell your name?", "Deletrea tu nombre en inglés: lo vas a necesitar en el trabajo, en el banco y en el doctor.",
+        [["The alphabet A–Z", "El abecedario de la A a la Z", ABC.map(([l, ipa]) => [l, ipa, `${l}.`])],
+         ["Spell your name", "Deletrea tu nombre", [["How do you spell your name?", ""], ["M-A-R-I-A", "", "M. A. R. I. A."]]]])] },
+    ],
+  }),
+  cast: [
+    ["Bienvenida", [["amy", "¡Hola! Bienvenidos a CelsCast, el repaso del episodio 16. ¡Es nuestro segundo gran repaso! Soy Amy, y hoy me acompaña Brian."], ["brian", "Hi, everyone! You're doing great!"],
+      ["amy", "Hoy repasamos todo lo que aprendiste del episodio 9 al 15. Escucha con calma: no tienes que entender todo."]]],
+    ["Una semana en inglés", [["brian", "Amy, what are you doing this weekend?"], ["amy", "I'm not working! I would like to relax at the spa."], ["brian", "Nice. I have to go shopping. Where can I buy speakers?"],
+      ["amy", "At the mall. They're on sale!"], ["brian", "Great. Next summer, we will go on a road trip."], ["amy", "Fun! I'm an engineer, so I'll plan the budget!"], ["brian", "Perfect. Would you like to come?"], ["amy", "Yes, I would!"]]],
+    ["Lo que escuchaste", [["amy", "¡Escuchaste todo lo que aprendiste! I'm not working es el progresivo. I would like es «me gustaría». I have to es «tengo que»."],
+      ["amy", "Where can I…? es una pregunta. An engineer lleva artículo. Y we will go es el futuro."]]],
+    ["Repite conmigo", [["amy", "Ahora repite después de Brian. Tú puedes."],
+      ["brian", 'Where can I buy speakers? <break time="2.5s" />I would like to relax. <break time="2.5s" />We will go on a road trip. <break time="2.5s" />'], ["amy", "¡Muy bien!"]]],
+    ["¿Cómo se dice?", [["amy", "Tres preguntas rápidas. Contesta en voz alta antes de escuchar la respuesta."], ["amy", '¿Cómo dices «tengo que ir de compras»? <break time="2.5s" />'], ["brian", "I have to go shopping."],
+      ["amy", '¿Y «¿te gustaría venir?»? <break time="2.5s" />'], ["brian", "Would you like to come?"], ["amy", '¿Cómo dices «soy ingeniera»? <break time="2.5s" />'], ["brian", "I'm an engineer."]]],
+    ["Hasta la próxima", [["amy", "¡Felicidades! Terminaste la segunda parte de CelsTV."], ["brian", "See you next time. Bye!"], ["amy", "¡Nos vemos en el episodio diecisiete!"]]],
+  ],
+  quiz: [
+    { type: "select-image", instruction: "Episode 9", question: "Choose the picture of popcorn.", images: [["pizza", "Pizza"], ["chocolate", "Chocolate"], ["milkshake", "A milkshake"], ["popcorn", "Popcorn"]], answer: 3 },
+    { type: "select-text", instruction: "Episode 10", question: "\"___ is the bathroom?\"", options: ["What", "Where", "Who", "When"], answer: 1 },
+    { type: "select-text", instruction: "Episode 11", question: "\"He is ___ mechanic.\"", options: ["a", "an", "the", "—"], answer: 0 },
+    { type: "listen-and-select", instruction: "Episode 12", question: "What did you hear?", listen: "Turn down the volume, please.", options: ["Turn up the volume.", "Turn down the volume.", "Turn on the radio.", "Turn off the music."], answer: 1 },
+    { type: "select-text", instruction: "Episode 13", question: "\"He ___ cut the grass.\"", options: ["have to", "has to", "haves to", "having to"], answer: 1 },
+    { type: "listen-and-select", instruction: "Episode 14", question: "Did you hear won't or want?", listen: "We won't spend a lot.", options: ["won't", "want"], answer: 0 },
+    { type: "select-text", instruction: "Episode 15", question: "\"It's on my calendar. I ___ my mom on Sunday.\"", options: ["am visiting", "will visit"], answer: 0 },
+    { type: "listen-and-select", instruction: "Episode 9", question: "Did you hear can or can't?", listen: "I can't swim.", options: ["can", "can't"], answer: 1 },
+    { type: "select-image", instruction: "Review", question: "Choose the picture for to drive.", images: [["driving", "A person driving"], ["hiking", "People hiking"], ["dancing", "People dancing"], ["reading", "A woman reading"]], answer: 0 },
+    { type: "build", instruction: "Review", question: "Put the words in order.", sentence: "Would you like to come?" },
+  ],
+};
