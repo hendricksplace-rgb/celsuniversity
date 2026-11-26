@@ -1,6 +1,8 @@
 // CelsTV quiz: the episode's questions (celstv_quiz) in 5 formats. Image and listening questions come
 // as they are; two sentence answers become "build the sentence" and "remove the extra word", and four
 // of the episode's CelsCards become "match the pairs". Same order for everyone on the same episode.
+// A quiz written with its own `build` question (Section 2, eps 9-16) shows every question exactly as written:
+// no automatic "build" or "extra word"; only the matching pairs are added.
 
 /** Amy's recording of the question, with the start time (s) of each word for the highlight. */
 export type Voice = { url: string; ref?: string; wt: number[] } | null;
@@ -33,11 +35,18 @@ const sentenceWords = (s: string) => s.trim().split(/\s+/);
 const isSentence = (s: string) => /[.!?]$/.test(s.trim()) && sentenceWords(s).length >= 3 && sentenceWords(s).length <= 9;
 const bare = (w: string) => w.toLowerCase().replace(/[^a-z']/g, "");
 
-export function buildQuiz(settings: unknown, cards: { front: string; back: string; category?: string }[], resolve: (ref: unknown) => string | null, seed: string): QuizQ[] {
+export function buildQuiz(
+  settings: unknown,
+  cards: { front: string; back: string; category?: string }[],
+  resolve: (ref: unknown) => string | null,
+  seed: string,
+): QuizQ[] {
   const raw = arr((settings as Raw | null)?.questions) as Raw[];
   const out: QuizQ[] = [];
-  let built = false;
-  let extra = false;
+  // Written with its own build question: nothing gets rewritten.
+  const asWritten = raw.some((q) => q.type === "build");
+  let built = asWritten;
+  let extra = asWritten;
   raw.forEach((q, i) => {
     const prompt = str(q.question);
     const answer = Number(q.correctAnswer ?? 0);
@@ -46,11 +55,26 @@ export function buildQuiz(settings: unknown, cards: { front: string; back: strin
     const voice: Voice = url ? { url, ref: str(q.question_audio) || undefined, wt: arr(q.question_wt).map(Number) } : null;
     if (q.type === "select-image") {
       const imgs = arr(q.images) as Raw[];
-      if (imgs.length) out.push({ kind: "picture", prompt, voice, options: imgs.map((m) => ({ img: resolve(m.url), ref: str(m.url) || null, alt: str(m.alt) })), answer });
+      if (imgs.length)
+        out.push({ kind: "picture", prompt, voice, options: imgs.map((m) => ({ img: resolve(m.url), ref: str(m.url) || null, alt: str(m.alt) })), answer });
+      return;
+    }
+    if (q.type === "build") {
+      // { type: "build", question, sentence: "Can you order a pizza?", question_audio?, question_wt? }
+      const words = sentenceWords(str(q.sentence));
+      if (words.length >= 2) out.push({ kind: "build", prompt, voice, tiles: shuffle(words, `${seed}:b${i}`), answer: words });
       return;
     }
     if (q.type === "listen-and-select") {
-      out.push({ kind: "listen", prompt: prompt || "What did you hear?", voice: prompt ? voice : null, audio: resolve(q.audioUrl), audioRef: str(q.audioUrl) || undefined, options, answer });
+      out.push({
+        kind: "listen",
+        prompt: prompt || "What did you hear?",
+        voice: prompt ? voice : null,
+        audio: resolve(q.audioUrl),
+        audioRef: str(q.audioUrl) || undefined,
+        options,
+        answer,
+      });
       return;
     }
     if (q.type !== "select-text" || !options.length) return;
