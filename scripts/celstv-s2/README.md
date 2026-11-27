@@ -1,4 +1,4 @@
-# CelsTV Section 2 (eps 10–16) content pipeline
+# CelsTV Section 2 (eps 10–17) content pipeline
 
 Each `spec-NN.mjs` is the approved Cowork content for one episode (Nov 26, 2026): CelsBook groups and verb examples,
 Grammar v2 sections, the CelsCast script and the quiz. `pipe.mjs` turns a spec into `audio_jobs` rows (ElevenLabs,
